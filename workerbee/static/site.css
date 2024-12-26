@@ -1,0 +1,61 @@
+.appcolor {
+    background-color: #faf3d4;
+}
+
+.mynavbar {
+    /* Must repeat background-color so sticky-top works on navbar */
+    background-color: #faf3d4;
+    border-bottom: 1px solid #000;
+}
+
+.banner {
+    padding-top: 1em;
+}
+
+.group0 {
+    font-size: large;
+    font-weight: bold;
+}
+
+.group1 {
+    font-size: medium;
+    font-style: italic;
+}
+
+.wordlength {
+    font-size: smaller;
+}
+
+.subtext {
+    font-size: smaller;
+}
+
+.pangram {
+    background-color: moccasin;
+}
+
+td.right-bold {
+    text-align: right;
+    padding-right: 1em;
+    font-weight: bold;
+}
+
+td.left-bold {
+    text-align: left;
+    font-weight: bold;
+}
+
+td.right-italic {
+    text-align: right;
+    padding-right: 1em;
+    font-style: italic;
+}
+
+label.left-italic, td.left-italic {
+    text-align: left;
+    font-style: italic;
+}
+
+td.letters {
+    font-weight: bold;
+}

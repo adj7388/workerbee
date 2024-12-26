@@ -1,0 +1,90 @@
+{% extends LAYOUT_TEMPLATE %}
+{% from MACROS_TEMPLATE import page_banner %}
+
+{% block title %}
+    Worker Bee - Helping the Hive
+{% endblock %}
+
+{% block content %}
+
+    {{ page_banner(text='Worker Bee') }}
+
+    <form action="{{ BEEWORD_VIEW }}" method="GET">
+        {% if PROFILING is true %}
+            <input type="hidden" name="{{ PROFILE_REQUEST_ARG }}" value="true">
+        {% endif %}
+        <p class="h6">
+            Enter the required letter:<br>
+            <span class="subtext">The yellow letter in the middle</span>
+        </p>
+        <p><input type='text', name={{ REQUIRED_LETTER }}
+            value=
+                {% if args %}
+                    {{ args[REQUIRED_LETTER] }}
+                {% else %}
+                    "u"
+                {% endif %}
+            >
+        </p>
+        <p class="h6">
+            Enter the other letters:<br>
+            <span class="subtext">The {{NUM_ALLOWED_LETTERS}} letters around the middle letter</span>
+        </p>
+        <p><input type='text', name={{ ALLOWED_LETTERS }}
+            value=
+                {% if args %}
+                    {{ args[ALLOWED_LETTERS] }}
+                {% else %}
+                    "ncdeli"
+                {% endif %}
+            >
+        </p>
+        <p class="h6">
+            How to group the results:
+        </p>
+        <p>
+            {% set initials_checked, length_checked, no_grouping_checked = '', '', '' %}
+            {% if args[GROUPING] == INITIALS %}
+                {% set initials_checked = 'checked' %}
+            {% elif args[GROUPING] == LENGTH %}
+                {% set length_checked = 'checked' %}
+            {% elif args[GROUPING] == NO_GROUPING %}
+                {% set no_grouping_checked = 'checked' %}
+            {% else %}
+                {# initials as default #}
+                {% set initials_checked = 'checked' %}
+            {% endif %}
+            <input type="radio" name="{{ GROUPING }}" id="{{ INITIALS }}" value="{{ INITIALS }}" {{ initials_checked}}>
+            <label for="{{ INITIALS }}">Group by initial letters</label><br>
+            <input type="radio" name="{{ GROUPING }}" id="{{ LENGTH }}" value="{{ LENGTH }}" {{ length_checked }}>
+            <label for="{{ LENGTH }}">Group by word length</label><br>
+            <input type="radio" name="{{ GROUPING }}" id="{{ NO_GROUPING }}" value="{{ NO_GROUPING }}" {{ no_grouping_checked }}>
+            <label for="{{ NO_GROUPING }}">No grouping. Just an alphabetical list</label>
+        </p>
+        <p>
+            {% set mw_selected, free_selected, wikt_selected, dict_selected = '', '', '', '' %}
+            {% if args[DICTIONARY] == MW %}
+                {% set mw_selected = 'selected' %}
+            {% elif args[DICTIONARY] == WIKT %}
+                {% set wikt_selected = 'selected' %}
+            {% elif args[DICTIONARY] == DICT %}
+                {% set dict_selected = 'selected' %}
+            {% elif args[DICTIONARY] == FREE %}
+                {% set free_selected = 'selected' %}
+            {% else %}
+                {# Wiktionary as default #}
+                {% set wikt_selected = 'selected' %}
+            {% endif %}
+            <label for="{{ DICTIONARY }}">Look up words using:</label>
+            <select name="{{ DICTIONARY }}">
+                <option value="{{ WIKT }}" {{ wikt_selected }}>{{ dictionaries.WIKT.name }}</option>
+                <option value="{{ MW }}" {{ mw_selected }}>{{ dictionaries.MW.name }}</option>
+                <option value="{{ FREE }}" {{ free_selected }}>{{ dictionaries.FREE.name }}</option>
+                <option value="{{ DICT }}" {{ dict_selected }}>{{ dictionaries.DICT.name }}</option>
+            </select>
+        </p>
+        <p>
+            <input type='submit' value='Submit'>
+        </p>
+    </form>
+{% endblock %}

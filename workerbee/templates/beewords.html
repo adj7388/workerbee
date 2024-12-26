@@ -1,0 +1,13 @@
+{% extends LAYOUT_TEMPLATE %}
+
+{% from MACROS_TEMPLATE import page_banner, show_metadata, show_words_grouped %}
+
+{% block title %}
+    Beewords! 
+{% endblock %}
+
+{% block content %}
+    {{ page_banner(text='Results') }}
+    {{ show_metadata(metadata=metadata) }}
+    {{ show_words_grouped(beeword_data=beeword_data, grouping=grouping) }}
+{% endblock %}

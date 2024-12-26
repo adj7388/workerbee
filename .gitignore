@@ -1,0 +1,4 @@
+__pycache__/
+*bak
+workerbee/temp/*csv
+workerbee/temp/*json

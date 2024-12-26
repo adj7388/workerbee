@@ -1,0 +1,1 @@
+Temporary storage folder for things like csv files, etc.
