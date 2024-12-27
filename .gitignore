@@ -3,3 +3,4 @@ __pycache__/
 workerbee/temp/*csv
 workerbee/temp/*json
 .venv/
+*pem
