@@ -1,0 +1,15 @@
+{% extends LAYOUT_TEMPLATE %}
+{% from MACROS_TEMPLATE import page_banner %}
+
+{% block title %}
+    Worker Bee Help
+{% endblock %}
+
+{% block content %}
+    {{ page_banner(text="Worker Bee Help") }}
+    <p>This web app can help players find words for an NYT Spelling Bee puzzle. Just enter the letters from a Spelling Bee game (or make up your own letters).</p>
+    <p>The "required letter" is the letter in the yellow tile in the middle of the Spelling Bee puzzle screen. </p>
+    <p>The "other letters" are the other six letters around the yellow one.</p>
+    <p>Unfortunately, the dictionary for this app is huge, and many (most?) of the words it includes are NOT valid Spelling Bee words. Sorry about that. You'll have to dig through a lot of irrelevant words to find the valid ones.</p>
+    <p>If you know of a better (open source) dictionary option, with fewer words, I would love to know about it. Contact me: a d j 7 3 8 8 at proton.me (remove the spaces, obviously).</p>
+{% endblock %}

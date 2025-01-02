@@ -31,6 +31,11 @@ def home():
     )
 
 
+@app.route(f"/{config.HELP_VIEW}/")
+def help():
+    return config.JINJA_ENV.get_template(config.HELP_TEMPLATE).render()
+
+
 @app.route(f"/{config.ABOUT_VIEW}/")
 def about():
     return config.JINJA_ENV.get_template(config.ABOUT_TEMPLATE).render()
