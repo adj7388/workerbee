@@ -113,35 +113,35 @@ def print_beewords_list(beewords: dict) -> None:
 
 ############ main ############
 def main():
-    global_args = get_commandline_args()
+    args = get_commandline_args()
 
-    if global_args.groupby == config.NO_GROUPING:
+    if args.groupby == config.NO_GROUPING:
         beewords = get_beewords(
-            global_args.required,
-            global_args.allowed,
-            dictionary=config.Dictionaries[global_args.dictionary],
+            args.required,
+            args.allowed,
+            dictionary=config.Dictionaries[args.dictionary],
         )
-    elif global_args.groupby in [config.INITIALS, config.LENGTH]:
+    elif args.groupby in [config.INITIALS, config.LENGTH]:
         beewords = get_beewords_grouped(
-            global_args.required,
-            global_args.allowed,
-            grouping=get_groupings(global_args.groupby),
-            dictionary=config.Dictionaries[global_args.dictionary],
+            args.required,
+            args.allowed,
+            grouping=get_groupings(args.groupby),
+            dictionary=config.Dictionaries[args.dictionary],
         )
     else:
         raise ValueError("Error: Don't know how to get beewords.")
 
     ### check for csv or json output first, if they're specified in args ...
-    if global_args.csv:
+    if args.csv:
         buffer = write_to_buffer(beewords, file_type="csv")
         print(buffer.getvalue())
-    elif global_args.json:
+    elif args.json:
         buffer = write_to_buffer(beewords, file_type="json")
         print(buffer.getvalue())
     ### ... if not csv/json (above), then print to stdout based on groupby
-    elif global_args.groupby == config.NO_GROUPING:
+    elif args.groupby == config.NO_GROUPING:
         print_beewords_list(beewords=beewords)
-    elif global_args.groupby in [config.INITIALS, config.LENGTH]:
+    elif args.groupby in [config.INITIALS, config.LENGTH]:
         print_beewords_grouped(beewords=beewords)
     else:
         raise ValueError("Error: Don't know how to output.")
