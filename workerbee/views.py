@@ -27,7 +27,7 @@ def after_request(response):
 @app.route("/")
 def home():
     if request.args:
-        abort(404)
+        abort(400)
     return config.JINJA_ENV.get_template(config.HOME_TEMPLATE).render(
         args=session.get(config.USER_ARGS, None), dictionaries=config.Dictionaries
     )
@@ -36,14 +36,14 @@ def home():
 @app.route(f"/{config.HELP_VIEW}/")
 def help():
     if request.args:
-        abort(404)
+        abort(400)
     return config.JINJA_ENV.get_template(config.HELP_TEMPLATE).render()
 
 
 @app.route(f"/{config.ABOUT_VIEW}/")
 def about():
     if request.args:
-        abort(404)
+        abort(400)
     return config.JINJA_ENV.get_template(config.ABOUT_TEMPLATE).render()
 
 
