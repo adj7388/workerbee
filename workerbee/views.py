@@ -2,7 +2,7 @@ from . import app
 from . import config
 from .utils import clean_args, error_check, get_filename, write_to_buffer
 from .bee import get_beewords, get_beewords_grouped, get_groupings
-from flask import request, session, redirect, flash, g, make_response, send_file
+from flask import request, session, redirect, flash, g, make_response, send_file, abort
 from io import BytesIO
 from pyinstrument import Profiler
 
@@ -26,6 +26,8 @@ def after_request(response):
 
 @app.route("/")
 def home():
+    if request.args:
+        abort(404)
     return config.JINJA_ENV.get_template(config.HOME_TEMPLATE).render(
         args=session.get(config.USER_ARGS, None), dictionaries=config.Dictionaries
     )
@@ -33,11 +35,15 @@ def home():
 
 @app.route(f"/{config.HELP_VIEW}/")
 def help():
+    if request.args:
+        abort(404)
     return config.JINJA_ENV.get_template(config.HELP_TEMPLATE).render()
 
 
 @app.route(f"/{config.ABOUT_VIEW}/")
 def about():
+    if request.args:
+        abort(404)
     return config.JINJA_ENV.get_template(config.ABOUT_TEMPLATE).render()
 
 
