@@ -4,3 +4,4 @@ workerbee/temp/*csv
 workerbee/temp/*json
 .venv/
 *pem
+.dbxignore
