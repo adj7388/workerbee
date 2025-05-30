@@ -10,3 +10,4 @@
 10. Install nginx and configure for upstream proxy to gunicorn port 5000. (see /etc/nginx/nginx.conf)
 11. In Google Home, forward port 80 to ASUSPRO-P5440UF port 80
 12. Use certbot to install Let's Encrypt certificates into nginx
+13. testing 1234
