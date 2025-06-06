@@ -1,9 +1,6 @@
 from itertools import groupby
 from . import config
 
-dictionary_file = "words_alpha.txt"
-
-
 def get_groupings(grouping: str) -> list:
     if grouping == config.LENGTH:
         return [config.LENGTH, config.INITIALS]
@@ -67,9 +64,12 @@ def get_beeword(
 
 
 def get_beewords(
-    required_letter: str, allowed_letters: str, dictionary: config.Dictionary
+    word_file: str,
+    required_letter: str,
+    allowed_letters: str,
+    dictionary: config.Dictionary
 ) -> dict:
-    with open(dictionary_file, mode="r") as f:
+    with open(word_file, mode="r") as f:
         dictionary_words = [line.lower() for line in f.read().splitlines()]
     all_letters_set = set(required_letter + allowed_letters)
     beewords = []
@@ -99,10 +99,17 @@ def get_beewords(
 
 
 def get_beewords_grouped(
-    required: str, allowed: str, grouping: list[str], dictionary: config.Dictionary
+    word_file: str,
+    required: str,
+    allowed: str,
+    grouping: list[str],
+    dictionary: config.Dictionary
 ) -> dict:
     beewords = get_beewords(
-        required_letter=required, allowed_letters=allowed, dictionary=dictionary
+        word_file=word_file,
+        required_letter=required,
+        allowed_letters=allowed,
+        dictionary=dictionary
     )
     def get_group0_key(beeword): return beeword[grouping[0]]
     def get_group1_key(beeword): return beeword[grouping[1]]

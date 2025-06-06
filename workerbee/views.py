@@ -57,6 +57,7 @@ def beewords():
             return redirect(config.HOME_VIEW)
         if cleaned_args[config.GROUPING] == config.NO_GROUPING:
             beewords = get_beewords(
+                word_file=config.WordLists[cleaned_args[config.WORD_LIST]],
                 required_letter=cleaned_args[config.REQUIRED_LETTER],
                 allowed_letters=cleaned_args[config.ALLOWED_LETTERS],
                 dictionary=config.Dictionaries[cleaned_args[config.DICTIONARY]],
@@ -68,6 +69,7 @@ def beewords():
         else:
             grouping = get_groupings(cleaned_args[config.GROUPING])
             beewords = get_beewords_grouped(
+                word_file=config.WordLists[cleaned_args[config.WORD_LIST]],
                 required=cleaned_args[config.REQUIRED_LETTER],
                 allowed=cleaned_args[config.ALLOWED_LETTERS],
                 grouping=grouping,

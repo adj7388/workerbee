@@ -31,6 +31,7 @@ def clean_args(args: dict) -> dict:
         config.ALLOWED_LETTERS:args[config.ALLOWED_LETTERS].lower().strip(),
         config.GROUPING:args[config.GROUPING],
         config.DICTIONARY:args[config.DICTIONARY],
+        config.WORD_LIST:args[config.WORD_LIST]
     }
 
 

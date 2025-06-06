@@ -13,6 +13,26 @@
         {% if PROFILING is true %}
             <input type="hidden" name="{{ PROFILE_REQUEST_ARG }}" value="true">
         {% endif %}
+        <p>
+            {% set words_alpha_selected, american_selected, british_selected = '', '', '' %}
+            {% if args[WORD_LIST] == WORDS_ALPHA %}
+                {% set words_alpha_selected = 'selected' %}
+            {% elif args[WORD_LIST] == LINUX_AMERICAN_ENGLISH %}
+                {% set american_selected = 'selected' %}
+            {% elif args[WORD_LIST] == LINUX_BRITISH_ENGLISH %}
+                {% set british_selected = 'selected' %}
+            {% else %}
+                {# words_alpha_selected as default #}
+                {% set words_alpha_selected = 'selected' %}
+            {% endif %}
+            <label for="{{ WORD_LIST }}">Word list:</label>
+            <select name="{{ WORD_LIST }}">
+                <option value="{{ WORDS_ALPHA }}" {{ words_alpha_selected }}>words_alpha</option>
+                <option value="{{ LINUX_AMERICAN_ENGLISH }}" {{ american_selected }}>Linux American</option>
+                <option value="{{ LINUX_BRITISH_ENGLISH }}" {{ british_selected }}>Linux British</option>
+            </select>
+        </p>
+
         <p class="h6">
             Enter the required letter:<br>
             <span class="subtext">The yellow letter in the middle</span>
@@ -75,10 +95,10 @@
                 {# Wiktionary as default #}
                 {% set wikt_selected = 'selected' %}
             {% endif %}
-            <label for="{{ DICTIONARY }}">Look up words using:</label>
+            <label for="{{ DICTIONARY }}">Find definitions in:</label>
             <select name="{{ DICTIONARY }}">
                 <option value="{{ WIKT }}" {{ wikt_selected }}>{{ dictionaries.WIKT.name }}</option>
-                <option value="{{ MW }}" {{ mw_selected }}>{{ dictionaries.MW.name }}</option>
+                <option value="{{ MW }}"   {{ mw_selected   }}>{{ dictionaries.MW.name }}</option>
                 <option value="{{ FREE }}" {{ free_selected }}>{{ dictionaries.FREE.name }}</option>
                 <option value="{{ DICT }}" {{ dict_selected }}>{{ dictionaries.DICT.name }}</option>
             </select>

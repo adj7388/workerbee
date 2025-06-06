@@ -41,6 +41,18 @@ PERFECT_PANGRAMS = "perfect_pangrams"
 DICTIONARY = "dictionary"
 BEEWORD_FIELDNAMES = "beeword_fieldnames"
 
+# Word list consts
+WORD_LIST = "word_list"
+WORDS_ALPHA = "words_alpha"
+LINUX_AMERICAN_ENGLISH = "linux_american_english"
+LINUX_BRITISH_ENGLISH = "linux_british_english"
+
+WordLists = {
+    WORDS_ALPHA: "words_alpha.txt",
+    LINUX_BRITISH_ENGLISH: "british-english",
+    LINUX_AMERICAN_ENGLISH: "american-english"
+}
+
 # Data and beeword consts
 DATA = "data"
 WORD = "word"
