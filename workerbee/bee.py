@@ -69,16 +69,16 @@ def get_beeword(
 
 
 def get_beewords(
-    word_file: str,
+    word_list: config.WordList,
     required_letter: str,
     allowed_letters: str,
     dictionary: config.Dictionary
 ) -> dict:
-    with open(word_file, mode="r") as f:
-        dictionary_words = [line.lower() for line in f.read().splitlines()]
+    with open(word_list.file_name, mode="r") as f:
+        words = [line.lower() for line in f.read().splitlines()]
     all_letters_set = set(required_letter + allowed_letters)
     beewords = []
-    for this_word in dictionary_words:
+    for this_word in words:
         if required_letter in this_word and len(this_word) >= config.MIN_WORD_LENGTH:
             this_word_as_set = set(this_word)
             if this_word_as_set.issubset(all_letters_set):
@@ -99,20 +99,20 @@ def get_beewords(
         required=required_letter,
         allowed=allowed_letters,
         dictionary=dictionary,
-        word_list=word_file
+        word_list=word_list
     )
     return return_dict
 
 
 def get_beewords_grouped(
-    word_file: str,
+    word_list: str,
     required: str,
     allowed: str,
     grouping: list[str],
     dictionary: config.Dictionary
 ) -> dict:
     beewords = get_beewords(
-        word_file=word_file,
+        word_list=word_list,
         required_letter=required,
         allowed_letters=allowed,
         dictionary=dictionary

@@ -29,10 +29,10 @@
             {% endif %}
             <label for="{{ WORD_LIST }}">Use word list:</label>
             <select name="{{ WORD_LIST }}">
-                <option value="{{ WORDS_ALPHA }}" {{ words_alpha_selected }}>words_alpha</option>
-                <option value="{{ LINUX_AMERICAN_ENGLISH }}" {{ american_selected }}>Linux American</option>
-                <option value="{{ LINUX_BRITISH_ENGLISH }}" {{ british_selected }}>Linux British</option>
-                <option value="{{ DWYL_WORDS }}" {{ dwyl_words_selected }}>dwyl.com words</option>
+                <option value="{{ WORDS_ALPHA }}" {{ words_alpha_selected }}>{{ word_lists[WORDS_ALPHA].name }}</option>
+                <option value="{{ LINUX_AMERICAN_ENGLISH }}" {{ american_selected }}>{{ word_lists[LINUX_AMERICAN_ENGLISH].name }}</option>
+                <option value="{{ LINUX_BRITISH_ENGLISH }}" {{ british_selected }}>{{ word_lists[LINUX_BRITISH_ENGLISH].name }}</option>
+                <option value="{{ DWYL_WORDS }}" {{ dwyl_words_selected }}>{{ word_lists[DWYL_WORDS].name }}</option>
             </select>
         </p>
 

@@ -40,20 +40,7 @@ NONPERFECT_PANGRAMS = "nonperfect_pangrams"
 PERFECT_PANGRAMS = "perfect_pangrams"
 DICTIONARY = "dictionary"
 BEEWORD_FIELDNAMES = "beeword_fieldnames"
-
-# Word list consts
 WORD_LIST = "word_list"
-WORDS_ALPHA = "words_alpha"
-DWYL_WORDS = "dwyl_words"
-LINUX_AMERICAN_ENGLISH = "linux_american_english"
-LINUX_BRITISH_ENGLISH = "linux_british_english"
-
-WordFiles = {
-    WORDS_ALPHA: "words_alpha.txt",
-    LINUX_BRITISH_ENGLISH: "british-english",
-    LINUX_AMERICAN_ENGLISH: "american-english",
-    DWYL_WORDS: "words_alpha.dwyl"
-}
 
 # Data and beeword consts
 DATA = "data"
@@ -91,6 +78,33 @@ JINJA_ENV = Environment(loader=FileSystemLoader(TEMPLATE_FOLDER))
 def make_url_template(source: str) -> Template:
     return JINJA_ENV.from_string(source)
 
+# Manage Word Lists
+WordList = namedtuple("WordList", "name file_name")
+
+# Word list keys
+WORDS_ALPHA = "IC"
+DWYL_WORDS = "DWYL"
+LINUX_AMERICAN_ENGLISH = "LINUX_US"
+LINUX_BRITISH_ENGLISH = "LINUX_UK"
+
+WordLists = {
+    WORDS_ALPHA: WordList(
+        name="InfoChimp",
+        file_name="words_alpha.txt"
+    ),
+    LINUX_BRITISH_ENGLISH: WordList(
+        name="Linux British English",
+        file_name="british-english"
+    ),
+    LINUX_AMERICAN_ENGLISH: WordList(
+        name="Linux American English",
+        file_name="american-english"
+    ),
+    DWYL_WORDS: WordList(
+        name="DWYL Words (dwyl.com)",
+        file_name="words_alpha.dwyl"
+    )
+}
 
 # Manage Dictionaries
 Dictionary = namedtuple("Dictionary", "name url_template")
