@@ -69,7 +69,7 @@ def beewords():
         else:
             grouping = get_groupings(cleaned_args[config.GROUPING])
             beewords = get_beewords_grouped(
-                word_file=config.WordLists[cleaned_args[config.WORD_LIST]],
+                word_file=config.WordFiles[cleaned_args[config.WORD_LIST]],
                 required=cleaned_args[config.REQUIRED_LETTER],
                 allowed=cleaned_args[config.ALLOWED_LETTERS],
                 grouping=grouping,

@@ -14,22 +14,25 @@
             <input type="hidden" name="{{ PROFILE_REQUEST_ARG }}" value="true">
         {% endif %}
         <p>
-            {% set words_alpha_selected, american_selected, british_selected = '', '', '' %}
+            {% set words_alpha_selected, american_selected, british_selected, dwyl_words_selected = '', '', '', '' %}
             {% if args[WORD_LIST] == WORDS_ALPHA %}
                 {% set words_alpha_selected = 'selected' %}
             {% elif args[WORD_LIST] == LINUX_AMERICAN_ENGLISH %}
                 {% set american_selected = 'selected' %}
             {% elif args[WORD_LIST] == LINUX_BRITISH_ENGLISH %}
                 {% set british_selected = 'selected' %}
+            {% elif args[WORD_LIST] == DWYL_WORDS %}
+                {% set dwyl_words_selected = 'selected' %}
             {% else %}
-                {# words_alpha_selected as default #}
-                {% set words_alpha_selected = 'selected' %}
+                {# dwyl_words_selected as default #}
+                {% set dwyl_words_selected = 'selected' %}
             {% endif %}
-            <label for="{{ WORD_LIST }}">Word list:</label>
+            <label for="{{ WORD_LIST }}">Use word list:</label>
             <select name="{{ WORD_LIST }}">
                 <option value="{{ WORDS_ALPHA }}" {{ words_alpha_selected }}>words_alpha</option>
                 <option value="{{ LINUX_AMERICAN_ENGLISH }}" {{ american_selected }}>Linux American</option>
                 <option value="{{ LINUX_BRITISH_ENGLISH }}" {{ british_selected }}>Linux British</option>
+                <option value="{{ DWYL_WORDS }}" {{ dwyl_words_selected }}>dwyl.com words</option>
             </select>
         </p>
 
@@ -95,7 +98,7 @@
                 {# Wiktionary as default #}
                 {% set wikt_selected = 'selected' %}
             {% endif %}
-            <label for="{{ DICTIONARY }}">Find definitions in:</label>
+            <label for="{{ DICTIONARY }}">Link to definitions in:</label>
             <select name="{{ DICTIONARY }}">
                 <option value="{{ WIKT }}" {{ wikt_selected }}>{{ dictionaries.WIKT.name }}</option>
                 <option value="{{ MW }}"   {{ mw_selected   }}>{{ dictionaries.MW.name }}</option>

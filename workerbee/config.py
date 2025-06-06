@@ -44,13 +44,15 @@ BEEWORD_FIELDNAMES = "beeword_fieldnames"
 # Word list consts
 WORD_LIST = "word_list"
 WORDS_ALPHA = "words_alpha"
+DWYL_WORDS = "dwyl_words"
 LINUX_AMERICAN_ENGLISH = "linux_american_english"
 LINUX_BRITISH_ENGLISH = "linux_british_english"
 
-WordLists = {
+WordFiles = {
     WORDS_ALPHA: "words_alpha.txt",
     LINUX_BRITISH_ENGLISH: "british-english",
-    LINUX_AMERICAN_ENGLISH: "american-english"
+    LINUX_AMERICAN_ENGLISH: "american-english",
+    DWYL_WORDS: "words_alpha.dwyl"
 }
 
 # Data and beeword consts

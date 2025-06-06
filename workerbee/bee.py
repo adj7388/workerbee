@@ -18,7 +18,11 @@ def check_bingo(data: list[dict], pangram_set: set) -> bool:
 
 
 def get_metadata(
-    data: list, required: str, allowed: str, dictionary: config.Dictionary
+    data: list,
+    required: str,
+    allowed: str,
+    dictionary: config.Dictionary,
+    word_list: str
 ) -> dict:
     return {
         config.NUM_BEEWORDS: len(data),
@@ -34,6 +38,7 @@ def get_metadata(
             if beeword[config.IS_PANGRAM] and not beeword[config.IS_PERFECT]
         ],
         config.DICTIONARY: dictionary.name,
+        config.WORD_LIST: word_list,
         config.BEEWORD_FIELDNAMES: list(data[0].keys()),
     }
 
@@ -94,6 +99,7 @@ def get_beewords(
         required=required_letter,
         allowed=allowed_letters,
         dictionary=dictionary,
+        word_list=word_file
     )
     return return_dict
 
