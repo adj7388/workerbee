@@ -89,9 +89,7 @@ def print_beewords_grouped(beewords: dict) -> None:
                 marker = (
                     config.PERFECT_MARKER
                     if word[config.IS_PERFECT]
-                    else config.PANGRAM_MARKER
-                    if word[config.IS_PANGRAM]
-                    else ""
+                    else config.PANGRAM_MARKER if word[config.IS_PANGRAM] else ""
                 )
                 print(f"{SPACING * 2}{word[config.WORD]} {marker}")
     print_meta_data(beewords[config.METADATA])
@@ -103,9 +101,7 @@ def print_beewords_list(beewords: dict) -> None:
         marker = (
             config.PERFECT_MARKER
             if word[config.IS_PERFECT]
-            else config.PANGRAM_MARKER
-            if word[config.IS_PANGRAM]
-            else ""
+            else config.PANGRAM_MARKER if word[config.IS_PANGRAM] else ""
         )
         print(f"{word[config.WORD]} {marker}")
     print_meta_data(beewords[config.METADATA])
@@ -145,6 +141,7 @@ def main():
         print_beewords_grouped(beewords=beewords)
     else:
         raise ValueError("Error: Don't know how to output.")
+
 
 if __name__ == "__main__":
     main()

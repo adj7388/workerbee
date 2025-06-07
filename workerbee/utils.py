@@ -8,8 +8,8 @@ from . import config
 
 
 def error_check(args: dict) -> str:
-    required =args[config.REQUIRED_LETTER]
-    allowed =args[config.ALLOWED_LETTERS]
+    required = args[config.REQUIRED_LETTER]
+    allowed = args[config.ALLOWED_LETTERS]
     required_as_set = set(required)
     allowed_as_set = set(allowed)
     if required.isalpha() is False or allowed.isalpha() is False:
@@ -27,11 +27,11 @@ def error_check(args: dict) -> str:
 
 def clean_args(args: dict) -> dict:
     return {
-        config.REQUIRED_LETTER:args[config.REQUIRED_LETTER].lower().strip(),
-        config.ALLOWED_LETTERS:args[config.ALLOWED_LETTERS].lower().strip(),
-        config.GROUPING:args[config.GROUPING],
-        config.DICTIONARY:args[config.DICTIONARY],
-        config.WORD_LIST:args[config.WORD_LIST]
+        config.REQUIRED_LETTER: args[config.REQUIRED_LETTER].lower().strip(),
+        config.ALLOWED_LETTERS: args[config.ALLOWED_LETTERS].lower().strip(),
+        config.GROUPING: args[config.GROUPING],
+        config.DICTIONARY: args[config.DICTIONARY],
+        config.WORD_LIST: args[config.WORD_LIST],
     }
 
 
@@ -63,9 +63,7 @@ def decorate_word(word: dict) -> str:
     pangram_marker = (
         config.PERFECT_MARKER
         if word[config.IS_PERFECT]
-        else config.PANGRAM_MARKER
-        if word[config.IS_PANGRAM]
-        else ""
+        else config.PANGRAM_MARKER if word[config.IS_PANGRAM] else ""
     )
     return f"{word[config.WORD]}{pangram_marker}"
 

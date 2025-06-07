@@ -30,8 +30,8 @@ def home():
         abort(400)
     return config.JINJA_ENV.get_template(config.HOME_TEMPLATE).render(
         args=session.get(config.USER_ARGS, None),
-                         dictionaries=config.Dictionaries,
-                         word_lists=config.WordLists
+        dictionaries=config.Dictionaries,
+        word_lists=config.WordLists,
     )
 
 

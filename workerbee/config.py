@@ -78,6 +78,7 @@ JINJA_ENV = Environment(loader=FileSystemLoader(TEMPLATE_FOLDER))
 def make_url_template(source: str) -> Template:
     return JINJA_ENV.from_string(source)
 
+
 # Manage Word Lists
 WordList = namedtuple("WordList", "name file_name")
 
@@ -88,22 +89,14 @@ LINUX_AMERICAN_ENGLISH = "LINUX_US"
 LINUX_BRITISH_ENGLISH = "LINUX_UK"
 
 WordLists = {
-    WORDS_ALPHA: WordList(
-        name="InfoChimp",
-        file_name="words_alpha.txt"
-    ),
+    WORDS_ALPHA: WordList(name="InfoChimp", file_name="words_alpha.txt"),
     LINUX_BRITISH_ENGLISH: WordList(
-        name="Linux British English",
-        file_name="british-english"
+        name="Linux British English", file_name="british-english"
     ),
     LINUX_AMERICAN_ENGLISH: WordList(
-        name="Linux American English",
-        file_name="american-english"
+        name="Linux American English", file_name="american-english"
     ),
-    DWYL_WORDS: WordList(
-        name="DWYL Words (dwyl.com)",
-        file_name="words_alpha.dwyl"
-    )
+    DWYL_WORDS: WordList(name="DWYL Words (dwyl.com)", file_name="words_alpha.dwyl"),
 }
 
 # Manage Dictionaries

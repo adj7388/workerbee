@@ -1,6 +1,7 @@
 from itertools import groupby
 from . import config
 
+
 def get_groupings(grouping: str) -> list:
     if grouping == config.LENGTH:
         return [config.LENGTH, config.INITIALS]
@@ -22,7 +23,7 @@ def get_metadata(
     required: str,
     allowed: str,
     dictionary: config.Dictionary,
-    word_list: str
+    word_list: str,
 ) -> dict:
     return {
         config.NUM_BEEWORDS: len(data),
@@ -72,7 +73,7 @@ def get_beewords(
     word_list: config.WordList,
     required_letter: str,
     allowed_letters: str,
-    dictionary: config.Dictionary
+    dictionary: config.Dictionary,
 ) -> dict:
     with open(word_list.file_name, mode="r") as f:
         words = [line.lower() for line in f.read().splitlines()]
@@ -99,7 +100,7 @@ def get_beewords(
         required=required_letter,
         allowed=allowed_letters,
         dictionary=dictionary,
-        word_list=word_list
+        word_list=word_list,
     )
     return return_dict
 
@@ -109,16 +110,20 @@ def get_beewords_grouped(
     required: str,
     allowed: str,
     grouping: list[str],
-    dictionary: config.Dictionary
+    dictionary: config.Dictionary,
 ) -> dict:
     beewords = get_beewords(
         word_list=word_list,
         required_letter=required,
         allowed_letters=allowed,
-        dictionary=dictionary
+        dictionary=dictionary,
     )
-    def get_group0_key(beeword): return beeword[grouping[0]]
-    def get_group1_key(beeword): return beeword[grouping[1]]
+
+    def get_group0_key(beeword):
+        return beeword[grouping[0]]
+
+    def get_group1_key(beeword):
+        return beeword[grouping[1]]
 
     beewords_list = beewords[config.DATA]
     grouped_word_data = {}
