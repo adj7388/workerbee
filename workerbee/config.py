@@ -82,7 +82,7 @@ def make_url_template(source: str) -> Template:
 WordList = namedtuple("WordList", "name file_name")
 
 # Word list keys
-WORDS_ALPHA = "IC"
+WORDS_ALPHA = "ALPHA"
 DWYL_WORDS = "DWYL"
 LINUX_AMERICAN_ENGLISH = "LINUX_US"
 LINUX_BRITISH_ENGLISH = "LINUX_UK"
