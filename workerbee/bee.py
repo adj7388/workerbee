@@ -23,7 +23,7 @@ def get_metadata(
     required: str,
     allowed: str,
     dictionary: config.Dictionary,
-    word_list: str,
+    word_list: config.WordList,
 ) -> dict:
     return {
         config.NUM_BEEWORDS: len(data),
@@ -106,16 +106,16 @@ def get_beewords(
 
 
 def get_beewords_grouped(
-    word_list: str,
-    required: str,
-    allowed: str,
+    word_list: config.WordList,
+    required_letter: str,
+    allowed_letters: str,
     grouping: list[str],
     dictionary: config.Dictionary,
 ) -> dict:
     beewords = get_beewords(
         word_list=word_list,
-        required_letter=required,
-        allowed_letters=allowed,
+        required_letter=required_letter,
+        allowed_letters=allowed_letters,
         dictionary=dictionary,
     )
 

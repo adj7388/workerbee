@@ -72,8 +72,8 @@ def beewords():
             grouping = get_groupings(cleaned_args[config.GROUPING])
             beewords = get_beewords_grouped(
                 word_list=config.WordLists[cleaned_args[config.WORD_LIST]],
-                required=cleaned_args[config.REQUIRED_LETTER],
-                allowed=cleaned_args[config.ALLOWED_LETTERS],
+                required_letter=cleaned_args[config.REQUIRED_LETTER],
+                allowed_letters=cleaned_args[config.ALLOWED_LETTERS],
                 grouping=grouping,
                 dictionary=config.Dictionaries[cleaned_args[config.DICTIONARY]],
             )
@@ -94,14 +94,16 @@ def getfile():
     session[config.FILE_TYPE] = file_type
     if saved_session[config.GROUPING] == config.NO_GROUPING:
         beewords = get_beewords(
+            word_list=config.WordLists[saved_session[config.WORD_LIST]],
             required_letter=saved_session[config.REQUIRED_LETTER],
             allowed_letters=saved_session[config.ALLOWED_LETTERS],
             dictionary=config.Dictionaries[saved_session[config.DICTIONARY]],
         )
     else:
         beewords = get_beewords_grouped(
-            required=saved_session[config.REQUIRED_LETTER],
-            allowed=saved_session[config.ALLOWED_LETTERS],
+            word_list=config.WordLists[saved_session[config.WORD_LIST]],
+            required_letter=saved_session[config.REQUIRED_LETTER],
+            allowed_letters=saved_session[config.ALLOWED_LETTERS],
             grouping=get_groupings(saved_session[config.GROUPING]),
             dictionary=config.Dictionaries[saved_session[config.DICTIONARY]],
         )

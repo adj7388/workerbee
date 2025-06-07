@@ -29,6 +29,20 @@ def get_argparser() -> argparse.ArgumentParser:
         help="Dictionary for lookups",
     )
     parser.add_argument(
+        "-w",
+        "--wordlist",
+        type=str,
+        required=False,
+        choices=[
+            config.WORDS_ALPHA,
+            config.LINUX_AMERICAN_ENGLISH,
+            config.LINUX_BRITISH_ENGLISH,
+            config.DWYL_WORDS,
+        ],
+        default=config.DWYL_WORDS,
+        help="Master word list",
+    )
+    parser.add_argument(
         "-g",
         "--groupby",
         type=str,
@@ -113,14 +127,16 @@ def main():
 
     if args.groupby == config.NO_GROUPING:
         beewords = get_beewords(
-            args.required,
-            args.allowed,
+            word_list=config.WordLists[args.wordlist],
+            required_letter=args.required,
+            allowed_letters=args.allowed,
             dictionary=config.Dictionaries[args.dictionary],
         )
     elif args.groupby in [config.INITIALS, config.LENGTH]:
         beewords = get_beewords_grouped(
-            args.required,
-            args.allowed,
+            word_list=config.WordLists[args.wordlist],
+            required_letter=args.required,
+            allowed_letters=args.allowed,
             grouping=get_groupings(args.groupby),
             dictionary=config.Dictionaries[args.dictionary],
         )
