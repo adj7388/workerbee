@@ -77,6 +77,7 @@ def get_commandline_args() -> argparse.Namespace:
 
 def print_meta_data(metadata: dict):
     print()
+    print(f"Word List: {metadata[config.WORD_LIST].name} / file: {metadata[config.WORD_LIST].file_name}")
     print(f"Number Beewords:  {metadata[config.NUM_BEEWORDS]}")
     print(f"Required letters: {metadata[config.REQUIRED_LETTER]}")
     print(f"Allowed letters:  {metadata[config.ALLOWED_LETTERS]}")
