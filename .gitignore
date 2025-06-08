@@ -5,3 +5,4 @@ workerbee/temp/*json
 .venv/
 *pem
 .dbxignore
+SCOWL*/README*

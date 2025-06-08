@@ -14,25 +14,17 @@
             <input type="hidden" name="{{ PROFILE_REQUEST_ARG }}" value="true">
         {% endif %}
         <p>
-            {% set words_alpha_selected, american_selected, british_selected, dwyl_words_selected = '', '', '', '' %}
-            {% if args[WORD_LIST] == WORDS_ALPHA %}
-                {% set words_alpha_selected = 'selected' %}
-            {% elif args[WORD_LIST] == LINUX_AMERICAN_ENGLISH %}
-                {% set american_selected = 'selected' %}
-            {% elif args[WORD_LIST] == LINUX_BRITISH_ENGLISH %}
-                {% set british_selected = 'selected' %}
-            {% elif args[WORD_LIST] == DWYL_WORDS %}
-                {% set dwyl_words_selected = 'selected' %}
-            {% else %}
-                {# dwyl_words_selected as default #}
-                {% set dwyl_words_selected = 'selected' %}
-            {% endif %}
             <label for="{{ WORD_LIST }}">Use word list:</label>
             <select name="{{ WORD_LIST }}">
-                <option value="{{ WORDS_ALPHA }}" {{ words_alpha_selected }}>{{ word_lists[WORDS_ALPHA].name }}</option>
-                <option value="{{ LINUX_AMERICAN_ENGLISH }}" {{ american_selected }}>{{ word_lists[LINUX_AMERICAN_ENGLISH].name }}</option>
-                <option value="{{ LINUX_BRITISH_ENGLISH }}" {{ british_selected }}>{{ word_lists[LINUX_BRITISH_ENGLISH].name }}</option>
-                <option value="{{ DWYL_WORDS }}" {{ dwyl_words_selected }}>{{ word_lists[DWYL_WORDS].name }}</option>
+                {% for k, v in word_lists.items() %}
+                   <option value="{{ k }}"
+                        {% if args[WORD_LIST] == k %}
+                            selected
+                        {% endif %}
+                    >
+                    {{ v.name }}
+                    </option>
+                {% endfor %}
             </select>
         </p>
 

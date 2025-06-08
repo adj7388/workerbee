@@ -40,7 +40,7 @@ def get_metadata(
         ],
         config.DICTIONARY: dictionary.name,
         config.WORD_LIST: word_list,
-        config.BEEWORD_FIELDNAMES: list(data[0].keys()),
+        config.BEEWORD_FIELDNAMES: list(data[0].keys()) if data else '',
     }
 
 
