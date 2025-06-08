@@ -83,29 +83,27 @@ def make_url_template(source: str) -> Template:
 WordList = namedtuple("WordList", "name file_name")
 
 # Word list keys
-WORDS_ALPHA = "ALPHA"
-DWYL_WORDS = "DWYL"
-LINUX_AMERICAN_ENGLISH = "LINUX_US"
-LINUX_BRITISH_ENGLISH = "LINUX_UK"
+DWYL = "DWYL"
+LINUX_US = "LINUX-US"
+LINUX_UK = "LINUX-UK"
 SCOWL_10 = "SCOWL-10"
 SCOWL_20 = "SCOWL-20"
 SCOWL_SMALL_35 = "SCOWL-SMALL-35"
 SCOWL_40 = "SCOWL-40"
 SCOWL_MEDIUM_50 = "SCOWL-MEDIUM-50"
-SCOWL_55 = "SCOWL-550"
+SCOWL_55 = "SCOWL-55"
 SCOWL_DEFAULT_60 = "SCOWL-DEFAULT-60"
 SCOWL_LARGE_70 = "SCOWL-LARGE-70"
 SCOWL_HUGE_80 = "SCOWL-HUGE-80"
 SCOWL_INSANE_95 = "SCOWL-INSANE-95"
 
 WordLists = {
-    WORDS_ALPHA: WordList(name="InfoChimp", file_name="words_alpha.txt"),
-    DWYL_WORDS: WordList(name="DWYL Words (dwyl.com)", file_name="words_alpha.dwyl"),
-    LINUX_BRITISH_ENGLISH: WordList(
-        name="Linux British English", file_name="british-english"
+    DWYL: WordList(name="DWYL Words (dwyl.com)", file_name=f"{DWYL}/alpha_words.txt"),
+    LINUX_UK: WordList(
+        name="Linux British English", file_name=f"{LINUX_UK}/british-english"
     ),
-    LINUX_AMERICAN_ENGLISH: WordList(
-        name="Linux American English", file_name="american-english"
+    LINUX_US: WordList(
+        name="Linux American English", file_name=f"{LINUX_US}/american-english"
     ),
     SCOWL_10: WordList(
         name=f"{SCOWL_10}", file_name=f"{SCOWL_10}/words.txt"
