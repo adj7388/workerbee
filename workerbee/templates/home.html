@@ -77,25 +77,15 @@
             <label for="{{ NO_GROUPING }}">No grouping. Just an alphabetical list</label>
         </p>
         <p>
-            {% set mw_selected, free_selected, wikt_selected, dict_selected = '', '', '', '' %}
-            {% if args[DICTIONARY] == MW %}
-                {% set mw_selected = 'selected' %}
-            {% elif args[DICTIONARY] == WIKT %}
-                {% set wikt_selected = 'selected' %}
-            {% elif args[DICTIONARY] == DICT %}
-                {% set dict_selected = 'selected' %}
-            {% elif args[DICTIONARY] == FREE %}
-                {% set free_selected = 'selected' %}
-            {% else %}
-                {# Wiktionary as default #}
-                {% set wikt_selected = 'selected' %}
-            {% endif %}
             <label for="{{ DICTIONARY }}">Link to definitions in:</label>
             <select name="{{ DICTIONARY }}">
-                <option value="{{ WIKT }}" {{ wikt_selected }}>{{ dictionaries.WIKT.name }}</option>
-                <option value="{{ MW }}"   {{ mw_selected   }}>{{ dictionaries.MW.name }}</option>
-                <option value="{{ FREE }}" {{ free_selected }}>{{ dictionaries.FREE.name }}</option>
-                <option value="{{ DICT }}" {{ dict_selected }}>{{ dictionaries.DICT.name }}</option>
+                {% for k, v in dictionaries.items() %}
+                    <option value="{{ k }}"
+                        {% if args[DICTIONARY] == k %}
+                            selected
+                        {% endif %}
+                    >{{ v.name }}</option>
+                {% endfor %}
             </select>
         </p>
         <p>
