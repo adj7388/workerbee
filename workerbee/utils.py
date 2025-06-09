@@ -43,8 +43,8 @@ def get_filename(metadata: dict, file_type: str) -> str:
         f"{metadata[config.NUM_BEEWORDS]}-"
         f"{len(metadata[config.NONPERFECT_PANGRAMS])}-"  # how many plain pangrams
         f"{len(metadata[config.PERFECT_PANGRAMS])}-"  # how many perfect pangrams
-        f"{metadata[config.DICTIONARY]}-"
-        f"{metadata[config.WORD_LIST].name}"
+        f"{metadata[config.WORD_LIST]}-"
+        f"{metadata[config.DICTIONARY]}"
         f".{ext}"
     )
 

@@ -39,7 +39,7 @@ def get_metadata(
             if beeword[config.IS_PANGRAM] and not beeword[config.IS_PERFECT]
         ],
         config.DICTIONARY: dictionary.name,
-        config.WORD_LIST: word_list,
+        config.WORD_LIST: word_list.name,
         config.BEEWORD_FIELDNAMES: list(data[0].keys()) if data else '',
     }
 
