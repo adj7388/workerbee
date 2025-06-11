@@ -7,6 +7,7 @@ Metadata = namedtuple(
     "Metadata",
     "num_beewords required allowed bingo perfect_pangrams nonperfect_pangrams dictionary word_list beeword_fieldnames",
 )
+OutputData = namedtuple("OutputData", "data metadata")
 
 # Debugging
 BEEPROFILE = "BEEPROFILE"
@@ -36,9 +37,6 @@ ABOUT_VIEW = "about"
 HELP_VIEW = "help"
 BEEWORD_VIEW = "beewords"
 GETFILE_VIEW = "getfile"
-
-METADATA = "metadata"  ### TODO: WILL THIS GO AWAY WHEN I CREATE OUTPUT DATA struct?
-DATA = "data"  ### TODO: WILL THIS GO AWAY WHEN I CREATE OUTPUT DATA struct?
 
 # Session consts
 USER_ARGS = "user_args"

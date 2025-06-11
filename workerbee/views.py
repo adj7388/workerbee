@@ -65,8 +65,8 @@ def beewords():
                 dictionary=config.Dictionaries[cleaned_args[config.DICTIONARY]],
             )
             return config.JINJA_ENV.get_template(config.LISTWORDS_TEMPLATE).render(
-                beeword_list=beewords[config.DATA],
-                metadata=beewords[config.METADATA],
+                beeword_list=beewords.data,
+                metadata=beewords.metadata,
             )
         else:
             grouping = get_groupings(cleaned_args[config.GROUPING])
@@ -78,8 +78,8 @@ def beewords():
                 dictionary=config.Dictionaries[cleaned_args[config.DICTIONARY]],
             )
             return config.JINJA_ENV.get_template(config.BEEWORDS_TEMPLATE).render(
-                beeword_data=beewords[config.DATA],
-                metadata=beewords[config.METADATA],
+                beeword_data=beewords.data,
+                metadata=beewords.metadata,
                 grouping=grouping,
             )
     return config.JINJA_ENV.get_template(config.ERROR_TEMPLATE).render(
@@ -93,25 +93,25 @@ def getfile():
     file_type = request.args.get(config.FILE_TYPE, config.TXT)
     session[config.FILE_TYPE] = file_type
     if saved_session[config.GROUPING] == config.NO_GROUPING:
-        beewords = get_beewords(
+        output_data = get_beewords(
             word_list=config.WordLists[saved_session[config.WORD_LIST]],
             required_letter=saved_session[config.REQUIRED_LETTER],
             allowed_letters=saved_session[config.ALLOWED_LETTERS],
             dictionary=config.Dictionaries[saved_session[config.DICTIONARY]],
         )
     else:
-        beewords = get_beewords_grouped(
+        output_data = get_beewords_grouped(
             word_list=config.WordLists[saved_session[config.WORD_LIST]],
             required_letter=saved_session[config.REQUIRED_LETTER],
             allowed_letters=saved_session[config.ALLOWED_LETTERS],
             grouping=get_groupings(saved_session[config.GROUPING]),
             dictionary=config.Dictionaries[saved_session[config.DICTIONARY]],
         )
-    buffer = write_to_buffer(beewords=beewords, file_type=file_type)
+    buffer = write_to_buffer(output_data=output_data, file_type=file_type)
     return send_file(
         BytesIO(buffer.getvalue().encode(encoding="utf-8")),
         download_name=get_filename(
-            metadata=beewords[config.METADATA],
+            metadata=output_data.metadata,
             file_type=file_type,
         ),
         as_attachment=True,

@@ -92,10 +92,10 @@ def print_meta_data(metadata: config.Metadata):
     print(f"Perfect pangrams marked with {config.PERFECT_MARKER}")
     print()
 
-def print_beewords_grouped(beewords: dict) -> None:
+def print_beewords_grouped(output_data: config.OutputData) -> None:
     SPACING = "   "
-    print_meta_data(beewords[config.METADATA])
-    for first_level_label, first_level_words in beewords[config.DATA].items():
+    print_meta_data(output_data.metadata)
+    for first_level_label, first_level_words in output_data.data.items():
         print(first_level_label)
         for second_level_label, words in first_level_words.items():
             print(f"{SPACING * 1}{second_level_label}")
@@ -106,34 +106,34 @@ def print_beewords_grouped(beewords: dict) -> None:
                     else config.PANGRAM_MARKER if beeword.is_pangram else ""
                 )
                 print(f"{SPACING * 2}{beeword.word} {marker}")
-    print_meta_data(beewords[config.METADATA])
+    print_meta_data(output_data.metadata)
 
 
-def print_beewords_list(beewords: dict) -> None:
-    print_meta_data(beewords[config.METADATA])
-    for beeword in beewords[config.DATA]:
+def print_beewords_list(output_data: config.OutputData) -> None:
+    print_meta_data(output_data.metadata)
+    for beeword in output_data.data:
         marker = (
             config.PERFECT_MARKER
             if beeword.is_perfect
             else config.PANGRAM_MARKER if beeword.is_pangram else ""
         )
         print(f"{beeword.word} {marker}")
-    print_meta_data(beewords[config.METADATA])
+    print_meta_data(output_data.metadata)
 
 
 ############ main ############
 def main():
     args = get_commandline_args()
-
+    output_data : config.OutputData
     if args.groupby == config.NO_GROUPING:
-        beewords = get_beewords(
+        output_data = get_beewords(
             word_list=config.WordLists[args.wordlist],
             required_letter=args.required,
             allowed_letters=args.allowed,
             dictionary=config.Dictionaries[args.dictionary],
         )
     elif args.groupby in [config.INITIALS, config.LENGTH]:
-        beewords = get_beewords_grouped(
+        output_data = get_beewords_grouped(
             word_list=config.WordLists[args.wordlist],
             required_letter=args.required,
             allowed_letters=args.allowed,
@@ -145,16 +145,16 @@ def main():
 
     ### check for csv or json output first, if they're specified in args ...
     if args.csv:
-        buffer = write_to_buffer(beewords, file_type="csv")
+        buffer = write_to_buffer(output_data, file_type="csv")
         print(buffer.getvalue())
     elif args.json:
-        buffer = write_to_buffer(beewords, file_type="json")
+        buffer = write_to_buffer(output_data, file_type="json")
         print(buffer.getvalue())
     ### ... if not csv/json (above), then print to stdout based on groupby
     elif args.groupby == config.NO_GROUPING:
-        print_beewords_list(beewords=beewords)
+        print_beewords_list(output_data=output_data)
     elif args.groupby in [config.INITIALS, config.LENGTH]:
-        print_beewords_grouped(beewords=beewords)
+        print_beewords_grouped(output_data=output_data)
     else:
         raise ValueError("Error: Don't know how to output.")
 

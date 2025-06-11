@@ -50,8 +50,8 @@ def get_filename(metadata: config.Metadata, file_type: str) -> str:
     return "-".join(metadata_as_list) + f".{ext}"
 
 
-def flatten_grouped(beewords) -> list[dict]:
-    flattened = []
+def flatten_grouped(beewords : dict) -> dict | list[config.Beeword]:
+    flattened : list[config.Beeword] = []
     try:
         for first_level in beewords.values():
             for words in first_level.values():
@@ -86,38 +86,41 @@ def convert_namedtuples(obj2convert: Any) -> Any:
         return obj2convert
 
 
-def write_to_buffer(beewords: dict, file_type: str) -> StringIO:
+def write_to_buffer(output_data: config.OutputData, file_type: str) -> StringIO:
     # local copy so as not to accidentally change incoming data
-    beewords_copy = copy.deepcopy(beewords)
+    sio = StringIO()
+    beewords_copy = cast(config.OutputData, copy.deepcopy(output_data))
     if file_type in [config.CSV, config.TXT, config.WORD_URL_CSV]:
         # Flatten grouped data for text and csv.
         # flatten_grouped() will return data as-is if not grouped
-        beewords_copy[config.DATA] = flatten_grouped(beewords_copy[config.DATA])
-
-    sio = StringIO()
+        beewords_copy = config.OutputData(
+            data=flatten_grouped(beewords_copy.data), metadata=beewords_copy.metadata
+        )
 
     if file_type in [config.CSV, config.WORD_URL_CSV]:
         if file_type == config.WORD_URL_CSV:
             WORD_FIELD = "word"
             URL_FIELD = "url"
             fieldnames = [WORD_FIELD, URL_FIELD]
-            beewords_copy[config.DATA] = [
-                {WORD_FIELD: decorate_word(beeword), URL_FIELD: beeword.url}
-                for beeword in beewords_copy[config.DATA]
-            ]
+            beewords_copy = config.OutputData(
+                data=[
+                    {WORD_FIELD: decorate_word(beeword), URL_FIELD: beeword.url}
+                    for beeword in beewords_copy.data
+                ],
+                metadata=beewords_copy.metadata,
+            )
         else:
-            fieldnames = cast(
-                config.Metadata, beewords_copy[config.METADATA]
-            ).beeword_fieldnames
+            fieldnames = beewords_copy.metadata.beeword_fieldnames
+            beewords_copy = config.OutputData(
+                data=convert_namedtuples(beewords_copy.data),
+                metadata=beewords_copy.metadata,
+            )
         csvwriter = csv.DictWriter(sio, fieldnames=fieldnames)
         csvwriter.writeheader()
-        beewords_copy = convert_namedtuples(beewords_copy)
-        csvwriter.writerows(beewords_copy[config.DATA])
+        csvwriter.writerows(beewords_copy.data)
 
     elif file_type == config.TXT:
-        sio.write(
-            "\n".join([decorate_word(word) for word in beewords_copy[config.DATA]])
-        )
+        sio.write("\n".join([decorate_word(word) for word in beewords_copy.data]))
 
     elif file_type == config.JSON:
         beewords_copy = convert_namedtuples(beewords_copy)

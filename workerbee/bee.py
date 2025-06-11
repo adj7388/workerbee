@@ -73,7 +73,7 @@ def get_beewords(
     required_letter: str,
     allowed_letters: str,
     dictionary: config.Dictionary,
-) -> dict:
+) -> config.OutputData :
     with open(word_list.file_name, mode="r") as f:
         words = [line.lower() for line in f.read().splitlines()]
     all_letters_set = set(required_letter + allowed_letters)
@@ -90,17 +90,17 @@ def get_beewords(
                         dictionary=dictionary,
                     )
                 )
-    return_dict = dict()
-    return_dict[config.DATA] = sorted(beewords, key=lambda beeword: beeword.word)
-    return_dict[config.METADATA] = get_metadata(
+    beeword = sorted(beewords, key=lambda beeword: beeword.word) 
+    return config.OutputData(
         data=beewords,
-        required=required_letter,
-        allowed=allowed_letters,
-        dictionary=dictionary,
-        word_list=word_list,
+        metadata=get_metadata(
+            data=beewords,
+            required=required_letter,
+            allowed=allowed_letters,
+            dictionary=dictionary,
+            word_list=word_list,
+        )
     )
-    return return_dict
-
 
 def get_beewords_grouped(
     word_list: config.WordList,
@@ -108,7 +108,7 @@ def get_beewords_grouped(
     allowed_letters: str,
     grouping: list[str],
     dictionary: config.Dictionary,
-) -> dict:
+) -> config.OutputData:
     beewords = get_beewords(
         word_list=word_list,
         required_letter=required_letter,
@@ -122,7 +122,7 @@ def get_beewords_grouped(
     def get_group1_key(beeword: config.Beeword):
         return getattr(beeword, grouping[1])
 
-    beewords_list = beewords[config.DATA]
+    beewords_list = beewords.data
     grouped_word_data = {}
     for group0, data0 in groupby(
         sorted(beewords_list, key=get_group0_key), key=get_group0_key
@@ -133,7 +133,7 @@ def get_beewords_grouped(
         ):
             grouped_word_data[group0][group1] = [beeword for beeword in data1]
 
-    return_dict = {}
-    return_dict[config.DATA] = grouped_word_data
-    return_dict[config.METADATA] = beewords[config.METADATA]
-    return return_dict
+    return config.OutputData(
+        data=grouped_word_data,
+        metadata=beewords.metadata
+    )
