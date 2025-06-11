@@ -13,13 +13,14 @@ BEEPROFILE = "BEEPROFILE"
 PROFILE_REQUEST_ARG = "profile"
 PROFILING = True if os.environ.get(BEEPROFILE, "") == BEEPROFILE else False
 
-# template and file consts
+# file consts
 APP_FOLDER = "workerbee"
 TEMPLATE_FOLDER = f"{APP_FOLDER}/templates"
 TEMP_FOLDER = "temp"
 STATIC_FOLDER = "static"
 SITE_CSS = "site.css"
 
+# template consts
 LAYOUT_TEMPLATE = "layout.html"
 MACROS_TEMPLATE = "macros.html"
 HOME_TEMPLATE = "home.html"
@@ -36,40 +37,26 @@ HELP_VIEW = "help"
 BEEWORD_VIEW = "beewords"
 GETFILE_VIEW = "getfile"
 
-# Metadata consts
-METADATA = "metadata"
-NUM_BEEWORDS = "num_beewords"
+METADATA = "metadata"  ### TODO: WILL THIS GO AWAY WHEN I CREATE OUTPUT DATA struct?
+DATA = "data"  ### TODO: WILL THIS GO AWAY WHEN I CREATE OUTPUT DATA struct?
+
+# Session consts
+USER_ARGS = "user_args"
 REQUIRED_LETTER = "required"
 ALLOWED_LETTERS = "allowed"
-BINGO = "bingo"
-NONPERFECT_PANGRAMS = "nonperfect_pangrams"
-PERFECT_PANGRAMS = "perfect_pangrams"
 DICTIONARY = "dictionary"
-BEEWORD_FIELDNAMES = "beeword_fieldnames"
 WORD_LIST = "word_list"
-
-# Data and beeword consts
-DATA = "data"
-WORD = "word"
-IS_PANGRAM = "pangram"
-IS_PERFECT = "perfect"
-URL = "url"
-
-# grouping consts
+## for grouping
 GROUPING = "grouping"
 INITIALS = "initials"
 LENGTH = "length"
 NO_GROUPING = "no_grouping"
-
-# file download types
+## for downloads (double as file extensions)
+FILE_TYPE = "file_type"
 CSV = "csv"
 TXT = "txt"
 JSON = "json"
 WORD_URL_CSV = "word_url_csv"
-
-# session keys
-USER_ARGS = "user_args"
-FILE_TYPE = "file_type"
 
 # Other constants
 NUM_REQUIRED_LETTERS = 1

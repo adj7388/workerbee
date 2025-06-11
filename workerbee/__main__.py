@@ -77,7 +77,6 @@ def get_commandline_args() -> argparse.Namespace:
 
 def print_meta_data(metadata: config.Metadata):
     print()
-    print(f"Word List: {metadata.word_list}")
     print(f"Number Beewords:  {metadata.num_beewords}")
     print(f"Required letters: {metadata.required}")
     print(f"Allowed letters:  {metadata.allowed}")
@@ -88,6 +87,7 @@ def print_meta_data(metadata: config.Metadata):
         f'Other pangrams:   {", ".join([beeword.word for beeword in metadata.nonperfect_pangrams]) }'
     )
     print(f"Bingo:            {metadata.bingo}")
+    print(f"Word List:        {metadata.word_list}")
     print(f"Pangrams marked with {config.PANGRAM_MARKER}")
     print(f"Perfect pangrams marked with {config.PERFECT_MARKER}")
     print()

@@ -46,7 +46,7 @@ def get_filename(metadata: config.Metadata, file_type: str) -> str:
         f"{len(metadata.perfect_pangrams)}",  # how many perfect pangrams
         f"{metadata.word_list}",
         f"{metadata.dictionary}",
-    ]   
+    ]
     return "-".join(metadata_as_list) + f".{ext}"
 
 
@@ -69,15 +69,22 @@ def decorate_word(beeword: config.Beeword) -> str:
     )
     return f"{beeword.word}{pangram_marker}"
 
+
 def convert_namedtuples(obj2convert: Any) -> Any:
-    if isinstance(obj2convert, tuple) and hasattr(obj2convert, '_fields'):  # it's a namedtuple
-        return {k: convert_namedtuples(v) for k, v in cast(config.Beeword, obj2convert)._asdict().items()}
+    if isinstance(obj2convert, tuple) and hasattr(
+        obj2convert, "_fields"
+    ):  # it's a namedtuple
+        return {
+            k: convert_namedtuples(v)
+            for k, v in cast(config.Beeword, obj2convert)._asdict().items()
+        }
     elif isinstance(obj2convert, list):
         return [convert_namedtuples(item) for item in obj2convert]
     elif isinstance(obj2convert, dict):
         return {k: convert_namedtuples(v) for k, v in obj2convert.items()}
     else:
         return obj2convert
+
 
 def write_to_buffer(beewords: dict, file_type: str) -> StringIO:
     # local copy so as not to accidentally change incoming data
@@ -91,13 +98,17 @@ def write_to_buffer(beewords: dict, file_type: str) -> StringIO:
 
     if file_type in [config.CSV, config.WORD_URL_CSV]:
         if file_type == config.WORD_URL_CSV:
-            fieldnames = [config.WORD, config.URL]
+            WORD_FIELD = "word"
+            URL_FIELD = "url"
+            fieldnames = [WORD_FIELD, URL_FIELD]
             beewords_copy[config.DATA] = [
-                {config.WORD: decorate_word(beeword), config.URL: beeword.url}
+                {WORD_FIELD: decorate_word(beeword), URL_FIELD: beeword.url}
                 for beeword in beewords_copy[config.DATA]
             ]
         else:
-            fieldnames = cast(config.Metadata, beewords_copy[config.METADATA]).beeword_fieldnames
+            fieldnames = cast(
+                config.Metadata, beewords_copy[config.METADATA]
+            ).beeword_fieldnames
         csvwriter = csv.DictWriter(sio, fieldnames=fieldnames)
         csvwriter.writeheader()
         beewords_copy = convert_namedtuples(beewords_copy)
