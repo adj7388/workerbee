@@ -92,7 +92,6 @@ def print_meta_data(metadata: config.Metadata):
     print(f"Perfect pangrams marked with {config.PERFECT_MARKER}")
     print()
 
-
 def print_beewords_grouped(beewords: dict) -> None:
     SPACING = "   "
     print_meta_data(beewords[config.METADATA])
@@ -100,13 +99,13 @@ def print_beewords_grouped(beewords: dict) -> None:
         print(first_level_label)
         for second_level_label, words in first_level_words.items():
             print(f"{SPACING * 1}{second_level_label}")
-            for word in words:
+            for beeword in words:
                 marker = (
                     config.PERFECT_MARKER
-                    if word[config.IS_PERFECT]
-                    else config.PANGRAM_MARKER if word[config.IS_PANGRAM] else ""
+                    if beeword.is_perfect
+                    else config.PANGRAM_MARKER if beeword.is_pangram else ""
                 )
-                print(f"{SPACING * 2}{word[config.WORD]} {marker}")
+                print(f"{SPACING * 2}{beeword.word} {marker}")
     print_meta_data(beewords[config.METADATA])
 
 
