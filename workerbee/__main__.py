@@ -34,12 +34,12 @@ def get_argparser() -> argparse.ArgumentParser:
         type=str,
         required=False,
         choices=[
-            config.WORDS_ALPHA,
-            config.LINUX_AMERICAN_ENGLISH,
-            config.LINUX_BRITISH_ENGLISH,
-            config.DWYL_WORDS,
+            config.DWYL,
+            config.LINUX_US,
+            config.LINUX_UK,
+            config.SCOWL_LARGE_70,
         ],
-        default=config.DWYL_WORDS,
+        default=config.SCOWL_LARGE_70,
         help="Master word list",
     )
     parser.add_argument(
@@ -75,19 +75,19 @@ def get_commandline_args() -> argparse.Namespace:
     return args
 
 
-def print_meta_data(metadata: dict):
+def print_meta_data(metadata: config.Metadata):
     print()
-    print(f"Word List: {metadata[config.WORD_LIST].name} / file: {metadata[config.WORD_LIST].file_name}")
-    print(f"Number Beewords:  {metadata[config.NUM_BEEWORDS]}")
-    print(f"Required letters: {metadata[config.REQUIRED_LETTER]}")
-    print(f"Allowed letters:  {metadata[config.ALLOWED_LETTERS]}")
+    print(f"Word List: {metadata.word_list}")
+    print(f"Number Beewords:  {metadata.num_beewords}")
+    print(f"Required letters: {metadata.required}")
+    print(f"Allowed letters:  {metadata.allowed}")
     print(
-        f'Perfect pangrams: {", ".join([word[config.WORD] for word in metadata[config.PERFECT_PANGRAMS]]) }'
+        f'Perfect pangrams: {", ".join([beeword.word for beeword in metadata.perfect_pangrams]) }'
     )
     print(
-        f'Other pangrams:   {", ".join([word[config.WORD] for word in metadata[config.NONPERFECT_PANGRAMS]]) }'
+        f'Other pangrams:   {", ".join([beeword.word for beeword in metadata.nonperfect_pangrams]) }'
     )
-    print(f"Bingo:            {metadata[config.BINGO]}")
+    print(f"Bingo:            {metadata.bingo}")
     print(f"Pangrams marked with {config.PANGRAM_MARKER}")
     print(f"Perfect pangrams marked with {config.PERFECT_MARKER}")
     print()
@@ -112,13 +112,13 @@ def print_beewords_grouped(beewords: dict) -> None:
 
 def print_beewords_list(beewords: dict) -> None:
     print_meta_data(beewords[config.METADATA])
-    for word in beewords[config.DATA]:
+    for beeword in beewords[config.DATA]:
         marker = (
             config.PERFECT_MARKER
-            if word[config.IS_PERFECT]
-            else config.PANGRAM_MARKER if word[config.IS_PANGRAM] else ""
+            if beeword.is_perfect
+            else config.PANGRAM_MARKER if beeword.is_pangram else ""
         )
-        print(f"{word[config.WORD]} {marker}")
+        print(f"{beeword.word} {marker}")
     print_meta_data(beewords[config.METADATA])
 
 

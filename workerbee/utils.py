@@ -3,6 +3,7 @@ import csv
 import json
 
 from io import StringIO
+from typing import cast, Any
 
 from . import config
 
@@ -35,18 +36,18 @@ def clean_args(args: dict) -> dict:
     }
 
 
-def get_filename(metadata: dict, file_type: str) -> str:
+def get_filename(metadata: config.Metadata, file_type: str) -> str:
     ext = config.CSV if file_type in [config.WORD_URL_CSV, config.CSV] else file_type
-    return (
-        f"{metadata[config.REQUIRED_LETTER]}-"
-        f"{metadata[config.ALLOWED_LETTERS]}-"
-        f"{metadata[config.NUM_BEEWORDS]}-"
-        f"{len(metadata[config.NONPERFECT_PANGRAMS])}-"  # how many plain pangrams
-        f"{len(metadata[config.PERFECT_PANGRAMS])}-"  # how many perfect pangrams
-        f"{metadata[config.WORD_LIST]}-"
-        f"{metadata[config.DICTIONARY]}"
-        f".{ext}"
-    )
+    metadata_as_list = [
+        f"{metadata.required}",
+        f"{metadata.allowed}",
+        f"{metadata.num_beewords}",
+        f"{len(metadata.nonperfect_pangrams)}",  # how many plain pangrams
+        f"{len(metadata.perfect_pangrams)}",  # how many perfect pangrams
+        f"{metadata.word_list}",
+        f"{metadata.dictionary}",
+    ]   
+    return "-".join(metadata_as_list) + f".{ext}"
 
 
 def flatten_grouped(beewords) -> list[dict]:
@@ -55,19 +56,28 @@ def flatten_grouped(beewords) -> list[dict]:
         for first_level in beewords.values():
             for words in first_level.values():
                 flattened.extend(words)
-        return sorted(flattened, key=lambda word: word[config.WORD])
+        return sorted(flattened, key=lambda beeword: cast(config.Beeword, beeword).word)
     except AttributeError:
         return beewords
 
 
-def decorate_word(word: dict) -> str:
+def decorate_word(beeword: config.Beeword) -> str:
     pangram_marker = (
         config.PERFECT_MARKER
-        if word[config.IS_PERFECT]
-        else config.PANGRAM_MARKER if word[config.IS_PANGRAM] else ""
+        if beeword.is_perfect
+        else config.PANGRAM_MARKER if beeword.is_pangram else ""
     )
-    return f"{word[config.WORD]}{pangram_marker}"
+    return f"{beeword.word}{pangram_marker}"
 
+def convert_namedtuples(obj2convert: Any) -> Any:
+    if isinstance(obj2convert, tuple) and hasattr(obj2convert, '_fields'):  # it's a namedtuple
+        return {k: convert_namedtuples(v) for k, v in cast(config.Beeword, obj2convert)._asdict().items()}
+    elif isinstance(obj2convert, list):
+        return [convert_namedtuples(item) for item in obj2convert]
+    elif isinstance(obj2convert, dict):
+        return {k: convert_namedtuples(v) for k, v in obj2convert.items()}
+    else:
+        return obj2convert
 
 def write_to_buffer(beewords: dict, file_type: str) -> StringIO:
     # local copy so as not to accidentally change incoming data
@@ -83,13 +93,14 @@ def write_to_buffer(beewords: dict, file_type: str) -> StringIO:
         if file_type == config.WORD_URL_CSV:
             fieldnames = [config.WORD, config.URL]
             beewords_copy[config.DATA] = [
-                {config.WORD: decorate_word(word), config.URL: word[config.URL]}
-                for word in beewords_copy[config.DATA]
+                {config.WORD: decorate_word(beeword), config.URL: beeword.url}
+                for beeword in beewords_copy[config.DATA]
             ]
         else:
-            fieldnames = beewords_copy[config.METADATA][config.BEEWORD_FIELDNAMES]
+            fieldnames = cast(config.Metadata, beewords_copy[config.METADATA]).beeword_fieldnames
         csvwriter = csv.DictWriter(sio, fieldnames=fieldnames)
         csvwriter.writeheader()
+        beewords_copy = convert_namedtuples(beewords_copy)
         csvwriter.writerows(beewords_copy[config.DATA])
 
     elif file_type == config.TXT:
@@ -98,6 +109,7 @@ def write_to_buffer(beewords: dict, file_type: str) -> StringIO:
         )
 
     elif file_type == config.JSON:
+        beewords_copy = convert_namedtuples(beewords_copy)
         sio.write(json.dumps(beewords_copy, indent=2))
 
     else:

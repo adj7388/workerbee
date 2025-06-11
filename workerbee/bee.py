@@ -1,4 +1,7 @@
+from collections import namedtuple
 from itertools import groupby
+from typing import List
+import re
 from . import config
 
 
@@ -13,35 +16,31 @@ def get_groupings(grouping: str) -> list:
         raise ValueError(f"Bad grouping: {grouping}")
 
 
-def check_bingo(data: list[dict], pangram_set: set) -> bool:
-    initials_set = set([word[config.WORD][0] for word in data])
+def check_bingo(data: List[config.Beeword], pangram_set: set) -> bool:
+    initials_set = set([beeword.word[0] for beeword in data])
     return initials_set == pangram_set
 
 
 def get_metadata(
-    data: list,
+    data: List[config.Beeword],
     required: str,
     allowed: str,
     dictionary: config.Dictionary,
     word_list: config.WordList,
-) -> dict:
-    return {
-        config.NUM_BEEWORDS: len(data),
-        config.REQUIRED_LETTER: required,
-        config.ALLOWED_LETTERS: allowed,
-        config.BINGO: check_bingo(data, set(required + allowed)),
-        config.PERFECT_PANGRAMS: [
-            beeword for beeword in data if beeword[config.IS_PERFECT]
+) -> config.Metadata:
+    return config.Metadata(
+        num_beewords=len(data),
+        required=required,
+        allowed=allowed,
+        bingo=check_bingo(data, set(required + allowed)),
+        perfect_pangrams=[beeword for beeword in data if beeword.is_perfect],
+        nonperfect_pangrams=[
+            beeword for beeword in data if beeword.is_pangram and not beeword.is_perfect
         ],
-        config.NONPERFECT_PANGRAMS: [
-            beeword
-            for beeword in data
-            if beeword[config.IS_PANGRAM] and not beeword[config.IS_PERFECT]
-        ],
-        config.DICTIONARY: dictionary.name,
-        config.WORD_LIST: word_list.name,
-        config.BEEWORD_FIELDNAMES: list(data[0].keys()) if data else '',
-    }
+        dictionary=dictionary.name,
+        word_list=word_list.name,
+        beeword_fieldnames=list(data[0]._fields) if data else "",
+    )
 
 
 def get_pangram_status(word: str, pangram_set: set) -> tuple:
@@ -55,18 +54,18 @@ def get_pangram_status(word: str, pangram_set: set) -> tuple:
 
 def get_beeword(
     word: str, required: str, allowed: str, dictionary: config.Dictionary
-) -> dict:
+) -> config.Beeword:
     is_pangram, is_perfect = get_pangram_status(
         word=word, pangram_set=set(required + allowed)
     )
-    return {
-        config.WORD: word,
-        config.LENGTH: len(word),
-        config.INITIALS: word[0:2],
-        config.IS_PANGRAM: is_pangram,
-        config.IS_PERFECT: is_perfect,
-        config.URL: dictionary.url_template.render(word=word),
-    }
+    return config.Beeword(
+        word=word,
+        length=len(word),
+        initials=word[0:2],
+        is_pangram=is_pangram,
+        is_perfect=is_perfect,
+        url=dictionary.url_template.render(word=word),
+    )
 
 
 def get_beewords(
@@ -78,7 +77,7 @@ def get_beewords(
     with open(word_list.file_name, mode="r") as f:
         words = [line.lower() for line in f.read().splitlines()]
     all_letters_set = set(required_letter + allowed_letters)
-    beewords = []
+    beewords: List[config.Beeword] = []
     for this_word in words:
         if required_letter in this_word and len(this_word) >= config.MIN_WORD_LENGTH:
             this_word_as_set = set(this_word)
@@ -92,9 +91,7 @@ def get_beewords(
                     )
                 )
     return_dict = dict()
-    return_dict[config.DATA] = sorted(
-        beewords, key=lambda beeword: beeword[config.WORD]
-    )
+    return_dict[config.DATA] = sorted(beewords, key=lambda beeword: beeword.word)
     return_dict[config.METADATA] = get_metadata(
         data=beewords,
         required=required_letter,
@@ -119,11 +116,11 @@ def get_beewords_grouped(
         dictionary=dictionary,
     )
 
-    def get_group0_key(beeword):
-        return beeword[grouping[0]]
+    def get_group0_key(beeword: config.Beeword):
+        return getattr(beeword, grouping[0])
 
-    def get_group1_key(beeword):
-        return beeword[grouping[1]]
+    def get_group1_key(beeword: config.Beeword):
+        return getattr(beeword, grouping[1])
 
     beewords_list = beewords[config.DATA]
     grouped_word_data = {}

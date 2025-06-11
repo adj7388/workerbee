@@ -2,6 +2,12 @@ import os
 from collections import namedtuple
 from jinja2 import Environment, Template, FileSystemLoader
 
+Beeword = namedtuple("Beeword", "word length initials is_pangram, is_perfect, url")
+Metadata = namedtuple(
+    "Metadata",
+    "num_beewords required allowed bingo perfect_pangrams nonperfect_pangrams dictionary word_list beeword_fieldnames",
+)
+
 # Debugging
 BEEPROFILE = "BEEPROFILE"
 PROFILE_REQUEST_ARG = "profile"
@@ -105,24 +111,16 @@ WordLists = {
     LINUX_US: WordList(
         name="Linux American English", file_name=f"{LINUX_US}/american-english"
     ),
-    SCOWL_10: WordList(
-        name=f"{SCOWL_10}", file_name=f"{SCOWL_10}/words.txt"
-    ),
-    SCOWL_20: WordList(
-        name=f"{SCOWL_20}", file_name=f"{SCOWL_20}/words.txt"
-    ),
+    SCOWL_10: WordList(name=f"{SCOWL_10}", file_name=f"{SCOWL_10}/words.txt"),
+    SCOWL_20: WordList(name=f"{SCOWL_20}", file_name=f"{SCOWL_20}/words.txt"),
     SCOWL_SMALL_35: WordList(
         name=f"{SCOWL_SMALL_35}", file_name=f"{SCOWL_SMALL_35}/words.txt"
     ),
-    SCOWL_40: WordList(
-        name=f"{SCOWL_40}", file_name=f"{SCOWL_40}/words.txt"
-    ),
+    SCOWL_40: WordList(name=f"{SCOWL_40}", file_name=f"{SCOWL_40}/words.txt"),
     SCOWL_MEDIUM_50: WordList(
         name=f"{SCOWL_MEDIUM_50}", file_name=f"{SCOWL_MEDIUM_50}/words.txt"
     ),
-    SCOWL_55: WordList(
-        name=f"{SCOWL_55}", file_name=f"{SCOWL_55}/words.txt"
-    ),
+    SCOWL_55: WordList(name=f"{SCOWL_55}", file_name=f"{SCOWL_55}/words.txt"),
     SCOWL_DEFAULT_60: WordList(
         name=f"{SCOWL_DEFAULT_60}", file_name=f"{SCOWL_DEFAULT_60}/words.txt"
     ),

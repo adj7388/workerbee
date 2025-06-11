@@ -160,15 +160,15 @@
 
 {% macro decorate_word(beeword) %}
     <a
-        href={{ beeword[URL] }}
+        href={{ beeword.url }}
         target="_blank"
     >
-        {% if beeword[IS_PANGRAM] %}
+        {% if beeword.is_pangram %}
             <span class="pangram">
-                {{ beeword[WORD] }}&nbsp;{% if beeword[IS_PERFECT] %}{{PERFECT_MARKER}}{% else %}{{PANGRAM_MARKER}}{% endif %}
+                {{ beeword.word }}&nbsp;{% if beeword.is_perfect %}{{PERFECT_MARKER}}{% else %}{{PANGRAM_MARKER}}{% endif %}
             </span>
         {% else %}
-            <span>{{ beeword[WORD] }}</span>
+            <span>{{ beeword.word }}</span>
         {% endif %}
     </a>
 {% endmacro %}
