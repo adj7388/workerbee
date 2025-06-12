@@ -1,6 +1,6 @@
 from collections import namedtuple
 from itertools import groupby
-from typing import List
+
 import re
 from . import config
 
@@ -16,13 +16,13 @@ def get_groupings(grouping: str) -> list:
         raise ValueError(f"Bad grouping: {grouping}")
 
 
-def check_bingo(data: List[config.Beeword], pangram_set: set) -> bool:
+def check_bingo(data: list[config.Beeword], pangram_set: set) -> bool:
     initials_set = set([beeword.word[0] for beeword in data])
     return initials_set == pangram_set
 
 
 def get_metadata(
-    data: List[config.Beeword],
+    data: list[config.Beeword],
     required: str,
     allowed: str,
     dictionary: config.Dictionary,
@@ -73,11 +73,11 @@ def get_beewords(
     required_letter: str,
     allowed_letters: str,
     dictionary: config.Dictionary,
-) -> config.OutputData :
+) -> config.OutputData:
     with open(word_list.file_name, mode="r") as f:
         words = [line.lower() for line in f.read().splitlines()]
     all_letters_set = set(required_letter + allowed_letters)
-    beewords: List[config.Beeword] = []
+    beewords: list[config.Beeword] = []
     for this_word in words:
         if required_letter in this_word and len(this_word) >= config.MIN_WORD_LENGTH:
             this_word_as_set = set(this_word)
@@ -90,7 +90,7 @@ def get_beewords(
                         dictionary=dictionary,
                     )
                 )
-    beeword = sorted(beewords, key=lambda beeword: beeword.word) 
+    beewords = sorted(beewords, key=lambda beeword: beeword.word)
     return config.OutputData(
         data=beewords,
         metadata=get_metadata(
@@ -99,8 +99,9 @@ def get_beewords(
             allowed=allowed_letters,
             dictionary=dictionary,
             word_list=word_list,
-        )
+        ),
     )
+
 
 def get_beewords_grouped(
     word_list: config.WordList,
@@ -133,7 +134,4 @@ def get_beewords_grouped(
         ):
             grouped_word_data[group0][group1] = [beeword for beeword in data1]
 
-    return config.OutputData(
-        data=grouped_word_data,
-        metadata=beewords.metadata
-    )
+    return config.OutputData(data=grouped_word_data, metadata=beewords.metadata)
