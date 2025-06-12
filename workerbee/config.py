@@ -153,7 +153,7 @@ Dictionaries = {
 }
 
 # import flask functions so they are inserted into Jinja globals
-from flask import url_for, get_flashed_messages, session
+from flask import url_for, get_flashed_messages, session  # pyright: ignore
 
 # Assign const variables to jinja environment after all are defined
 JINJA_ENV.globals.update(locals())

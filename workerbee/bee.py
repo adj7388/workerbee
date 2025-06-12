@@ -1,7 +1,5 @@
-from collections import namedtuple
 from itertools import groupby
 
-import re
 from . import config
 
 

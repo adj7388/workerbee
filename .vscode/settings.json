@@ -1,9 +1,15 @@
 {
-  "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter",
-    "editor.formatOnSave": true
-  },
-  "python.formatting.provider": "none",
-  "python.analysis.diagnosticMode": "workspace",
-  "python.languageServer": "Pylance"
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true
+    },
+    "python.formatting.provider": "none",
+    "python.analysis.diagnosticMode": "workspace",
+    "python.languageServer": "Pylance",
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportUnusedVariable": "warning",
+        "reportUnusedImport": "warning",
+        "reportUnusedFunction": "warning"
+    }
 }
