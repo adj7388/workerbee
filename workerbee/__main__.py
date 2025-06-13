@@ -51,6 +51,15 @@ def get_argparser() -> argparse.ArgumentParser:
         help="Output grouped by initials, word length, or no grouping (plain list)",
     )
 
+    parser.add_argument(
+        "-s",
+        "--summary",
+        required=False,
+        action="store_true",
+        default=False,
+        help="Summarize and compare results from all word lists. (-g, -d, and -w arguments ignored)",
+    )
+
     group = parser.add_mutually_exclusive_group()
     group.add_argument(
         "-p",
@@ -92,6 +101,7 @@ def print_meta_data(metadata: config.Metadata):
     print(f"Perfect pangrams marked with {config.PERFECT_MARKER}")
     print()
 
+
 def print_beewords_grouped(output_data: config.OutputData) -> None:
     SPACING = "   "
     print_meta_data(output_data.metadata)
@@ -124,7 +134,18 @@ def print_beewords_list(output_data: config.OutputData) -> None:
 ############ main ############
 def main():
     args = get_commandline_args()
-    output_data : config.OutputData
+    output_data: config.OutputData
+    if args.summary == True:
+        for word_list in config.WordLists.values():
+            beewords = get_beewords(
+                word_list=word_list,
+                required_letter=args.required,
+                allowed_letters=args.allowed,
+                dictionary=config.Dictionaries[config.MW],
+            )
+            print_meta_data(beewords.metadata)
+        sys.exit(0)
+
     if args.groupby == config.NO_GROUPING:
         output_data = get_beewords(
             word_list=config.WordLists[args.wordlist],
