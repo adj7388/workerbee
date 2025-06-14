@@ -116,7 +116,9 @@ def summary():
         )
         summary.append(beewords)
     return config.JINJA_ENV.get_template(config.SUMMARY_TEMPLATE).render(
-        summary=summary,
+        summary=sorted(
+            summary, key=lambda output_data: output_data.metadata.num_beewords
+        ),
     )
 
 

@@ -6,11 +6,36 @@
     Summary of All Word Lists
 {% endblock %}
 
+{% macro summary_row(metadata) %}
+    <tr>
+        <td>{{ metadata.word_list}}</td>
+        <td>{{ metadata.num_beewords }}</td>
+        <td>{{ metadata.required }}</td>
+        <td>{{ metadata.allowed }}</td>
+        <td>
+            {% for pangram in metadata.perfect_pangrams %}
+                <span>{{ pangram.word }}</span>
+            {% endfor %}
+        </td>
+        <td>
+            {% for pangram in metadata.nonperfect_pangrams %}
+                <span>{{ pangram.word }}</span>
+            {% endfor %}
+        </td>
+    </tr>
+{% endmacro %}
+
+
 {% block content %}
  
     {{ page_banner(text='Summary Results') }}
-    {% for beeword in summary %}
-        {{ show_metadata(metadata=beeword.metadata) }}
-    {% endfor %}
+    <table>
+        <tr>
+            <th>Word List</th><th>Number</th><th>Req</th><th>Allowed</th><th>Perfect</th><th>Non-Perfect</th>
+        </tr>
+        {% for beeword in summary %}
+            {{ summary_row(metadata=beeword.metadata) }}
+        {% endfor %}
+    </table>
 
 {% endblock %}

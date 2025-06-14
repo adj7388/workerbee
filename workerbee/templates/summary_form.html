@@ -7,7 +7,7 @@
 
 {% block content %}
     {{ page_banner(text="Summarize all Word Lists") }}
-    <form action="{{ SUMMARY_VIEW }}" method="GET">
+    <form action="/{{ SUMMARY_VIEW }}" method="GET">
         {% if PROFILING is true %}
             <input type="hidden" name="{{ PROFILE_REQUEST_ARG }}" value="true">
         {% endif %}
