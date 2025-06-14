@@ -73,7 +73,7 @@ def get_beewords(
     dictionary: config.Dictionary,
 ) -> config.OutputData:
     with open(word_list.file_name, mode="r") as f:
-        words = [line.lower() for line in f.read().splitlines()]
+        words = [line for line in f.read().splitlines()]
     all_letters_set = set(required_letter + allowed_letters)
     beewords: list[config.Beeword] = []
     for this_word in words:

@@ -102,7 +102,7 @@ def summary_form():
     )
 
 
-@app.route(f"/{config.SUMMARY_VIEW}/")
+@app.route(f"/{config.SUMMARY_VIEW}")
 def summary():
     if request.method == "GET":
         session[config.USER_ARGS] = request.args
