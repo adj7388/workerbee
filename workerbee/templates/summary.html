@@ -10,8 +10,6 @@
     <tr>
         <td>{{ metadata.word_list}}</td>
         <td>{{ metadata.num_beewords }}</td>
-        <td>{{ metadata.required }}</td>
-        <td>{{ metadata.allowed }}</td>
         <td>
             {% for pangram in metadata.perfect_pangrams %}
                 <span>{{ pangram.word }}</span>
@@ -29,9 +27,11 @@
 {% block content %}
  
     {{ page_banner(text='Summary Results') }}
+    <p>Required letter: {{ summary[0].metadata.required }}</p>
+    <p>Allowed letters: {{ summary[0].metadata.allowed }}</p>
     <table>
         <tr>
-            <th>Word List</th><th>Number</th><th>Req</th><th>Allowed</th><th>Perfect</th><th>Non-Perfect</th>
+            <th>Word List</th><th>Number</th><th>Perfect</th><th>Non-Perfect</th>
         </tr>
         {% for beeword in summary %}
             {{ summary_row(metadata=beeword.metadata) }}
