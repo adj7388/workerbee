@@ -1,0 +1,16 @@
+{% extends LAYOUT_TEMPLATE %}
+
+{% from MACROS_TEMPLATE import page_banner, show_metadata %}
+
+{% block title %}
+    Summary of All Word Lists
+{% endblock %}
+
+{% block content %}
+ 
+    {{ page_banner(text='Summary Results') }}
+    {% for beeword in summary %}
+        {{ show_metadata(metadata=beeword.metadata) }}
+    {% endfor %}
+
+{% endblock %}

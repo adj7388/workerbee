@@ -1,0 +1,46 @@
+{% extends LAYOUT_TEMPLATE %}
+{% from MACROS_TEMPLATE import page_banner %}
+
+{% block title %}
+    Summarize all Word Lists
+{% endblock %}
+
+{% block content %}
+    {{ page_banner(text="Summarize all Word Lists") }}
+    <form action="{{ SUMMARY_VIEW }}" method="GET">
+        {% if PROFILING is true %}
+            <input type="hidden" name="{{ PROFILE_REQUEST_ARG }}" value="true">
+        {% endif %}
+
+        <p class="h6">
+            Enter the required letter:<br>
+            <span class="subtext">The yellow letter in the middle</span>
+        </p>
+        <p><input type='text', name={{ REQUIRED_LETTER }}
+            value=
+                {% if args %}
+                    {{ args[REQUIRED_LETTER] }}
+                {% else %}
+                    "u"
+                {% endif %}
+            >
+        </p>
+        <p class="h6">
+            Enter the other letters:<br>
+            <span class="subtext">The {{NUM_ALLOWED_LETTERS}} letters around the middle letter</span>
+        </p>
+        <p><input type='text', name={{ ALLOWED_LETTERS }}
+            value=
+                {% if args %}
+                    {{ args[ALLOWED_LETTERS] }}
+                {% else %}
+                    "ncdeli"
+                {% endif %}
+            >
+        </p>
+        <p>
+            <input type='submit' value='Get Summary'>
+        </p>
+    </form>
+
+    {% endblock %}

@@ -27,13 +27,16 @@ def error_check(args: dict) -> str:
 
 
 def clean_args(args: dict) -> dict:
-    return {
-        config.REQUIRED_LETTER: args[config.REQUIRED_LETTER].lower().strip(),
-        config.ALLOWED_LETTERS: args[config.ALLOWED_LETTERS].lower().strip(),
-        config.GROUPING: args[config.GROUPING],
-        config.DICTIONARY: args[config.DICTIONARY],
-        config.WORD_LIST: args[config.WORD_LIST],
-    }
+    try:
+        return {
+            config.REQUIRED_LETTER: args[config.REQUIRED_LETTER].lower().strip(),
+            config.ALLOWED_LETTERS: args[config.ALLOWED_LETTERS].lower().strip(),
+            config.GROUPING: args[config.GROUPING],
+            config.DICTIONARY: args[config.DICTIONARY],
+            config.WORD_LIST: args[config.WORD_LIST],
+        }
+    except Exception:
+        return args
 
 
 def get_filename(metadata: config.Metadata, file_type: str) -> str:
@@ -50,8 +53,8 @@ def get_filename(metadata: config.Metadata, file_type: str) -> str:
     return "-".join(metadata_as_list) + f".{ext}"
 
 
-def flatten_grouped(beewords : dict) -> dict | list[config.Beeword]:
-    flattened : list[config.Beeword] = []
+def flatten_grouped(beewords: dict) -> dict | list[config.Beeword]:
+    flattened: list[config.Beeword] = []
     try:
         for first_level in beewords.values():
             for words in first_level.values():

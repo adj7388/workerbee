@@ -87,6 +87,39 @@ def beewords():
     )
 
 
+@app.route(f"/{config.SUMMARY_FORM_VIEW}", methods=["GET"])
+def summary_form():
+    if request.args:
+        abort(400)
+    return config.JINJA_ENV.get_template(config.SUMMARY_FORM_TEMPLATE).render(
+        args=session.get(config.USER_ARGS, None),
+        dictionaries=config.Dictionaries,
+        word_lists=config.WordLists,
+    )
+
+
+@app.route(f"/{config.SUMMARY_VIEW}/")
+def summary():
+    if request.method == "GET":
+        session[config.USER_ARGS] = cleaned_args = clean_args(args=request.args)
+        error_msg = error_check(args=cleaned_args)
+        if error_msg:
+            flash(message=error_msg)
+            return redirect(config.SUMMARY_VIEW)
+    summary: list[config.OutputData] = []
+    for word_list in config.WordLists.values():
+        beewords = get_beewords(
+            word_list=word_list,
+            required_letter=session[config.USER_ARGS][config.REQUIRED_LETTER],
+            allowed_letters=session[config.USER_ARGS][config.ALLOWED_LETTERS],
+            dictionary=config.Dictionaries[config.MW],
+        )
+        summary.append(beewords)
+    return config.JINJA_ENV.get_template(config.SUMMARY_TEMPLATE).render(
+        summary=summary,
+    )
+
+
 @app.route(f"/{config.GETFILE_VIEW}/", methods=["GET"])
 def getfile():
     saved_session = clean_args(session.get(config.USER_ARGS, None))
