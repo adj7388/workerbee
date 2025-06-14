@@ -1,6 +1,6 @@
 from . import app
 from . import config
-from .utils import clean_args, error_check, get_filename, write_to_buffer
+from .utils import error_check, get_filename, write_to_buffer
 from .bee import get_beewords, get_beewords_grouped, get_groupings
 from flask import request, session, redirect, flash, g, make_response, send_file, abort
 from io import BytesIO
@@ -52,30 +52,34 @@ def about():
 @app.route(f"/{config.BEEWORD_VIEW}", methods=["GET"])
 def beewords():
     if request.method == "GET":
-        session[config.USER_ARGS] = cleaned_args = clean_args(args=request.args)
-        error_msg = error_check(args=cleaned_args)
+        session[config.USER_ARGS] = request.args
+        error_msg = error_check(args=session[config.USER_ARGS])
         if error_msg:
             flash(message=error_msg)
             return redirect(config.HOME_VIEW)
-        if cleaned_args[config.GROUPING] == config.NO_GROUPING:
+        if session[config.USER_ARGS][config.GROUPING] == config.NO_GROUPING:
             beewords = get_beewords(
-                word_list=config.WordLists[cleaned_args[config.WORD_LIST]],
-                required_letter=cleaned_args[config.REQUIRED_LETTER],
-                allowed_letters=cleaned_args[config.ALLOWED_LETTERS],
-                dictionary=config.Dictionaries[cleaned_args[config.DICTIONARY]],
+                word_list=config.WordLists[session[config.USER_ARGS][config.WORD_LIST]],
+                required_letter=session[config.USER_ARGS][config.REQUIRED_LETTER],
+                allowed_letters=session[config.USER_ARGS][config.ALLOWED_LETTERS],
+                dictionary=config.Dictionaries[
+                    session[config.USER_ARGS][config.DICTIONARY]
+                ],
             )
             return config.JINJA_ENV.get_template(config.LISTWORDS_TEMPLATE).render(
                 beeword_list=beewords.data,
                 metadata=beewords.metadata,
             )
         else:
-            grouping = get_groupings(cleaned_args[config.GROUPING])
+            grouping = get_groupings(session[config.USER_ARGS][config.GROUPING])
             beewords = get_beewords_grouped(
-                word_list=config.WordLists[cleaned_args[config.WORD_LIST]],
-                required_letter=cleaned_args[config.REQUIRED_LETTER],
-                allowed_letters=cleaned_args[config.ALLOWED_LETTERS],
+                word_list=config.WordLists[session[config.USER_ARGS][config.WORD_LIST]],
+                required_letter=session[config.USER_ARGS][config.REQUIRED_LETTER],
+                allowed_letters=session[config.USER_ARGS][config.ALLOWED_LETTERS],
                 grouping=grouping,
-                dictionary=config.Dictionaries[cleaned_args[config.DICTIONARY]],
+                dictionary=config.Dictionaries[
+                    session[config.USER_ARGS][config.DICTIONARY]
+                ],
             )
             return config.JINJA_ENV.get_template(config.BEEWORDS_TEMPLATE).render(
                 beeword_data=beewords.data,
@@ -101,11 +105,11 @@ def summary_form():
 @app.route(f"/{config.SUMMARY_VIEW}/")
 def summary():
     if request.method == "GET":
-        session[config.USER_ARGS] = cleaned_args = clean_args(args=request.args)
-        error_msg = error_check(args=cleaned_args)
+        session[config.USER_ARGS] = request.args
+        error_msg = error_check(args=session[config.USER_ARGS])
         if error_msg:
             flash(message=error_msg)
-            return redirect(config.SUMMARY_VIEW)
+            return redirect(f"/{config.SUMMARY_VIEW}")
     summary: list[config.OutputData] = []
     for word_list in config.WordLists.values():
         beewords = get_beewords(
@@ -117,14 +121,20 @@ def summary():
         summary.append(beewords)
     return config.JINJA_ENV.get_template(config.SUMMARY_TEMPLATE).render(
         summary=sorted(
-            summary, key=lambda output_data: output_data.metadata.num_beewords
+            summary,
+            key=lambda output_data: output_data.metadata.num_beewords,
+            reverse=(
+                True
+                if session[config.USER_ARGS][config.SUMMARY_SORT] == "descending"
+                else False
+            ),
         ),
     )
 
 
 @app.route(f"/{config.GETFILE_VIEW}/", methods=["GET"])
 def getfile():
-    saved_session = clean_args(session.get(config.USER_ARGS, None))
+    saved_session = session.get(config.USER_ARGS, {})
     file_type = request.args.get(config.FILE_TYPE, config.TXT)
     session[config.FILE_TYPE] = file_type
     if saved_session[config.GROUPING] == config.NO_GROUPING:

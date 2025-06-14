@@ -58,14 +58,10 @@
             How to group the results:
         </p>
         <p>
-            {% set initials_checked, length_checked, no_grouping_checked = '', '', '' %}
-            {% if args[GROUPING] == INITIALS %}
-                {% set initials_checked = 'checked' %}
-            {% elif args[GROUPING] == LENGTH %}
-                {% set length_checked = 'checked' %}
-            {% elif args[GROUPING] == NO_GROUPING %}
-                {% set no_grouping_checked = 'checked' %}
-            {% else %}
+            {% set initials_checked = 'checked' if args[GROUPING] == INITIALS else '' %}
+            {% set length_checked = 'checked' if args[GROUPING] == LENGTH else '' %}
+            {% set no_grouping_checked = 'checked' if args[GROUPING] == NO_GROUPING else '' %}
+            {% if not initials_checked and not length_checked and not no_grouping_checked %}
                 {# initials as default #}
                 {% set initials_checked = 'checked' %}
             {% endif %}

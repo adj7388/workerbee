@@ -26,17 +26,17 @@ def error_check(args: dict) -> str:
     return ""
 
 
-def clean_args(args: dict) -> dict:
-    try:
-        return {
-            config.REQUIRED_LETTER: args[config.REQUIRED_LETTER].lower().strip(),
-            config.ALLOWED_LETTERS: args[config.ALLOWED_LETTERS].lower().strip(),
-            config.GROUPING: args[config.GROUPING],
-            config.DICTIONARY: args[config.DICTIONARY],
-            config.WORD_LIST: args[config.WORD_LIST],
-        }
-    except Exception:
-        return args
+# def clean_args(args: dict) -> dict:
+#     try:
+#         return {
+#             config.REQUIRED_LETTER: args[config.REQUIRED_LETTER].lower().strip(),
+#             config.ALLOWED_LETTERS: args[config.ALLOWED_LETTERS].lower().strip(),
+#             config.GROUPING: args[config.GROUPING],
+#             config.DICTIONARY: args[config.DICTIONARY],
+#             config.WORD_LIST: args[config.WORD_LIST],
+#         }
+#     except Exception:
+#         return args
 
 
 def get_filename(metadata: config.Metadata, file_type: str) -> str:

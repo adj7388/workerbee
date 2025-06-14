@@ -38,9 +38,24 @@
                 {% endif %}
             >
         </p>
+        <p class="h6">
+            Sort by number of words from each word list:
+        </p>
+        <p>
+            {% set ascending_checked = 'checked' if args[SUMMARY_SORT] == ASCENDING else '' %}
+            {% set descending_checked = 'checked' if args[SUMMARY_SORT] == DESCENDING else '' %}
+            {% if not ascending_checked and not descending_checked %}
+                {# descending as default #}
+                {% set descending_checked = 'checked' %}
+            {% endif %}
+            <input type="radio" name="{{ SUMMARY_SORT }}" id="{{ ASCENDING }}" value="{{ ASCENDING }}" {{ ascending_checked}}>
+            <label for="{{ ASCENDING }}">Ascending</label><br>
+            <input type="radio" name="{{ SUMMARY_SORT }}" id="{{ DESCENDING}}" value="{{ DESCENDING}}" {{ descending_checked }}>
+            <label for="{{ DESCENDING}}">Descending</label><br>
+        </p>
         <p>
             <input type='submit' value='Get Summary'>
         </p>
     </form>
 
-    {% endblock %}
+{% endblock %}
