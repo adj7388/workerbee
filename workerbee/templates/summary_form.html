@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    {{ page_banner(text="Summarize all Word Lists") }}
+    {{ page_banner(text="Show Summary Results of All Word Lists") }}
     <form action="/{{ SUMMARY_VIEW }}" method="GET">
         {% if PROFILING is true %}
             <input type="hidden" name="{{ PROFILE_REQUEST_ARG }}" value="true">

@@ -1,15 +1,6 @@
 .appcolor {
     background-color: #faf3d4;
-}
-
-.mynavbar {
-    /* Must repeat background-color so sticky-top works on navbar */
-    background-color: #faf3d4;
-    border-bottom: 1px solid #000;
-}
-
-.banner {
-    padding-top: 1em;
+    padding-left: 3em;
 }
 
 .group0 {

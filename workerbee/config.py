@@ -119,12 +119,12 @@ WordLists = {
         name="12dicts-6of12",
         file_name=f"{WORDLIST_DIR}/{TWELVEDICTS_602_DIR}/6of12.txt",
     ),
-    SCOWL_10: WordList(
-        name=f"{SCOWL_10}", file_name=f"{WORDLIST_DIR}/{SCOWL_10}/words.txt"
-    ),
-    SCOWL_20: WordList(
-        name=f"{SCOWL_20}", file_name=f"{WORDLIST_DIR}/{SCOWL_20}/words.txt"
-    ),
+    # SCOWL_10: WordList(
+    #     name=f"{SCOWL_10}", file_name=f"{WORDLIST_DIR}/{SCOWL_10}/words.txt"
+    # ),
+    # SCOWL_20: WordList(
+    #     name=f"{SCOWL_20}", file_name=f"{WORDLIST_DIR}/{SCOWL_20}/words.txt"
+    # ),
     SCOWL_SMALL_35: WordList(
         name=f"{SCOWL_SMALL_35}", file_name=f"{WORDLIST_DIR}/{SCOWL_SMALL_35}/words.txt"
     ),
@@ -148,21 +148,21 @@ WordLists = {
     SCOWL_HUGE_80: WordList(
         name=f"{SCOWL_HUGE_80}", file_name=f"{WORDLIST_DIR}/{SCOWL_HUGE_80}/words.txt"
     ),
-    SCOWL_INSANE_95: WordList(
-        name=f"{SCOWL_INSANE_95}",
-        file_name=f"{WORDLIST_DIR}/{SCOWL_INSANE_95}/words.txt",
-    ),
-    DWYL: WordList(
-        name="DWYL Words (dwyl.com)", file_name=f"{WORDLIST_DIR}/{DWYL}/alpha_words.txt"
-    ),
-    LINUX_UK: WordList(
-        name="Linux British English",
-        file_name=f"{WORDLIST_DIR}/{LINUX_UK}/british-english",
-    ),
-    LINUX_US: WordList(
-        name="Linux American English",
-        file_name=f"{WORDLIST_DIR}/{LINUX_US}/american-english",
-    ),
+    # SCOWL_INSANE_95: WordList(
+    #     name=f"{SCOWL_INSANE_95}",
+    #     file_name=f"{WORDLIST_DIR}/{SCOWL_INSANE_95}/words.txt",
+    # ),
+    # DWYL: WordList(
+    #     name="DWYL Words (dwyl.com)", file_name=f"{WORDLIST_DIR}/{DWYL}/alpha_words.txt"
+    # ),
+    # LINUX_UK: WordList(
+    #     name="Linux British English",
+    #     file_name=f"{WORDLIST_DIR}/{LINUX_UK}/british-english",
+    # ),
+    # LINUX_US: WordList(
+    #     name="Linux American English",
+    #     file_name=f"{WORDLIST_DIR}/{LINUX_US}/american-english",
+    # ),
 }
 
 # Manage Dictionaries
