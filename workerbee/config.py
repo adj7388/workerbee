@@ -104,20 +104,9 @@ TWELVEDICTS_6of12 = "12dicts-6of12"
 TWELVEDICTS_602_DIR = "12dicts-6.0.2"
 
 WordLists = {
-    TWELVEDICTS_2of12: WordList(
-        name="12dicts-2of12",
-        file_name=f"{WORDLIST_DIR}/{TWELVEDICTS_602_DIR}/2of12.txt",
-    ),
-    TWELVEDICTS_2of12inf: WordList(
-        name="12dicts-2of12inf",
-        file_name=f"{WORDLIST_DIR}/{TWELVEDICTS_602_DIR}/2of12inf.txt",
-    ),
-    TWELVEDICTS_3esl: WordList(
-        name="12dicts-3esl", file_name=f"{WORDLIST_DIR}/{TWELVEDICTS_602_DIR}/3esl.txt"
-    ),
-    TWELVEDICTS_6of12: WordList(
-        name="12dicts-6of12",
-        file_name=f"{WORDLIST_DIR}/{TWELVEDICTS_602_DIR}/6of12.txt",
+    SCOWL_DEFAULT_60: WordList(
+        name=f"{SCOWL_DEFAULT_60}",
+        file_name=f"{WORDLIST_DIR}/{SCOWL_DEFAULT_60}/words.txt",
     ),
     # SCOWL_10: WordList(
     #     name=f"{SCOWL_10}", file_name=f"{WORDLIST_DIR}/{SCOWL_10}/words.txt"
@@ -138,20 +127,31 @@ WordLists = {
     SCOWL_55: WordList(
         name=f"{SCOWL_55}", file_name=f"{WORDLIST_DIR}/{SCOWL_55}/words.txt"
     ),
-    SCOWL_DEFAULT_60: WordList(
-        name=f"{SCOWL_DEFAULT_60}",
-        file_name=f"{WORDLIST_DIR}/{SCOWL_DEFAULT_60}/words.txt",
-    ),
     SCOWL_LARGE_70: WordList(
         name=f"{SCOWL_LARGE_70}", file_name=f"{WORDLIST_DIR}/{SCOWL_LARGE_70}/words.txt"
     ),
     SCOWL_HUGE_80: WordList(
         name=f"{SCOWL_HUGE_80}", file_name=f"{WORDLIST_DIR}/{SCOWL_HUGE_80}/words.txt"
     ),
-    # SCOWL_INSANE_95: WordList(
-    #     name=f"{SCOWL_INSANE_95}",
-    #     file_name=f"{WORDLIST_DIR}/{SCOWL_INSANE_95}/words.txt",
-    # ),
+    SCOWL_INSANE_95: WordList(
+        name=f"{SCOWL_INSANE_95}",
+        file_name=f"{WORDLIST_DIR}/{SCOWL_INSANE_95}/words.txt",
+    ),
+    TWELVEDICTS_2of12: WordList(
+        name="12dicts-2of12",
+        file_name=f"{WORDLIST_DIR}/{TWELVEDICTS_602_DIR}/2of12.txt",
+    ),
+    TWELVEDICTS_2of12inf: WordList(
+        name="12dicts-2of12inf",
+        file_name=f"{WORDLIST_DIR}/{TWELVEDICTS_602_DIR}/2of12inf.txt",
+    ),
+    TWELVEDICTS_3esl: WordList(
+        name="12dicts-3esl", file_name=f"{WORDLIST_DIR}/{TWELVEDICTS_602_DIR}/3esl.txt"
+    ),
+    TWELVEDICTS_6of12: WordList(
+        name="12dicts-6of12",
+        file_name=f"{WORDLIST_DIR}/{TWELVEDICTS_602_DIR}/6of12.txt",
+    ),
     # DWYL: WordList(
     #     name="DWYL Words (dwyl.com)", file_name=f"{WORDLIST_DIR}/{DWYL}/alpha_words.txt"
     # ),

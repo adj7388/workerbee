@@ -26,12 +26,14 @@
 
 {% block content %}
  
-    {{ page_banner(text='Summary Results') }}
-    <p>Required letter: {{ summary[0].metadata.required }}</p>
-    <p>Allowed letters: {{ summary[0].metadata.allowed }}</p>
-    <table>
+    {{ page_banner(text='Word List Summary Results') }}
+    <p>
+        <span style="font-weight: bold">Required letter: </span>&nbsp;{{ summary[0].metadata.required }}<br>
+        <span style="font-weight: bold">Allowed letters:</span>&nbsp;{{ summary[0].metadata.allowed }}
+    </p>
+    <table class="table table-bordered" background="#faf3d4">
         <tr>
-            <th>Word List</th><th>Number</th><th>Perfect</th><th>Non-Perfect</th>
+            <th>Word List</th><th>Total Words</th><th>Perfect Pangrams</th><th>Non-Perfect Pangrams</th>
         </tr>
         {% for beeword in summary %}
             {{ summary_row(metadata=beeword.metadata) }}
