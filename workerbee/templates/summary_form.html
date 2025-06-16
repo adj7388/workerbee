@@ -39,7 +39,12 @@
             >
         </p>
         <p class="h6">
-            Sort by number of words from each word list:
+            {% set show_words_checked = 'checked' if session[USER_ARGS][SHOW_WORDS] == SHOW_WORDS else '' %}
+            <label for="{{ SHOW_WORDS }}">Show entire word list</label>            
+            <input type="checkbox" id="{{ SHOW_WORDS}}" name="{{ SHOW_WORDS}}" value="{{ SHOW_WORDS }}" {{ show_words_checked }}>
+        </p>
+        <p class="h6">
+            Sort word lists (by number of words):
         </p>
         <p>
             {% set ascending_checked = 'checked' if args[SUMMARY_SORT] == ASCENDING else '' %}

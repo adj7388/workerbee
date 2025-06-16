@@ -51,6 +51,7 @@ WORD_LIST = "word_list"
 SUMMARY_SORT = "summary_sort"
 ASCENDING = "ascending"
 DESCENDING = "descending"
+SHOW_WORDS = "show_words"
 ## for grouping
 GROUPING = "grouping"
 INITIALS = "initials"

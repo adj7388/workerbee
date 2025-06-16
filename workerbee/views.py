@@ -52,7 +52,7 @@ def about():
 @app.route(f"/{config.BEEWORD_VIEW}", methods=["GET"])
 def beewords():
     if request.method == "GET":
-        session[config.USER_ARGS] = request.args
+        session[config.USER_ARGS] = dict(request.args)
         error_msg = error_check(args=session[config.USER_ARGS])
         if error_msg:
             flash(message=error_msg)
@@ -105,7 +105,11 @@ def summary_form():
 @app.route(f"/{config.SUMMARY_VIEW}")
 def summary():
     if request.method == "GET":
-        session[config.USER_ARGS] = request.args
+        session[config.USER_ARGS] = dict(request.args)
+        session[config.USER_ARGS][config.SHOW_WORDS] = show_words = (
+            config.SHOW_WORDS if config.SHOW_WORDS in request.args else None
+        )
+
         error_msg = error_check(args=session[config.USER_ARGS])
         if error_msg:
             flash(message=error_msg)
@@ -129,6 +133,7 @@ def summary():
                 else False
             ),
         ),
+        show_words=show_words,
     )
 
 

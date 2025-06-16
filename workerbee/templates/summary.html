@@ -6,21 +6,31 @@
     Summary of All Word Lists
 {% endblock %}
 
-{% macro summary_row(metadata) %}
+{% macro summary_row(output_data, show_words) %}
     <tr>
-        <td>{{ metadata.word_list}}</td>
-        <td>{{ metadata.num_beewords }}</td>
+        <td>{{ output_data.metadata.word_list}}</td>
+        <td>{{ output_data.metadata.num_beewords }}</td>
         <td>
-            {% for pangram in metadata.perfect_pangrams %}
+            {% for pangram in output_data.metadata.perfect_pangrams %}
                 <span>{{ pangram.word }}</span>
             {% endfor %}
         </td>
         <td>
-            {% for pangram in metadata.nonperfect_pangrams %}
+            {% for pangram in output_data.metadata.nonperfect_pangrams %}
                 <span>{{ pangram.word }}</span>
             {% endfor %}
         </td>
     </tr>
+    {% if show_words == SHOW_WORDS %}
+        <tr>
+            <td style="text-align: right;">Words</td>
+            <td colspan="3">
+                {% for beeword in output_data.data %}
+                    {{ beeword.word }}&nbsp;
+                {% endfor %}
+            </td>
+        </tr>
+    {% endif %}
 {% endmacro %}
 
 
@@ -35,8 +45,8 @@
         <tr>
             <th>Word List</th><th>Total Words</th><th>Perfect Pangrams</th><th>Non-Perfect Pangrams</th>
         </tr>
-        {% for beeword in summary %}
-            {{ summary_row(metadata=beeword.metadata) }}
+        {% for output_data in summary %}
+            {{ summary_row(output_data=output_data, show_words=show_words) }}
         {% endfor %}
     </table>
 
