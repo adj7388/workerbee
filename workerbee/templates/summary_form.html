@@ -27,14 +27,13 @@
             value="{{ session[USER_ARGS][ALLOWED_LETTERS] }}">
         </p>
         <p class="h6">
-            {% set show_words_checked = 'checked' if session[USER_ARGS][SHOW_WORDS] == SHOW_WORDS else '' %}
             <label for="{{ SHOW_WORDS }}">Show entire word list</label>            
             <input type="checkbox" id="{{ SHOW_WORDS}}" name="{{ SHOW_WORDS}}" value="{{ SHOW_WORDS }}"
                 {{ 'checked' if session[USER_ARGS][SHOW_WORDS] == SHOW_WORDS else '' }}
             >
         </p>
         <p class="h6">
-            Sort word lists (by number of words):
+            Sort summaries (by number of words from each word list):
         </p>
         <p>
             <input type="radio" name="{{ SUMMARY_SORT }}" id="{{ ASCENDING }}" value="{{ ASCENDING }}" 

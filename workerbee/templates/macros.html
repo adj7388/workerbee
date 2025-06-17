@@ -154,6 +154,16 @@
     </div>
 {% endmacro %}
 
+{% macro word_row(beeword) %}
+    <tr>
+        <td></td>
+        <td></td>
+        <td>
+            {{ decorate_word(beeword=beeword) }}
+        </td>
+    </tr>
+{% endmacro %}
+
 {% macro decorate_word(beeword) %}
     <a href={{ beeword.url }} target="_blank">
         {% if beeword.is_pangram %}
@@ -169,93 +179,4 @@
             <span>{{ beeword.word }}</span>
         {% endif %}
     </a>
-{% endmacro %}
-
-{% macro word_row(beeword) %}
-    <tr>
-        <td></td>
-        <td></td>
-        <td>
-            {{ decorate_word(beeword=beeword) }}
-        </td>
-    </tr>
-{% endmacro %}
-
-{% macro heading_row(level, heading) %}
-    {% if level == 0 %}
-        <tr>
-            <td colspan="3"><hr></td>
-        </tr>
-    {% endif %}
-    <tr>
-        {% if level == 1 %}
-            <td></td>
-        {% endif %}
-        <td>
-            {% if level == 0 %}
-                <span class="group0"> {{ heading }} </span>
-            {% elif level == 1 %}
-                <span class="group1"> {{ heading }} </span>
-            {% endif %}
-        </td>
-    </tr>
-{% endmacro %}
-
-{% macro decorate_heading(heading, grouping) %}
-    {% if grouping == INITIALS %}
-        {{ heading | upper }}
-    {% elif grouping == LENGTH %}
-        {{ heading }}<span class="wordlength">-letter words</span>
-    {% endif %}
-{% endmacro %}
-
-{% macro show_words_grouped(beeword_data, grouping) %}
-    {# top_level* and second_level* will be INITIALS or LENGTH, or vice versa #}
-    {% set top_level_group, second_level_group = grouping[0], grouping[1] %}
-    <div>
-        <table>
-            {%for toplevel_heading, toplevel_values in beeword_data.items() %}
-                {{ heading_row(
-                    level=0,
-                    heading=decorate_heading(
-                            toplevel_heading,
-                            top_level_group
-                        )
-                    )
-                }}
-                {%for second_level_heading, beewords in toplevel_values.items() %}
-                    {{ heading_row(
-                        level=1,
-                        heading=decorate_heading(
-                                second_level_heading,
-                                second_level_group
-                            )
-                        )
-                    }}
-                    {%for beeword in beewords %}
-                        {{ word_row(beeword=beeword) }}
-                    {% endfor %}
-                    {% endfor %}
-                    {% endfor %}
-                </table>
-            </div>
-            {% endmacro %}
-
-{% macro show_words_flowy(beeword_data, grouping) %}
-{# top_level* and second_level* will be INITIALS or LENGTH, or vice versa #}
-{% set top_level_group, second_level_group = grouping[0], grouping[1] %}
-<div class="panel panel-default">
-    {%for toplevel_heading, toplevel_values in beeword_data.items() %}
-        {%for second_level_heading, beewords in toplevel_values.items() %}
-            <div class="panel-heading">
-                {{ toplevel_heading }} {{second_level_heading}}
-            </div>
-            <div class="panel-body">
-                {%for beeword in beewords %}
-                    < class="panel-body">{{ decorate_word(beeword) }}</div>
-                {% endfor %}
-            </div>
-        {% endfor %}
-    {% endfor %}
-</div>
 {% endmacro %}
