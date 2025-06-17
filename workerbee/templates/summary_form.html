@@ -17,45 +17,33 @@
             <span class="subtext">The yellow letter in the middle</span>
         </p>
         <p><input type='text', name={{ REQUIRED_LETTER }}
-            value=
-                {% if args %}
-                    {{ args[REQUIRED_LETTER] }}
-                {% else %}
-                    "u"
-                {% endif %}
-            >
+            value="{{ session[USER_ARGS][REQUIRED_LETTER] }}">
         </p>
         <p class="h6">
             Enter the other letters:<br>
             <span class="subtext">The {{NUM_ALLOWED_LETTERS}} letters around the middle letter</span>
         </p>
         <p><input type='text', name={{ ALLOWED_LETTERS }}
-            value=
-                {% if args %}
-                    {{ args[ALLOWED_LETTERS] }}
-                {% else %}
-                    "ncdeli"
-                {% endif %}
-            >
+            value="{{ session[USER_ARGS][ALLOWED_LETTERS] }}">
         </p>
         <p class="h6">
             {% set show_words_checked = 'checked' if session[USER_ARGS][SHOW_WORDS] == SHOW_WORDS else '' %}
             <label for="{{ SHOW_WORDS }}">Show entire word list</label>            
-            <input type="checkbox" id="{{ SHOW_WORDS}}" name="{{ SHOW_WORDS}}" value="{{ SHOW_WORDS }}" {{ show_words_checked }}>
+            <input type="checkbox" id="{{ SHOW_WORDS}}" name="{{ SHOW_WORDS}}" value="{{ SHOW_WORDS }}"
+                {{ 'checked' if session[USER_ARGS][SHOW_WORDS] == SHOW_WORDS else '' }}
+            >
         </p>
         <p class="h6">
             Sort word lists (by number of words):
         </p>
         <p>
-            {% set ascending_checked = 'checked' if args[SUMMARY_SORT] == ASCENDING else '' %}
-            {% set descending_checked = 'checked' if args[SUMMARY_SORT] == DESCENDING else '' %}
-            {% if not ascending_checked and not descending_checked %}
-                {# descending as default #}
-                {% set descending_checked = 'checked' %}
-            {% endif %}
-            <input type="radio" name="{{ SUMMARY_SORT }}" id="{{ ASCENDING }}" value="{{ ASCENDING }}" {{ ascending_checked}}>
+            <input type="radio" name="{{ SUMMARY_SORT }}" id="{{ ASCENDING }}" value="{{ ASCENDING }}" 
+                {{ 'checked' if session[USER_ARGS][SUMMARY_SORT] == ASCENDING else '' }}
+            >
             <label for="{{ ASCENDING }}">Ascending</label><br>
-            <input type="radio" name="{{ SUMMARY_SORT }}" id="{{ DESCENDING}}" value="{{ DESCENDING}}" {{ descending_checked }}>
+            <input type="radio" name="{{ SUMMARY_SORT }}" id="{{ DESCENDING}}" value="{{ DESCENDING}}"
+                {{ 'checked' if session[USER_ARGS][SUMMARY_SORT] == DESCENDING else '' }}
+            >
             <label for="{{ DESCENDING}}">Descending</label><br>
         </p>
         <p>

@@ -129,10 +129,18 @@
                                 <p>
                                     <label for="{{FILE_TYPE}}" class="left-italic">File type:</label>
                                     <select name="{{FILE_TYPE}}">
-                                        <option value="{{ TXT }}" {{ 'selected' if session[USER_ARGS][FILE_TYPE] == TXT else '' }}>text (words only)</option>
-                                        <option value="{{ WORD_URL_CSV }}" {{ 'selected' if session[USER_ARGS][FILE_TYPE] == WORD_URL_CSV  else '' }}>csv (words, urls only)</option>
-                                        <option value="{{ CSV }}" {{ 'selected' if session[USER_ARGS][FILE_TYPE] == CSV }}>csv (all data)</option>
-                                        <option value="{{ JSON }}" {{ 'selected' if session[USER_ARGS][FILE_TYPE] == JSON }}>json (all data)</option>
+                                        <option value="{{ TXT }}" 
+                                            {{ 'selected' if session[USER_ARGS][FILE_TYPE] == TXT else '' }}>text (words only)
+                                        </option>
+                                        <option value="{{ WORD_URL_CSV }}" 
+                                            {{ 'selected' if session[USER_ARGS][FILE_TYPE] == WORD_URL_CSV  else '' }}>csv (words, urls only)
+                                        </option>
+                                        <option value="{{ CSV }}" 
+                                            {{ 'selected' if session[USER_ARGS][FILE_TYPE] == CSV }}>csv (all data)
+                                        </option>
+                                        <option value="{{ JSON }}" 
+                                            {{ 'selected' if session[USER_ARGS][FILE_TYPE] == JSON }}>json (all data)
+                                        </option>
                                     </select>
                                     <input type='submit' value='Download'><br>
                                     <span class="subtext">Check Downloads folder after download. Page does not refresh.</span>
@@ -147,13 +155,15 @@
 {% endmacro %}
 
 {% macro decorate_word(beeword) %}
-    <a
-        href={{ beeword.url }}
-        target="_blank"
-    >
+    <a href={{ beeword.url }} target="_blank">
         {% if beeword.is_pangram %}
             <span class="pangram">
-                {{ beeword.word }}&nbsp;{% if beeword.is_perfect %}{{PERFECT_MARKER}}{% else %}{{PANGRAM_MARKER}}{% endif %}
+                {{ beeword.word }}&nbsp;
+                {% if beeword.is_perfect %}
+                    {{PERFECT_MARKER}}
+                {% else %}
+                    {{PANGRAM_MARKER}}
+                {% endif %}
             </span>
         {% else %}
             <span>{{ beeword.word }}</span>
