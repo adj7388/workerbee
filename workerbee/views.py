@@ -7,6 +7,13 @@ from io import BytesIO
 from pyinstrument import Profiler
 
 
+def add_args_to_session(request_args):
+    user_args = dict(session.get(cfg.USER_ARGS, {}))
+    for k, v in request_args.items():
+        user_args[k] = v
+    return user_args
+
+
 @app.before_request
 def before_request():
     session.setdefault(
@@ -62,18 +69,9 @@ def about():
     return cfg.JINJA_ENV.get_template(cfg.ABOUT_TEMPLATE).render()
 
 
-def add_args_to_session(request_args):
-    user_args = dict(session.get(cfg.USER_ARGS, {}))
-    for k, v in request_args.items():
-        user_args[k] = v
-    session[cfg.USER_ARGS] = user_args
-    return session[cfg.USER_ARGS]
-
-
 @app.route(f"/{cfg.BEEWORD_VIEW}", methods=["GET"])
 def beewords():
-    add_args_to_session(request.args)
-    user_args = session[cfg.USER_ARGS]
+    user_args = session[cfg.USER_ARGS] = add_args_to_session(request.args)
     error_msg = error_check(args=user_args)
     if error_msg:
         flash(message=error_msg)
@@ -120,8 +118,7 @@ def summary():
     session[cfg.USER_ARGS][cfg.SHOW_WORDS] = (
         cfg.SHOW_WORDS if cfg.SHOW_WORDS in request.args else None
     )
-    add_args_to_session(request.args)
-    user_args = session[cfg.USER_ARGS]
+    user_args = session[cfg.USER_ARGS] = add_args_to_session(request.args)
     error_msg = error_check(args=user_args)
     if error_msg:
         flash(message=error_msg)
@@ -147,8 +144,7 @@ def summary():
 
 @app.route(f"/{cfg.GETFILE_VIEW}/", methods=["GET"])
 def getfile():
-    add_args_to_session(request_args=request.args)
-    user_args = session[cfg.USER_ARGS]
+    user_args = session[cfg.USER_ARGS] = add_args_to_session(request_args=request.args)
     if user_args[cfg.GROUPING] == cfg.NO_GROUPING:
         output_data = get_beewords(
             word_list=cfg.WordLists[user_args[cfg.WORD_LIST]],
@@ -165,13 +161,13 @@ def getfile():
             dictionary=cfg.Dictionaries[user_args[cfg.DICTIONARY]],
         )
     buffer = write_to_buffer(
-        output_data=output_data, file_type=session[cfg.USER_ARGS][cfg.FILE_TYPE]
+        output_data=output_data, file_type=user_args[cfg.FILE_TYPE]
     )
     return send_file(
         BytesIO(buffer.getvalue().encode(encoding="utf-8")),
         download_name=get_filename(
             metadata=output_data.metadata,
-            file_type=session[cfg.USER_ARGS][cfg.FILE_TYPE],
+            file_type=user_args[cfg.FILE_TYPE],
         ),
         as_attachment=True,
     )
