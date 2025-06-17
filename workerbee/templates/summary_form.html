@@ -6,48 +6,55 @@
 {% endblock %}
 
 {% block content %}
-    {{ page_banner(text="Show Summary Results of All Word Lists") }}
-    <form action="/{{ SUMMARY_VIEW }}" method="GET">
-        {% if PROFILING is true %}
-            <input type="hidden" name="{{ PROFILE_REQUEST_ARG }}" value="true">
-        {% endif %}
+    {{ page_banner(text="Show Summaries of All Word Lists") }}
+    <p>
+        <scan style="font-weight: bold; font-size: smaller">All Word Lists:</scan>
+        {% for word_list in WordLists.values() %}
+            <scan style="font-size: smaller">{{ word_list.name }}</scan>&nbsp;|
+        {% endfor %}
+    </p>
+    <p>
+        <form action="/{{ SUMMARY_VIEW }}" method="GET">
+            {% if PROFILING is true %}
+                <input type="hidden" name="{{ PROFILE_REQUEST_ARG }}" value="true">
+            {% endif %}
 
-        <p class="h6">
-            Enter the required letter:<br>
-            <span class="subtext">The yellow letter in the middle</span>
-        </p>
-        <p><input type='text', name={{ REQUIRED_LETTER }}
-            value="{{ session[USER_ARGS][REQUIRED_LETTER] }}">
-        </p>
-        <p class="h6">
-            Enter the other letters:<br>
-            <span class="subtext">The {{NUM_ALLOWED_LETTERS}} letters around the middle letter</span>
-        </p>
-        <p><input type='text', name={{ ALLOWED_LETTERS }}
-            value="{{ session[USER_ARGS][ALLOWED_LETTERS] }}">
-        </p>
-        <p class="h6">
-            <label for="{{ SHOW_WORDS }}">Show entire word list</label>            
-            <input type="checkbox" id="{{ SHOW_WORDS}}" name="{{ SHOW_WORDS}}" value="{{ SHOW_WORDS }}"
-                {{ 'checked' if session[USER_ARGS][SHOW_WORDS] == SHOW_WORDS else '' }}
-            >
-        </p>
-        <p class="h6">
-            Sort summaries (by number of words from each word list):
-        </p>
-        <p>
-            <input type="radio" name="{{ SUMMARY_SORT }}" id="{{ ASCENDING }}" value="{{ ASCENDING }}" 
-                {{ 'checked' if session[USER_ARGS][SUMMARY_SORT] == ASCENDING else '' }}
-            >
-            <label for="{{ ASCENDING }}">Ascending</label><br>
-            <input type="radio" name="{{ SUMMARY_SORT }}" id="{{ DESCENDING}}" value="{{ DESCENDING}}"
-                {{ 'checked' if session[USER_ARGS][SUMMARY_SORT] == DESCENDING else '' }}
-            >
-            <label for="{{ DESCENDING}}">Descending</label><br>
-        </p>
-        <p>
-            <input type='submit' value='Get Summary'>
-        </p>
-    </form>
-
+            <p class="h6">
+                Enter the required letter:<br>
+                <span class="subtext">The yellow letter in the middle</span>
+            </p>
+            <p><input type='text', name={{ REQUIRED_LETTER }}
+                value="{{ session[USER_ARGS][REQUIRED_LETTER] }}">
+            </p>
+            <p class="h6">
+                Enter the other letters:<br>
+                <span class="subtext">The {{NUM_ALLOWED_LETTERS}} letters around the middle letter</span>
+            </p>
+            <p><input type='text', name={{ ALLOWED_LETTERS }}
+                value="{{ session[USER_ARGS][ALLOWED_LETTERS] }}">
+            </p>
+            <p class="h6">
+                <label for="{{ SHOW_WORDS }}">Show entire word list</label>            
+                <input type="checkbox" id="{{ SHOW_WORDS}}" name="{{ SHOW_WORDS}}" value="{{ SHOW_WORDS }}"
+                    {{ 'checked' if session[USER_ARGS][SHOW_WORDS] == SHOW_WORDS else '' }}
+                >
+            </p>
+            <p class="h6">
+                Sort summaries (by number of words from each word list):
+            </p>
+            <p>
+                <input type="radio" name="{{ SUMMARY_SORT }}" id="{{ ASCENDING }}" value="{{ ASCENDING }}" 
+                    {{ 'checked' if session[USER_ARGS][SUMMARY_SORT] == ASCENDING else '' }}
+                >
+                <label for="{{ ASCENDING }}">Ascending</label><br>
+                <input type="radio" name="{{ SUMMARY_SORT }}" id="{{ DESCENDING}}" value="{{ DESCENDING}}"
+                    {{ 'checked' if session[USER_ARGS][SUMMARY_SORT] == DESCENDING else '' }}
+                >
+                <label for="{{ DESCENDING}}">Descending</label><br>
+            </p>
+            <p>
+                <input type='submit' value='Get Summary'>
+            </p>
+        </form>
+    </p>
 {% endblock %}
