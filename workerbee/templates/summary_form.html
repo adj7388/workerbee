@@ -15,42 +15,59 @@
                 <input type="hidden" name="{{ PROFILE_REQUEST_ARG }}" value="true">
             {% endif %}
 
-            <p class="h6">
+            <div>
                 Enter the required letter:<br>
                 <span class="subtext">The yellow letter in the middle</span>
-            </p>
-            <p><input type='text', name={{ REQUIRED_LETTER }}
+            </div>
+            <div><input type='text', name={{ REQUIRED_LETTER }}
                 value="{{ session[USER_ARGS][REQUIRED_LETTER] }}">
-            </p>
-            <p class="h6">
+            </div>
+            <div>
                 Enter the other letters:<br>
                 <span class="subtext">The {{NUM_ALLOWED_LETTERS}} letters around the middle letter</span>
-            </p>
-            <p><input type='text', name={{ ALLOWED_LETTERS }}
+            </div>
+            <div><input type='text', name={{ ALLOWED_LETTERS }}
                 value="{{ session[USER_ARGS][ALLOWED_LETTERS] }}">
-            </p>
-            <p class="h6">
-                <label for="{{ SHOW_WORDS }}">Show words with summaries</label>            
-                <input type="checkbox" id="{{ SHOW_WORDS}}" name="{{ SHOW_WORDS}}" value="{{ SHOW_WORDS }}"
-                    {{ 'checked' if session[USER_ARGS][SHOW_WORDS] == SHOW_WORDS else '' }}
-                >
-            </p>
-            <p class="h6">
+            </div>
+            <div>
                 Sort summaries (by number of words from each word list):
-            </p>
-            <p>
-                <input type="radio" name="{{ SUMMARY_SORT }}" id="{{ ASCENDING }}" value="{{ ASCENDING }}" 
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="{{ SUMMARY_SORT }}" id="{{ ASCENDING }}" value="{{ ASCENDING }}" 
                     {{ 'checked' if session[USER_ARGS][SUMMARY_SORT] == ASCENDING else '' }}
                 >
-                <label for="{{ ASCENDING }}">Ascending</label><br>
-                <input type="radio" name="{{ SUMMARY_SORT }}" id="{{ DESCENDING}}" value="{{ DESCENDING}}"
+                <label class="form-check-label" for="{{ ASCENDING }}">Ascending</label><br>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="{{ SUMMARY_SORT }}" id="{{ DESCENDING}}" value="{{ DESCENDING}}"
                     {{ 'checked' if session[USER_ARGS][SUMMARY_SORT] == DESCENDING else '' }}
                 >
-                <label for="{{ DESCENDING}}">Descending</label><br>
-            </p>
-            <p>
+                <label class="form-check-label" for="{{ DESCENDING}}">Descending</label><br>
+            </div>
+            <div>
+                <div class="form-check form-check-inline">
+                    <label class="form-check-label" for="{{ SHOW_WORDS }}">Include words with summary</label>            
+                    <input class="form-check-input" type="checkbox" id="{{ SHOW_WORDS}}" name="{{ SHOW_WORDS}}" value="{{ SHOW_WORDS }}"
+                        {{ 'checked' if session[USER_ARGS][SHOW_WORDS] == SHOW_WORDS else '' }}
+                    >
+                </div>
+                <scan style="font-weight: bold;">Sort words:</scan>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="alphabetically" id="alphabetically" value="alphabetically"
+                        {{ 'checked' if 'session' == "alphabetically" else '' }}
+                    >
+                    <label class="form-check-label" for="alphabetically">Alphabetically</label><br>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="bylength" id="bylength" value="bylength"
+                        {{ 'checked' if 'session' == "bylength" else '' }}
+                    >
+                    <label class="form-check-label" for="bylength">By word length</label><br>
+                </div>
+            </div>
+            <div>
                 <input type='submit' value='Get Summary'>
-            </p>
+            </div>
         </form>
     </p>
 {% endblock %}

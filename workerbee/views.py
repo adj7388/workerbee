@@ -24,7 +24,7 @@ def before_request():
             cfg.DICTIONARY: cfg.WIKT,
             cfg.WORD_LIST: cfg.SCOWL_DEFAULT_60,
             cfg.SUMMARY_SORT: cfg.DESCENDING,
-            cfg.SHOW_WORDS: cfg.SHOW_WORDS,
+            # cfg.SHOW_WORDS: cfg.SHOW_WORDS,
             cfg.GROUPING: cfg.INITIALS,
             cfg.FILE_TYPE: cfg.JSON,
         },
