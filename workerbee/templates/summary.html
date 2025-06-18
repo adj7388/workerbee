@@ -2,10 +2,6 @@
 
 {% from MACROS_TEMPLATE import page_banner, show_metadata %}
 
-{% block title %}
-    Summary of All Word Lists
-{% endblock %}
-
 {% macro summary_row(output_data, show_words) %}
     <tr>
         <td>{{ output_data.metadata.word_list}}</td>

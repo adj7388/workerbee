@@ -1,5 +1,11 @@
 {% extends LAYOUT_TEMPLATE %}
 
+{% block content %}
+    {{ page_banner(text='Word Results') }}
+    {{ show_metadata(metadata=metadata) }}
+    {{ show_words_grouped(beeword_data=beeword_data, grouping=grouping) }}
+{% endblock %}
+
 {% from MACROS_TEMPLATE import page_banner, show_metadata, word_row %}
 
 {% macro decorate_heading(heading, grouping) %}
@@ -61,13 +67,3 @@
         </table>
     </div>
 {% endmacro %}
-
-{% block title %}
-    Beewords! 
-{% endblock %}
-
-{% block content %}
-    {{ page_banner(text='Word Results') }}
-    {{ show_metadata(metadata=metadata) }}
-    {{ show_words_grouped(beeword_data=beeword_data, grouping=grouping) }}
-{% endblock %}
