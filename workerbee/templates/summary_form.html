@@ -3,13 +3,18 @@
 
 {% block content %}
     {{ page_banner(text="Show Summaries of All Word Lists") }}
-    <p>
-        <scan style="font-weight: bold; font-size: smaller">All Word Lists:</scan>
+    <div>
+        <span style="font-weight: bold">What's a summary?</span> The letters you enter below are used to find the Spelling Bee words in each supported word list (see below). 
+        A summary is the number of words found in each word list, including a list of all the pangrams (perfect and otherwise).</br>
+        Optionally, you can also display all the words themselves, sorted alphabetically or by word length.
+    </div>
+    <div>
+        <scan style="font-weight: bold; font-size: smaller">Supported Word Lists:</scan>
         {% for word_list in WordLists.values() %}
-            <scan style="font-size: smaller">{{ word_list.name }}</scan>&nbsp;|
+            <scan style="font-size: x-small">{{ word_list.name }}</scan>&nbsp;|
         {% endfor %}
-    </p>
-    <p>
+    </div>
+    <div>
         <form action="/{{ SUMMARY_VIEW }}" method="GET">
             {% if PROFILING is true %}
                 <input type="hidden" name="{{ PROFILE_REQUEST_ARG }}" value="true">
@@ -19,18 +24,22 @@
                 Enter the required letter:<br>
                 <span class="subtext">The yellow letter in the middle</span>
             </div>
-            <div><input type='text', name={{ REQUIRED_LETTER }}
+            <div>
+                <input type='text', name={{ REQUIRED_LETTER }}
                 value="{{ session[USER_ARGS][REQUIRED_LETTER] }}">
             </div>
             <div>
                 Enter the other letters:<br>
                 <span class="subtext">The {{NUM_ALLOWED_LETTERS}} letters around the middle letter</span>
             </div>
-            <div><input type='text', name={{ ALLOWED_LETTERS }}
+            <div>
+                <input type='text', name={{ ALLOWED_LETTERS }}
                 value="{{ session[USER_ARGS][ALLOWED_LETTERS] }}">
             </div>
+
+
             <div>
-                Sort summaries (by number of words from each word list):
+                Sort summaries by number of words:
             </div>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="{{ SUMMARY_SORT }}" id="{{ ASCENDING }}" value="{{ ASCENDING }}" 
@@ -44,30 +53,50 @@
                 >
                 <label class="form-check-label" for="{{ DESCENDING}}">Descending</label><br>
             </div>
+
+
             <div>
-                <div class="form-check form-check-inline">
-                    <label class="form-check-label" for="{{ SHOW_WORDS }}">Include words with summary</label>            
-                    <input class="form-check-input" type="checkbox" id="{{ SHOW_WORDS}}" name="{{ SHOW_WORDS}}" value="{{ SHOW_WORDS }}"
+                <div>
+                    <label for="{{ SHOW_WORDS }}">Include words in summaries</label>            
+                    <input type="checkbox" id="{{ SHOW_WORDS}}" name="{{ SHOW_WORDS}}" value="{{ SHOW_WORDS }}"
                         {{ 'checked' if session[USER_ARGS][SHOW_WORDS] == SHOW_WORDS else '' }}
                     >
                 </div>
-                <scan style="font-weight: bold;">Sort words:</scan>
+
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" name="alphabetically" id="alphabetically" value="alphabetically"
-                        {{ 'checked' if 'session' == "alphabetically" else '' }}
+                    <input class="form-check-input" type="radio" name="word_sort" id="alphabetically" value="alphabetically"
+                        {{ 'checked' if 'session' == 'session' else '' }}
                     >
-                    <label class="form-check-label" for="alphabetically">Alphabetically</label><br>
+                    <label class="form-check-label" for="alphabetically">Sort words alphabetically</label><br>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" name="bylength" id="bylength" value="bylength"
+                    <input class="form-check-input" type="radio" name="word_sort" id="bylength" value="bylength"
                         {{ 'checked' if 'session' == "bylength" else '' }}
                     >
-                    <label class="form-check-label" for="bylength">By word length</label><br>
+                    <label class="form-check-label" for="bylength">Sort words by word length</label><br>
                 </div>
             </div>
+
             <div>
                 <input type='submit' value='Get Summary'>
             </div>
         </form>
-    </p>
+    </div>
+    
+    <script>
+
+        const include_words = document.getElementById('{{ SHOW_WORDS }}');
+        const alphabetically = document.getElementById('alphabetically');
+        const bylength = document.getElementById('bylength');
+
+        include_words.addEventListener('change', () => {
+            const enabled = include_words.checked;
+            alphabetically.disabled = !enabled;
+            bylength.disabled = !enabled;
+        });
+
+        include_words.dispatchEvent(new Event('change'));
+
+    </script>
+
 {% endblock %}
