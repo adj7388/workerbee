@@ -6,6 +6,7 @@
     <tr>
         <td>{{ output_data.metadata.word_list}}</td>
         <td>{{ output_data.metadata.num_beewords }}</td>
+        <td>{{ 'Yes' if output_data.metadata.bingo else 'No' }}</td>
         <td>
             {% for pangram in output_data.metadata.perfect_pangrams %}
                 <span>{{ pangram.word }}</span>
@@ -20,8 +21,8 @@
     {% if session[USER_ARGS][SHOW_WORDS] == SHOW_WORDS %}
         <tr>
             <td style="text-align: right;">Words</td>
-            <td colspan="3">
-{#                {% set sort_attr = session[USER_ARGS][WORD_SORT] %}
+            <td colspan="4">
+                {% set sort_attr = session[USER_ARGS][WORD_SORT] %}
                 {% if sort_attr %}
                     {% if sort_attr == ALPHABETICALLY %}
                         {% set beeword_list = output_data.data | sort(attribute="word") %}
@@ -29,7 +30,7 @@
                         {% set beeword_list = output_data.data | sort(attribute="length") %}
                     {% endif %}
                 {% endif %}
-#}
+
                 {% for beeword in beeword_list %}
                     {{ beeword.word }}&nbsp;
                 {% endfor %}
@@ -48,7 +49,7 @@
     </p>
     <table class="table table-bordered" background="#faf3d4">
         <tr>
-            <th>Word List</th><th>Total Words</th><th>Perfect Pangrams</th><th>Non-Perfect Pangrams</th>
+            <th>Word List</th><th>Total Words</th><th>Bingo</th><th>Perfect Pangrams</th><th>Non-Perfect Pangrams</th>
         </tr>
         {% for output_data in summary %}
             {{ summary_row(output_data=output_data, show_words=show_words) }}

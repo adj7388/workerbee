@@ -118,7 +118,8 @@ def summary_form():
 def summary():
     args_copy: dict = dict(request.args)
     args_copy[cfg.SHOW_WORDS] = request.args.get(cfg.SHOW_WORDS)
-    args_copy[cfg.WORD_SORT] = request.args.get(cfg.WORD_SORT)
+    if args_copy[cfg.SHOW_WORDS]:
+        args_copy[cfg.WORD_SORT] = request.args.get(cfg.WORD_SORT)
     args = session[cfg.USER_ARGS] = add_args_to_session(args_copy)
     error_msg = error_check(args=args)
     if error_msg:

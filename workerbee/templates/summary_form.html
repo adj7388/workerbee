@@ -4,12 +4,12 @@
 {% block content %}
     {{ page_banner(text="Show Summaries of All Word Lists") }}
     <div>
-        <span style="font-weight: bold">What's a summary?</span> The required and optional letters you enter below are used to find all the Spelling Bee words in each of the supported word list (see below). 
-        A summary is the count the words found in each word list, plus all pangrams and whether the letters produced a bingo (meaning at least one word was found starting with each letter provided).
-        <span style="font-weight: bold; font-size: smaller">Optional:</span> Check "Include words in summaries" to also display the words found in each word list, sorted alphabetically or by word length.
+        <span style="font-weight: bold">What's a summary?</span></br>
+        A search for Spelling Bee words is performed for each word list shown below. A summary for each word list shows 1) a count of words found, 2) pangrams, and 3) whether the letters produced a bingo.
+        <span style="font-weight: bold; font-size: smaller">Optionally,</span> the summary can also show all the words found in each word list.
     </div>
     <div>
-        <scan style="font-weight: bold; font-size: smaller">Supported Word Lists:</scan>
+        <scan style="font-weight: bold; font-size: smaller">Word Lists:</scan>
         {% for word_list in WordLists.values() %}
             <scan style="font-size: x-small">{{ word_list.name }}</scan>&nbsp;|
         {% endfor %}
