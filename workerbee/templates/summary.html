@@ -17,11 +17,20 @@
             {% endfor %}
         </td>
     </tr>
-    {% if show_words == SHOW_WORDS %}
+    {% if session[USER_ARGS][SHOW_WORDS] == SHOW_WORDS %}
         <tr>
             <td style="text-align: right;">Words</td>
             <td colspan="3">
-                {% for beeword in output_data.data %}
+{#                {% set sort_attr = session[USER_ARGS][WORD_SORT] %}
+                {% if sort_attr %}
+                    {% if sort_attr == ALPHABETICALLY %}
+                        {% set beeword_list = output_data.data | sort(attribute="word") %}
+                    {% elif sort_attr == BYWORDLENGTH %}
+                        {% set beeword_list = output_data.data | sort(attribute="length") %}
+                    {% endif %}
+                {% endif %}
+#}
+                {% for beeword in beeword_list %}
                     {{ beeword.word }}&nbsp;
                 {% endfor %}
             </td>

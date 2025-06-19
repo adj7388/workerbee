@@ -23,10 +23,11 @@ def before_request():
             cfg.ALLOWED_LETTERS: "ncdeli",
             cfg.DICTIONARY: cfg.WIKT,
             cfg.WORD_LIST: cfg.SCOWL_DEFAULT_60,
-            cfg.SUMMARY_SORT: cfg.DESCENDING,
-            # cfg.SHOW_WORDS: cfg.SHOW_WORDS,
             cfg.GROUPING: cfg.INITIALS,
             cfg.FILE_TYPE: cfg.JSON,
+            cfg.SUMMARY_SORT: cfg.DESCENDING,
+            cfg.SHOW_WORDS: False,
+            cfg.WORD_SORT: cfg.ALPHABETICALLY,
         },
     )
     if cfg.PROFILING is True and cfg.PROFILE_REQUEST_ARG in request.args:
@@ -115,11 +116,11 @@ def summary_form():
 
 @app.route(f"/{cfg.SUMMARY_VIEW}", methods=["GET"])
 def summary():
-    session[cfg.USER_ARGS][cfg.SHOW_WORDS] = (
-        cfg.SHOW_WORDS if cfg.SHOW_WORDS in request.args else None
-    )
-    user_args = session[cfg.USER_ARGS] = add_args_to_session(request.args)
-    error_msg = error_check(args=user_args)
+    args_copy: dict = dict(request.args)
+    args_copy[cfg.SHOW_WORDS] = request.args.get(cfg.SHOW_WORDS)
+    args_copy[cfg.WORD_SORT] = request.args.get(cfg.WORD_SORT)
+    args = session[cfg.USER_ARGS] = add_args_to_session(args_copy)
+    error_msg = error_check(args=args)
     if error_msg:
         flash(message=error_msg)
         return redirect(f"/{cfg.SUMMARY_VIEW}")
@@ -127,8 +128,8 @@ def summary():
     for word_list in cfg.WordLists.values():
         output_data = get_beewords(
             word_list=word_list,
-            required_letter=user_args[cfg.REQUIRED_LETTER],
-            allowed_letters=user_args[cfg.ALLOWED_LETTERS],
+            required_letter=args[cfg.REQUIRED_LETTER],
+            allowed_letters=args[cfg.ALLOWED_LETTERS],
             dictionary=cfg.Dictionaries[cfg.MW],
         )
         summary.append(output_data)
@@ -136,9 +137,8 @@ def summary():
         summary=sorted(
             summary,
             key=lambda output_data: output_data.metadata.num_beewords,
-            reverse=(True if user_args[cfg.SUMMARY_SORT] == "descending" else False),
+            reverse=(True if args[cfg.SUMMARY_SORT] == "descending" else False),
         ),
-        show_words=user_args[cfg.SHOW_WORDS],
     )
 
 

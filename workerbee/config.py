@@ -43,20 +43,26 @@ SUMMARY_FORM_VIEW = "summary_form"
 SUMMARY_VIEW = "summary"
 
 # Session consts
+## for Find Words
 USER_ARGS = "user_args"
 REQUIRED_LETTER = "required"
 ALLOWED_LETTERS = "allowed"
 DICTIONARY = "dictionary"
 WORD_LIST = "word_list"
-SUMMARY_SORT = "summary_sort"
-ASCENDING = "ascending"
-DESCENDING = "descending"
-SHOW_WORDS = "show_words"
 ## for grouping
 GROUPING = "grouping"
 INITIALS = "initials"
 LENGTH = "length"
 NO_GROUPING = "no_grouping"
+## additional consts for Show Summaries
+SUMMARY_SORT = "summary_sort"
+ASCENDING = "ascending"
+DESCENDING = "descending"
+SHOW_WORDS = "show_words"
+WORD_SORT = "word_sort"
+ALPHABETICALLY = "alphabetically"
+BYWORDLENGTH = "bywordlength"
+
 ## for downloads (double as file extensions)
 FILE_TYPE = "file_type"
 CSV = "csv"
