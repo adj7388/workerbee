@@ -1,3 +1,4 @@
+from collections import defaultdict
 from . import app
 from . import config as cfg
 from .utils import error_check, get_filename, write_to_buffer
@@ -111,6 +112,32 @@ def summary_form():
     return cfg.JINJA_ENV.get_template(cfg.SUMMARY_FORM_TEMPLATE).render()
 
 
+def reshape_data(output_data: list[cfg.OutputData], args: dict) -> list[cfg.OutputData]:
+
+    def get_key(beeword: cfg.Beeword, word_sort: str):
+        return beeword.length if word_sort == cfg.LENGTH else beeword.word[0]
+
+    summary_sort = args[cfg.SUMMARY_SORT]
+    word_sort = (
+        cfg.LENGTH if args[cfg.WORD_SORT] == cfg.BYWORDLENGTH else cfg.ALPHABETICALLY
+    )
+    reshaped_data: list[cfg.OutputData] = []
+    for output in output_data:
+        new_data = defaultdict(list)
+        saved_key = get_key(beeword=output.data[0], word_sort=word_sort)
+        for beeword in output.data:
+            this_key = get_key(beeword, word_sort=word_sort)
+            saved_key = this_key if saved_key != this_key else saved_key
+            new_data[this_key].append(beeword.word)
+        reshaped_data.append(cfg.OutputData(data=new_data, metadata=output.metadata))
+    reshaped_data = sorted(
+        reshaped_data,
+        key=lambda output_data: output_data.metadata.num_beewords,
+        reverse=(True if summary_sort == "descending" else False),
+    )
+    return reshaped_data
+
+
 @app.route(f"/{cfg.SUMMARY_VIEW}", methods=["GET"])
 def summary():
     args_copy: dict = dict(request.args)
@@ -131,12 +158,9 @@ def summary():
             dictionary=cfg.Dictionaries[cfg.MW],
         )
         summary.append(output_data)
+    reshaped_data = reshape_data(output_data=summary, args=args)
     return cfg.JINJA_ENV.get_template(cfg.SUMMARY_TEMPLATE).render(
-        summary=sorted(
-            summary,
-            key=lambda output_data: output_data.metadata.num_beewords,
-            reverse=(True if args[cfg.SUMMARY_SORT] == "descending" else False),
-        ),
+        summary=reshaped_data,
     )
 
 
