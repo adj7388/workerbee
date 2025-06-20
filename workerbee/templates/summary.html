@@ -2,7 +2,7 @@
 
 {% from MACROS_TEMPLATE import page_banner, show_metadata %}
 
-{% macro summary_row(output_data, show_words) %}
+{% macro summary_row(output_data) %}
     <tr>
         <td>{{ output_data.metadata.word_list}}</td>
         <td>{{ output_data.metadata.num_beewords }}</td>
@@ -20,8 +20,8 @@
     </tr>
     {% if session[USER_ARGS][SHOW_WORDS] == SHOW_WORDS %}
         <tr>
-            <td style="text-align: right;">Words</td>
-            <td colspan="4">
+            <td style="text-align: right; background-color: aliceblue;">Words</td>
+            <td style="background-color: aliceblue;" colspan="4">
                 {% set sort_attr = session[USER_ARGS][WORD_SORT] %}
                 {% if sort_attr %}
                     {% if sort_attr == ALPHABETICALLY %}
@@ -30,7 +30,6 @@
                         {% set beeword_list = output_data.data | sort(attribute="length") %}
                     {% endif %}
                 {% endif %}
-
                 {% for beeword in beeword_list %}
                     {{ beeword.word }}&nbsp;
                 {% endfor %}
@@ -52,7 +51,7 @@
             <th>Word List</th><th>Total Words</th><th>Bingo</th><th>Perfect Pangrams</th><th>Non-Perfect Pangrams</th>
         </tr>
         {% for output_data in summary %}
-            {{ summary_row(output_data=output_data, show_words=show_words) }}
+            {{ summary_row(output_data=output_data) }}
         {% endfor %}
     </table>
 
