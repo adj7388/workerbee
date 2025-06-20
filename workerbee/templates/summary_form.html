@@ -5,8 +5,8 @@
     {{ page_banner(text="Show Summaries of All Word Lists") }}
     <div>
         <span style="font-weight: bold">What's a summary?</span></br>
-        A search for Spelling Bee words is performed for each word list shown below. A summary for each word list shows 1) a count of words found, 2) pangrams, and 3) whether the letters produced a bingo.
-        <span style="font-weight: bold; font-size: smaller">Optionally,</span> the summary can also show all the words found in each word list.
+        A search for Spelling Bee words is performed for each word list shown below. A summary for each word list shows 1) the number of words found, 2) pangrams (perfect and otherwise), and 3) whether the letters produced a bingo.
+        <span style="font-weight: bold; font-size: smaller">Optionally,</span> the summary can also show all the words found in each list.
     </div>
     <div>
         <scan style="font-weight: bold; font-size: smaller">Word Lists:</scan>
@@ -58,7 +58,7 @@
                     <input type="checkbox" id="{{ SHOW_WORDS}}" name="{{ SHOW_WORDS}}" value="{{ SHOW_WORDS }}"
                         {{ 'checked' if session[USER_ARGS][SHOW_WORDS] == SHOW_WORDS else '' }}
                     >
-                    <label for="{{ SHOW_WORDS }}">Include words in summaries</label>            
+                    <label for="{{ SHOW_WORDS }}">Include all words in summaries</label>            
                 </div>
 
                 <div class="form-check form-check-inline">

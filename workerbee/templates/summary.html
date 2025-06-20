@@ -4,15 +4,15 @@
 
 {% macro summary_row(output_data) %}
     <tr>
-        <td>{{ output_data.metadata.word_list}}</td>
-        <td>{{ output_data.metadata.num_beewords }}</td>
-        <td>{{ 'Yes' if output_data.metadata.bingo else 'No' }}</td>
-        <td>
+        <td class="align-middle">{{ output_data.metadata.word_list}}</td>
+        <td class="align-middle">{{ output_data.metadata.num_beewords }}</td>
+        <td class="align-middle">{{ 'Yes' if output_data.metadata.bingo else 'No' }}</td>
+        <td class="align-middle">
             {% for pangram in output_data.metadata.perfect_pangrams %}
                 <span>{{ pangram.word }}</span>
             {% endfor %}
         </td>
-        <td>
+        <td class="align-middle">
             {% for pangram in output_data.metadata.nonperfect_pangrams %}
                 <span>{{ pangram.word }}</span>
             {% endfor %}
