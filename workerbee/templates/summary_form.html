@@ -1,5 +1,5 @@
 {% extends LAYOUT_TEMPLATE %}
-{% from MACROS_TEMPLATE import page_banner %}
+{% from MACROS_TEMPLATE import page_banner, dictionary_dropdown %}
 
 {% block content %}
     {{ page_banner(text="Show Summaries of All Word Lists") }}
@@ -73,10 +73,13 @@
                     >
                     <label class="form-check-label" for="bylength">Sort words by word length</label><br>
                 </div>
-            </div>
-
-            <div class="mt-3">
-                <input type='submit' value='Get Summary'>
+                <div class="d-inline-block">
+                    <label id="{{ DICTIONARY }}label" for={{ DICTIONARY}} class="form-label me-2">Link words to:</label>
+                    {{ dictionary_dropdown() }}
+                </div>
+                <div class="mt-3">
+                    <input type='submit' value='Get Summary'>
+                </div>
             </div>
         </form>
     </div>
@@ -86,11 +89,15 @@
         const include_words = document.getElementById('{{ SHOW_WORDS }}');
         const alphabetically = document.getElementById('{{ ALPHABETICALLY }}');
         const bylength = document.getElementById('{{ BYWORDLENGTH }}');
+        const dictionarylabel = document.getElementById('{{ DICTIONARY }}label');
+        const dictionary = document.getElementById('{{ DICTIONARY }}');
 
         include_words.addEventListener('change', () => {
             const enabled = include_words.checked;
             alphabetically.disabled = !enabled;
             bylength.disabled = !enabled;
+            dictionary.disabled = !enabled;
+            dictionarylabel.classList.toggle('text-black-50', !enabled);
         });
 
         include_words.dispatchEvent(new Event('change'));

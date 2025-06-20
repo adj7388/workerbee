@@ -154,6 +154,18 @@
     </div>
 {% endmacro %}
 
+{% macro dictionary_dropdown() %}
+    <select id="{{ DICTIONARY }}" name="{{ DICTIONARY }}">
+        {% for k, v in Dictionaries.items() %}
+            <option value="{{ k }}"
+                {% if session[USER_ARGS][DICTIONARY] == k %}
+                    selected
+                {% endif %}
+            >{{ v.name }}</option>
+        {% endfor %}
+    </select>
+{% endmacro %}
+
 {% macro word_row(beeword) %}
     <tr>
         <td></td>
@@ -165,15 +177,11 @@
 {% endmacro %}
 
 {% macro decorate_word(beeword) %}
-    <a href={{ beeword.url }} target="_blank">
+    <a class="text-reset text-decoration-none" href="{{ beeword.url }}" target="_blank">
         {% if beeword.is_pangram %}
+            {% set pangram_marker = PERFECT_MARKER if beeword.is_perfect else PANGRAM_MARKER %}
             <span class="pangram">
-                {{ beeword.word }}&nbsp;
-                {% if beeword.is_perfect %}
-                    {{PERFECT_MARKER}}
-                {% else %}
-                    {{PANGRAM_MARKER}}
-                {% endif %}
+                {{ beeword.word }}{{ pangram_marker}}
             </span>
         {% else %}
             <span>{{ beeword.word }}</span>

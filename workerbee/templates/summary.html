@@ -1,6 +1,6 @@
 {% extends LAYOUT_TEMPLATE %}
 
-{% from MACROS_TEMPLATE import page_banner, show_metadata %}
+{% from MACROS_TEMPLATE import page_banner, decorate_word %}
 
 {% macro summary_row(output_data) %}
     <tr>
@@ -20,12 +20,13 @@
     </tr>
     {% if session[USER_ARGS][SHOW_WORDS] == SHOW_WORDS %}
         <tr>
-            <td style="text-align: right; background-color: aliceblue;">Words</td>
-            <td style="background-color: aliceblue;" colspan="4">
+            <td style="font-size: smaller; text-align: right; background-color: aliceblue;">Words</td>
+            <td style="background-color: aliceblue; font-size: smaller;" colspan="4">
                 {% for key in output_data.data.keys() | sort %}
-                    <span style="font-weight: bold;">[{{ key | upper }}]&nbsp;</span>
+                    {% set key_suffix = ' letters' if session[USER_ARGS][WORD_SORT] == BYWORDLENGTH else '' %}
+                    <span style="font-weight: bold;">[{{ key | upper }}{{ key_suffix }}]&nbsp;</span>
                     {% for beeword in output_data.data[key] %}
-                        {{ beeword }}&nbsp;
+                        {{ decorate_word(beeword) }}&nbsp;
                     {% endfor %}
                 {% endfor %}
             </td>
