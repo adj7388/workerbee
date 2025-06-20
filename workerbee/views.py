@@ -108,10 +108,7 @@ def beewords():
 def summary_form():
     if request.args:
         abort(400)
-    return cfg.JINJA_ENV.get_template(cfg.SUMMARY_FORM_TEMPLATE).render(
-        word_lists=cfg.WordLists,
-        dictionaries=cfg.Dictionaries,
-    )
+    return cfg.JINJA_ENV.get_template(cfg.SUMMARY_FORM_TEMPLATE).render()
 
 
 @app.route(f"/{cfg.SUMMARY_VIEW}", methods=["GET"])

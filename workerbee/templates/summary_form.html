@@ -91,9 +91,6 @@
             const enabled = include_words.checked;
             alphabetically.disabled = !enabled;
             bylength.disabled = !enabled;
-            // if (alphabetically.disabled && bylength.disabled) {
-            //     alphabetically.checked = true;
-            // }
         });
 
         include_words.dispatchEvent(new Event('change'));
