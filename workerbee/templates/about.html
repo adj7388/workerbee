@@ -2,12 +2,51 @@
 {% from MACROS_TEMPLATE import page_banner %}
 
 {% block content %}
-    {{ page_banner(text="About Worker Bee") }}
-    <h5>This app can help you with Spelling Bee, a daily puzzle on the New York Times.</h5>
-    <p>Having said that, this application is not, never was, and never will be, associated in any way whatsoever with the New York Times or any of its affiliates. I created the app for my personal use, then put it on the internet so I could access it from anywhere when I'm out of town and still have time for Spelling Bee.</p>
-    <p>You're welcome to use it, but just don't piss me off, e.g., by deliberately overloading the poor old laptop it's running on, trying to hack my web server, etc. Bad actors are kindly requested to shove off. Thanks.</p>
-    <h5>Why did I create this?</h5>
-    <p>Through years of playing Spelling Bee, especially when I made it to Genius level, I always wondered which words I missed along the way. I was also curious about how to use software to create puzzles like this. So I wrote this app for fun.</p>
-    <p>I usually try to get to GABM (what the cool kids call: Genius All By Myself), then use this app to check what words I didn't find. Used in that way, it's a good tool for learning new words and solving future puzzles.</p>
-    <p>Obviously, you could also use the app to kinda, sorta cheat and get to Queen Bee level every day. Go ahead. I won't judge.</p>
+    {{ page_banner(text="About this app") }}
+    <h5>Let's do this FAQ style</h5>
+    <h6>What's Spelling Bee?</h6>
+    <p>
+        It's a word game published by the New York Times. 
+        <a href="https://www.nytimes.com/puzzles/spelling-bee" target="_blank"> Have a look</a>, then meet me back here.
+    </p>
+    <h6>So you are affiliated with the New York Times?</h6>
+    <p>
+        No. Not in any way whatsoever.
+    </p>
+    <h6>Why did you create this app then?</h6>
+    <p>
+        Out of curiosity. Through years of playing Spelling Bee, 
+        my goal was to find enough words to make GABM (Genius All By Myself. See the link above. It will be explained in there somewhere). 
+    <p>
+        But even when you reach Genius level, there are still more words. 
+        If you find all the rest, you are Queen Bee! So after reaching Genius, I always wondered what words I missed along the way.
+    </p>
+    <h6>So you created this app to cheat your way to Queen Bee...</h6>
+    <p>
+        What? Cheat? Why of all the ... No! I've never been so insulted.
+    </p>
+    <h6>So why then?</h6>
+    <p>
+        I like word games, and I was curious about how to write software to create games like Spelling Bee. I had worked on plenty of 
+        software projects in the past, but never anything like this, so it was an interesting challenge.
+    </p> 
+    <p>
+        Bottom line is I wrote did it for fun. I could get better at solving Spelling Bee by discovering the words I had missed 
+        on they way to Genuis, while also fiddling arournd with my own word game program.
+    </p>
+    <h6>lol. You said "program". Nobody says that any more. How old are you?</h6>
+    <p>
+        Don't ask.
+    </p>
+    <h6>Why did you put it on the internet?</h6>
+    <p>
+        So I could give a couple of friends access to it (they have no clue how to run a web server on their laptops).
+        This also had the added benefit of letting me use it while on the road without having to run it locally on my laptop.
+    </p>
+    <h6>Can I tell my friends about it?</h6>
+    <p>
+        No. Don't tell anyone. It's a secret web site. Of course, you can tell them. While you're at it, tell me not to piss me off, 
+        e.g., by trying to hack my server, or other assholery. Bad actors are kindly requested to shove off. Thanks.
+    </p>
+
 {% endblock %}

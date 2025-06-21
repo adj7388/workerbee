@@ -38,17 +38,21 @@
 {% block content %}
  
     {{ page_banner(text='Word List Summary') }}
-    <p>
-        <span style="font-weight: bold">Required letter: </span>&nbsp;{{ summary[0].metadata.required }}<br>
-        <span style="font-weight: bold">Allowed letters:</span>&nbsp;{{ summary[0].metadata.allowed }}
-    </p>
-    <table class="table table-bordered" background="#faf3d4">
-        <tr>
-            <th>Word List</th><th>Total Words</th><th>Bingo</th><th>Perfect Pangrams</th><th>Non-Perfect Pangrams</th>
-        </tr>
-        {% for output_data in summary %}
-            {{ summary_row(output_data=output_data) }}
-        {% endfor %}
-    </table>
+    <div>
+        <span style="font-weight: bold">Required letter:</span>&nbsp;{{ summary[0].metadata.required }}<br>
+        <span style="font-weight: bold">Allowed letters:</span>&nbsp;{{ summary[0].metadata.allowed }}<br>
+        <span style="font-weight: bold">Perfect pangrams marked:</span>&nbsp;{{ PERFECT_MARKER }}<br>
+        <span style="font-weight: bold">Other pangrams marked:</span>&nbsp;{{ PANGRAM_MARKER }}
+    </div>
+    <div class="mt-3">
+        <table class="table table-bordered" background="#faf3d4">
+            <tr>
+                <th>Word List</th><th>Total Words</th><th>Bingo</th><th>Perfect Pangrams</th><th>Non-Perfect Pangrams</th>
+            </tr>
+            {% for output_data in summary %}
+                {{ summary_row(output_data=output_data) }}
+            {% endfor %}
+        </table>
+    </div>
 
 {% endblock %}
