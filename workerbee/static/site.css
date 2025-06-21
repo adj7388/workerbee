@@ -51,3 +51,11 @@ label.left-italic, td.left-italic {
 td.letters {
     font-weight: bold;
 }
+
+.help_about_heading {
+    font-weight: bold;
+}            
+
+body {
+    padding-top: 70px; /* Prevent content from being hidden under the navbar */
+}

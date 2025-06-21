@@ -1,60 +1,89 @@
 {% extends LAYOUT_TEMPLATE %}
 {% from MACROS_TEMPLATE import page_banner %}
 
-{% block style %}
-    {{ super() }}
-    <style>
-        h6 {
-            font-weight: bold;
-        }            
-    </style>
-{% endblock %}
-
 {% block content %}
     {{ page_banner(text="About this app") }}
-    <h6>What's Spelling Bee?</h6>
+    <h6 class="help_about_heading">Credits</h6>
     <p>
-        It's a word game published by the New York Times. 
-        <a href="https://www.nytimes.com/puzzles/spelling-bee" target="_blank"> Have a look</a>, then meet me back here.
+        All of the word lists in this app come from 
+        <a href="http://wordlist.aspell.net/" target="_blank">
+            SCOWL (And Friends)
+        </a> 
+        and are 
+        <a href="http://wordlist.aspell.net/scowl-readme/" target="_blank">
+            Copyright 2000-2018 by Kevin Atkinson
+        </a>. 
     </p>
-    <h6>So you are affiliated with the New York Times?</h6>
+    <h6 class="help_about_heading">What's Spelling Bee?</h6>
     <p>
-        No. Not in any way whatsoever.
+        It's a word game published by the New York Times. If you're not familiar with it, 
+        take a look at the <a href="https://www.nytimes.com/puzzles/spelling-bee" target="_blank">
+        Spelling Bee</a> site.
     </p>
-    <h6>Why did you create this app then?</h6>
+    <h6 class="help_about_heading">Are you affiliated with the New York Times then?</h6>
+    <p>
+        No. Not at all. Just a Spelling Bee solver.
+    </p>
+    <h6 class="help_about_heading">Why did you create this app?</h6>
     <p>
         Out of curiosity. Through years of playing Spelling Bee, 
-        my goal was to find enough words to make GABM (Genius All By Myself. See the link above. It will be explained in there somewhere). 
+        my goal every day was to reach GABM - Genius All By Myself. 
+        (GABM will be explained somewhere in that Spelling Bee link above). 
     <p>
-        But even when you reach Genius level, there are still more words. 
-        If you find all the rest, you are Queen Bee! So after reaching Genius, I always wondered what words I missed along the way.
+        But even when you reach Genius level, that's not the end. There are still more words 
+        and, if you find all the rest, you are crowned Queen Bee! So after reaching Genius level, 
+        I always wondered what words I had missed along the way.
     </p>
-    <h6>So you created this app to cheat your way to Queen Bee...</h6>
     <p>
-        What? Cheat? Why of all the ... I've never been so insulted.
-    </p>
-    <h6>So why then?</h6>
-    <p>
-        I like word games, and I was curious about how to write software to create games like Spelling Bee. I had worked on plenty of 
-        software projects in the past, but never anything like this, so it was an interesting challenge.
+        I like word games, and I was curious about how to write software to create games 
+        like Spelling Bee. I had worked on plenty of software projects in the past, 
+        but never anything like Spelling Bee, so it was an interesting challenge.
     </p> 
     <p>
-        Bottom line is I wrote did it for fun. I could get better at solving Spelling Bee by discovering the words I missed 
-        on my way to Genuis, while also fiddling around with my own word program.
+        Bottom line is I created it for fun. I could learn new words  
+        by discovering the ones I missed on my way to Genius, get better at solving Spelling Bee, 
+        and have fun fiddling around with an interesting software project.
     </p>
-    <h6>lol. You said "program". Nobody says that any more.</h6>
+    <h6 class="help_about_heading">Besides cheating at Spelling Bee &#x1F604;, is this app useful for anything else?</h6>
     <p>
-        Do you have any more questions?
+        <scan style="font-weight: bold;">TLDR;</scan> Well, it uses several SCOWL lists
+        as word sources. So if you're a Spelling Bee solver that's looking to find and learn 
+        new words, you can play around with Show Summaries, which searches 
+        all of the supported word lists simultaneously and shows word counts, 
+        pangrams, and other stuff from each of them.
+    <p>
+        Otherwise, Find Words has a more useful display when searching just one word list and 
+        finding potential Spelling Bee words.
+    </p> 
+    <p>
+        Explore the 
+        <a href="http://wordlist.aspell.net/" target="_blank">SCOWL site</a> for an exhaustive 
+        explanation of all the word lists there, how they were compiled, what's in them, and 
+        all the details you could ever want about lists of English words. 
+        There is a lot to know and they know it all.
     </p>
-    <h6>Why did you put it on the internet?</h6>
     <p>
-        So I could give a couple of friends access to it (they have no clue how to run a web server on their laptops).
-        This also had the added benefit of letting me use it while on the road without having to run it locally on my laptop.
+        <scan style="font-weight: bold;">More Details</scan>: When I was planning out this project, 
+        I realized that, to find Spelling Bee words 
+        from a set of random letters, you need an excellent source of English words (I know, duh). 
+        After much searching, I finally found a random list online that contained more than 
+        370,000 English words, and lot of crufty abbreviations, foreign words and what-not. 
+        That list often produced 
+        hundreds of Spelling Bee words&mdash;way too many to be useful. The signal to noise ratio was 
+        extremely low.
+    <p>
+        Luckily, I stumbled onto the SCOWL site where some very 
+        smart people have joined forces to create not just one word list, but several. It's an 
+        impressive array of lists mainly, though not exclusively, for spell checking in American, 
+        British, Australian, and other flavors of English.
     </p>
-    <h6>Can I tell my friends about it?</h6>
     <p>
-        No. Don't tell anyone. It's a secret web site. Of course, you can tell them. While you're at it, also tell them not to piss me off, 
-        e.g., by trying to hack my server, or performing other feats of assholery. Bad actors are kindly requested to shove off. Thanks.
+        So if you are interested in words or exploring word lists, or you're having trouble 
+        finding the right list to use for a given Spelling Bee puzzle, 
+        you may want to play around 
+        with Show Summaries, which searches all the word lists simultaneously and 
+        displays a summary of what it finds in all of them, optionally including the 
+        actual words from each list.
     </p>
 
 {% endblock %}
