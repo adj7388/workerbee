@@ -68,3 +68,12 @@ h3 {
 body {
     padding-top: 70px; /* Prevent content from being hidden under the navbar */
 }
+
+.unstyled-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.unstyled-link:hover {
+    text-decoration: underline;
+}

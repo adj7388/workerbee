@@ -177,7 +177,7 @@
 {% endmacro %}
 
 {% macro decorate_word(beeword) %}
-    <a class="text-reset text-decoration-none" href="{{ beeword.url }}" target="_blank">
+    <a class="unstyled-link" href="{{ beeword.url }}" target="_blank">
         {% if beeword.is_pangram %}
             {% set pangram_marker = PERFECT_MARKER if beeword.is_perfect else PANGRAM_MARKER %}
             <span class="pangram">
