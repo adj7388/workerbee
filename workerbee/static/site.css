@@ -54,16 +54,16 @@ td.letters {
 
 h1 {
     font-size: larger;
-    /* font-weight: bold; */
 }
 
 h2 {
-    font-size: medium;
+    font-size: large;
     font-weight: bold;
 }
 
 h3 {
-    font-size: medium;
+    font-size: small;
+    font-weight: bold;
 }
 body {
     padding-top: 70px; /* Prevent content from being hidden under the navbar */
