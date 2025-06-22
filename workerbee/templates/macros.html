@@ -176,12 +176,12 @@
     </tr>
 {% endmacro %}
 
-{% macro decorate_word(beeword) %}
-    <a class="unstyled-link" href="{{ beeword.url }}" target="_blank">
+{% macro decorate_word(beeword, anchor_class="unstyled-link", pangram_class="pangram", show_marker=True) %}
+    <a class="{{anchor_class}}" href="{{ beeword.url }}" target="_blank">
         {% if beeword.is_pangram %}
             {% set pangram_marker = PERFECT_MARKER if beeword.is_perfect else PANGRAM_MARKER %}
-            <span class="pangram">
-                {{ beeword.word }}{{ pangram_marker}}
+            <span class="{{ pangram_class }}">
+                {{ beeword.word }}{{ pangram_marker if show_marker else "" }}
             </span>
         {% else %}
             <span>{{ beeword.word }}</span>

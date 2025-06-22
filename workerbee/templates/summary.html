@@ -9,12 +9,12 @@
         <td class="align-middle">{{ 'Yes' if output_data.metadata.bingo else 'No' }}</td>
         <td class="align-middle">
             {% for pangram in output_data.metadata.perfect_pangrams %}
-                <span>{{ pangram.word }}</span>
+                {{ decorate_word(pangram, show_marker=False, pangram_class="") }}
             {% endfor %}
         </td>
         <td class="align-middle">
             {% for pangram in output_data.metadata.nonperfect_pangrams %}
-                <span>{{ pangram.word }}</span>
+                {{ decorate_word(pangram, show_marker=False, pangram_class="") }}
             {% endfor %}
         </td>
     </tr>
