@@ -1,9 +1,9 @@
 {% macro page_banner(text='') %}
     {% set banner = 'Worker Bee' %}
     {% if text %}
-        <h4 class="banner">{{ text }}</h4>
+        <h1 class="banner">{{ text }}</h1>
     {% else %}
-        <h4 class="banner">{{ banner }}</h4>
+        <h1 class="banner">{{ banner }}</h1>
     {% endif %}
 {% endmacro %}
 

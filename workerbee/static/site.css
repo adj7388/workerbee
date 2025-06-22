@@ -52,10 +52,19 @@ td.letters {
     font-weight: bold;
 }
 
-.help_about_heading {
-    font-weight: bold;
-}            
+h1 {
+    font-size: larger;
+    /* font-weight: bold; */
+}
 
+h2 {
+    font-size: medium;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: medium;
+}
 body {
     padding-top: 70px; /* Prevent content from being hidden under the navbar */
 }
