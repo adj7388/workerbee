@@ -3,7 +3,8 @@
 
 {% block content %}
     {{ page_banner(text="Show Summaries of All Word Lists") }}
-    <div>
+{#
+        <div>
         <span style="font-weight: bold">What's a summary?</span></br>
         A search for Spelling Bee words is performed for each word list shown below. 
         A summary for each word list shows 
@@ -13,6 +14,7 @@
         <span style="font-weight: bold; font-size: smaller">Optionally,</span> 
         you can include in each summary all the words found in each word list.
     </div>
+#}
     <div>
         <scan style="font-weight: bold; font-size: smaller">Word Lists:</scan>
         {% for word_list in WordLists.values() %}

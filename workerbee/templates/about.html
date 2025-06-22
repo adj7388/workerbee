@@ -5,85 +5,85 @@
     {{ page_banner(text="About this app") }}
     <h6 class="help_about_heading">Credits</h6>
     <p>
-        All of the word lists in this app come from 
+        First things first: all of the word lists used in this app come from 
         <a href="http://wordlist.aspell.net/" target="_blank">
             SCOWL (And Friends)
         </a> 
         and are 
         <a href="http://wordlist.aspell.net/scowl-readme/" target="_blank">
             Copyright 2000-2018 by Kevin Atkinson
-        </a>. 
+        </a>. Many thanks to the people there for what was clearly a lot 
+        of very hard, meticulous work.
     </p>
     <h6 class="help_about_heading">What's Spelling Bee?</h6>
     <p>
-        It's a word game published by the New York Times. If you're not familiar with it, 
+        If you're not familiar with Spelling Bee, 
         take a look at the <a href="https://www.nytimes.com/puzzles/spelling-bee" target="_blank">
-        Spelling Bee</a> site.
+        Spelling Bee</a> site. Long story short: it's a word game published by the New York Times 
+        in which you create words from a set of letters. A new puzzle with a new set of letters 
+        appears every day, and most 
+        people try to reach "Genius" level by (again, long story short) finding a lot of words. 
+        (As an aside and unfortunately, reaching "Genius" level does not mean you're a real genius.)
     </p>
     <h6 class="help_about_heading">Are you affiliated with the New York Times then?</h6>
     <p>
-        No. Not at all. Just a Spelling Bee solver.
+        Nope. I'm just one of their customers and a Spelling Bee solver.
     </p>
     <h6 class="help_about_heading">Why did you create this app?</h6>
     <p>
-        Out of curiosity. Through years of playing Spelling Bee, 
-        my goal every day was to reach GABM - Genius All By Myself. 
-        (GABM will be explained somewhere in that Spelling Bee link above). 
+        Through years of playing Spelling Bee, 
+        my goal every day was to reach GABM - Genius All By Myself - sort of "winning" 
+        without using any hints&mdash;a bit like solving a crossword puzzle without looking 
+        anything up. 
     <p>
-        But even when you reach Genius level, that's not the end. There are still more words 
-        and, if you find all the rest, you are crowned Queen Bee! So after reaching Genius level, 
-        I always wondered what words I had missed along the way.
+        But even when you reach Genius level there are still more words to find (if you find them 
+        all you are crowned Queen Bee!) 
+        and I always wondered what words I had missed on the way to "Genius". Did I miss them 
+        because I was playing poorly, or did I miss them because they words I simply didn't know? 
+        There was no way to know without an app like this one.
     </p>
     <p>
-        I like word games, and I was curious about how to write software to create games 
-        like Spelling Bee. I had worked on plenty of software projects in the past, 
-        but never anything like Spelling Bee, so it was an interesting challenge.
-    </p> 
-    <p>
-        Bottom line is I created it for fun. I could learn new words  
-        by discovering the ones I missed on my way to Genius, get better at solving Spelling Bee, 
-        and have fun fiddling around with an interesting software project.
+        I was also curious about how to write software to create or analyze word games 
+        like Spelling Bee. I had worked on many software projects in the past, 
+        but this was something different. It was a new challenge.
     </p>
-    <h6 class="help_about_heading">Besides cheating at Spelling Bee &#x1F604;, is this app useful for anything else?</h6>
+    <h6 class="help_about_heading">Besides cheating at Spelling Bee &#x1F604; what else 
+        can you do with the app?</h6>
     <p>
         <scan style="font-weight: bold;">TLDR;</scan> Well, it uses several SCOWL lists
-        as word sources. So if you're a Spelling Bee solver that's looking to find and learn 
+        as word sources. So if you're a Spelling Bee solver who's looking to find and learn 
         new words, you can play around with Show Summaries, which searches 
         all of the supported word lists simultaneously and shows word counts, 
-        pangrams, and other stuff from each of them.
+        pangrams, and other stuff from each of them. It can optionally show all the words found 
+        in every word list, all together in one place.
     <p>
-        Otherwise, Find Words has a more useful display when searching just one word list and 
-        finding potential Spelling Bee words.
+        Otherwise, Find Words may be more useful in looking for words for a particular puzzle 
+        since it displays words in a way that mimics both the Spelling Bee hints page and  
+        the way Spelling Bee Buddy (a hint tool that comes with the game) displays words 
+        you've found, and clues about ones you haven't found.
     </p> 
+    <p>
+        <scan style="font-weight: bold;">The too long part ...</scan> When I was planning out 
+        this project, I realized that I would need an excellent source of English words 
+        (I know, duh, right?). 
+        I finally found a random word list that contained more than 
+        370,000 English words, including a lot of crufty abbreviations, foreign words, and what-not. 
+        It didn't work very well because it just had too many words that would never be part 
+        of a Spelling Bee game. The useful words were buried in a sea of noise.
+    <p>
+        Eventually, I stumbled onto the SCOWL site (OK, I must confess I didn't exactly stumble 
+        onto it. ChatGPT told me about it.) 
+        where some very smart people have joined forces to create not just one word list, 
+        but several. It's an impressive array of lists mainly, though not exclusively, 
+        for spell-checking applications in American, British, Canadian, and other 
+        flavors of English.
+    </p>
     <p>
         Explore the 
         <a href="http://wordlist.aspell.net/" target="_blank">SCOWL site</a> for an exhaustive 
         explanation of all the word lists there, how they were compiled, what's in them, and 
         all the details you could ever want about lists of English words. 
         There is a lot to know and they know it all.
-    </p>
-    <p>
-        <scan style="font-weight: bold;">More Details</scan>: When I was planning out this project, 
-        I realized that, to find Spelling Bee words 
-        from a set of random letters, you need an excellent source of English words (I know, duh). 
-        After much searching, I finally found a random list online that contained more than 
-        370,000 English words, and lot of crufty abbreviations, foreign words and what-not. 
-        That list often produced 
-        hundreds of Spelling Bee words&mdash;way too many to be useful. The signal to noise ratio was 
-        extremely low.
-    <p>
-        Luckily, I stumbled onto the SCOWL site where some very 
-        smart people have joined forces to create not just one word list, but several. It's an 
-        impressive array of lists mainly, though not exclusively, for spell checking in American, 
-        British, Australian, and other flavors of English.
-    </p>
-    <p>
-        So if you are interested in words or exploring word lists, or you're having trouble 
-        finding the right list to use for a given Spelling Bee puzzle, 
-        you may want to play around 
-        with Show Summaries, which searches all the word lists simultaneously and 
-        displays a summary of what it finds in all of them, optionally including the 
-        actual words from each list.
     </p>
 
 {% endblock %}
