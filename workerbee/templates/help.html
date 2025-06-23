@@ -11,13 +11,12 @@
     <p>
         <span style="font-weight: bold;">Find Words</span>: enter letters 
         &agrave; la Spelling Bee, and the app uses those letters to look for words 
-        in the word list of your choice. One advantage of Find Words is that you can 
-        download the resulting words.
+        in the word list of your choice.
     </p>
     <p>    
         <span style="font-weight: bold;">Show Summaries</span>: similar to Find Words, except that 
-        it searches all word lists in one go, and displays a summary of what it finds in each list, 
-        optionally including all the words for each each list. 
+        it searches all word lists in one go, displays a summary of what it finds in each list, 
+        optionally including all the words found in each list. 
     </p>
     <h2>Find Words &mdash; what the controls do</h2>
         <h3>Use Word List</h3>
@@ -62,21 +61,30 @@
                 Each word is linked to its definition in an online dictionary. Choose your 
                 preferred dictionary here. This is handy for looking up words you don't know. 
             </p>
+        <h3>Download (on display page)</h3>
+            <p>
+                Once your results are displayed, there is an option to download in several formats the 
+                words found in your search: json, csv, txt.
+            </p>
 
     <h2>Show Summaries &mdash; what the controls do</h2>
         <h3>Word Lists</h3>
             <p>
-                All the word lists supported by the app are displayed here. They are all searched. 
-                A summary of results will be presented for each of these word lists. 
+                All the word lists supported by the app are displayed here. There is no option to choose 
+                a word list (as there is in Find Words). All word lists are searched and a summary is 
+                displayed for each list.
+            </p>
+            <p>    
+                Optionally, you can also include the words found in each list in the list summary.
                 Again, see the 
                 <a href="{{ url_for(ABOUT_VIEW) }}">About page</a> 
-                for more information about word lists.
+                for more information on word lists.
             </p>
         <h3>Required Letter and Other Letters</h3>
             <p>
                 Same as Find Words above.
             </p>
-        <h3>Sort summaries by number of words</h3>
+        <h3>Sort summaries by number of words&mdash;Ascending / Descending</h3>
             <p>
                 Summaries are always sorted by the number of words found in each word list. 
                 You can choose whether the sort is ascending or descending.
@@ -88,14 +96,11 @@
                 but, depending on what you're doing, can be quite useful.
             </p>
             <p>
-                <h4>Ascending / Descending</h4>
-                When you select <span style="font-weight: bold";>Include all words</span>, 
-                choose now to sort the words: 
-                <span style="font-weight: bold;">alphabetically or by word length.</span>
+                <h4>Include all words&mdash;Alphabetically / By Word Length</h4>
+                Included words can be sorted alphabetically or by word length.
             </p>
-                <h4>Link Words to</h4>
+                <h4>Include all words&mdash;Link Words to ...</h4>
             <p>
-                Each word will be linked to its definition in an online dictionary. 
-                Choose your preferred dictionary in this dropdown.
+                Each word will be linked to its definition in the dictionary you select in this dropdown.
 
 {% endblock %}
