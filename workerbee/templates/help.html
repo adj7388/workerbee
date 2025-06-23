@@ -2,21 +2,53 @@
 {% from MACROS_TEMPLATE import page_banner %}
 
 {% block content %}
-    {{ page_banner(text="Worker Bee Help") }}
-    <h2>What's the deal with all these "word lists"?</h2>
-    <p>Obviously, you could also use the app to kinda, sorta cheat and get to Queen Bee level every day. Go ahead. I won't judge.</p>
+    {{ page_banner(text="Help") }}
+    <p>
+        This app allows you to find words for the New York Times Spelling Bee game. 
+        Use Find Words to enter letters from a Spelling Bee puzzle and the app finds words 
+        using those letters from one of the word lists the app supports. 
+        Show Summaries is allows you to explore words from all of the supported word lists at 
+        the same time. 
+    <p>
+        For more detail, see the <a href="{{ url_for('about') }}">About page</a>.
+    </p> 
+    </p>
+    <h2>Find Words</h2>
+        <h3>Use Word List</h3>
+        <h3>Required Letter</h3>
+            <p>The "required letter" is the letter in the yellow tile in the middle of the Spelling Bee screen. </p>
+        <h3>Other letters</h3>
+            <p>The "other letters" are the six letters around the yellow one.</p>
+        <h3>How to group results</h3>
+        <h3>Link to definitions</h3>
+            <p>When the app returns an obscure word, it's time-consuming to have to copy the word, then go to some dictionary site, paste it and search to find the definition.</p>
+            <p>All words returned by this app are links to the dictionary site you choose in this dropdown. So you can skip the multi-step copy/paste to look it up.</p>
 
-    <h2>What is this?</h2>
-    <p>This web app can help players find words for the NYT Spelling Bee puzzle. Just enter the letters from the daily Spelling Bee (or come up with your own letters to play around).</p>
-    <p>Those who play Spelling Bee will know what this means. Otherwise, google Spelling Bee and you'll quickly figure it out.</p>
-    <h2>What do the fields on the Home screen mean?</h2>
-    <p>Again, IYKYK.</p>
-    <p>The "required letter" is the letter in the yellow tile in the middle of the Spelling Bee screen. </p>
-    <p>The "other letters" are the six letters around the yellow one.</p>
-    <h2>The "Look up words using" dropdown. What's that?</h2>
-    <p>When the app returns an obscure word, it's time-consuming to have to copy the word, then go to some dictionary site, paste it and search to find the definition.</p>
-    <p>All words returned by this app are links to the dictionary site you choose in this dropdown. So you can skip the multi-step copy/paste to look it up.</p>
-    <h2>My apologies for the irrelevant words</h2>
-    <p>Unfortunately, the dictionary for this app is huge, and the vast majority of the words the application finds for a given set of letters are NOT valid Spelling Bee words. You'll have to dig through a lot of irrelevant words to find the ones you want. Sorry about that.</p>
-    <p>If you know of a better (open source) dictionary option, with fewer words, I would love to know about it. Contact me: a d j 7 3 8 8 at proton.me (remove the spaces, obviously, and you know what to do with 'at').</p>
+    <h2>Show Summaries</h2>
+        <h3>Word Lists</h3>
+        <h3>Required Letter</h3>
+        <h3>Other Letters</h3>
+        <h3>Sort summaries by number of words</h3>
+        <h3>Include all words in summaries</h3>
+            <h4 class="push-right">Alphabetically</h4>
+                <p class="push-right">foo</p>
+            <h4 class="push-right">By Word Length</h4>
+                <p class="push-right">bar</p>
+            <h4 class="push-right">Link words to</h4>
+                <p class="push-right">baz</p>
+
+
+
+
+
+
+
+
+
+
+    <h2>What's the deal with all these "word lists"?</h2>
+    <p>
+        
+    </p>
+
 {% endblock %}

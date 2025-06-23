@@ -52,6 +52,14 @@ td.letters {
     font-weight: bold;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+}
+
+p {
+  font-family: 'Lato', sans-serif;
+}
+
 h1 {
     font-size: larger;
 }
@@ -62,7 +70,18 @@ h2 {
 }
 
 h3 {
-    font-size: small;
+    font-size: medium;
+    /* font-weight: bold; */
+}
+
+h3::before {
+  content: "• "; /* Unicode bullet */
+  font-size: 1.5em; /* Adjust size as needed */
+  /* margin-right: 10px; Optional spacing     */
+}
+
+h4 {
+    font-size: medium;
     font-weight: bold;
 }
 body {
@@ -76,4 +95,8 @@ body {
 
 .unstyled-link:hover {
     text-decoration: underline;
+}
+
+.push-right {
+    margin-left: 10px;
 }
