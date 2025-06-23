@@ -61,7 +61,7 @@ p {
 }
 
 h1 {
-    font-size: larger;
+    font-size: x-large;
 }
 
 h2 {
@@ -70,7 +70,7 @@ h2 {
 }
 
 h3 {
-    font-size: medium;
+    font-size: large;
     /* font-weight: bold; */
 }
 

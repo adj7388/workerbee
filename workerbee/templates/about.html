@@ -21,8 +21,8 @@
             take a look at the <a href="https://www.nytimes.com/puzzles/spelling-bee" target="_blank">
             Spelling Bee</a> site. Long story short: it's a word game published by the New York Times 
             in which you create words from a set of letters. A new puzzle with a new set of letters 
-            appears every day, and most 
-            people try to reach "Genius" level (again, long story short) by finding a lot of words. 
+            appears every day, and most people try to reach "Genius" level by, well, 
+            finding a lot of words. 
         </p>
         <p>    
             Quick aside: reaching "Genius" level unfortunately does not mean you're a real genius.
@@ -34,11 +34,11 @@
     <h2>Then why did you create this app?</h2>
         <p>
             Through years of playing Spelling Bee, 
-            my goal every day was to reach the Genius level, which is what 
-            passes for solving that day's Spelling Bee.
+            my goal every day was to reach the Genius level, which most people count 
+            as having solved that day's puzzle.
         <p>
-            However, even if you reach Genius level there are still more words left to find 
-            &mdash;and if you find all the rest you are crowned Queen Bee or the day!
+            But even if you reach Genius level there are still more words left to find 
+            &mdash;and if you find all the rest, you are crowned Queen Bee for the day!
         </p>
         <p>    
             I was always curious about which words I had missed or overlooked 
@@ -50,93 +50,87 @@
         Couldn't you just wait and look at the solution the next day?
     </h2>
         <p>
-            Well, yes, I suppose so. But wondering about the words I'd missed also started 
+            Well, yes, I suppose so. But that's no fun! Beyond that, though, wondering about 
+            the words I'd missed also started 
             me thinking about the software that was used to create the puzzle in the first place. 
-            Surely they had some way to find all the words for any random set of letters, 
-            then some process for choosing which words to include in the puzzle and 
+            They clearly weren't doing it manually. They had to have some way to find all 
+            the words for any random set of letters, 
+            then a process for choosing which words to include in the puzzle and 
             which to leave out.
         </p>
-        <p>    
-            In any case, I assumed they must have software to manage that process, and I started to 
-            wonder how you would write a software tool to help with that. I had some ideas about 
-            how to do it so, just for fun, I decided to give it a shot.
+        <p>     
+            I had some ideas about how one might do that so, just for fun, 
+            I decided to give it a shot.
         </p>
     <h2>So besides cheating at Spelling Bee &#x1F604; what else 
         can you do with the app?</h2>
         <p>
-            Cheating?! Why, I've never been so insulted! &#x1F604;
-            Seriously though, beyond finding words from a random set of letters, doing this 
-            project also got me interested in English word lists.
+            Cheating?! Why, I've never been so insulted! &#x1F604; (Use it to cheat if 
+            you want to. I won't judge &#x1F604;.)
+            Seriously though, using software to create words from a random set of letters also 
+            got me interested in English word lists.
         </p>
         <p>    
-            When I set out to write the app, I remember thinking of the first problem I 
-            needed to solve: how to obtain a good English language dictionary. 
-            That wasn't entirely correct though. What I really 
-            needed was just a list of English words. Not only did I not need dictionary  
-            definitions, they would just clutter things up and require more storage. (I could 
-            always link to definitions later, which this app does.)
+            Before writing a line of code, I had a problem to solve: where could I get a 
+            good English language dictionary. Not exactly a dictionary. I didn't need defiitions.  
+            What I really needed was just a list of English words. Definitions 
+            would just require more storage and clutter things up. I could 
+            always link to definitions later, which this app does.
         <p>
-            Finding an open source word list was harder than I expected.
+            But finding an open source word list was harder than I expected.
         </p>
     <h3>First Stab</h3>
         <p>
-            I eventually found a word list floating around the internet. It contained more 
-            than 370,000 English words, and no definitions. This is perfect, I thought.
-            But it was less than perfect, I soon learned. 
+            I eventually found a list hiding in a dusty corner of the internet. It contained more 
+            than 370,000 English words, and no definitions. Initially, I thought it would be 
+            just what I needed. It wasn't.
         </p>
         <p>    
-            Unfortunately, an uncurated, random list with so many words was almost guaranteed to be 
-            cluttered with cruft: abbreviations, misspellings, and esoteric words that 
-            would never appear in Spelling Bee. It worked 
-            fine as a way to get started, but it had way too many words, too much noise, and 
-            was just a drag on the final product.
+            That uncurated, random list with a bazillion words was 
+            full of abbreviations, misspellings, proper nouns, esoteric words and all manner 
+            of cruft that were of no use as Spelling Bee words. That list worked 
+            fine as a way to get started, but once I had an initial working version 
+            of the app, I really needed a better word list. 
         </p>
     <h3>SCOWL to the Rescue</h3>
         <p>    
-            Once I had a working version of the app, I really needed a better word list. 
-            That's when I stumbled into the SCOWL site, where some very smart people have 
-            joined forces to create not just one good 
-            list of English words, but several well curated spell-checking lists in 
+            That was when I came upon the SCOWL site, where some very smart people have 
+            joined forces to create not just one good English language word list, but several. 
+            Primarily for spell-checking software, they have created lists in 
             American, British, Canadian, and other flavors of English. This is what I was 
-            looking for.
+            looking for. In fact, there are several lists just of American English.
         </p>        
-            But now there was a different problem. I now had not just one word list, 
-            but several from which to choose. 
-            And it wasn't clear exactly which one would work best for finding Spelling Bee 
-            words.
+            But that created a different problem. It wasn't clear exactly which list 
+            would work best for what I was doing: finding Spelling Bee words from a given 
+            set of letters.
         </p>
         <p> 
-            So, again out of curiosity (and being a bit of a word nerd), 
-            I added the Show Summaries feature to allow me to 
-            explore how each of those different SCOWL lists performed as a source for 
-            Spelling Bee words, and compare them against each other.
+            Curiosity struck again so, being a bit of a word nerd, 
+            I created the Show Summaries feature to allow me to 
+            compare the various SCOWL lists and to assess how each performed 
+            as a source for Spelling Bee words.
         </p>
     <h3>Show Summaries</h3>
         <p>    
             Thus was born the Show Summaries feature. Find Words only searches one list at 
             a time, but Show Summaries searches all of the supported word lists simultaneously 
-            and can show, among other things, all the words from all the word lists together 
-            in one place.
+            and produces a table comparing them including, among other things, all the words 
+            from all the word lists together in one place.
         </p>
         <p>
-            Another quick aside: Find Words is probably more useful for working 
-            with a specific puzzle, since it displays words in a way that mimics how  
-            the Spelling Bee hints page and Spelling Bee Buddy display hints, grouped either by 
-            initial letters or by word length.
-        </p>
-    <h2>
-        Spelling Bee already has hints? So this isn't cheating, it's just more <span style="font-style: italic;">hints!</span>
-    </h2>
-        <p>
-            Hey, do with it what you will. I won't judge. &#x1F604;
-        <p>
+            Another quick aside: Show Summaries is good for comparing the lists, but Find Words 
+            may be better for working with a specific puzzle (i.e., finding the words for a 
+            given set of letters) since it displays words in a way that mimics how  
+            the Spelling Bee hints page and Spelling Bee Buddy display hints: i.e., 
+            grouped either by initial letters or by word length.
         </p>
     <h2>
-        Do you really think other people care about this stuff?
+        Does anyone but you care about this stuff?
     </h2>
         <p>
-            Probably not very many. But, hey, it's mildly interesting word esoterica. 
-            I might as well throw it out there for anyone who does care.
+            Probably not. But, it's mildly interesting word esoterica. 
+            Somebody may care for some reason I'm not even aware of. Might as 
+            well put it out there on the interwebs.
         </p>
 {#
         <p>
