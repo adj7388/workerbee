@@ -4,51 +4,90 @@
 {% block content %}
     {{ page_banner(text="Help") }}
     <p>
-        This app allows you to find words for the New York Times Spelling Bee game. 
-        Use Find Words to enter letters from a Spelling Bee puzzle and the app finds words 
-        using those letters from one of the word lists the app supports. 
-        Show Summaries is allows you to explore words from all of the supported word lists at 
-        the same time. 
+        This app find words using the same approach as the 
+        New York Times Spelling Bee game. 
+    </p>
+    <p>
+        <span style="font-weight: bold;">Find Words</span>: enter letters &agrave; la Spelling Bee 
+        and the app uses those letters to find words in a single word list you choose. An 
+        advantage of Find Words is that you can download the resulting words.
+    </p>
+    <p>    
+        <span style="font-weight: bold;">Show Summaries</span>: similar to Find Words, except that 
+        it searches all word lists and displays a summary of what it finds in each,
+         optionally with all words found in each list. 
     <p>
         For more detail, see the <a href="{{ url_for('about') }}">About page</a>.
     </p> 
     </p>
-    <h2>Find Words</h2>
+    <h2>Find Words &mdash; what the controls do</h2>
         <h3>Use Word List</h3>
+            <p>
+                Choose the word list to use to find words. If you don't know which one to use, 
+                just accept the default. Or try different ones and see the difference.
+            </p>
         <h3>Required Letter</h3>
-            <p>The "required letter" is the letter in the yellow tile in the middle of the Spelling Bee screen. </p>
+            <p>
+                The yellow letter in the middle of the Spelling Bee game is required, 
+                meaning it must be present in every word found.
+            </p>
         <h3>Other letters</h3>
-            <p>The "other letters" are the six letters around the yellow one.</p>
+            <p>
+                On the Spelling Bee page the yellow required letter is surrounded by six other letters. 
+                These letters are used in addition to the required letter to form words.
+            </p>
         <h3>How to group results</h3>
+            <p>
+                The grouping options mimic those found on the Spelling Bee hints page and in 
+                Spelling Bee Buddy (another hint application provided by Spelling Bee).
+            </p>
+            <p>
+                The options are pretty self-explanatory.
+                <ul>
+                    <li>Group by initial letters</li>
+                    <li>Group by word length</li>
+                    <li>No grouping &mdash; just an alphabetical list</li> 
+                </ul>
+            </p>
         <h3>Link to definitions</h3>
-            <p>When the app returns an obscure word, it's time-consuming to have to copy the word, then go to some dictionary site, paste it and search to find the definition.</p>
-            <p>All words returned by this app are links to the dictionary site you choose in this dropdown. So you can skip the multi-step copy/paste to look it up.</p>
+            <p>
+                It's nice to be able to look up in a dictionary the words you don't know. 
+                This dropdown allows you to choose which online dictionary and the app will 
+                link all the words it finds to the definition in that dictionary.
+            </p>
 
-    <h2>Show Summaries</h2>
+    <h2>Show Summaries &mdash; what the controls do</h2>
         <h3>Word Lists</h3>
-        <h3>Required Letter</h3>
-        <h3>Other Letters</h3>
+            <p>
+                All the word lists supported by the app are displayed here. A summary of results 
+                will be presented for each of these word lists.
+            </p>
+        <h3>Required Letter and Other Letters</h3>
+            <p>
+                Same as Find Words. See above.
+            </p>
         <h3>Sort summaries by number of words</h3>
+            <p>
+                The summaries are always sorted by the number of words found in each word list. 
+                You can choose whether the sort is ascending or descending.
+            </p>
         <h3>Include all words in summaries</h3>
-            <h4 class="push-right">Alphabetically</h4>
-                <p class="push-right">foo</p>
-            <h4 class="push-right">By Word Length</h4>
-                <p class="push-right">bar</p>
-            <h4 class="push-right">Link words to</h4>
-                <p class="push-right">baz</p>
-
-
-
-
-
-
-
-
-
-
+            <p>
+                Normally, a summary includes just the word list, the number of words found, all 
+                the pangrams, etc. But you can check this box to also display all the words found 
+                in each word list.
+            </p>
+            <p>
+                When you select "Include all words", you cand choose to sort the words 
+                alphabetically or by word length. 
+            </p>
+            <p>
+                Each word will be linked to an online dictionary. You can choose your preferred 
+                dictionary using the "Link words to" dropdown.
     <h2>What's the deal with all these "word lists"?</h2>
     <p>
-        
-    </p>
+        For more detail on the word list supported by this app, 
+        see the <a href="{{ url_for('about') }}">About page</a>.
+    </p> 
 
 {% endblock %}
