@@ -27,7 +27,7 @@
             </p>
             <p>
                 What the heck are word lists?
-                See the <a href="{{ url_for('about') }}">About page</a>.
+                See the <a href="{{ url_for(ABOUT_VIEW) }}">About page</a>.
             </p> 
         <h3>Required Letter and Other Letters</h3>
             <p>
@@ -66,9 +66,11 @@
     <h2>Show Summaries &mdash; what the controls do</h2>
         <h3>Word Lists</h3>
             <p>
-                All the word lists supported by the app are displayed here. A summary of results 
-                will be presented for each of these word lists. Again, see the 
-                <a href="{{ url_for('about') }}">About page</a> for more information about word lists.
+                All the word lists supported by the app are displayed here. They are all searched. 
+                A summary of results will be presented for each of these word lists. 
+                Again, see the 
+                <a href="{{ url_for(ABOUT_VIEW) }}">About page</a> 
+                for more information about word lists.
             </p>
         <h3>Required Letter and Other Letters</h3>
             <p>
@@ -81,15 +83,15 @@
             </p>
         <h3>Include all words in summaries</h3>
             <p>
-                Summaries include the number of words found, all 
-                the pangrams, etc. from that list. Check this box to also include all 
-                the words found in each word list. This results in a busier display 
-                but, depending on what you're doing, it can be quite useful.
+                Check this box to include with the summary all the words found in each word list.
+                This can result in a busier display 
+                but, depending on what you're doing, can be quite useful.
             </p>
             <p>
                 <h4>Ascending / Descending</h4>
                 When you select <span style="font-weight: bold";>Include all words</span>, 
-                choose one of these options to sort the words alphabetically or by word length. 
+                choose now to sort the words: 
+                <span style="font-weight: bold;">alphabetically or by word length.</span>
             </p>
                 <h4>Link Words to</h4>
             <p>

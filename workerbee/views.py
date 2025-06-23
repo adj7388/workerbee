@@ -28,7 +28,7 @@ def before_request():
             cfg.GROUPING: cfg.INITIALS,
             cfg.FILE_TYPE: cfg.JSON,
             cfg.SUMMARY_SORT: cfg.DESCENDING,
-            cfg.SHOW_WORDS: False,
+            cfg.SHOW_WORDS: True,
             cfg.WORD_SORT: cfg.ALPHABETICALLY,
         },
     )
@@ -153,7 +153,7 @@ def summary():
     error_msg = error_check(args=user_args)
     if error_msg:
         flash(message=error_msg)
-        return redirect(f"/{cfg.SUMMARY_VIEW}")
+        return redirect(f"/{cfg.SUMMARY_FORM_VIEW}")
     summary: list[cfg.OutputData] = []
     for word_list in cfg.WordLists.values():
         output_data = get_beewords(
