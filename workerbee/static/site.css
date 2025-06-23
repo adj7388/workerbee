@@ -67,6 +67,7 @@ h1 {
 h2 {
     font-size: large;
     font-weight: bold;
+    margin-top: 35px;
 }
 
 h3 {
@@ -99,4 +100,9 @@ body {
 
 .push-right {
     margin-left: 10px;
+}
+
+.banner {
+    margin-top: 20px;
+    margin-bottom: 40px;
 }

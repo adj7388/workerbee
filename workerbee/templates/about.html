@@ -2,7 +2,7 @@
 {% from MACROS_TEMPLATE import page_banner %}
 
 {% block content %}
-    {{ page_banner(text="About this app") }}
+    {{ page_banner(text="About") }}
     <h2>Credits</h2>
         <p>
             First things first: all of the word lists used in this app come from 
@@ -25,7 +25,8 @@
             finding a lot of words. 
         </p>
         <p>    
-            Quick aside: reaching "Genius" level unfortunately does not mean you're a real genius.
+            By the way, much to my chagrin, reaching "Genius" level does 
+            not mean you're a real genius.
         </p>
     <h2>Are you affiliated with the New York Times?</h2>
         <p>
@@ -35,16 +36,19 @@
         <p>
             Through years of playing Spelling Bee, 
             my goal every day was to reach the Genius level, which most people count 
-            as having solved that day's puzzle.
+            as having "solved" that day's puzzle.
         <p>
             But even if you reach Genius level there are still more words left to find 
-            &mdash;and if you find all the rest, you are crowned Queen Bee for the day!
+            &mdash;and if you find all the rest, you are crowned Queen Bee! That's the 
+            highest level.
         </p>
         <p>    
-            I was always curious about which words I had missed or overlooked 
-            on the way to Genius. Beyond curiosity, knowing which words you 
-            have missed&mdash;especially if they are 
-            words you don't even know&mdash;is useful in solving future puzzles.
+            When I managed to reach Genius level, I was always curious about which words 
+            I had <span style="font-style: italic;">not</span> found along the way. 
+            Had I just overlooked obvious words, or were there 
+            words I simply didn't know? Usually it turns out to be a bit of both. 
+            So beyond curiosity, knowing which words you missed is a good way to learn new words, 
+            and useful in getting better at solving future puzzles.
         </p>
     <h2>
         Couldn't you just wait and look at the solution the next day?
@@ -72,10 +76,10 @@
         </p>
         <p>    
             Before writing a line of code, I had a problem to solve: where could I get a 
-            good English language dictionary. Not exactly a dictionary. I didn't need defiitions.  
+            good English language dictionary. Not exactly a dictionary. I didn't need definitions.  
             What I really needed was just a list of English words. Definitions 
             would just require more storage and clutter things up. I could 
-            always link to definitions later, which this app does.
+            always link to definitions later, which is what this app does.
         <p>
             But finding an open source word list was harder than I expected.
         </p>
@@ -88,7 +92,7 @@
         <p>    
             That uncurated, random list with a bazillion words was 
             full of abbreviations, misspellings, proper nouns, esoteric words and all manner 
-            of cruft that were of no use as Spelling Bee words. That list worked 
+            of cruft that was of no use as Spelling Bee words. That list worked 
             fine as a way to get started, but once I had an initial working version 
             of the app, I really needed a better word list. 
         </p>
@@ -101,8 +105,7 @@
             looking for. In fact, there are several lists just of American English.
         </p>        
             But that created a different problem. It wasn't clear exactly which list 
-            would work best for what I was doing: finding Spelling Bee words from a given 
-            set of letters.
+            would work best for my Spelling Bee word-finding.
         </p>
         <p> 
             Curiosity struck again so, being a bit of a word nerd, 
@@ -114,23 +117,23 @@
         <p>    
             Thus was born the Show Summaries feature. Find Words only searches one list at 
             a time, but Show Summaries searches all of the supported word lists simultaneously 
-            and produces a table comparing them including, among other things, all the words 
+            and produces a table comparing them, including all the words 
             from all the word lists together in one place.
         </p>
         <p>
-            Another quick aside: Show Summaries is good for comparing the lists, but Find Words 
+            As quick aside: Show Summaries is good for comparing the lists, but Find Words 
             may be better for working with a specific puzzle (i.e., finding the words for a 
             given set of letters) since it displays words in a way that mimics how  
             the Spelling Bee hints page and Spelling Bee Buddy display hints: i.e., 
             grouped either by initial letters or by word length.
         </p>
     <h2>
-        Does anyone but you care about this stuff?
+        Meh. This is sort of cool, but does anyone but you care about this stuff?
     </h2>
         <p>
             Probably not. But, it's mildly interesting word esoterica. 
-            Somebody may care for some reason I'm not even aware of. Might as 
-            well put it out there on the interwebs.
+            Somebody may care for some reason that I could not possibly know. 
+            So I might as well put this out on the interwebs just in case.
         </p>
 {#
         <p>
