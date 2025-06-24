@@ -76,9 +76,7 @@ h3 {
 }
 
 h3::before {
-  content: "• "; /* Unicode bullet */
   font-size: 1.5em; /* Adjust size as needed */
-  /* margin-right: 10px; Optional spacing     */
 }
 
 h4 {
@@ -98,11 +96,19 @@ body {
     text-decoration: underline;
 }
 
-.push-right {
-    margin-left: 10px;
+.indent {
+    margin-left: 20px;
 }
 
 .banner {
     margin-top: 20px;
     margin-bottom: 40px;
+}
+
+.anchor-target {
+  scroll-margin-top: 70px; /* adjust fixed navbar height */
+}
+
+html {
+    scroll-behavior: smooth;
 }
