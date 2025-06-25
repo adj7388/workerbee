@@ -38,7 +38,7 @@ def before_request():
             cfg.GROUPING: cfg.INITIALS,
             cfg.FILE_TYPE: cfg.JSON,
             cfg.SUMMARY_SORT: cfg.DESCENDING,
-            cfg.SHOW_WORDS: True,
+            cfg.SHOW_WORDS: cfg.SHOW_WORDS,
             cfg.WORD_SORT: cfg.ALPHABETICALLY,
         },
     )
@@ -126,19 +126,16 @@ def reshape_for_summaries(
 ) -> list[cfg.OutputData]:
 
     def get_key(beeword: cfg.Beeword, word_sort: str):
-        return beeword.length if word_sort == cfg.LENGTH else beeword.word[0]
+        return beeword.length if word_sort == cfg.BYWORDLENGTH else beeword.word[0]
 
-    word_sort = (
-        cfg.LENGTH
-        if session[cfg.ARGS][cfg.WORD_SORT] == cfg.BYWORDLENGTH
-        else cfg.ALPHABETICALLY
-    )
     reshaped: list[cfg.OutputData] = []
     for output in output_data:
         new_data = defaultdict(list)
-        saved_key = get_key(beeword=output.data[0], word_sort=word_sort)
+        saved_key = get_key(
+            beeword=output.data[0], word_sort=session[cfg.ARGS][cfg.WORD_SORT]
+        )
         for beeword in output.data:
-            this_key = get_key(beeword, word_sort=word_sort)
+            this_key = get_key(beeword, word_sort=session[cfg.ARGS][cfg.WORD_SORT])
             saved_key = this_key if saved_key != this_key else saved_key
             new_data[this_key].append(beeword)
         reshaped.append(cfg.OutputData(data=new_data, metadata=output.metadata))
