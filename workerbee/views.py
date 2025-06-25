@@ -31,8 +31,8 @@ def before_request():
     session.setdefault(
         cfg.ARGS,
         {
-            cfg.REQUIRED_LETTER: "u",
-            cfg.ALLOWED_LETTERS: "ncdeli",
+            cfg.REQUIRED_LETTER: "a",
+            cfg.ALLOWED_LETTERS: "cptive",
             cfg.DICTIONARY: cfg.WIKT,
             cfg.WORD_LIST: cfg.SCOWL_DEFAULT_60,
             cfg.GROUPING: cfg.INITIALS,

@@ -25,17 +25,17 @@
             finding a lot of words. 
         </p>
         <p>    
-            By the way, much to my chagrin, reaching "Genius" level does 
+            By the way, much to my chagrin, reaching Genius level does 
             not mean you're a real genius.
         </p>
     <h2>Are you affiliated with the New York Times?</h2>
         <p>
-            No. I'm just a subscriber and a Spelling Bee solver.
+            Not in any way whatsoever. I'm just an NYT subscriber and a Spelling Bee solver.
         </p>
     <h2>Then why did you create this app?</h2>
         <p>
             Through years of playing Spelling Bee, 
-            my goal every day was to reach the Genius level, which most people count 
+            my goal every day was to reach Genius level, which most people count 
             as having "solved" that day's puzzle.
         <p>
             But even if you reach Genius level there are still more words left to find, 
@@ -46,7 +46,7 @@
             When I managed to reach Genius level, I was always curious about which words 
             I had <span style="font-style: italic;">not</span> found along the way. 
             Had I just overlooked obvious words, or were there 
-            words I simply didn't know? Usually it turns out to be a bit of both. 
+            words I simply didn't know? It usually turns out to be a little of both. 
             So beyond curiosity, knowing which words you missed is a good way to learn new words, 
             and useful in getting better at solving future puzzles.
         </p>
@@ -57,24 +57,33 @@
             Well, yes, I suppose so. But where's the fun in that?! Wondering what 
             words I'd missed also started 
             me thinking about the software that was used to create the puzzle in the first place. 
-            They clearly weren't doing it manually. They had to have some way to find all 
-            the words for any random set of letters, 
-            then a process for choosing which words to include in the puzzle and 
+            They clearly had to have some automated way to find all 
+            words for some random set of letters, 
+            then a process for deciding which words to include in the puzzle and 
             which to leave out.
         </p>
         <p>     
-            I had some ideas about how to do that so, just for fun, 
-            I decided to give it a go.
+            I had in mind a couple of ways you could accomplish that in software, 
+            so I decided to write a little app to test my ideas for fun.
+        </p>
+        <p>    
+            <span style="font-style: italic; font-weight: bold">Warning: Techspeak Ahead </span>
+            &mdash; For the technically inclined: you can find Spelling Bee words 
+            using either regular expressions or Python sets.
+            Both approaches work, but I ended up using sets. The code is cleaner&mdash;regexes are 
+            powerful, but ugly&mdash;and sets may be slightly faster, though the speed difference 
+            would not be noticeable to an end user.
         </p>
     <h2 id="word-lists" class="anchor-target">I see lots of references to "word lists". What's that about?</h2>
         <p>
-            Before writing a line of code I needed to solve a problem: where was I going to get a
+            Before writing a line of code I needed to solve a problem: 
+            where was I going to get a
             good English language dictionary? I was definitely not going to create one myself. 
             Besides, I didn't really need a 
             dictionary&mdash;which would have definitions, parts of speech, and a lot of stuff 
-            I didn't need&mdash;but a list of, I don't know, a few thousand English words.
-            How many thousand? I had no idea, since the Spelling Bee word list is apparently
-            top secret, NYT eyes-only.
+            I didn't need. What I did need was a simple list of, I don't know, a few thousand English words.
+            How many thousand? I had no idea, since the official Spelling Bee word list is apparently
+            top secret, marked eyes-only for NYT game poobahs.
         <p>
             Finding an open source word list was harder than I expected.
         </p>
@@ -117,7 +126,7 @@
             from all the word lists together in one place.
         </p>
         <p>
-            As a quick aside: Show Summaries is good for comparing the lists, but Find Words 
+            <span style="font-style: italic; font-weight: bold">As a quick aside:</span> Show Summaries is good for comparing the lists, but Find Words 
             may be better for working with a specific puzzle (i.e., finding the words for a 
             given set of letters) since it displays words in a way that mimics how  
             the Spelling Bee hints page and Spelling Bee Buddy display hints: i.e., 
@@ -128,12 +137,20 @@
     </h2>
         <p>
             Probably not. (Except for Spelling Bee players trying to cheat their way to
-            Queen Bee ... Wait. Did I say cheat? I meant hints! Hints is what they need.)
+            Queen Bee ... Wait. Did I say cheat? I meant hints! Hints is what they need!)
             But, it's mildly interesting word esoterica, so  
             someone may care for a reason that I wouldn't know. 
             Might as well put it up on the interwebs for my fellow word nerds.
         </p>
-{#
+    <h2>
+        I can't believe you expected me to read this entire page. Definitely TMI.
+    </h2>
+        <p>
+            And yet, here you are at the end. Thanks for reading!
+        </p> 
+
+
+        {#
         <p>
             Explore the 
             <a href="http://wordlist.aspell.net/" target="_blank">SCOWL site</a> for an exhaustive 

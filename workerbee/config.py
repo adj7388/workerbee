@@ -17,7 +17,6 @@ PROFILING = True if os.environ.get(BEEPROFILE, "") == BEEPROFILE else False
 
 # file consts
 APP_FOLDER = "workerbee"
-TEMPLATE_FOLDER = f"{APP_FOLDER}/templates"
 TEMP_FOLDER = "temp"
 STATIC_FOLDER = "static"
 SITE_CSS = "site.css"
@@ -44,8 +43,8 @@ SUMMARY_FORM_VIEW = "summary_form"
 SUMMARY_VIEW = "summary"
 
 # Session consts
-## for Find Words
 ARGS = "args"
+## for Find Words
 REQUIRED_LETTER = "required"
 ALLOWED_LETTERS = "allowed"
 DICTIONARY = "dictionary"
@@ -55,7 +54,7 @@ GROUPING = "grouping"
 INITIALS = "initials"
 LENGTH = "length"
 NO_GROUPING = "no_grouping"
-## additional consts for Show Summaries
+## for Show Summaries
 SUMMARY_SORT = "summary_sort"
 ASCENDING = "ascending"
 DESCENDING = "descending"
@@ -64,7 +63,7 @@ WORD_SORT = "word_sort"
 ALPHABETICALLY = "alphabetically"
 BYWORDLENGTH = "bywordlength"
 
-## for downloads (double as file extensions)
+## for downloads (also used as file extensions)
 FILE_TYPE = "file_type"
 CSV = "csv"
 TXT = "txt"
@@ -82,7 +81,7 @@ PERFECT_MARKER = "+"
 # Manage Word Lists
 WordList = namedtuple("WordList", "name file_name")
 
-# word list data directory
+# directory for word list files
 WORDLIST_DIR = "wordlists"
 
 # Word list keys
@@ -205,5 +204,5 @@ Dictionaries = {
 }
 
 
-# Assign const variables to jinja environment after all are defined
+# Insert all config variables into jinja environment
 app.jinja_env.globals.update(locals())

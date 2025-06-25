@@ -19,7 +19,8 @@
         it searches all word lists in one go, displays a summary of what it finds in each list, 
         optionally including all the words found in each list. 
     </p>
-    <h2>Find Words &mdash; On-Screen Controls</h2>
+    <hr>
+    <h2>Find Words &mdash; Options</h2>
         <h3>Search in this word list</h3>
             <p>
                 Choose the word list in which to search for words.
@@ -32,36 +33,39 @@
                 What the heck are word lists?
                 See the <a href="{{ url_for(ABOUT_VIEW) }}#word-lists">About page</a>.
             </p> 
-        <h3>Required Letter and Other Letters</h3>
+      <h3>Required Letter and Other Letters</h3>
             <p>
-                These fields mimic Spelling Bee. The yellow letter in the middle of 
-                the Spelling Bee page is the letter that is required in each word you find.
-                Enter only one letter in this field.
+                These fields mimic how Spelling Bee works.
             </p>
             <p>
-                On the Spelling Bee page, that yellow, required letter is surrounded by six other 
-                letters. Valid Spelling Bee words 1) have at least four letters, 2) include the 
-                required letter, and 3) include one or more of these "other" letters.
+                <span style="font-weight: bold;">Required letter:</span> On the Spelling Bee page 
+                there is a letter in the middle with a yellow background. Every word you create is 
+                required to contain this letter. Enter only one letter in this field.
+            </p>
+            <p>
+                <span style="font-weight: bold;">Other letters:</span> 
+                The required letter is surrounded by six other 
+                letters on the Spelling Bee page. Valid Spelling Bee words must 
+                1) have at least four letters, 
+                2) include the required letter, and 
+                3) include one or more of these "other" letters.
                 Enter exactly six letters in this field.
             </p>
         <h3>How to group results</h3>
             <p>
-                The grouping options mimic those found on the Spelling Bee hints page and in 
-                Spelling Bee Buddy (another hint application provided by Spelling Bee).
+                The grouping options mimic how the Spelling Bee hints page and in 
+                Spelling Bee Buddy work. The options are pretty self-explanatory.
             </p>
-            <p>
-                The options are pretty self-explanatory.
-                <ul>
-                    <li>Group by initial letters</br>
-                        Note: this is the first <span style="text-decoration: underline;">two</span> 
-                        letters, not just the first letter
-                    </li>
-                    <li>Group by word length</br>
-                        All the 4-letter words together, all the 5-letter words together, etc.
-                    </li>
-                    <li>No grouping &mdash; just an alphabetical list</li> 
-                </ul>
-            </p>
+            <ul>
+                <li>Group by initial letters</br>
+                    Note: this is the first <span style="text-decoration: underline;">two</span> 
+                    letters, not just the first letter
+                </li>
+                <li>Group by word length</br>
+                    All the 4-letter words together, all the 5-letter words together, etc.
+                </li>
+                <li>No grouping &mdash; just an alphabetical list</li> 
+            </ul>
         <h3>Link to definitions</h3>
             <p>
                 Each word is linked to its definition in an online dictionary, which
@@ -76,8 +80,8 @@
                 screen does not refresh after the download. Just look in your Downloads folder
                 for the data export.
             </p>
-
-    <h2>Show Summaries &mdash; On-Screen Controls</h2>
+    <hr>
+    <h2>Show Summaries &mdash; Options</h2>
         <h3>Word Lists</h3>
             <p>
                 All the word lists supported by the app are displayed here. There is no option to choose 
