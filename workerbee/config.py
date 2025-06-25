@@ -45,7 +45,7 @@ SUMMARY_VIEW = "summary"
 
 # Session consts
 ## for Find Words
-USER_ARGS = "user_args"
+ARGS = "args"
 REQUIRED_LETTER = "required"
 ALLOWED_LETTERS = "allowed"
 DICTIONARY = "dictionary"

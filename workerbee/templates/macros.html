@@ -130,16 +130,16 @@
                                     <label for="{{FILE_TYPE}}" class="left-italic">File type:</label>
                                     <select name="{{FILE_TYPE}}">
                                         <option value="{{ TXT }}" 
-                                            {{ 'selected' if session[USER_ARGS][FILE_TYPE] == TXT else '' }}>text (words only)
+                                            {{ 'selected' if session[ARGS][FILE_TYPE] == TXT else '' }}>text (words only)
                                         </option>
                                         <option value="{{ WORD_URL_CSV }}" 
-                                            {{ 'selected' if session[USER_ARGS][FILE_TYPE] == WORD_URL_CSV  else '' }}>csv (words, urls only)
+                                            {{ 'selected' if session[ARGS][FILE_TYPE] == WORD_URL_CSV  else '' }}>csv (words, urls only)
                                         </option>
                                         <option value="{{ CSV }}" 
-                                            {{ 'selected' if session[USER_ARGS][FILE_TYPE] == CSV }}>csv (all data)
+                                            {{ 'selected' if session[ARGS][FILE_TYPE] == CSV }}>csv (all data)
                                         </option>
                                         <option value="{{ JSON }}" 
-                                            {{ 'selected' if session[USER_ARGS][FILE_TYPE] == JSON }}>json (all data)
+                                            {{ 'selected' if session[ARGS][FILE_TYPE] == JSON }}>json (all data)
                                         </option>
                                     </select>
                                     <input type='submit' value='Download'><br>
@@ -158,7 +158,7 @@
     <select id="{{ DICTIONARY }}" name="{{ DICTIONARY }}">
         {% for k, v in Dictionaries.items() %}
             <option value="{{ k }}"
-                {% if session[USER_ARGS][DICTIONARY] == k %}
+                {% if session[ARGS][DICTIONARY] == k %}
                     selected
                 {% endif %}
             >{{ v.name }}</option>

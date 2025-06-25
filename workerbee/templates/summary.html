@@ -18,12 +18,12 @@
             {% endfor %}
         </td>
     </tr>
-    {% if session[USER_ARGS][SHOW_WORDS] == SHOW_WORDS %}
+    {% if session[ARGS][SHOW_WORDS] == SHOW_WORDS %}
         <tr>
             <td style="font-size: smaller; text-align: right; background-color: aliceblue;">Words</td>
             <td style="background-color: aliceblue; font-size: smaller;" colspan="4">
                 {% for key in output_data.data.keys() | sort %}
-                    {% set key_suffix = '&nbsp;letters' if session[USER_ARGS][WORD_SORT] == BYWORDLENGTH else '' %}
+                    {% set key_suffix = '&nbsp;letters' if session[ARGS][WORD_SORT] == BYWORDLENGTH else '' %}
                     <span style="font-weight: bold;">[{{ key | upper }}{{ key_suffix | safe }}]</span>
                     {% for beeword in output_data.data[key] %}
                         {{ decorate_word(beeword) }}

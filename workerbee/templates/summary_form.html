@@ -21,7 +21,7 @@
             </div>
             <div>
                 <input type='text', name={{ REQUIRED_LETTER }}
-                value="{{ session[USER_ARGS][REQUIRED_LETTER] }}">
+                value="{{ session[ARGS][REQUIRED_LETTER] }}">
             </div>
             <div class="mt-3">
                 Enter the other letters:<br>
@@ -30,7 +30,7 @@
             </div>
             <div>
                 <input type='text', name={{ ALLOWED_LETTERS }}
-                value="{{ session[USER_ARGS][ALLOWED_LETTERS] }}">
+                value="{{ session[ARGS][ALLOWED_LETTERS] }}">
             </div>
 
             <div class="mt-3">
@@ -38,13 +38,13 @@
             </div>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="{{ SUMMARY_SORT }}" id="{{ ASCENDING }}" value="{{ ASCENDING }}" 
-                    {{ 'checked' if session[USER_ARGS][SUMMARY_SORT] == ASCENDING else '' }}
+                    {{ 'checked' if session[ARGS][SUMMARY_SORT] == ASCENDING else '' }}
                 >
                 <label class="form-check-label" for="{{ ASCENDING }}">Ascending</label><br>
             </div>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="{{ SUMMARY_SORT }}" id="{{ DESCENDING}}" value="{{ DESCENDING}}"
-                    {{ 'checked' if session[USER_ARGS][SUMMARY_SORT] == DESCENDING else '' }}
+                    {{ 'checked' if session[ARGS][SUMMARY_SORT] == DESCENDING else '' }}
                 >
                 <label class="form-check-label" for="{{ DESCENDING}}">Descending</label><br>
             </div>
@@ -52,20 +52,20 @@
             <div class="mt-3">
                 <div>
                     <input type="checkbox" id="{{ SHOW_WORDS}}" name="{{ SHOW_WORDS}}" value="{{ SHOW_WORDS }}"
-                        {{ 'checked' if session[USER_ARGS][SHOW_WORDS] == SHOW_WORDS else '' }}
+                        {{ 'checked' if session[ARGS][SHOW_WORDS] == SHOW_WORDS else '' }}
                     >
                     <label for="{{ SHOW_WORDS }}">Include all words in summaries</label>            
                 </div>
 
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="{{ WORD_SORT }}" id="{{ ALPHABETICALLY }}" value="{{ ALPHABETICALLY }}"
-                        {{ 'checked' if session[USER_ARGS][WORD_SORT] == ALPHABETICALLY else '' }}
+                        {{ 'checked' if session[ARGS][WORD_SORT] == ALPHABETICALLY else '' }}
                     >
                     <label class="form-check-label" for="alphabetically">Sort words alphabetically</label><br>
                 </div>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="{{ WORD_SORT }}" id="{{ BYWORDLENGTH }}" value="{{ BYWORDLENGTH }}"
-                        {{ 'checked' if session[USER_ARGS][WORD_SORT] == BYWORDLENGTH else '' }}
+                        {{ 'checked' if session[ARGS][WORD_SORT] == BYWORDLENGTH else '' }}
                     >
                     <label class="form-check-label" for="bylength">Sort words by word length</label><br>
                 </div>
