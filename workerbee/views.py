@@ -4,7 +4,17 @@ from . import app
 from . import config as cfg
 from .utils import error_check, get_filename, write_to_buffer
 from .bee import get_beewords, get_beewords_grouped, get_groupings
-from flask import request, session, redirect, flash, g, make_response, send_file, abort
+from flask import (
+    render_template,
+    session,
+    g,
+    request,
+    make_response,
+    abort,
+    flash,
+    redirect,
+    send_file,
+)
 from io import BytesIO
 from pyinstrument import Profiler
 
@@ -51,7 +61,8 @@ def after_request(response):
 def home():
     if request.args:
         abort(400)
-    return cfg.JINJA_ENV.get_template(cfg.HOME_TEMPLATE).render(
+    return render_template(
+        cfg.HOME_TEMPLATE,
         args=session.get(cfg.USER_ARGS, None),
         dictionaries=cfg.Dictionaries,
         word_lists=cfg.WordLists,
@@ -62,14 +73,14 @@ def home():
 def help():
     if request.args:
         abort(400)
-    return cfg.JINJA_ENV.get_template(cfg.HELP_TEMPLATE).render()
+    return render_template(cfg.HELP_TEMPLATE)
 
 
 @app.route(f"/{cfg.ABOUT_VIEW}/")
 def about():
     if request.args:
         abort(400)
-    return cfg.JINJA_ENV.get_template(cfg.ABOUT_TEMPLATE).render()
+    return render_template(cfg.ABOUT_TEMPLATE)
 
 
 @app.route(f"/{cfg.BEEWORD_VIEW}", methods=["GET"])
@@ -86,7 +97,8 @@ def beewords():
             allowed_letters=user_args[cfg.ALLOWED_LETTERS],
             dictionary=cfg.Dictionaries[user_args[cfg.DICTIONARY]],
         )
-        return cfg.JINJA_ENV.get_template(cfg.LISTWORDS_TEMPLATE).render(
+        return render_template(
+            cfg.LISTWORDS_TEMPLATE,
             beeword_list=beewords.data,
             metadata=beewords.metadata,
         )
@@ -99,7 +111,8 @@ def beewords():
             grouping=grouping,
             dictionary=cfg.Dictionaries[user_args[cfg.DICTIONARY]],
         )
-        return cfg.JINJA_ENV.get_template(cfg.BEEWORDS_TEMPLATE).render(
+        return render_template(
+            cfg.BEEWORDS_TEMPLATE,
             beeword_data=beewords.data,
             metadata=beewords.metadata,
             grouping=grouping,
@@ -110,7 +123,7 @@ def beewords():
 def summary_form():
     if request.args:
         abort(400)
-    return cfg.JINJA_ENV.get_template(cfg.SUMMARY_FORM_TEMPLATE).render()
+    return render_template(cfg.SUMMARY_FORM_TEMPLATE)
 
 
 def reshape_for_summaries(
@@ -164,7 +177,8 @@ def summary():
         )
         summary.append(output_data)
     reshaped = reshape_for_summaries(output_data=summary)
-    return cfg.JINJA_ENV.get_template(cfg.SUMMARY_TEMPLATE).render(
+    return render_template(
+        cfg.SUMMARY_TEMPLATE,
         summary=reshaped,
     )
 

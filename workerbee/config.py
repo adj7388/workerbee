@@ -1,6 +1,7 @@
 import os
 from collections import namedtuple
-from jinja2 import Environment, Template, FileSystemLoader
+from jinja2 import Template
+from workerbee import app
 
 Beeword = namedtuple("Beeword", "word length initials is_pangram, is_perfect, url")
 Metadata = namedtuple(
@@ -76,12 +77,6 @@ NUM_ALLOWED_LETTERS = 6
 MIN_WORD_LENGTH = 4
 PANGRAM_MARKER = "*"
 PERFECT_MARKER = "+"
-
-JINJA_ENV = Environment(loader=FileSystemLoader(TEMPLATE_FOLDER))
-
-
-def make_url_template(source: str) -> Template:
-    return JINJA_ENV.from_string(source)
 
 
 # Manage Word Lists
@@ -181,6 +176,11 @@ WIKT = "WIKT"
 DICT = "DICT"
 FREE = "FREE"
 
+
+def make_url_template(source: str) -> Template:
+    return app.jinja_env.from_string(source)
+
+
 Dictionaries = {
     MW: Dictionary(
         name="Merriam-Webster",
@@ -204,8 +204,6 @@ Dictionaries = {
     ),
 }
 
-# import flask functions so they are inserted into Jinja globals
-from flask import url_for, get_flashed_messages, session  # pyright: ignore
 
 # Assign const variables to jinja environment after all are defined
-JINJA_ENV.globals.update(locals())
+app.jinja_env.globals.update(locals())
