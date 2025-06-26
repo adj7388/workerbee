@@ -115,6 +115,7 @@ td.letters {
 
 .nav-link.active {
     color: black !important;
+    font-weight: bold;
     background-color: #faf3d4;
     border-radius: 0.25rem;
 }
