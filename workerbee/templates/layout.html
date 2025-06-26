@@ -19,16 +19,28 @@
         <div class="collapse navbar-collapse" id="navbarMenu">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('home') }}">Find Words</a>
+              <a 
+                class="nav-link {% if request.endpoint == 'home' %}active{% endif %}" 
+                href="{{ url_for('home') }}">Find Words
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('summary_form') }}">Show Summaries</a>
+              <a 
+                class="nav-link {% if request.endpoint == 'summary_form' %}active{% endif %}" 
+                href="{{ url_for('summary_form') }}">Show Summaries
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('help') }}">Help</a>
-            </li>
+              <a 
+                class="nav-link {% if request.endpoint == 'help' %}active{% endif %}" 
+                href="{{ url_for('help') }}">Help
+              </a>
+            </li> 
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('about') }}">About</a>
+              <a
+                class="nav-link {% if request.endpoint == 'about' %}active{% endif %}" 
+                href="{{ url_for('about') }}">About
+              </a>
             </li>
           </ul>
         </div>

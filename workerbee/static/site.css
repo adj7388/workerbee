@@ -1,3 +1,42 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    padding-top: 70px; /* Prevent content from being hidden under the navbar */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+}
+
+p {
+  font-family: 'Lato', sans-serif;
+}
+
+h1 {
+    font-size: x-large;
+}
+
+h2 {
+    font-size: large;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: large;
+    font-style: italic;
+}
+
+h3::before {
+  font-size: 1.5em; /* Adjust size as needed */
+}
+
+h4 {
+    font-size: medium;
+    font-weight: bold;
+}
+
 .appcolor {
     background-color: #faf3d4;
     padding-left: 3em;
@@ -52,40 +91,6 @@ td.letters {
     font-weight: bold;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', serif;
-}
-
-p {
-  font-family: 'Lato', sans-serif;
-}
-
-h1 {
-    font-size: x-large;
-}
-
-h2 {
-    font-size: large;
-    font-weight: bold;
-}
-
-h3 {
-    font-size: large;
-    font-style: italic;
-}
-
-h3::before {
-  font-size: 1.5em; /* Adjust size as needed */
-}
-
-h4 {
-    font-size: medium;
-    font-weight: bold;
-}
-body {
-    padding-top: 70px; /* Prevent content from being hidden under the navbar */
-}
-
 .unstyled-link {
     color: inherit;
     text-decoration: none;
@@ -108,6 +113,9 @@ body {
   scroll-margin-top: 70px; /* adjust fixed navbar height */
 }
 
-html {
-    scroll-behavior: smooth;
+.nav-link.active {
+    color: black !important;
+    background-color: #faf3d4;
+    border-radius: 0.25rem;
 }
+
