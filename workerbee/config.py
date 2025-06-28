@@ -82,7 +82,7 @@ PERFECT_MARKER = "+"
 WordList = namedtuple("WordList", "name file_name")
 
 # directory for word list files
-WORDLIST_DIR = "wordlists"
+WORDLIST_DIR = "data"
 
 # Word list keys
 DWYL = "DWYL"
