@@ -4,6 +4,7 @@ import sys
 from .bee import get_beewords, get_beewords_grouped, get_groupings
 from .utils import error_check, write_to_buffer
 from . import config
+from . import wordlists
 
 
 def get_argparser() -> argparse.ArgumentParser:
@@ -34,12 +35,12 @@ def get_argparser() -> argparse.ArgumentParser:
         type=str,
         required=False,
         choices=[
-            config.DWYL,
-            config.LINUX_US,
-            config.LINUX_UK,
-            config.SCOWL_LARGE_70,
+            wordlists.DWYL,
+            wordlists.LINUX_US,
+            wordlists.LINUX_UK,
+            wordlists.SCOWL_LARGE_70,
         ],
-        default=config.SCOWL_LARGE_70,
+        default=wordlists.SCOWL_LARGE_70,
         help="Master word list",
     )
     parser.add_argument(
@@ -136,7 +137,7 @@ def main():
     args = get_commandline_args()
     output_data: config.OutputData
     if args.summary == True:
-        for word_list in config.WordLists.values():
+        for word_list in wordlists.WordLists.values():
             beewords = get_beewords(
                 word_list=word_list,
                 required_letter=args.required,
@@ -148,14 +149,14 @@ def main():
 
     if args.groupby == config.NO_GROUPING:
         output_data = get_beewords(
-            word_list=config.WordLists[args.wordlist],
+            word_list=wordlists.WordLists[args.wordlist],
             required_letter=args.required,
             allowed_letters=args.allowed,
             dictionary=config.Dictionaries[args.dictionary],
         )
     elif args.groupby in [config.INITIALS, config.LENGTH]:
         output_data = get_beewords_grouped(
-            word_list=config.WordLists[args.wordlist],
+            word_list=wordlists.WordLists[args.wordlist],
             required_letter=args.required,
             allowed_letters=args.allowed,
             grouping=get_groupings(args.groupby),

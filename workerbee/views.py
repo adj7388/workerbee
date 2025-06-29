@@ -2,6 +2,7 @@ from collections import defaultdict
 
 from . import app
 from . import config as cfg
+from . import wordlists
 from .utils import error_check, get_filename, write_to_buffer
 from .bee import get_beewords, get_beewords_grouped, get_groupings
 from flask import (
@@ -34,7 +35,7 @@ def before_request():
             cfg.REQUIRED_LETTER: "a",
             cfg.ALLOWED_LETTERS: "cptive",
             cfg.DICTIONARY: cfg.WIKT,
-            cfg.WORD_LIST: cfg.SCOWL_DEFAULT_60,
+            cfg.WORD_LIST: wordlists.SCOWL_DEFAULT_60,
             cfg.GROUPING: cfg.INITIALS,
             cfg.FILE_TYPE: cfg.JSON,
             cfg.SUMMARY_SORT: cfg.DESCENDING,
@@ -87,7 +88,7 @@ def beewords():
         return redirect(cfg.HOME_VIEW)
     if session[cfg.ARGS][cfg.GROUPING] == cfg.NO_GROUPING:
         beewords = get_beewords(
-            word_list=cfg.WordLists[session[cfg.ARGS][cfg.WORD_LIST]],
+            word_list=wordlists.WordLists[session[cfg.ARGS][cfg.WORD_LIST]],
             required_letter=session[cfg.ARGS][cfg.REQUIRED_LETTER],
             allowed_letters=session[cfg.ARGS][cfg.ALLOWED_LETTERS],
             dictionary=cfg.Dictionaries[session[cfg.ARGS][cfg.DICTIONARY]],
@@ -100,7 +101,7 @@ def beewords():
     else:
         grouping = get_groupings(session[cfg.ARGS][cfg.GROUPING])
         beewords = get_beewords_grouped(
-            word_list=cfg.WordLists[session[cfg.ARGS][cfg.WORD_LIST]],
+            word_list=wordlists.WordLists[session[cfg.ARGS][cfg.WORD_LIST]],
             required_letter=session[cfg.ARGS][cfg.REQUIRED_LETTER],
             allowed_letters=session[cfg.ARGS][cfg.ALLOWED_LETTERS],
             grouping=grouping,
@@ -160,7 +161,7 @@ def summary():
         flash(message=error_msg)
         return redirect(f"/{cfg.SUMMARY_FORM_VIEW}")
     summary: list[cfg.OutputData] = []
-    for word_list in cfg.WordLists.values():
+    for word_list in wordlists.WordLists.values():
         output_data = get_beewords(
             word_list=word_list,
             required_letter=session[cfg.ARGS][cfg.REQUIRED_LETTER],
@@ -180,14 +181,14 @@ def getfile():
     session[cfg.ARGS] = add_args_to_session(request_args=request.args)
     if session[cfg.ARGS][cfg.GROUPING] == cfg.NO_GROUPING:
         output_data = get_beewords(
-            word_list=cfg.WordLists[session[cfg.ARGS][cfg.WORD_LIST]],
+            word_list=wordlists.WordLists[session[cfg.ARGS][cfg.WORD_LIST]],
             required_letter=session[cfg.ARGS][cfg.REQUIRED_LETTER],
             allowed_letters=session[cfg.ARGS][cfg.ALLOWED_LETTERS],
             dictionary=cfg.Dictionaries[session[cfg.ARGS][cfg.DICTIONARY]],
         )
     else:
         output_data = get_beewords_grouped(
-            word_list=cfg.WordLists[session[cfg.ARGS][cfg.WORD_LIST]],
+            word_list=wordlists.WordLists[session[cfg.ARGS][cfg.WORD_LIST]],
             required_letter=session[cfg.ARGS][cfg.REQUIRED_LETTER],
             allowed_letters=session[cfg.ARGS][cfg.ALLOWED_LETTERS],
             grouping=get_groupings(session[cfg.ARGS][cfg.GROUPING]),

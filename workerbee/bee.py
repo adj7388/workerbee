@@ -1,6 +1,9 @@
 from itertools import groupby
 
+from workerbee import wordlists
+
 from . import config
+from . import wordlists
 
 
 def get_groupings(grouping: str) -> list:
@@ -24,7 +27,7 @@ def get_metadata(
     required: str,
     allowed: str,
     dictionary: config.Dictionary,
-    word_list: config.WordList,
+    word_list: wordlists.WordList,
 ) -> config.Metadata:
     return config.Metadata(
         num_beewords=len(data),
@@ -67,7 +70,7 @@ def get_beeword(
 
 
 def get_beewords(
-    word_list: config.WordList,
+    word_list: wordlists.WordList,
     required_letter: str,
     allowed_letters: str,
     dictionary: config.Dictionary,
@@ -102,7 +105,7 @@ def get_beewords(
 
 
 def get_beewords_grouped(
-    word_list: config.WordList,
+    word_list: wordlists.WordList,
     required_letter: str,
     allowed_letters: str,
     grouping: list[str],
