@@ -1,4 +1,3 @@
-import os
 from collections import namedtuple
 
 Beeword = namedtuple("Beeword", "word length initials is_pangram, is_perfect, url")
@@ -8,12 +7,6 @@ Metadata = namedtuple(
 )
 OutputData = namedtuple("OutputData", "data metadata")
 
-# Debugging
-BEEPROFILE = "BEEPROFILE"
-PROFILE_REQUEST_ARG = "profile"
-PROFILING = True if os.environ.get(BEEPROFILE, "") == BEEPROFILE else False
-
-# Other constants
 NUM_REQUIRED_LETTERS = 1
 NUM_ALLOWED_LETTERS = 6
 MIN_WORD_LENGTH = 4

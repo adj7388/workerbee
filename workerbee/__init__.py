@@ -2,13 +2,13 @@ import flask
 import os
 from .wordlists import WordLists
 from .dictionaries import Dictionaries
-from .config import PROFILE_REQUEST_ARG
 from .constants import (
     ALLOWED_LETTERS,
     ALPHABETICALLY,
     ARGS,
     ASCENDING,
     BEEWORD_VIEW,
+    BEEPROFILE,
     BYWORDLENGTH,
     DESCENDING,
     DICTIONARY,
@@ -17,6 +17,8 @@ from .constants import (
     INITIALS,
     LENGTH,
     NO_GROUPING,
+    PROFILE_REQUEST_ARG,
+    PROFILING,
     REQUIRED_LETTER,
     SHOW_WORDS,
     SUMMARY_SORT,
@@ -26,7 +28,8 @@ from .constants import (
 )
 
 app = flask.Flask(__name__)
-app.secret_key = os.environ.get("SECRETBEEKEY")
+app.config["SECRET_KEY"] = os.environ.get("SECRETBEEKEY")
+app.config[PROFILING] = True if os.environ.get(BEEPROFILE, "") == BEEPROFILE else False
 
 
 # Insert all config variables into jinja environment

@@ -45,14 +45,17 @@ def before_request():
             const.WORD_SORT: const.ALPHABETICALLY,
         },
     )
-    if config.PROFILING is True and config.PROFILE_REQUEST_ARG in request.args:
+    if (
+        app.config[const.PROFILING] is True
+        and const.PROFILE_REQUEST_ARG in request.args
+    ):
         g.profiler = Profiler()
         g.profiler.start()
 
 
 @app.after_request
 def after_request(response):
-    if config.PROFILING is True and hasattr(g, "profiler"):
+    if app.config[const.PROFILING] is True and hasattr(g, "profiler"):
         g.profiler.stop()
         output_html = g.profiler.output_html()
         return make_response(output_html)

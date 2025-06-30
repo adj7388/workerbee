@@ -1,3 +1,8 @@
+# debugging
+PROFILING = "PROFILING"
+BEEPROFILE = "BEEPROFILE"
+PROFILE_REQUEST_ARG = "profile"
+
 # route consts
 BEEWORD_VIEW = "beewords"
 GETFILE_VIEW = "getfile"
