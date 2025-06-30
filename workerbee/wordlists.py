@@ -1,16 +1,14 @@
-from collections import namedtuple
+from dataclasses import dataclass
 
-# where to find word list files
+
+@dataclass
+class WordList:
+    name: str
+    file_name: str
+
+
 WORDLIST_DIR = "data"
-
-WordList = namedtuple("WordList", "name file_name")
-
 # Word list keys
-DWYL = "DWYL"
-LINUX_US = "LINUX-US"
-LINUX_UK = "LINUX-UK"
-SCOWL_10 = "SCOWL-10"
-SCOWL_20 = "SCOWL-20"
 SCOWL_SMALL_35 = "SCOWL-SMALL-35"
 SCOWL_40 = "SCOWL-40"
 SCOWL_MEDIUM_50 = "SCOWL-MEDIUM-50"
@@ -30,12 +28,6 @@ WordLists = {
         name=f"{SCOWL_DEFAULT_60}",
         file_name=f"{WORDLIST_DIR}/{SCOWL_DEFAULT_60}/words.txt",
     ),
-    # SCOWL_10: WordList(
-    #     name=f"{SCOWL_10}", file_name=f"{WORDLIST_DIR}/{SCOWL_10}/words.txt"
-    # ),
-    # SCOWL_20: WordList(
-    #     name=f"{SCOWL_20}", file_name=f"{WORDLIST_DIR}/{SCOWL_20}/words.txt"
-    # ),
     SCOWL_SMALL_35: WordList(
         name=f"{SCOWL_SMALL_35}", file_name=f"{WORDLIST_DIR}/{SCOWL_SMALL_35}/words.txt"
     ),
@@ -74,15 +66,4 @@ WordLists = {
         name="12dicts-6of12",
         file_name=f"{WORDLIST_DIR}/{TWELVEDICTS_602_DIR}/6of12.txt",
     ),
-    # DWYL: WordList(
-    #     name="DWYL Words (dwyl.com)", file_name=f"{WORDLIST_DIR}/{DWYL}/alpha_words.txt"
-    # ),
-    # LINUX_UK: WordList(
-    #     name="Linux British English",
-    #     file_name=f"{WORDLIST_DIR}/{LINUX_UK}/british-english",
-    # ),
-    # LINUX_US: WordList(
-    #     name="Linux American English",
-    #     file_name=f"{WORDLIST_DIR}/{LINUX_US}/american-english",
-    # ),
 }
