@@ -37,12 +37,7 @@ def get_argparser() -> argparse.ArgumentParser:
         "--wordlist",
         type=str,
         required=False,
-        choices=[
-            wordlists.DWYL,
-            wordlists.LINUX_US,
-            wordlists.LINUX_UK,
-            wordlists.SCOWL_LARGE_70,
-        ],
+        choices=[wordlist.name for wordlist in wordlists.WordLists.values()],
         default=wordlists.SCOWL_LARGE_70,
         help="Master word list",
     )
