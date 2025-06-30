@@ -1,7 +1,8 @@
 import flask
 import os
 from .wordlists import WordLists
-from .config import Dictionaries, PROFILE_REQUEST_ARG
+from .dictionaries import Dictionaries
+from .config import PROFILE_REQUEST_ARG
 from .constants import (
     ALLOWED_LETTERS,
     ALPHABETICALLY,

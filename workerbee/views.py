@@ -3,6 +3,7 @@ from collections import defaultdict
 from . import app
 from . import config
 from . import constants as const
+from . import dictionaries as dicts
 from . import wordlists
 from .utils import error_check, get_filename, write_to_buffer
 from .bee import get_beewords, get_beewords_grouped, get_groupings
@@ -35,7 +36,7 @@ def before_request():
         {
             const.REQUIRED_LETTER: "a",
             const.ALLOWED_LETTERS: "cptive",
-            const.DICTIONARY: config.WIKT,
+            const.DICTIONARY: dicts.WIKT,
             const.WORD_LIST: wordlists.SCOWL_DEFAULT_60,
             const.GROUPING: const.INITIALS,
             const.FILE_TYPE: const.JSON,
@@ -92,7 +93,7 @@ def beewords():
             word_list=wordlists.WordLists[session[const.ARGS][const.WORD_LIST]],
             required_letter=session[const.ARGS][const.REQUIRED_LETTER],
             allowed_letters=session[const.ARGS][const.ALLOWED_LETTERS],
-            dictionary=config.Dictionaries[session[const.ARGS][const.DICTIONARY]],
+            dictionary=dicts.Dictionaries[session[const.ARGS][const.DICTIONARY]],
         )
         return render_template(
             "listwords.html",
@@ -106,7 +107,7 @@ def beewords():
             required_letter=session[const.ARGS][const.REQUIRED_LETTER],
             allowed_letters=session[const.ARGS][const.ALLOWED_LETTERS],
             grouping=grouping,
-            dictionary=config.Dictionaries[session[const.ARGS][const.DICTIONARY]],
+            dictionary=dicts.Dictionaries[session[const.ARGS][const.DICTIONARY]],
         )
         return render_template(
             "beewords.html",
@@ -167,7 +168,7 @@ def summary():
             word_list=word_list,
             required_letter=session[const.ARGS][const.REQUIRED_LETTER],
             allowed_letters=session[const.ARGS][const.ALLOWED_LETTERS],
-            dictionary=config.Dictionaries[session[const.ARGS][const.DICTIONARY]],
+            dictionary=dicts.Dictionaries[session[const.ARGS][const.DICTIONARY]],
         )
         summary.append(output_data)
     reshaped = reshape_for_summaries(output_data=summary)
@@ -185,7 +186,7 @@ def getfile():
             word_list=wordlists.WordLists[session[const.ARGS][const.WORD_LIST]],
             required_letter=session[const.ARGS][const.REQUIRED_LETTER],
             allowed_letters=session[const.ARGS][const.ALLOWED_LETTERS],
-            dictionary=config.Dictionaries[session[const.ARGS][const.DICTIONARY]],
+            dictionary=dicts.Dictionaries[session[const.ARGS][const.DICTIONARY]],
         )
     else:
         output_data = get_beewords_grouped(
@@ -193,7 +194,7 @@ def getfile():
             required_letter=session[const.ARGS][const.REQUIRED_LETTER],
             allowed_letters=session[const.ARGS][const.ALLOWED_LETTERS],
             grouping=get_groupings(session[const.ARGS][const.GROUPING]),
-            dictionary=config.Dictionaries[session[const.ARGS][const.DICTIONARY]],
+            dictionary=dicts.Dictionaries[session[const.ARGS][const.DICTIONARY]],
         )
     buffer = write_to_buffer(
         output_data=output_data, file_type=session[const.ARGS][const.FILE_TYPE]

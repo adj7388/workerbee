@@ -5,6 +5,7 @@ from .bee import get_beewords, get_beewords_grouped, get_groupings
 from .utils import error_check, write_to_buffer
 from . import constants as const
 from . import config
+from . import dictionaries as dicts
 from . import wordlists
 
 
@@ -26,8 +27,8 @@ def get_argparser() -> argparse.ArgumentParser:
         "--dictionary",
         type=str,
         required=False,
-        choices=[config.WIKT, config.MW, config.FREE, config.DICT],
-        default=config.WIKT,
+        choices=[dicts.WIKT, dicts.MW, dicts.FREE, dicts.DICT],
+        default=dicts.WIKT,
         help="Dictionary for lookups",
     )
     parser.add_argument(
@@ -143,7 +144,7 @@ def main():
                 word_list=word_list,
                 required_letter=args.required,
                 allowed_letters=args.allowed,
-                dictionary=config.Dictionaries[config.MW],
+                dictionary=dicts.Dictionaries[dicts.MW],
             )
             print_meta_data(beewords.metadata)
         sys.exit(0)
@@ -153,7 +154,7 @@ def main():
             word_list=wordlists.WordLists[args.wordlist],
             required_letter=args.required,
             allowed_letters=args.allowed,
-            dictionary=config.Dictionaries[args.dictionary],
+            dictionary=dicts.Dictionaries[args.dictionary],
         )
     elif args.groupby in [const.INITIALS, const.LENGTH]:
         output_data = get_beewords_grouped(
@@ -161,7 +162,7 @@ def main():
             required_letter=args.required,
             allowed_letters=args.allowed,
             grouping=get_groupings(args.groupby),
-            dictionary=config.Dictionaries[args.dictionary],
+            dictionary=dicts.Dictionaries[args.dictionary],
         )
     else:
         raise ValueError("Error: Don't know how to get beewords.")

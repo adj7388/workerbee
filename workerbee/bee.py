@@ -4,6 +4,7 @@ from workerbee import wordlists
 
 from . import config
 from . import constants as const
+from . import dictionaries as dicts
 from . import wordlists
 
 
@@ -27,7 +28,7 @@ def get_metadata(
     data: list[config.Beeword],
     required: str,
     allowed: str,
-    dictionary: config.Dictionary,
+    dictionary: dicts.Dictionary,
     word_list: wordlists.WordList,
 ) -> config.Metadata:
     return config.Metadata(
@@ -55,7 +56,7 @@ def get_pangram_status(word: str, pangram_set: set) -> tuple:
 
 
 def get_beeword(
-    word: str, required: str, allowed: str, dictionary: config.Dictionary
+    word: str, required: str, allowed: str, dictionary: dicts.Dictionary
 ) -> config.Beeword:
     is_pangram, is_perfect = get_pangram_status(
         word=word, pangram_set=set(required + allowed)
@@ -74,7 +75,7 @@ def get_beewords(
     word_list: wordlists.WordList,
     required_letter: str,
     allowed_letters: str,
-    dictionary: config.Dictionary,
+    dictionary: dicts.Dictionary,
 ) -> config.OutputData:
     with open(word_list.file_name, mode="r") as f:
         words = [line for line in f.read().splitlines()]
@@ -110,7 +111,7 @@ def get_beewords_grouped(
     required_letter: str,
     allowed_letters: str,
     grouping: list[str],
-    dictionary: config.Dictionary,
+    dictionary: dicts.Dictionary,
 ) -> config.OutputData:
     beewords = get_beewords(
         word_list=word_list,
