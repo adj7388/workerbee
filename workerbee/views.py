@@ -58,21 +58,21 @@ def after_request(response):
         return response
 
 
-@app.route("/")
+@app.route("/home")
 def home():
     if request.args:
         abort(400)
     return render_template("home.html")
 
 
-@app.route(f"/{cfg.HELP_VIEW}/")
+@app.route(f"/help")
 def help():
     if request.args:
         abort(400)
     return render_template("help.html")
 
 
-@app.route(f"/{cfg.ABOUT_VIEW}/")
+@app.route("/about")
 def about():
     if request.args:
         abort(400)
@@ -85,7 +85,7 @@ def beewords():
     error_msg = error_check(args=session[cfg.ARGS])
     if error_msg:
         flash(message=error_msg)
-        return redirect(cfg.HOME_VIEW)
+        return redirect("home")
     if session[cfg.ARGS][cfg.GROUPING] == cfg.NO_GROUPING:
         beewords = get_beewords(
             word_list=wordlists.WordLists[session[cfg.ARGS][cfg.WORD_LIST]],
@@ -115,7 +115,7 @@ def beewords():
         )
 
 
-@app.route(f"/{cfg.SUMMARY_FORM_VIEW}", methods=["GET"])
+@app.route("/summary_form", methods=["GET"])
 def summary_form():
     if request.args:
         abort(400)
@@ -159,7 +159,7 @@ def summary():
     error_msg = error_check(args=session[cfg.ARGS])
     if error_msg:
         flash(message=error_msg)
-        return redirect(f"/{cfg.SUMMARY_FORM_VIEW}")
+        return redirect("/summary_form")
     summary: list[cfg.OutputData] = []
     for word_list in wordlists.WordLists.values():
         output_data = get_beewords(

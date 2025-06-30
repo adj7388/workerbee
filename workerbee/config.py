@@ -14,12 +14,8 @@ PROFILE_REQUEST_ARG = "profile"
 PROFILING = True if os.environ.get(BEEPROFILE, "") == BEEPROFILE else False
 
 # route consts
-HOME_VIEW = "/"
-ABOUT_VIEW = "about"
-HELP_VIEW = "help"
 BEEWORD_VIEW = "beewords"
 GETFILE_VIEW = "getfile"
-SUMMARY_FORM_VIEW = "summary_form"
 SUMMARY_VIEW = "summary"
 
 # Session consts
