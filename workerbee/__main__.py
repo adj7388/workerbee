@@ -3,6 +3,7 @@ import sys
 
 from .bee import get_beewords, get_beewords_grouped, get_groupings
 from .utils import error_check, write_to_buffer
+from . import constants as const
 from . import config
 from . import wordlists
 
@@ -47,8 +48,8 @@ def get_argparser() -> argparse.ArgumentParser:
         "-g",
         "--groupby",
         type=str,
-        choices=[config.INITIALS, config.LENGTH, config.NO_GROUPING],
-        default=config.NO_GROUPING,
+        choices=[const.INITIALS, const.LENGTH, const.NO_GROUPING],
+        default=const.NO_GROUPING,
         help="Output grouped by initials, word length, or no grouping (plain list)",
     )
 
@@ -147,14 +148,14 @@ def main():
             print_meta_data(beewords.metadata)
         sys.exit(0)
 
-    if args.groupby == config.NO_GROUPING:
+    if args.groupby == const.NO_GROUPING:
         output_data = get_beewords(
             word_list=wordlists.WordLists[args.wordlist],
             required_letter=args.required,
             allowed_letters=args.allowed,
             dictionary=config.Dictionaries[args.dictionary],
         )
-    elif args.groupby in [config.INITIALS, config.LENGTH]:
+    elif args.groupby in [const.INITIALS, const.LENGTH]:
         output_data = get_beewords_grouped(
             word_list=wordlists.WordLists[args.wordlist],
             required_letter=args.required,
@@ -173,9 +174,9 @@ def main():
         buffer = write_to_buffer(output_data, file_type="json")
         print(buffer.getvalue())
     ### ... if not csv/json (above), then print to stdout based on groupby
-    elif args.groupby == config.NO_GROUPING:
+    elif args.groupby == const.NO_GROUPING:
         print_beewords_list(output_data=output_data)
-    elif args.groupby in [config.INITIALS, config.LENGTH]:
+    elif args.groupby in [const.INITIALS, const.LENGTH]:
         print_beewords_grouped(output_data=output_data)
     else:
         raise ValueError("Error: Don't know how to output.")

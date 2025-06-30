@@ -3,16 +3,17 @@ from itertools import groupby
 from workerbee import wordlists
 
 from . import config
+from . import constants as const
 from . import wordlists
 
 
 def get_groupings(grouping: str) -> list:
-    if grouping == config.LENGTH:
-        return [config.LENGTH, config.INITIALS]
-    elif grouping == config.INITIALS:
-        return [config.INITIALS, config.LENGTH]
-    elif grouping == config.NO_GROUPING:
-        return [config.NO_GROUPING]
+    if grouping == const.LENGTH:
+        return [const.LENGTH, const.INITIALS]
+    elif grouping == const.INITIALS:
+        return [const.INITIALS, const.LENGTH]
+    elif grouping == const.NO_GROUPING:
+        return [const.NO_GROUPING]
     else:
         raise ValueError(f"Bad grouping: {grouping}")
 

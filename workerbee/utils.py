@@ -4,13 +4,13 @@ import json
 
 from io import StringIO
 from typing import cast, Any
-
+from . import constants as const
 from . import config as cfg
 
 
 def error_check(args: dict) -> str:
-    required = args[cfg.REQUIRED_LETTER]
-    allowed = args[cfg.ALLOWED_LETTERS]
+    required = args[const.REQUIRED_LETTER]
+    allowed = args[const.ALLOWED_LETTERS]
     required_as_set = set(required)
     allowed_as_set = set(allowed)
     if required.isalpha() is False or allowed.isalpha() is False:
@@ -27,7 +27,7 @@ def error_check(args: dict) -> str:
 
 
 def get_filename(metadata: cfg.Metadata, file_type: str) -> str:
-    ext = cfg.CSV if file_type in [cfg.WORD_URL_CSV, cfg.CSV] else file_type
+    ext = const.CSV if file_type in [const.WORD_URL_CSV, const.CSV] else file_type
     metadata_as_list = [
         f"{metadata.required}",
         f"{metadata.allowed}",
@@ -80,15 +80,15 @@ def write_to_buffer(output_data: cfg.OutputData, file_type: str) -> StringIO:
     # local copy so as not to accidentally change incoming data
     sio = StringIO()
     beewords_copy = cast(cfg.OutputData, copy.deepcopy(output_data))
-    if file_type in [cfg.CSV, cfg.TXT, cfg.WORD_URL_CSV]:
+    if file_type in [const.CSV, const.TXT, const.WORD_URL_CSV]:
         # Flatten grouped data for text and csv.
         # flatten_grouped() will return data as-is if not grouped
         beewords_copy = cfg.OutputData(
             data=flatten_grouped(beewords_copy.data), metadata=beewords_copy.metadata
         )
 
-    if file_type in [cfg.CSV, cfg.WORD_URL_CSV]:
-        if file_type == cfg.WORD_URL_CSV:
+    if file_type in [const.CSV, const.WORD_URL_CSV]:
+        if file_type == const.WORD_URL_CSV:
             WORD_FIELD = "word"
             URL_FIELD = "url"
             fieldnames = [WORD_FIELD, URL_FIELD]
@@ -109,10 +109,10 @@ def write_to_buffer(output_data: cfg.OutputData, file_type: str) -> StringIO:
         csvwriter.writeheader()
         csvwriter.writerows(beewords_copy.data)
 
-    elif file_type == cfg.TXT:
+    elif file_type == const.TXT:
         sio.write("\n".join([decorate_word(word) for word in beewords_copy.data]))
 
-    elif file_type == cfg.JSON:
+    elif file_type == const.JSON:
         beewords_copy = convert_namedtuples(beewords_copy)
         sio.write(json.dumps(beewords_copy, indent=2))
 

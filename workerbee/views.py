@@ -1,7 +1,8 @@
 from collections import defaultdict
 
 from . import app
-from . import config as cfg
+from . import config
+from . import constants as const
 from . import wordlists
 from .utils import error_check, get_filename, write_to_buffer
 from .bee import get_beewords, get_beewords_grouped, get_groupings
@@ -21,7 +22,7 @@ from pyinstrument import Profiler
 
 
 def add_args_to_session(request_args):
-    user_args = dict(session.get(cfg.ARGS, {}))
+    user_args = dict(session.get(const.ARGS, {}))
     for k, v in request_args.items():
         user_args[k] = v
     return user_args
@@ -30,27 +31,27 @@ def add_args_to_session(request_args):
 @app.before_request
 def before_request():
     session.setdefault(
-        cfg.ARGS,
+        const.ARGS,
         {
-            cfg.REQUIRED_LETTER: "a",
-            cfg.ALLOWED_LETTERS: "cptive",
-            cfg.DICTIONARY: cfg.WIKT,
-            cfg.WORD_LIST: wordlists.SCOWL_DEFAULT_60,
-            cfg.GROUPING: cfg.INITIALS,
-            cfg.FILE_TYPE: cfg.JSON,
-            cfg.SUMMARY_SORT: cfg.DESCENDING,
-            cfg.SHOW_WORDS: cfg.SHOW_WORDS,
-            cfg.WORD_SORT: cfg.ALPHABETICALLY,
+            const.REQUIRED_LETTER: "a",
+            const.ALLOWED_LETTERS: "cptive",
+            const.DICTIONARY: config.WIKT,
+            const.WORD_LIST: wordlists.SCOWL_DEFAULT_60,
+            const.GROUPING: const.INITIALS,
+            const.FILE_TYPE: const.JSON,
+            const.SUMMARY_SORT: const.DESCENDING,
+            const.SHOW_WORDS: const.SHOW_WORDS,
+            const.WORD_SORT: const.ALPHABETICALLY,
         },
     )
-    if cfg.PROFILING is True and cfg.PROFILE_REQUEST_ARG in request.args:
+    if config.PROFILING is True and config.PROFILE_REQUEST_ARG in request.args:
         g.profiler = Profiler()
         g.profiler.start()
 
 
 @app.after_request
 def after_request(response):
-    if cfg.PROFILING is True and hasattr(g, "profiler"):
+    if config.PROFILING is True and hasattr(g, "profiler"):
         g.profiler.stop()
         output_html = g.profiler.output_html()
         return make_response(output_html)
@@ -79,19 +80,19 @@ def about():
     return render_template("about.html")
 
 
-@app.route(f"/{cfg.BEEWORD_VIEW}", methods=["GET"])
+@app.route(f"/{const.BEEWORD_VIEW}", methods=["GET"])
 def beewords():
-    session[cfg.ARGS] = add_args_to_session(request.args)
-    error_msg = error_check(args=session[cfg.ARGS])
+    session[const.ARGS] = add_args_to_session(request.args)
+    error_msg = error_check(args=session[const.ARGS])
     if error_msg:
         flash(message=error_msg)
         return redirect("home")
-    if session[cfg.ARGS][cfg.GROUPING] == cfg.NO_GROUPING:
+    if session[const.ARGS][const.GROUPING] == const.NO_GROUPING:
         beewords = get_beewords(
-            word_list=wordlists.WordLists[session[cfg.ARGS][cfg.WORD_LIST]],
-            required_letter=session[cfg.ARGS][cfg.REQUIRED_LETTER],
-            allowed_letters=session[cfg.ARGS][cfg.ALLOWED_LETTERS],
-            dictionary=cfg.Dictionaries[session[cfg.ARGS][cfg.DICTIONARY]],
+            word_list=wordlists.WordLists[session[const.ARGS][const.WORD_LIST]],
+            required_letter=session[const.ARGS][const.REQUIRED_LETTER],
+            allowed_letters=session[const.ARGS][const.ALLOWED_LETTERS],
+            dictionary=config.Dictionaries[session[const.ARGS][const.DICTIONARY]],
         )
         return render_template(
             "listwords.html",
@@ -99,13 +100,13 @@ def beewords():
             metadata=beewords.metadata,
         )
     else:
-        grouping = get_groupings(session[cfg.ARGS][cfg.GROUPING])
+        grouping = get_groupings(session[const.ARGS][const.GROUPING])
         beewords = get_beewords_grouped(
-            word_list=wordlists.WordLists[session[cfg.ARGS][cfg.WORD_LIST]],
-            required_letter=session[cfg.ARGS][cfg.REQUIRED_LETTER],
-            allowed_letters=session[cfg.ARGS][cfg.ALLOWED_LETTERS],
+            word_list=wordlists.WordLists[session[const.ARGS][const.WORD_LIST]],
+            required_letter=session[const.ARGS][const.REQUIRED_LETTER],
+            allowed_letters=session[const.ARGS][const.ALLOWED_LETTERS],
             grouping=grouping,
-            dictionary=cfg.Dictionaries[session[cfg.ARGS][cfg.DICTIONARY]],
+            dictionary=config.Dictionaries[session[const.ARGS][const.DICTIONARY]],
         )
         return render_template(
             "beewords.html",
@@ -123,50 +124,50 @@ def summary_form():
 
 
 def reshape_for_summaries(
-    output_data: list[cfg.OutputData],
-) -> list[cfg.OutputData]:
+    output_data: list[config.OutputData],
+) -> list[config.OutputData]:
 
-    def get_key(beeword: cfg.Beeword, word_sort: str):
-        return beeword.length if word_sort == cfg.BYWORDLENGTH else beeword.word[0]
+    def get_key(beeword: config.Beeword, word_sort: str):
+        return beeword.length if word_sort == const.BYWORDLENGTH else beeword.word[0]
 
-    reshaped: list[cfg.OutputData] = []
+    reshaped: list[config.OutputData] = []
     for output in output_data:
         new_data = defaultdict(list)
         saved_key = get_key(
-            beeword=output.data[0], word_sort=session[cfg.ARGS][cfg.WORD_SORT]
+            beeword=output.data[0], word_sort=session[const.ARGS][const.WORD_SORT]
         )
         for beeword in output.data:
-            this_key = get_key(beeword, word_sort=session[cfg.ARGS][cfg.WORD_SORT])
+            this_key = get_key(beeword, word_sort=session[const.ARGS][const.WORD_SORT])
             saved_key = this_key if saved_key != this_key else saved_key
             new_data[this_key].append(beeword)
-        reshaped.append(cfg.OutputData(data=new_data, metadata=output.metadata))
+        reshaped.append(config.OutputData(data=new_data, metadata=output.metadata))
     return sorted(
         reshaped,
         key=lambda output_data: output_data.metadata.num_beewords,
         reverse=(
-            True if session[cfg.ARGS][cfg.SUMMARY_SORT] == "descending" else False
+            True if session[const.ARGS][const.SUMMARY_SORT] == "descending" else False
         ),
     )
 
 
-@app.route(f"/{cfg.SUMMARY_VIEW}", methods=["GET"])
+@app.route(f"/{const.SUMMARY_VIEW}", methods=["GET"])
 def summary():
     user_args: dict = dict(request.args)
-    user_args[cfg.SHOW_WORDS] = request.args.get(cfg.SHOW_WORDS)
-    if user_args[cfg.SHOW_WORDS]:
-        user_args[cfg.WORD_SORT] = request.args.get(cfg.WORD_SORT)
-    session[cfg.ARGS] = add_args_to_session(user_args)
-    error_msg = error_check(args=session[cfg.ARGS])
+    user_args[const.SHOW_WORDS] = request.args.get(const.SHOW_WORDS)
+    if user_args[const.SHOW_WORDS]:
+        user_args[const.WORD_SORT] = request.args.get(const.WORD_SORT)
+    session[const.ARGS] = add_args_to_session(user_args)
+    error_msg = error_check(args=session[const.ARGS])
     if error_msg:
         flash(message=error_msg)
         return redirect("/summary_form")
-    summary: list[cfg.OutputData] = []
+    summary: list[config.OutputData] = []
     for word_list in wordlists.WordLists.values():
         output_data = get_beewords(
             word_list=word_list,
-            required_letter=session[cfg.ARGS][cfg.REQUIRED_LETTER],
-            allowed_letters=session[cfg.ARGS][cfg.ALLOWED_LETTERS],
-            dictionary=cfg.Dictionaries[session[cfg.ARGS][cfg.DICTIONARY]],
+            required_letter=session[const.ARGS][const.REQUIRED_LETTER],
+            allowed_letters=session[const.ARGS][const.ALLOWED_LETTERS],
+            dictionary=config.Dictionaries[session[const.ARGS][const.DICTIONARY]],
         )
         summary.append(output_data)
     reshaped = reshape_for_summaries(output_data=summary)
@@ -176,32 +177,32 @@ def summary():
     )
 
 
-@app.route(f"/{cfg.GETFILE_VIEW}/", methods=["GET"])
+@app.route(f"/{const.GETFILE_VIEW}/", methods=["GET"])
 def getfile():
-    session[cfg.ARGS] = add_args_to_session(request_args=request.args)
-    if session[cfg.ARGS][cfg.GROUPING] == cfg.NO_GROUPING:
+    session[const.ARGS] = add_args_to_session(request_args=request.args)
+    if session[const.ARGS][const.GROUPING] == const.NO_GROUPING:
         output_data = get_beewords(
-            word_list=wordlists.WordLists[session[cfg.ARGS][cfg.WORD_LIST]],
-            required_letter=session[cfg.ARGS][cfg.REQUIRED_LETTER],
-            allowed_letters=session[cfg.ARGS][cfg.ALLOWED_LETTERS],
-            dictionary=cfg.Dictionaries[session[cfg.ARGS][cfg.DICTIONARY]],
+            word_list=wordlists.WordLists[session[const.ARGS][const.WORD_LIST]],
+            required_letter=session[const.ARGS][const.REQUIRED_LETTER],
+            allowed_letters=session[const.ARGS][const.ALLOWED_LETTERS],
+            dictionary=config.Dictionaries[session[const.ARGS][const.DICTIONARY]],
         )
     else:
         output_data = get_beewords_grouped(
-            word_list=wordlists.WordLists[session[cfg.ARGS][cfg.WORD_LIST]],
-            required_letter=session[cfg.ARGS][cfg.REQUIRED_LETTER],
-            allowed_letters=session[cfg.ARGS][cfg.ALLOWED_LETTERS],
-            grouping=get_groupings(session[cfg.ARGS][cfg.GROUPING]),
-            dictionary=cfg.Dictionaries[session[cfg.ARGS][cfg.DICTIONARY]],
+            word_list=wordlists.WordLists[session[const.ARGS][const.WORD_LIST]],
+            required_letter=session[const.ARGS][const.REQUIRED_LETTER],
+            allowed_letters=session[const.ARGS][const.ALLOWED_LETTERS],
+            grouping=get_groupings(session[const.ARGS][const.GROUPING]),
+            dictionary=config.Dictionaries[session[const.ARGS][const.DICTIONARY]],
         )
     buffer = write_to_buffer(
-        output_data=output_data, file_type=session[cfg.ARGS][cfg.FILE_TYPE]
+        output_data=output_data, file_type=session[const.ARGS][const.FILE_TYPE]
     )
     return send_file(
         BytesIO(buffer.getvalue().encode(encoding="utf-8")),
         download_name=get_filename(
             metadata=output_data.metadata,
-            file_type=session[cfg.ARGS][cfg.FILE_TYPE],
+            file_type=session[const.ARGS][const.FILE_TYPE],
         ),
         as_attachment=True,
     )
