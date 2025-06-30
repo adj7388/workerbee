@@ -14,6 +14,8 @@ def error_check(args: dict) -> str:
     allowed = args[Consts.ALLOWED_LETTERS]
     required_as_set = set(required)
     allowed_as_set = set(allowed)
+    if required == "" or allowed == "":
+        return f'Neither "required" not "other" letters can be blank'
     if required.isalpha() is False or allowed.isalpha() is False:
         return f'"{required}" and "{allowed}" must contain only letters'
     if len(required) != Config.NUM_REQUIRED_LETTERS:

@@ -156,7 +156,7 @@
 
 {% macro dictionary_dropdown() %}
     <select id="{{ DICTIONARY }}" name="{{ DICTIONARY }}">
-        {% for k, v in Dictionaries.items() %}
+        {% for k, v in DICTIONARIES.items() %}
             <option value="{{ k }}"
                 {% if session[ARGS][DICTIONARY] == k %}
                     selected

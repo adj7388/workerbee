@@ -5,7 +5,7 @@
     {{ page_banner(text="Show Summaries of All Word Lists") }}
     <div>
         <scan style="font-weight: bold; font-size: smaller">Word Lists:</scan>
-        {% for word_list in WordLists.values() %}
+        {% for word_list in WORDLISTS.values() %}
             <scan style="font-size: x-small">{{ word_list.name }}</scan>&nbsp;|
         {% endfor %}
     </div>

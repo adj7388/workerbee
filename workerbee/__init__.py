@@ -10,7 +10,7 @@ app.config.from_object(Config)
 
 # inject consts into Jinja for templates
 app.jinja_env.globals.update(**asdict(Consts()))
-app.jinja_env.globals.update(WordLists=WordLists, Dictionaries=Dictionaries)
+app.jinja_env.globals.update(WORDLISTS=WordLists, DICTIONARIES=Dictionaries)
 
 # Import views sets up routes as a side effect
 from . import views  # pyright: ignore
