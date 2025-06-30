@@ -63,25 +63,24 @@ def after_request(response):
         return response
 
 
+@app.route("/")
+def root():
+    return abort(400) if request.args else redirect("home")
+
+
 @app.route("/home")
 def home():
-    if request.args:
-        abort(400)
-    return render_template("home.html")
+    return abort(400) if request.args else render_template("home.html")
 
 
 @app.route(f"/help")
 def help():
-    if request.args:
-        abort(400)
-    return render_template("help.html")
+    return abort(400) if request.args else render_template("help.html")
 
 
 @app.route("/about")
 def about():
-    if request.args:
-        abort(400)
-    return render_template("about.html")
+    return abort(400) if request.args else render_template("about.html")
 
 
 @app.route(f"/{Consts.BEEWORD_VIEW}", methods=["GET"])
@@ -122,9 +121,7 @@ def beewords():
 
 @app.route("/summary_form", methods=["GET"])
 def summary_form():
-    if request.args:
-        abort(400)
-    return render_template("summary_form.html")
+    return abort(400) if request.args else render_template("summary_form.html")
 
 
 def reshape_for_summaries(
