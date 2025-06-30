@@ -1,8 +1,3 @@
 NUM_REQUIRED_LETTERS = 1
 NUM_ALLOWED_LETTERS = 6
 MIN_WORD_LENGTH = 4
-PANGRAM_MARKER = "*"
-PERFECT_MARKER = "+"
-
-# directory for word list files
-WORDLIST_DIR = "data"

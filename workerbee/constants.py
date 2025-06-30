@@ -1,3 +1,7 @@
+# how to mark pangrams
+PANGRAM_MARKER = "*"
+PERFECT_MARKER = "+"
+
 # debugging
 PROFILING = "PROFILING"
 BEEPROFILE = "BEEPROFILE"

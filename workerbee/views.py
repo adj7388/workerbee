@@ -37,7 +37,7 @@ def before_request():
             const.REQUIRED_LETTER: "a",
             const.ALLOWED_LETTERS: "cptive",
             const.DICTIONARY: dicts.WIKT,
-            const.WORD_LIST: wordlists.SCOWL_DEFAULT_60,
+            const.WORD_LIST: wordlists.SCOWL_HUGE_80,
             const.GROUPING: const.INITIALS,
             const.FILE_TYPE: const.JSON,
             const.SUMMARY_SORT: const.DESCENDING,

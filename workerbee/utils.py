@@ -5,7 +5,7 @@ import json
 from io import StringIO
 from typing import cast, Any
 from . import constants as const
-from . import config as cfg
+from . import config
 from . import types
 
 
@@ -16,11 +16,11 @@ def error_check(args: dict) -> str:
     allowed_as_set = set(allowed)
     if required.isalpha() is False or allowed.isalpha() is False:
         return f'"{required}" and "{allowed}" must contain only letters'
-    if len(required) != cfg.NUM_REQUIRED_LETTERS:
-        return f'"{required}" must be {cfg.NUM_REQUIRED_LETTERS} character.'
-    if len(allowed) != cfg.NUM_ALLOWED_LETTERS:
-        return f'"{allowed}" must be {cfg.NUM_ALLOWED_LETTERS} characters'
-    if len(allowed_as_set) != cfg.NUM_ALLOWED_LETTERS:
+    if len(required) != config.NUM_REQUIRED_LETTERS:
+        return f'"{required}" must be {config.NUM_REQUIRED_LETTERS} character.'
+    if len(allowed) != config.NUM_ALLOWED_LETTERS:
+        return f'"{allowed}" must be {config.NUM_ALLOWED_LETTERS} characters'
+    if len(allowed_as_set) != config.NUM_ALLOWED_LETTERS:
         return f'"{allowed}" contains a duplicate letter.'
     if required_as_set.issubset(allowed_as_set):
         return f'The required letter "{required}" cannot also be in "{allowed}"'
@@ -54,9 +54,9 @@ def flatten_grouped(beewords: dict) -> dict | list[types.Beeword]:
 
 def decorate_word(beeword: types.Beeword) -> str:
     pangram_marker = (
-        cfg.PERFECT_MARKER
+        const.PERFECT_MARKER
         if beeword.is_perfect
-        else cfg.PANGRAM_MARKER if beeword.is_pangram else ""
+        else const.PANGRAM_MARKER if beeword.is_pangram else ""
     )
     return f"{beeword.word}{pangram_marker}"
 

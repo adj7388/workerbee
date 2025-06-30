@@ -1,7 +1,8 @@
 from collections import namedtuple
-from .config import WORDLIST_DIR
 
-# Manage Word Lists
+# where to find word list files
+WORDLIST_DIR = "data"
+
 WordList = namedtuple("WordList", "name file_name")
 
 # Word list keys

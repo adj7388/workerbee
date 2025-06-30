@@ -3,8 +3,8 @@ import sys
 
 from .bee import get_beewords, get_beewords_grouped, get_groupings
 from .utils import error_check, write_to_buffer
-from . import constants as const
 from . import config
+from . import constants as const
 from . import dictionaries as dicts
 from . import wordlists
 from . import types
@@ -101,8 +101,8 @@ def print_meta_data(metadata: types.Metadata):
     )
     print(f"Bingo:            {metadata.bingo}")
     print(f"Word List:        {metadata.word_list}")
-    print(f"Pangrams marked with {config.PANGRAM_MARKER}")
-    print(f"Perfect pangrams marked with {config.PERFECT_MARKER}")
+    print(f"Pangrams marked with {const.PANGRAM_MARKER}")
+    print(f"Perfect pangrams marked with {const.PERFECT_MARKER}")
     print()
 
 
@@ -115,9 +115,9 @@ def print_beewords_grouped(output_data: types.OutputData) -> None:
             print(f"{SPACING * 1}{second_level_label}")
             for beeword in words:
                 marker = (
-                    config.PERFECT_MARKER
+                    const.PERFECT_MARKER
                     if beeword.is_perfect
-                    else config.PANGRAM_MARKER if beeword.is_pangram else ""
+                    else const.PANGRAM_MARKER if beeword.is_pangram else ""
                 )
                 print(f"{SPACING * 2}{beeword.word} {marker}")
     print_meta_data(output_data.metadata)
@@ -127,9 +127,9 @@ def print_beewords_list(output_data: types.OutputData) -> None:
     print_meta_data(output_data.metadata)
     for beeword in output_data.data:
         marker = (
-            config.PERFECT_MARKER
+            const.PERFECT_MARKER
             if beeword.is_perfect
-            else config.PANGRAM_MARKER if beeword.is_pangram else ""
+            else const.PANGRAM_MARKER if beeword.is_pangram else ""
         )
         print(f"{beeword.word} {marker}")
     print_meta_data(output_data.metadata)
