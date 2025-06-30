@@ -62,21 +62,21 @@ def after_request(response):
 def home():
     if request.args:
         abort(400)
-    return render_template(cfg.HOME_TEMPLATE)
+    return render_template("home.html")
 
 
 @app.route(f"/{cfg.HELP_VIEW}/")
 def help():
     if request.args:
         abort(400)
-    return render_template(cfg.HELP_TEMPLATE)
+    return render_template("help.html")
 
 
 @app.route(f"/{cfg.ABOUT_VIEW}/")
 def about():
     if request.args:
         abort(400)
-    return render_template(cfg.ABOUT_TEMPLATE)
+    return render_template("about.html")
 
 
 @app.route(f"/{cfg.BEEWORD_VIEW}", methods=["GET"])
@@ -94,7 +94,7 @@ def beewords():
             dictionary=cfg.Dictionaries[session[cfg.ARGS][cfg.DICTIONARY]],
         )
         return render_template(
-            cfg.LISTWORDS_TEMPLATE,
+            "listwords.html",
             beeword_list=beewords.data,
             metadata=beewords.metadata,
         )
@@ -108,7 +108,7 @@ def beewords():
             dictionary=cfg.Dictionaries[session[cfg.ARGS][cfg.DICTIONARY]],
         )
         return render_template(
-            cfg.BEEWORDS_TEMPLATE,
+            "beewords.html",
             beeword_data=beewords.data,
             metadata=beewords.metadata,
             grouping=grouping,
@@ -119,7 +119,7 @@ def beewords():
 def summary_form():
     if request.args:
         abort(400)
-    return render_template(cfg.SUMMARY_FORM_TEMPLATE)
+    return render_template("summary_form.html")
 
 
 def reshape_for_summaries(
@@ -171,7 +171,7 @@ def summary():
         summary.append(output_data)
     reshaped = reshape_for_summaries(output_data=summary)
     return render_template(
-        cfg.SUMMARY_TEMPLATE,
+        "summary.html",
         summary=reshaped,
     )
 

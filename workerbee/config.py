@@ -13,18 +13,6 @@ BEEPROFILE = "BEEPROFILE"
 PROFILE_REQUEST_ARG = "profile"
 PROFILING = True if os.environ.get(BEEPROFILE, "") == BEEPROFILE else False
 
-# template consts
-LAYOUT_TEMPLATE = "layout.html"
-MACROS_TEMPLATE = "macros.html"
-HOME_TEMPLATE = "home.html"
-ABOUT_TEMPLATE = "about.html"
-HELP_TEMPLATE = "help.html"
-BEEWORDS_TEMPLATE = "beewords.html"
-LISTWORDS_TEMPLATE = "listwords.html"
-ERROR_TEMPLATE = "error.html"
-SUMMARY_FORM_TEMPLATE = "summary_form.html"
-SUMMARY_TEMPLATE = "summary.html"
-
 # route consts
 HOME_VIEW = "/"
 ABOUT_VIEW = "about"
