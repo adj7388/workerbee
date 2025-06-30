@@ -13,12 +13,6 @@ BEEPROFILE = "BEEPROFILE"
 PROFILE_REQUEST_ARG = "profile"
 PROFILING = True if os.environ.get(BEEPROFILE, "") == BEEPROFILE else False
 
-# file consts
-APP_FOLDER = "workerbee"
-TEMP_FOLDER = "temp"
-STATIC_FOLDER = "static"
-SITE_CSS = "site.css"
-
 # template consts
 LAYOUT_TEMPLATE = "layout.html"
 MACROS_TEMPLATE = "macros.html"
