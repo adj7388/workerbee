@@ -6,6 +6,7 @@ from io import StringIO
 from typing import cast, Any
 from . import constants as const
 from . import config as cfg
+from . import types
 
 
 def error_check(args: dict) -> str:
@@ -26,7 +27,7 @@ def error_check(args: dict) -> str:
     return ""
 
 
-def get_filename(metadata: cfg.Metadata, file_type: str) -> str:
+def get_filename(metadata: types.Metadata, file_type: str) -> str:
     ext = const.CSV if file_type in [const.WORD_URL_CSV, const.CSV] else file_type
     metadata_as_list = [
         f"{metadata.required}",
@@ -40,18 +41,18 @@ def get_filename(metadata: cfg.Metadata, file_type: str) -> str:
     return "-".join(metadata_as_list) + f".{ext}"
 
 
-def flatten_grouped(beewords: dict) -> dict | list[cfg.Beeword]:
-    flattened: list[cfg.Beeword] = []
+def flatten_grouped(beewords: dict) -> dict | list[types.Beeword]:
+    flattened: list[types.Beeword] = []
     try:
         for first_level in beewords.values():
             for words in first_level.values():
                 flattened.extend(words)
-        return sorted(flattened, key=lambda beeword: cast(cfg.Beeword, beeword).word)
+        return sorted(flattened, key=lambda beeword: cast(types.Beeword, beeword).word)
     except AttributeError:
         return beewords
 
 
-def decorate_word(beeword: cfg.Beeword) -> str:
+def decorate_word(beeword: types.Beeword) -> str:
     pangram_marker = (
         cfg.PERFECT_MARKER
         if beeword.is_perfect
@@ -66,7 +67,7 @@ def convert_namedtuples(obj2convert: Any) -> Any:
     ):  # it's a namedtuple
         return {
             k: convert_namedtuples(v)
-            for k, v in cast(cfg.Beeword, obj2convert)._asdict().items()
+            for k, v in cast(types.Beeword, obj2convert)._asdict().items()
         }
     elif isinstance(obj2convert, list):
         return [convert_namedtuples(item) for item in obj2convert]
@@ -76,14 +77,14 @@ def convert_namedtuples(obj2convert: Any) -> Any:
         return obj2convert
 
 
-def write_to_buffer(output_data: cfg.OutputData, file_type: str) -> StringIO:
+def write_to_buffer(output_data: types.OutputData, file_type: str) -> StringIO:
     # local copy so as not to accidentally change incoming data
     sio = StringIO()
-    beewords_copy = cast(cfg.OutputData, copy.deepcopy(output_data))
+    beewords_copy = cast(types.OutputData, copy.deepcopy(output_data))
     if file_type in [const.CSV, const.TXT, const.WORD_URL_CSV]:
         # Flatten grouped data for text and csv.
         # flatten_grouped() will return data as-is if not grouped
-        beewords_copy = cfg.OutputData(
+        beewords_copy = types.OutputData(
             data=flatten_grouped(beewords_copy.data), metadata=beewords_copy.metadata
         )
 
@@ -92,7 +93,7 @@ def write_to_buffer(output_data: cfg.OutputData, file_type: str) -> StringIO:
             WORD_FIELD = "word"
             URL_FIELD = "url"
             fieldnames = [WORD_FIELD, URL_FIELD]
-            beewords_copy = cfg.OutputData(
+            beewords_copy = types.OutputData(
                 data=[
                     {WORD_FIELD: decorate_word(beeword), URL_FIELD: beeword.url}
                     for beeword in beewords_copy.data
@@ -101,7 +102,7 @@ def write_to_buffer(output_data: cfg.OutputData, file_type: str) -> StringIO:
             )
         else:
             fieldnames = beewords_copy.metadata.beeword_fieldnames
-            beewords_copy = cfg.OutputData(
+            beewords_copy = types.OutputData(
                 data=convert_namedtuples(beewords_copy.data),
                 metadata=beewords_copy.metadata,
             )

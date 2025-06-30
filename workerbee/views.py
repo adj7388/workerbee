@@ -1,9 +1,9 @@
 from collections import defaultdict
 
 from . import app
-from . import config
 from . import constants as const
 from . import dictionaries as dicts
+from . import types
 from . import wordlists
 from .utils import error_check, get_filename, write_to_buffer
 from .bee import get_beewords, get_beewords_grouped, get_groupings
@@ -128,13 +128,13 @@ def summary_form():
 
 
 def reshape_for_summaries(
-    output_data: list[config.OutputData],
-) -> list[config.OutputData]:
+    output_data: list[types.OutputData],
+) -> list[types.OutputData]:
 
-    def get_key(beeword: config.Beeword, word_sort: str):
+    def get_key(beeword: types.Beeword, word_sort: str):
         return beeword.length if word_sort == const.BYWORDLENGTH else beeword.word[0]
 
-    reshaped: list[config.OutputData] = []
+    reshaped: list[types.OutputData] = []
     for output in output_data:
         new_data = defaultdict(list)
         saved_key = get_key(
@@ -144,7 +144,7 @@ def reshape_for_summaries(
             this_key = get_key(beeword, word_sort=session[const.ARGS][const.WORD_SORT])
             saved_key = this_key if saved_key != this_key else saved_key
             new_data[this_key].append(beeword)
-        reshaped.append(config.OutputData(data=new_data, metadata=output.metadata))
+        reshaped.append(types.OutputData(data=new_data, metadata=output.metadata))
     return sorted(
         reshaped,
         key=lambda output_data: output_data.metadata.num_beewords,
@@ -165,7 +165,7 @@ def summary():
     if error_msg:
         flash(message=error_msg)
         return redirect("/summary_form")
-    summary: list[config.OutputData] = []
+    summary: list[types.OutputData] = []
     for word_list in wordlists.WordLists.values():
         output_data = get_beewords(
             word_list=word_list,

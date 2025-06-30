@@ -7,6 +7,7 @@ from . import constants as const
 from . import config
 from . import dictionaries as dicts
 from . import wordlists
+from . import types
 
 
 def get_argparser() -> argparse.ArgumentParser:
@@ -87,7 +88,7 @@ def get_commandline_args() -> argparse.Namespace:
     return args
 
 
-def print_meta_data(metadata: config.Metadata):
+def print_meta_data(metadata: types.Metadata):
     print()
     print(f"Number Beewords:  {metadata.num_beewords}")
     print(f"Required letters: {metadata.required}")
@@ -105,7 +106,7 @@ def print_meta_data(metadata: config.Metadata):
     print()
 
 
-def print_beewords_grouped(output_data: config.OutputData) -> None:
+def print_beewords_grouped(output_data: types.OutputData) -> None:
     SPACING = "   "
     print_meta_data(output_data.metadata)
     for first_level_label, first_level_words in output_data.data.items():
@@ -122,7 +123,7 @@ def print_beewords_grouped(output_data: config.OutputData) -> None:
     print_meta_data(output_data.metadata)
 
 
-def print_beewords_list(output_data: config.OutputData) -> None:
+def print_beewords_list(output_data: types.OutputData) -> None:
     print_meta_data(output_data.metadata)
     for beeword in output_data.data:
         marker = (
@@ -137,7 +138,7 @@ def print_beewords_list(output_data: config.OutputData) -> None:
 ############ main ############
 def main():
     args = get_commandline_args()
-    output_data: config.OutputData
+    output_data: types.OutputData
     if args.summary == True:
         for word_list in wordlists.WordLists.values():
             beewords = get_beewords(
