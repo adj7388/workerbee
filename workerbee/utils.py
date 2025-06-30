@@ -5,13 +5,13 @@ import json
 from io import StringIO
 from typing import cast, Any
 from .config import Config
-from . import constants as const
+from .constants import Consts
 from . import types
 
 
 def error_check(args: dict) -> str:
-    required = args[const.REQUIRED_LETTER]
-    allowed = args[const.ALLOWED_LETTERS]
+    required = args[Consts.REQUIRED_LETTER]
+    allowed = args[Consts.ALLOWED_LETTERS]
     required_as_set = set(required)
     allowed_as_set = set(allowed)
     if required.isalpha() is False or allowed.isalpha() is False:
@@ -28,7 +28,7 @@ def error_check(args: dict) -> str:
 
 
 def get_filename(metadata: types.Metadata, file_type: str) -> str:
-    ext = const.CSV if file_type in [const.WORD_URL_CSV, const.CSV] else file_type
+    ext = Consts.CSV if file_type in [Consts.WORD_URL_CSV, Consts.CSV] else file_type
     metadata_as_list = [
         f"{metadata.required}",
         f"{metadata.allowed}",
@@ -54,9 +54,9 @@ def flatten_grouped(beewords: dict) -> dict | list[types.Beeword]:
 
 def decorate_word(beeword: types.Beeword) -> str:
     pangram_marker = (
-        const.PERFECT_MARKER
+        Consts.PERFECT_MARKER
         if beeword.is_perfect
-        else const.PANGRAM_MARKER if beeword.is_pangram else ""
+        else Consts.PANGRAM_MARKER if beeword.is_pangram else ""
     )
     return f"{beeword.word}{pangram_marker}"
 
@@ -81,15 +81,15 @@ def write_to_buffer(output_data: types.OutputData, file_type: str) -> StringIO:
     # local copy so as not to accidentally change incoming data
     sio = StringIO()
     beewords_copy = cast(types.OutputData, copy.deepcopy(output_data))
-    if file_type in [const.CSV, const.TXT, const.WORD_URL_CSV]:
+    if file_type in [Consts.CSV, Consts.TXT, Consts.WORD_URL_CSV]:
         # Flatten grouped data for text and csv.
         # flatten_grouped() will return data as-is if not grouped
         beewords_copy = types.OutputData(
             data=flatten_grouped(beewords_copy.data), metadata=beewords_copy.metadata
         )
 
-    if file_type in [const.CSV, const.WORD_URL_CSV]:
-        if file_type == const.WORD_URL_CSV:
+    if file_type in [Consts.CSV, Consts.WORD_URL_CSV]:
+        if file_type == Consts.WORD_URL_CSV:
             WORD_FIELD = "word"
             URL_FIELD = "url"
             fieldnames = [WORD_FIELD, URL_FIELD]
@@ -110,10 +110,10 @@ def write_to_buffer(output_data: types.OutputData, file_type: str) -> StringIO:
         csvwriter.writeheader()
         csvwriter.writerows(beewords_copy.data)
 
-    elif file_type == const.TXT:
+    elif file_type == Consts.TXT:
         sio.write("\n".join([decorate_word(word) for word in beewords_copy.data]))
 
-    elif file_type == const.JSON:
+    elif file_type == Consts.JSON:
         beewords_copy = convert_namedtuples(beewords_copy)
         sio.write(json.dumps(beewords_copy, indent=2))
 

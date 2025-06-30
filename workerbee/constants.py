@@ -1,41 +1,47 @@
-# how to mark pangrams
-PANGRAM_MARKER = "*"
-PERFECT_MARKER = "+"
+from dataclasses import dataclass
 
-# debugging
-PROFILING = "PROFILING"
-BEEPROFILE = "BEEPROFILE"
-PROFILE_REQUEST_ARG = "profile"
 
-# route consts
-BEEWORD_VIEW = "beewords"
-GETFILE_VIEW = "getfile"
-SUMMARY_VIEW = "summary"
+@dataclass(frozen=True)
+class Consts:
 
-# Session consts
-ARGS = "args"
-## for Find Words
-REQUIRED_LETTER = "required"
-ALLOWED_LETTERS = "allowed"
-DICTIONARY = "dictionary"
-WORD_LIST = "word_list"
-## for grouping
-GROUPING = "grouping"
-INITIALS = "initials"
-LENGTH = "length"
-NO_GROUPING = "no_grouping"
-## for Show Summaries
-SUMMARY_SORT = "summary_sort"
-ASCENDING = "ascending"
-DESCENDING = "descending"
-SHOW_WORDS = "show_words"
-WORD_SORT = "word_sort"
-ALPHABETICALLY = "alphabetically"
-BYWORDLENGTH = "bywordlength"
+    # how to mark pangrams
+    PANGRAM_MARKER: str = "*"
+    PERFECT_MARKER: str = "+"
 
-## for downloads (also used as file extensions)
-FILE_TYPE = "file_type"
-CSV = "csv"
-TXT = "txt"
-JSON = "json"
-WORD_URL_CSV = "word_url_csv"
+    # debugging
+    PROFILING: str = "PROFILING"
+    BEEPROFILE: str = "BEEPROFILE"
+    PROFILE_REQUEST_ARG: str = "profile"
+
+    # route consts
+    BEEWORD_VIEW: str = "beewords"
+    GETFILE_VIEW: str = "getfile"
+    SUMMARY_VIEW: str = "summary"
+
+    # Session consts
+    ARGS: str = "args"
+    ## for Find Words
+    REQUIRED_LETTER: str = "required"
+    ALLOWED_LETTERS: str = "allowed"
+    DICTIONARY: str = "dictionary"
+    WORD_LIST: str = "word_list"
+    ## for grouping
+    GROUPING: str = "grouping"
+    INITIALS: str = "initials"
+    LENGTH: str = "length"
+    NO_GROUPING: str = "no_grouping"
+    ## for Show Summaries
+    SUMMARY_SORT: str = "summary_sort"
+    ASCENDING: str = "ascending"
+    DESCENDING: str = "descending"
+    SHOW_WORDS: str = "show_words"
+    WORD_SORT: str = "word_sort"
+    ALPHABETICALLY: str = "alphabetically"
+    BYWORDLENGTH: str = "bywordlength"
+
+    ## for downloads (also used as file extensions)
+    FILE_TYPE: str = "file_type"
+    CSV: str = "csv"
+    TXT: str = "txt"
+    JSON: str = "json"
+    WORD_URL_CSV: str = "word_url_csv"

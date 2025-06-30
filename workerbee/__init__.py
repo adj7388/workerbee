@@ -1,64 +1,22 @@
 import flask
 import os
+from dataclasses import asdict
 from .wordlists import WordLists
 from .dictionaries import Dictionaries
-from .constants import (
-    ALLOWED_LETTERS,
-    ALPHABETICALLY,
-    ARGS,
-    ASCENDING,
-    BEEWORD_VIEW,
-    BEEPROFILE,
-    BYWORDLENGTH,
-    DESCENDING,
-    DICTIONARY,
-    GETFILE_VIEW,
-    GROUPING,
-    INITIALS,
-    LENGTH,
-    NO_GROUPING,
-    PROFILE_REQUEST_ARG,
-    PROFILING,
-    REQUIRED_LETTER,
-    SHOW_WORDS,
-    SUMMARY_SORT,
-    SUMMARY_VIEW,
-    WORD_LIST,
-    WORD_SORT,
-)
+from .constants import Consts
 
 app = flask.Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRETBEEKEY")
-app.config[PROFILING] = True if os.environ.get(BEEPROFILE, "") == BEEPROFILE else False
-
-
-# Insert all config variables into jinja environment
-app.jinja_env.globals.update(
-    {
-        "ALLOWED_LETTERS": ALLOWED_LETTERS,
-        "ALPHABETICALLY": ALPHABETICALLY,
-        "ARGS": ARGS,
-        "ASCENDING": ASCENDING,
-        "BEEWORD_VIEW": BEEWORD_VIEW,
-        "BYWORDLENGTH": BYWORDLENGTH,
-        "DESCENDING": DESCENDING,
-        "Dictionaries": Dictionaries,
-        "DICTIONARY": DICTIONARY,
-        "GETFILE_VIEW": GETFILE_VIEW,
-        "GROUPING": GROUPING,
-        "INITIALS": INITIALS,
-        "LENGTH": LENGTH,
-        "NO_GROUPING": NO_GROUPING,
-        "PROFILE_REQUEST_ARG": PROFILE_REQUEST_ARG,
-        "REQUIRED_LETTER": REQUIRED_LETTER,
-        "SHOW_WORDS": SHOW_WORDS,
-        "SUMMARY_SORT": SUMMARY_SORT,
-        "SUMMARY_VIEW": SUMMARY_VIEW,
-        "WORD_LIST": WORD_LIST,
-        "WORD_SORT": WORD_SORT,
-        "WordLists": WordLists,
-    }
+app.config["DEBUG"] = os.getenv("FLASK_DEBUG", "false").lower() == "true"
+app.config[Consts.PROFILING] = (
+    True
+    if os.environ.get(Consts.BEEPROFILE, "").lower() == Consts.BEEPROFILE.lower()
+    else False
 )
 
-# Importing here sets up routes as a side effect
+# inject consts into Jinja for templates
+app.jinja_env.globals.update(**asdict(Consts()))
+app.jinja_env.globals.update(WordLists=WordLists, Dictionaries=Dictionaries)
+
+# Import views sets up routes as a side effect
 from . import views  # pyright: ignore

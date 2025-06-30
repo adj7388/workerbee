@@ -4,7 +4,7 @@ import sys
 from .bee import get_beewords, get_beewords_grouped, get_groupings
 from .utils import error_check, write_to_buffer
 from .config import Config
-from . import constants as const
+from .constants import Consts
 from . import dictionaries as dicts
 from . import wordlists
 from . import types
@@ -50,8 +50,8 @@ def get_argparser() -> argparse.ArgumentParser:
         "-g",
         "--groupby",
         type=str,
-        choices=[const.INITIALS, const.LENGTH, const.NO_GROUPING],
-        default=const.NO_GROUPING,
+        choices=[Consts.INITIALS, Consts.LENGTH, Consts.NO_GROUPING],
+        default=Consts.NO_GROUPING,
         help="Output grouped by initials, word length, or no grouping (plain list)",
     )
 
@@ -101,8 +101,8 @@ def print_meta_data(metadata: types.Metadata):
     )
     print(f"Bingo:            {metadata.bingo}")
     print(f"Word List:        {metadata.word_list}")
-    print(f"Pangrams marked with {const.PANGRAM_MARKER}")
-    print(f"Perfect pangrams marked with {const.PERFECT_MARKER}")
+    print(f"Pangrams marked with {Consts.PANGRAM_MARKER}")
+    print(f"Perfect pangrams marked with {Consts.PERFECT_MARKER}")
     print()
 
 
@@ -115,9 +115,9 @@ def print_beewords_grouped(output_data: types.OutputData) -> None:
             print(f"{SPACING * 1}{second_level_label}")
             for beeword in words:
                 marker = (
-                    const.PERFECT_MARKER
+                    Consts.PERFECT_MARKER
                     if beeword.is_perfect
-                    else const.PANGRAM_MARKER if beeword.is_pangram else ""
+                    else Consts.PANGRAM_MARKER if beeword.is_pangram else ""
                 )
                 print(f"{SPACING * 2}{beeword.word} {marker}")
     print_meta_data(output_data.metadata)
@@ -127,9 +127,9 @@ def print_beewords_list(output_data: types.OutputData) -> None:
     print_meta_data(output_data.metadata)
     for beeword in output_data.data:
         marker = (
-            const.PERFECT_MARKER
+            Consts.PERFECT_MARKER
             if beeword.is_perfect
-            else const.PANGRAM_MARKER if beeword.is_pangram else ""
+            else Consts.PANGRAM_MARKER if beeword.is_pangram else ""
         )
         print(f"{beeword.word} {marker}")
     print_meta_data(output_data.metadata)
@@ -150,14 +150,14 @@ def main():
             print_meta_data(beewords.metadata)
         sys.exit(0)
 
-    if args.groupby == const.NO_GROUPING:
+    if args.groupby == Consts.NO_GROUPING:
         output_data = get_beewords(
             word_list=wordlists.WordLists[args.wordlist],
             required_letter=args.required,
             allowed_letters=args.allowed,
             dictionary=dicts.Dictionaries[args.dictionary],
         )
-    elif args.groupby in [const.INITIALS, const.LENGTH]:
+    elif args.groupby in [Consts.INITIALS, Consts.LENGTH]:
         output_data = get_beewords_grouped(
             word_list=wordlists.WordLists[args.wordlist],
             required_letter=args.required,
@@ -176,9 +176,9 @@ def main():
         buffer = write_to_buffer(output_data, file_type="json")
         print(buffer.getvalue())
     ### ... if not csv/json (above), then print to stdout based on groupby
-    elif args.groupby == const.NO_GROUPING:
+    elif args.groupby == Consts.NO_GROUPING:
         print_beewords_list(output_data=output_data)
-    elif args.groupby in [const.INITIALS, const.LENGTH]:
+    elif args.groupby in [Consts.INITIALS, Consts.LENGTH]:
         print_beewords_grouped(output_data=output_data)
     else:
         raise ValueError("Error: Don't know how to output.")
