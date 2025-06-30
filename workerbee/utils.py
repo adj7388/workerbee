@@ -4,8 +4,8 @@ import json
 
 from io import StringIO
 from typing import cast, Any
+from .config import Config
 from . import constants as const
-from . import config
 from . import types
 
 
@@ -16,11 +16,11 @@ def error_check(args: dict) -> str:
     allowed_as_set = set(allowed)
     if required.isalpha() is False or allowed.isalpha() is False:
         return f'"{required}" and "{allowed}" must contain only letters'
-    if len(required) != config.NUM_REQUIRED_LETTERS:
-        return f'"{required}" must be {config.NUM_REQUIRED_LETTERS} character.'
-    if len(allowed) != config.NUM_ALLOWED_LETTERS:
-        return f'"{allowed}" must be {config.NUM_ALLOWED_LETTERS} characters'
-    if len(allowed_as_set) != config.NUM_ALLOWED_LETTERS:
+    if len(required) != Config.NUM_REQUIRED_LETTERS:
+        return f'"{required}" must be {Config.NUM_REQUIRED_LETTERS} character.'
+    if len(allowed) != Config.NUM_ALLOWED_LETTERS:
+        return f'"{allowed}" must be {Config.NUM_ALLOWED_LETTERS} characters'
+    if len(allowed_as_set) != Config.NUM_ALLOWED_LETTERS:
         return f'"{allowed}" contains a duplicate letter.'
     if required_as_set.issubset(allowed_as_set):
         return f'The required letter "{required}" cannot also be in "{allowed}"'

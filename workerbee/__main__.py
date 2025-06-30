@@ -3,7 +3,7 @@ import sys
 
 from .bee import get_beewords, get_beewords_grouped, get_groupings
 from .utils import error_check, write_to_buffer
-from . import config
+from .config import Config
 from . import constants as const
 from . import dictionaries as dicts
 from . import wordlists
@@ -21,7 +21,7 @@ def get_argparser() -> argparse.ArgumentParser:
         "--allowed",
         type=str,
         required=True,
-        help=f"The non-required Bee letters (must be {config.NUM_ALLOWED_LETTERS})",
+        help=f"The non-required Bee letters (must be { Config.NUM_ALLOWED_LETTERS })",
     )
     parser.add_argument(
         "-d",

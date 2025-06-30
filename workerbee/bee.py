@@ -2,7 +2,7 @@ from itertools import groupby
 
 from workerbee import wordlists
 
-from . import config
+from .config import Config
 from . import constants as const
 from . import dictionaries as dicts
 from . import wordlists
@@ -51,7 +51,7 @@ def get_pangram_status(word: str, pangram_set: set) -> tuple:
     is_pangram = bool(set(word) == pangram_set)
     is_perfect = bool(
         is_pangram
-        and len(word) == (config.NUM_ALLOWED_LETTERS + config.NUM_REQUIRED_LETTERS)
+        and len(word) == (Config.NUM_ALLOWED_LETTERS + Config.NUM_REQUIRED_LETTERS)
     )
     return (is_pangram, is_perfect)
 
@@ -83,7 +83,7 @@ def get_beewords(
     all_letters_set = set(required_letter + allowed_letters)
     beewords: list[types.Beeword] = []
     for this_word in words:
-        if required_letter in this_word and len(this_word) >= config.MIN_WORD_LENGTH:
+        if required_letter in this_word and len(this_word) >= Config.MIN_WORD_LENGTH:
             this_word_as_set = set(this_word)
             if this_word_as_set.issubset(all_letters_set):
                 beewords.append(
