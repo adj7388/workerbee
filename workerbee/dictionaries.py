@@ -1,14 +1,4 @@
-from collections import namedtuple
-
-# Manage Dictionaries
-Dictionary = namedtuple("Dictionary", "name url_template")
-
-# Dictionary keys
-MW = "MW"
-WIKT = "WIKT"
-DICT = "DICT"
-FREE = "FREE"
-
+from dataclasses import dataclass
 from jinja2 import Template, Environment
 
 _jinja_env = Environment(autoescape=True)
@@ -17,6 +7,18 @@ _jinja_env = Environment(autoescape=True)
 def make_url_template(source: str) -> Template:
     return _jinja_env.from_string(source)
 
+
+@dataclass
+class Dictionary:
+    name: str
+    url_template: Template
+
+
+# Dictionaries keys
+MW = "MW"
+WIKT = "WIKT"
+DICT = "DICT"
+FREE = "FREE"
 
 Dictionaries = {
     MW: Dictionary(
@@ -40,5 +42,3 @@ Dictionaries = {
         url_template=make_url_template("https://www.thefreedictionary.com/{{ word }}"),
     ),
 }
-
-del _jinja_env
