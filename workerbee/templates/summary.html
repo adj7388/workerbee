@@ -2,18 +2,18 @@
 
 {% from "macros.html" import page_banner, decorate_word %}
 
-{% macro summary_row(output_data) %}
+{% macro summary_row(summary) %}
     <tr>
-        <td class="align-middle">{{ output_data.metadata.word_list}}</td>
-        <td class="align-middle">{{ output_data.metadata.num_beewords }}</td>
-        <td class="align-middle">{{ 'Yes' if output_data.metadata.bingo else 'No' }}</td>
+        <td class="align-middle">{{ summary.metadata.word_list}}</td>
+        <td class="align-middle">{{ summary.metadata.num_beewords }}</td>
+        <td class="align-middle">{{ 'Yes' if summary.metadata.bingo else 'No' }}</td>
         <td class="align-middle">
-            {% for pangram in output_data.metadata.perfect_pangrams %}
+            {% for pangram in summary.metadata.perfect_pangrams %}
                 {{ decorate_word(pangram, show_marker=False, pangram_class="") }}
             {% endfor %}
         </td>
         <td class="align-middle">
-            {% for pangram in output_data.metadata.nonperfect_pangrams %}
+            {% for pangram in summary.metadata.nonperfect_pangrams %}
                 {{ decorate_word(pangram, show_marker=False, pangram_class="") }}
             {% endfor %}
         </td>
@@ -22,10 +22,10 @@
         <tr>
             <td style="font-size: smaller; text-align: right; background-color: aliceblue;">Words</td>
             <td style="background-color: aliceblue; font-size: smaller;" colspan="4">
-                {% for key in output_data.data.keys() | sort %}
+                {% for key in summary.beewords.keys() | sort %}
                     {% set key_suffix = '&nbsp;letters' if session[ARGS][WORD_SORT] == BYWORDLENGTH else '' %}
                     <span style="font-weight: bold;">[{{ key | upper }}{{ key_suffix | safe }}]</span>
-                    {% for beeword in output_data.data[key] %}
+                    {% for beeword in summary.beewords[key] %}
                         {{ decorate_word(beeword) }}
                     {% endfor %}
                 {% endfor %}
@@ -39,8 +39,8 @@
  
     {{ page_banner(text='Word List Summary') }}
     <div>
-        <span style="font-weight: bold">Required letter:</span>&nbsp;{{ summary[0].metadata.required }}<br>
-        <span style="font-weight: bold">Allowed letters:</span>&nbsp;{{ summary[0].metadata.allowed }}<br>
+        <span style="font-weight: bold">Required letter:</span>&nbsp;{{ summaries[0].metadata.required }}<br>
+        <span style="font-weight: bold">Allowed letters:</span>&nbsp;{{ summaries[0].metadata.allowed }}<br>
         <span style="font-weight: bold">Perfect pangrams marked:</span>&nbsp;{{ PERFECT_MARKER }}<br>
         <span style="font-weight: bold">Other pangrams marked:</span>&nbsp;{{ PANGRAM_MARKER }}
     </div>
@@ -49,8 +49,8 @@
             <tr>
                 <th>Word List</th><th>Total Words</th><th>Bingo</th><th>Perfect Pangrams</th><th>Non-Perfect Pangrams</th>
             </tr>
-            {% for output_data in summary %}
-                {{ summary_row(output_data=output_data) }}
+            {% for summary in summaries %}
+                {{ summary_row(summary=summary) }}
             {% endfor %}
         </table>
     </div>

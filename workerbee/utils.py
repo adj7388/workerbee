@@ -1,5 +1,6 @@
 import copy
 import csv
+from dataclasses import asdict, is_dataclass
 import json
 
 from io import StringIO
@@ -43,17 +44,6 @@ def get_filename(metadata: types.Metadata, file_type: str) -> str:
     return "-".join(metadata_as_list) + f".{ext}"
 
 
-def flatten_grouped(beewords: dict) -> dict | list[types.Beeword]:
-    flattened: list[types.Beeword] = []
-    try:
-        for first_level in beewords.values():
-            for words in first_level.values():
-                flattened.extend(words)
-        return sorted(flattened, key=lambda beeword: cast(types.Beeword, beeword).word)
-    except AttributeError:
-        return beewords
-
-
 def decorate_word(beeword: types.Beeword) -> str:
     pangram_marker = (
         Consts.PERFECT_MARKER
@@ -63,18 +53,20 @@ def decorate_word(beeword: types.Beeword) -> str:
     return f"{beeword.word}{pangram_marker}"
 
 
-def convert_namedtuples(obj2convert: Any) -> Any:
+def make_serializable(obj2convert: Any) -> Any:
     if isinstance(obj2convert, tuple) and hasattr(
         obj2convert, "_fields"
     ):  # it's a namedtuple
         return {
-            k: convert_namedtuples(v)
+            k: make_serializable(v)
             for k, v in cast(types.Beeword, obj2convert)._asdict().items()
         }
     elif isinstance(obj2convert, list):
-        return [convert_namedtuples(item) for item in obj2convert]
+        return [make_serializable(item) for item in obj2convert]
     elif isinstance(obj2convert, dict):
-        return {k: convert_namedtuples(v) for k, v in obj2convert.items()}
+        return {k: make_serializable(v) for k, v in obj2convert.items()}
+    elif is_dataclass(obj2convert) and not isinstance(obj2convert, type):
+        return {k: make_serializable(v) for k, v in asdict(obj2convert).items()}
     else:
         return obj2convert
 
@@ -83,40 +75,30 @@ def write_to_buffer(output_data: types.OutputData, file_type: str) -> StringIO:
     # local copy so as not to accidentally change incoming data
     sio = StringIO()
     beewords_copy = cast(types.OutputData, copy.deepcopy(output_data))
-    if file_type in [Consts.CSV, Consts.TXT, Consts.WORD_URL_CSV]:
-        # Flatten grouped data for text and csv.
-        # flatten_grouped() will return data as-is if not grouped
-        beewords_copy = types.OutputData(
-            data=flatten_grouped(beewords_copy.data), metadata=beewords_copy.metadata
-        )
-
+    csv_output: list[dict] = []
     if file_type in [Consts.CSV, Consts.WORD_URL_CSV]:
         if file_type == Consts.WORD_URL_CSV:
             WORD_FIELD = "word"
             URL_FIELD = "url"
             fieldnames = [WORD_FIELD, URL_FIELD]
-            beewords_copy = types.OutputData(
-                data=[
-                    {WORD_FIELD: decorate_word(beeword), URL_FIELD: beeword.url}
-                    for beeword in beewords_copy.data
-                ],
-                metadata=beewords_copy.metadata,
-            )
-        else:
+            csv_output = [
+                {WORD_FIELD: decorate_word(beeword), URL_FIELD: beeword.url}
+                for beeword in beewords_copy.flat
+            ]
+        if file_type == Consts.CSV:
             fieldnames = beewords_copy.metadata.beeword_fieldnames
-            beewords_copy = types.OutputData(
-                data=convert_namedtuples(beewords_copy.data),
-                metadata=beewords_copy.metadata,
-            )
+            csv_output = make_serializable(beewords_copy.flat)
         csvwriter = csv.DictWriter(sio, fieldnames=fieldnames)
         csvwriter.writeheader()
-        csvwriter.writerows(beewords_copy.data)
+        csvwriter.writerows(csv_output)
 
     elif file_type == Consts.TXT:
-        sio.write("\n".join([decorate_word(word) for word in beewords_copy.data]))
+        sio.write("\n".join([decorate_word(word) for word in beewords_copy.flat]))
 
     elif file_type == Consts.JSON:
-        beewords_copy = convert_namedtuples(beewords_copy)
+        beewords_copy = make_serializable(
+            {"data": beewords_copy.nested, "metadata": beewords_copy.metadata}
+        )
         sio.write(json.dumps(beewords_copy, indent=2))
 
     else:

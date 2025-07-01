@@ -1,7 +1,7 @@
 import argparse
 import sys
 
-from .bee import get_beewords, get_beewords_grouped, get_groupings
+from .bee import get_beewords, get_groupings
 from .utils import error_check, write_to_buffer
 from .config import Config
 from .constants import Consts
@@ -104,7 +104,7 @@ def print_meta_data(metadata: types.Metadata):
 def print_beewords_grouped(output_data: types.OutputData) -> None:
     SPACING = "   "
     print_meta_data(output_data.metadata)
-    for first_level_label, first_level_words in output_data.data.items():
+    for first_level_label, first_level_words in output_data.nested.items():
         print(first_level_label)
         for second_level_label, words in first_level_words.items():
             print(f"{SPACING * 1}{second_level_label}")
@@ -120,7 +120,7 @@ def print_beewords_grouped(output_data: types.OutputData) -> None:
 
 def print_beewords_list(output_data: types.OutputData) -> None:
     print_meta_data(output_data.metadata)
-    for beeword in output_data.data:
+    for beeword in output_data.flat:
         marker = (
             Consts.PERFECT_MARKER
             if beeword.is_perfect
@@ -141,6 +141,7 @@ def main():
                 required_letter=args.required,
                 allowed_letters=args.allowed,
                 dictionary=dicts.Dictionaries[dicts.MW],
+                grouping=[Consts.NO_GROUPING],
             )
             print_meta_data(beewords.metadata)
         sys.exit(0)
@@ -151,9 +152,10 @@ def main():
             required_letter=args.required,
             allowed_letters=args.allowed,
             dictionary=dicts.Dictionaries[args.dictionary],
+            grouping=[Consts.NO_GROUPING],
         )
     elif args.groupby in [Consts.INITIALS, Consts.LENGTH]:
-        output_data = get_beewords_grouped(
+        output_data = get_beewords(
             word_list=wordlists.WordLists[args.wordlist],
             required_letter=args.required,
             allowed_letters=args.allowed,

@@ -56,7 +56,7 @@ def get_pangram_status(word: str, pangram_set: set) -> tuple:
     return (is_pangram, is_perfect)
 
 
-def get_beeword(
+def _get_beeword(
     word: str, required: str, allowed: str, dictionary: dicts.Dictionary
 ) -> types.Beeword:
     is_pangram, is_perfect = get_pangram_status(
@@ -72,7 +72,7 @@ def get_beeword(
     )
 
 
-def get_beewords(
+def _get_beewords(
     word_list: wordlists.WordList,
     required_letter: str,
     allowed_letters: str,
@@ -87,7 +87,7 @@ def get_beewords(
             this_word_as_set = set(this_word)
             if this_word_as_set.issubset(all_letters_set):
                 beewords.append(
-                    get_beeword(
+                    _get_beeword(
                         word=this_word,
                         required=required_letter,
                         allowed=allowed_letters,
@@ -96,7 +96,8 @@ def get_beewords(
                 )
     beewords = sorted(beewords, key=lambda beeword: beeword.word)
     return types.OutputData(
-        data=beewords,
+        nested={},
+        flat=beewords,
         metadata=get_metadata(
             data=beewords,
             required=required_letter,
@@ -107,18 +108,24 @@ def get_beewords(
     )
 
 
-def get_beewords_grouped(
+def get_beewords(
     word_list: wordlists.WordList,
     required_letter: str,
     allowed_letters: str,
-    grouping: list[str],
     dictionary: dicts.Dictionary,
+    grouping: list[str],  # = ,
 ) -> types.OutputData:
-    beewords = get_beewords(
+    beewords = _get_beewords(
         word_list=word_list,
         required_letter=required_letter,
         allowed_letters=allowed_letters,
         dictionary=dictionary,
+    )
+    grouping = (
+        # default to initials/length
+        [Consts.INITIALS, Consts.LENGTH]
+        if grouping == [Consts.NO_GROUPING]
+        else grouping
     )
 
     def get_group0_key(beeword: types.Beeword):
@@ -127,15 +134,17 @@ def get_beewords_grouped(
     def get_group1_key(beeword: types.Beeword):
         return getattr(beeword, grouping[1])
 
-    beewords_list = beewords.data
-    grouped_word_data = {}
+    beewords_list = beewords.flat
+    nested_beewords = {}
     for group0, data0 in groupby(
         sorted(beewords_list, key=get_group0_key), key=get_group0_key
     ):
-        grouped_word_data[group0] = {}
+        nested_beewords[group0] = {}
         for group1, data1 in groupby(
             sorted(data0, key=get_group1_key), key=get_group1_key
         ):
-            grouped_word_data[group0][group1] = [beeword for beeword in data1]
+            nested_beewords[group0][group1] = [beeword for beeword in data1]
 
-    return types.OutputData(data=grouped_word_data, metadata=beewords.metadata)
+    return types.OutputData(
+        flat=beewords_list, nested=nested_beewords, metadata=beewords.metadata
+    )
