@@ -90,12 +90,11 @@ def beewords():
     if error_msg:
         flash(message=error_msg)
         return redirect("home")
-    grouping = get_groupings(session[Consts.ARGS][Consts.GROUPING])
     beewords = get_beewords(
         word_list=wordlists.WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
         required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
         allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
-        grouping=grouping,
+        grouping=session[Consts.ARGS][Consts.GROUPING],
         dictionary=dicts.Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
     )
     if session[Consts.ARGS][Consts.GROUPING] == Consts.NO_GROUPING:
@@ -109,7 +108,7 @@ def beewords():
             "beewords.html",
             beeword_data=beewords.nested,
             metadata=beewords.metadata,
-            grouping=grouping,
+            grouping=get_groupings(session[Consts.ARGS][Consts.GROUPING]),
         )
 
 
@@ -166,7 +165,7 @@ def summary():
             required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
             allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
             dictionary=dicts.Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
-            grouping=[Consts.NO_GROUPING],
+            grouping=Consts.NO_GROUPING,
         )
         output_list.append(output_data)
     summaries = convert_to_summaries(output_data=output_list)
@@ -185,7 +184,7 @@ def getfile():
         required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
         allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
         dictionary=dicts.Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
-        grouping=[Consts.NO_GROUPING],
+        grouping=Consts.NO_GROUPING,
     )
     buffer = write_to_buffer(
         output_data=output_data, file_type=session[Consts.ARGS][Consts.FILE_TYPE]

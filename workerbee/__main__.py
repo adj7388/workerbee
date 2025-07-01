@@ -1,7 +1,7 @@
 import argparse
 import sys
 
-from .bee import get_beewords, get_groupings
+from .bee import get_beewords
 from .utils import error_check, write_to_buffer
 from .config import Config
 from .constants import Consts
@@ -141,29 +141,17 @@ def main():
                 required_letter=args.required,
                 allowed_letters=args.allowed,
                 dictionary=dicts.Dictionaries[dicts.MW],
-                grouping=[Consts.NO_GROUPING],
             )
             print_meta_data(beewords.metadata)
         sys.exit(0)
 
-    if args.groupby == Consts.NO_GROUPING:
-        output_data = get_beewords(
-            word_list=wordlists.WordLists[args.wordlist],
-            required_letter=args.required,
-            allowed_letters=args.allowed,
-            dictionary=dicts.Dictionaries[args.dictionary],
-            grouping=[Consts.NO_GROUPING],
-        )
-    elif args.groupby in [Consts.INITIALS, Consts.LENGTH]:
-        output_data = get_beewords(
-            word_list=wordlists.WordLists[args.wordlist],
-            required_letter=args.required,
-            allowed_letters=args.allowed,
-            grouping=get_groupings(args.groupby),
-            dictionary=dicts.Dictionaries[args.dictionary],
-        )
-    else:
-        raise ValueError("Error: Don't know how to get beewords.")
+    output_data = get_beewords(
+        word_list=wordlists.WordLists[args.wordlist],
+        required_letter=args.required,
+        allowed_letters=args.allowed,
+        grouping=args.groupby,
+        dictionary=dicts.Dictionaries[args.dictionary],
+    )
 
     ### check for csv or json output first, if they're specified in args ...
     if args.csv:
