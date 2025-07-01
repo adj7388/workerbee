@@ -1,13 +1,13 @@
-import copy
-import csv
 from dataclasses import asdict, is_dataclass
-import json
-
 from io import StringIO
 from typing import cast, Any
+import copy
+import csv
+import json
+
 from .config import Config
 from .constants import Consts
-from . import types
+from .types import Beeword, Metadata, OutputData
 
 
 def error_check(args: dict) -> str:
@@ -30,7 +30,7 @@ def error_check(args: dict) -> str:
     return ""
 
 
-def get_filename(metadata: types.Metadata, file_type: str) -> str:
+def get_filename(metadata: Metadata, file_type: str) -> str:
     ext = Consts.CSV if file_type in [Consts.WORD_URL_CSV, Consts.CSV] else file_type
     metadata_as_list = [
         f"{metadata.required}",
@@ -44,7 +44,7 @@ def get_filename(metadata: types.Metadata, file_type: str) -> str:
     return "-".join(metadata_as_list) + f".{ext}"
 
 
-def decorate_word(beeword: types.Beeword) -> str:
+def decorate_word(beeword: Beeword) -> str:
     pangram_marker = (
         Consts.PERFECT_MARKER
         if beeword.is_perfect
@@ -59,7 +59,7 @@ def make_serializable(obj2convert: Any) -> Any:
     ):  # it's a namedtuple
         return {
             k: make_serializable(v)
-            for k, v in cast(types.Beeword, obj2convert)._asdict().items()
+            for k, v in cast(Beeword, obj2convert)._asdict().items()
         }
     elif isinstance(obj2convert, list):
         return [make_serializable(item) for item in obj2convert]
@@ -71,10 +71,10 @@ def make_serializable(obj2convert: Any) -> Any:
         return obj2convert
 
 
-def write_to_buffer(output_data: types.OutputData, file_type: str) -> StringIO:
+def write_to_buffer(output_data: OutputData, file_type: str) -> StringIO:
     # local copy so as not to accidentally change incoming data
     sio = StringIO()
-    beewords_copy = cast(types.OutputData, copy.deepcopy(output_data))
+    beewords_copy = cast(OutputData, copy.deepcopy(output_data))
     csv_output: list[dict] = []
     if file_type in [Consts.CSV, Consts.WORD_URL_CSV]:
         if file_type == Consts.WORD_URL_CSV:

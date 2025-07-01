@@ -1,12 +1,4 @@
 from collections import defaultdict
-
-from . import app
-from .constants import Consts
-from . import dictionaries as dicts
-from . import types
-from . import wordlists
-from .utils import error_check, get_filename, write_to_buffer
-from .bee import get_beewords, get_groupings
 from flask import (
     render_template,
     session,
@@ -20,6 +12,15 @@ from flask import (
 )
 from io import BytesIO
 from pyinstrument import Profiler
+
+from . import app
+
+from .bee import get_beewords, get_groupings
+from .constants import Consts
+from .dictionaries import Dictionaries, WIKT
+from .types import Beeword, Summary, OutputData
+from .utils import error_check, get_filename, write_to_buffer
+from .wordlists import WordLists, SCOWL_HUGE_80
 
 
 def add_args_to_session(request_args):
@@ -36,8 +37,8 @@ def before_request():
         {
             Consts.REQUIRED_LETTER: "a",
             Consts.ALLOWED_LETTERS: "cptive",
-            Consts.DICTIONARY: dicts.WIKT,
-            Consts.WORD_LIST: wordlists.SCOWL_HUGE_80,
+            Consts.DICTIONARY: WIKT,
+            Consts.WORD_LIST: SCOWL_HUGE_80,
             Consts.GROUPING: Consts.INITIALS,
             Consts.FILE_TYPE: Consts.JSON,
             Consts.SUMMARY_SORT: Consts.DESCENDING,
@@ -91,11 +92,11 @@ def beewords():
         flash(message=error_msg)
         return redirect("home")
     beewords = get_beewords(
-        word_list=wordlists.WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
+        word_list=WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
         required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
         allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
         grouping=session[Consts.ARGS][Consts.GROUPING],
-        dictionary=dicts.Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
+        dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
     )
     if session[Consts.ARGS][Consts.GROUPING] == Consts.NO_GROUPING:
         return render_template(
@@ -118,15 +119,15 @@ def summary_form():
 
 
 def convert_to_summaries(
-    output_data: list[types.OutputData],
-) -> list[types.Summary]:
+    output_data: list[OutputData],
+) -> list[Summary]:
 
-    def get_key(beeword: types.Beeword, sort_type: str):
+    def get_key(beeword: Beeword, sort_type: str):
         return beeword.length if sort_type == Consts.BYWORDLENGTH else beeword.word[0]
 
-    summaries: list[types.Summary] = []
+    summaries: list[Summary] = []
     for output in output_data:
-        beeword_dict: dict[str, list[types.Beeword]] = defaultdict(list)
+        beeword_dict: dict[str, list[Beeword]] = defaultdict(list)
         saved_key = get_key(
             beeword=output.flat[0],
             sort_type=session[Consts.ARGS][Consts.WORD_SORT],
@@ -137,7 +138,7 @@ def convert_to_summaries(
             )
             saved_key = this_key if saved_key != this_key else saved_key
             beeword_dict[this_key].append(beeword)
-        summaries.append(types.Summary(beewords=beeword_dict, metadata=output.metadata))
+        summaries.append(Summary(beewords=beeword_dict, metadata=output.metadata))
     return sorted(
         summaries,
         key=lambda summary: summary.metadata.num_beewords,
@@ -158,13 +159,13 @@ def summary():
     if error_msg:
         flash(message=error_msg)
         return redirect("/summary_form")
-    output_list: list[types.OutputData] = []
-    for word_list in wordlists.WordLists.values():
+    output_list: list[OutputData] = []
+    for word_list in WordLists.values():
         output_data = get_beewords(
             word_list=word_list,
             required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
             allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
-            dictionary=dicts.Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
+            dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
             grouping=Consts.NO_GROUPING,
         )
         output_list.append(output_data)
@@ -180,10 +181,10 @@ def getfile():
     session[Consts.ARGS] = add_args_to_session(request_args=request.args)
     # if session[Consts.ARGS][Consts.GROUPING] == Consts.NO_GROUPING:
     output_data = get_beewords(
-        word_list=wordlists.WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
+        word_list=WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
         required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
         allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
-        dictionary=dicts.Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
+        dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
         grouping=Consts.NO_GROUPING,
     )
     buffer = write_to_buffer(
