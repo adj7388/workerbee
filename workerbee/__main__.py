@@ -2,12 +2,12 @@ import argparse
 import sys
 
 from .bee import get_beewords
-from .utils import error_check, write_to_buffer
 from .config import Config
 from .constants import Consts
-from . import dictionaries as dicts
-from . import wordlists
-from . import types
+from .dictionaries import Dictionaries, WIKT, MW, FREE, DICT
+from .types import Metadata, OutputData
+from .utils import error_check, write_to_buffer
+from .wordlists import WordLists, SCOWL_HUGE_80
 
 
 def get_argparser() -> argparse.ArgumentParser:
@@ -28,8 +28,8 @@ def get_argparser() -> argparse.ArgumentParser:
         "--dictionary",
         type=str,
         required=False,
-        choices=[dicts.WIKT, dicts.MW, dicts.FREE, dicts.DICT],
-        default=dicts.WIKT,
+        choices=[WIKT, MW, FREE, DICT],
+        default=WIKT,
         help="Dictionary for lookups",
     )
     parser.add_argument(
@@ -37,8 +37,8 @@ def get_argparser() -> argparse.ArgumentParser:
         "--wordlist",
         type=str,
         required=False,
-        choices=[wordlist.name for wordlist in wordlists.WordLists.values()],
-        default=wordlists.SCOWL_LARGE_70,
+        choices=[wordlist.name for wordlist in WordLists.values()],
+        default=SCOWL_HUGE_80,
         help="Master word list",
     )
     parser.add_argument(
@@ -83,7 +83,7 @@ def get_commandline_args() -> argparse.Namespace:
     return args
 
 
-def print_meta_data(metadata: types.Metadata):
+def print_meta_data(metadata: Metadata):
     print()
     print(f"Number Beewords:  {metadata.num_beewords}")
     print(f"Required letters: {metadata.required}")
@@ -101,7 +101,7 @@ def print_meta_data(metadata: types.Metadata):
     print()
 
 
-def print_beewords_grouped(output_data: types.OutputData) -> None:
+def print_beewords_grouped(output_data: OutputData) -> None:
     SPACING = "   "
     print_meta_data(output_data.metadata)
     for first_level_label, first_level_words in output_data.nested.items():
@@ -118,7 +118,7 @@ def print_beewords_grouped(output_data: types.OutputData) -> None:
     print_meta_data(output_data.metadata)
 
 
-def print_beewords_list(output_data: types.OutputData) -> None:
+def print_beewords_list(output_data: OutputData) -> None:
     print_meta_data(output_data.metadata)
     for beeword in output_data.flat:
         marker = (
@@ -133,24 +133,24 @@ def print_beewords_list(output_data: types.OutputData) -> None:
 ############ main ############
 def main():
     args = get_commandline_args()
-    output_data: types.OutputData
+    output_data: OutputData
     if args.summary == True:
-        for word_list in wordlists.WordLists.values():
+        for word_list in WordLists.values():
             beewords = get_beewords(
                 word_list=word_list,
                 required_letter=args.required,
                 allowed_letters=args.allowed,
-                dictionary=dicts.Dictionaries[dicts.MW],
+                dictionary=Dictionaries[MW],
             )
             print_meta_data(beewords.metadata)
         sys.exit(0)
 
     output_data = get_beewords(
-        word_list=wordlists.WordLists[args.wordlist],
+        word_list=WordLists[args.wordlist],
         required_letter=args.required,
         allowed_letters=args.allowed,
         grouping=args.groupby,
-        dictionary=dicts.Dictionaries[args.dictionary],
+        dictionary=Dictionaries[args.dictionary],
     )
 
     ### check for csv or json output first, if they're specified in args ...
