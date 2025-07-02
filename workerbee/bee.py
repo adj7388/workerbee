@@ -28,9 +28,9 @@ def _get_metadata(
         nonperfect_pangrams=[
             beeword for beeword in data if beeword.is_pangram and not beeword.is_perfect
         ],
-        dictionary=dictionary.name,
-        word_list=word_list.name,
-        beeword_fieldnames=list(data[0]._fields) if data else "",
+        dictionary=dictionary,
+        word_list=word_list,
+        beeword_fieldnames=list(data[0]._fields) if len(data) != 0 else [],
     )
 
 
