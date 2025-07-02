@@ -1,3 +1,4 @@
+from dataclasses import asdict
 from itertools import groupby
 
 from .config import Config
@@ -30,7 +31,7 @@ def _get_metadata(
         ],
         dictionary=dictionary,
         word_list=word_list,
-        beeword_fieldnames=list(data[0]._fields) if len(data) != 0 else [],
+        beeword_fieldnames=list(asdict(data[0]).keys()) if len(data) != 0 else [],
     )
 
 

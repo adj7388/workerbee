@@ -122,12 +122,12 @@ def convert_to_summaries(
     output_data: list[OutputData],
 ) -> list[Summary]:
 
-    def get_key(beeword: Beeword, sort_type: str):
+    def get_key(beeword: Beeword, sort_type: str) -> str | int:
         return beeword.length if sort_type == Consts.BYWORDLENGTH else beeword.word[0]
 
     summaries: list[Summary] = []
     for output in output_data:
-        beeword_dict: dict[str, list[Beeword]] = defaultdict(list)
+        beeword_dict = defaultdict(list[Beeword])
         saved_key = get_key(
             beeword=output.flat[0],
             sort_type=session[Consts.ARGS][Consts.WORD_SORT],

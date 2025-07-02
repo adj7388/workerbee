@@ -1,10 +1,17 @@
-from collections import namedtuple
 from dataclasses import dataclass
 
 from workerbee.dictionaries import Dictionary
 from workerbee.wordlists import WordList
 
-Beeword = namedtuple("Beeword", "word length initials is_pangram, is_perfect, url")
+
+@dataclass
+class Beeword:
+    word: str
+    length: int
+    initials: str
+    is_pangram: bool
+    is_perfect: bool
+    url: str
 
 
 @dataclass
