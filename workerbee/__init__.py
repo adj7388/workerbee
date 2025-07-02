@@ -6,7 +6,7 @@ from .constants import Consts
 from .config import Config
 
 app = flask.Flask(__name__)
-app.config.from_object(Config)
+app.config.from_object(Config())
 
 # inject consts into Jinja for templates
 app.jinja_env.globals.update(**asdict(Consts()))
