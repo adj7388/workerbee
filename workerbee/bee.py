@@ -4,7 +4,7 @@ from itertools import groupby
 from .config import Config
 from .constants import Consts
 from .dictionaries import Dictionary
-from .types import Beeword, Metadata, OutputData
+from .types import Beeword, Metadata, NestedBeewords, OutputData
 from .wordlists import WordList
 
 
@@ -29,8 +29,8 @@ def _get_metadata(
         nonperfect_pangrams=[
             beeword for beeword in data if beeword.is_pangram and not beeword.is_perfect
         ],
-        dictionary=dictionary,
-        word_list=word_list,
+        dictionary=dictionary.name,
+        word_list=word_list.name,
         beeword_fieldnames=list(asdict(data[0]).keys()) if len(data) != 0 else [],
     )
 
@@ -116,13 +116,13 @@ def get_beewords(
         else get_groupings(grouping)
     )
 
-    def get_group0_key(beeword: Beeword):
+    def get_group0_key(beeword: Beeword) -> str | int:
         return getattr(beeword, grouping_list[0])
 
-    def get_group1_key(beeword: Beeword):
+    def get_group1_key(beeword: Beeword) -> str | int:
         return getattr(beeword, grouping_list[1])
 
-    nested_beewords: dict[str, dict[str, list[Beeword]]] = {}
+    nested_beewords: NestedBeewords = {}
     for group0, data0 in groupby(
         sorted(beewords, key=get_group0_key), key=get_group0_key
     ):

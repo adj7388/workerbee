@@ -66,6 +66,7 @@ def make_serializable(obj2convert: Any) -> Any:
     elif isinstance(obj2convert, dict):
         return {k: make_serializable(v) for k, v in obj2convert.items()}
     elif is_dataclass(obj2convert) and not isinstance(obj2convert, type):
+        # it's a dataclass instance, not a dataclass class
         return {k: make_serializable(v) for k, v in asdict(obj2convert).items()}
     else:
         return obj2convert

@@ -1,7 +1,5 @@
 from dataclasses import dataclass
-
-from workerbee.dictionaries import Dictionary
-from workerbee.wordlists import WordList
+from typing import TypeAlias
 
 
 @dataclass
@@ -22,14 +20,18 @@ class Metadata:
     bingo: bool
     perfect_pangrams: list[Beeword]
     nonperfect_pangrams: list[Beeword]
-    dictionary: Dictionary
-    word_list: WordList
+    dictionary: str
+    word_list: str
     beeword_fieldnames: list[str]
+
+
+NestedKeyType: TypeAlias = str | int
+NestedBeewords: TypeAlias = dict[NestedKeyType, dict[NestedKeyType, list[Beeword]]]
 
 
 @dataclass
 class OutputData:
-    nested: dict[str, dict[str, list[Beeword]]]
+    nested: NestedBeewords
     flat: list[Beeword]
     metadata: Metadata
 

@@ -4,7 +4,7 @@
 
 {% macro summary_row(summary) %}
     <tr>
-        <td class="align-middle">{{ summary.metadata.word_list.name }}</td>
+        <td class="align-middle">{{ summary.metadata.word_list }}</td>
         <td class="align-middle">{{ summary.metadata.num_beewords }}</td>
         <td class="align-middle">{{ 'Yes' if summary.metadata.bingo else 'No' }}</td>
         <td class="align-middle">
