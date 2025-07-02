@@ -8,7 +8,9 @@
     <div>
         <span style="font-weight: bold">Required letter:</span>&nbsp;{{ summaries[0].metadata.required }}<br>
         <span style="font-weight: bold">Allowed letters:</span>&nbsp;{{ summaries[0].metadata.allowed }}<br>
-        <span style="font-weight: bold">Words linked to:</span>&nbsp;{{ dictionary.name }}<br>
+        {% if session[ARGS][SHOW_WORDS] == SHOW_WORDS %}
+            <span style="font-weight: bold">Words linked to:</span>&nbsp;{{ dictionary.name }}<br>
+        {% endif %}
         <span style="font-weight: bold">Perfect pangrams marked:</span>&nbsp;{{ PERFECT_MARKER }}<br>
         <span style="font-weight: bold">Other pangrams marked:</span>&nbsp;{{ PANGRAM_MARKER }}
     </div>
