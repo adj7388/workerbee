@@ -59,7 +59,7 @@ def make_serializable(obj2convert: Any) -> Any:
     ):  # it's a namedtuple
         return {
             k: make_serializable(v)
-            for k, v in asdict(cast(Beeword, obj2convert)).items()
+            for k, v in obj2convert._asdict().items()  # type: ignore[attr-defined]
         }
     elif isinstance(obj2convert, list):
         return [make_serializable(item) for item in obj2convert]
