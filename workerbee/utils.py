@@ -71,7 +71,9 @@ def make_serializable(obj2convert: Any) -> Any:
         return obj2convert
 
 
-def write_to_buffer(output_data: OutputData, file_type: str) -> StringIO:
+def write_to_buffer(
+    output_data: OutputData, file_type: str, grouping: str = Consts.NO_GROUPING
+) -> StringIO:
     csv_output: list[dict] = []
     sio = StringIO()
     if file_type in [Consts.CSV, Consts.WORD_URL_CSV]:
@@ -94,11 +96,12 @@ def write_to_buffer(output_data: OutputData, file_type: str) -> StringIO:
         sio.write("\n".join([decorate_word(word) for word in output_data.flat]))
 
     elif file_type == Consts.JSON:
+        data = (
+            output_data.flat if grouping == Consts.NO_GROUPING else output_data.nested
+        )
         sio.write(
             json.dumps(
-                make_serializable(
-                    {"data": output_data.nested, "metadata": output_data.metadata}
-                ),
+                make_serializable({"data": data, "metadata": output_data.metadata}),
                 indent=2,
             )
         )

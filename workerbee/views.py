@@ -189,7 +189,9 @@ def getfile():
         grouping=Consts.NO_GROUPING,
     )
     buffer = write_to_buffer(
-        output_data=output_data, file_type=session[Consts.ARGS][Consts.FILE_TYPE]
+        output_data=output_data,
+        file_type=session[Consts.ARGS][Consts.FILE_TYPE],
+        grouping=session[Consts.ARGS][Consts.GROUPING],
     )
     return send_file(
         BytesIO(buffer.getvalue().encode(encoding="utf-8")),
