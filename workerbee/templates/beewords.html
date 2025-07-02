@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
 
+{% from "macros.html" import page_banner, show_metadata, word_row %}
+
 {% block content %}
     {{ page_banner(text='Word Results') }}
     {{ show_metadata(metadata=metadata) }}
     {{ show_words_grouped(beeword_data=beeword_data, grouping=grouping) }}
 {% endblock %}
-
-{% from "macros.html" import page_banner, show_metadata, word_row %}
 
 {% macro decorate_heading(heading, grouping) %}
     {% if grouping == INITIALS %}

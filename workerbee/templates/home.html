@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    {{ page_banner(text='Find Spelling Bee Words') }}
+    {{ page_banner(text="Find Spelling Bee Words") }}
 
     <form action="{{ BEEWORD_VIEW }}" method="GET">
         {% if PROFILING is true %}
@@ -28,16 +28,16 @@
             Enter the required letter:<br>
             <span class="subtext">The yellow letter in the middle of the Spelling Bee page</span>
         </div>
-        <div><input type='text', name={{ REQUIRED_LETTER }}
-                value={{ session[ARGS][REQUIRED_LETTER] }}
+        <div><input type="text", name="{{ REQUIRED_LETTER }}"
+                value="{{ session[ARGS][REQUIRED_LETTER] }}"
             >
         </div>
         <div class="h6 mt-3">
             Enter the other letters:<br>
             <span class="subtext">The {{NUM_ALLOWED_LETTERS}} letters around the yellow, required letter</span>
         </div>
-        <div><input type='text', name={{ ALLOWED_LETTERS }}
-                value={{ session[ARGS][ALLOWED_LETTERS] }}
+        <div><input type="text", name="{{ ALLOWED_LETTERS }}"
+                value="{{ session[ARGS][ALLOWED_LETTERS] }}"
             >
         </div>
         <div class="h6 mt-3">
@@ -45,17 +45,17 @@
         </div>
         <div>
             <input type="radio" name="{{ GROUPING }}" id="{{ INITIALS }}" value="{{ INITIALS }}" 
-                {{ 'checked' if session[ARGS][GROUPING] == INITIALS else '' }}
+                {{ "checked" if session[ARGS][GROUPING] == INITIALS else "" }}
             >
             <label for="{{ INITIALS }}">Group by initial letters</label><br>
 
             <input type="radio" name="{{ GROUPING }}" id="{{ LENGTH }}" value="{{ LENGTH }}" 
-                {{ 'checked' if session[ARGS][GROUPING] == LENGTH else '' }}
+                {{ "checked" if session[ARGS][GROUPING] == LENGTH else "" }}
             >
             <label for="{{ LENGTH }}">Group by word length</label><br>
 
             <input type="radio" name="{{ GROUPING }}" id="{{ NO_GROUPING }}" value="{{ NO_GROUPING }}" 
-                {{ 'checked' if session[ARGS][GROUPING] == NO_GROUPING else '' }}
+                {{ "checked" if session[ARGS][GROUPING] == NO_GROUPING else "" }}
             >
             <label for="{{ NO_GROUPING }}">No grouping. Just an alphabetical list</label>
         </div>
@@ -64,7 +64,7 @@
             {{ dictionary_dropdown() }}
         </div>
         <div class="mt-3">
-            <input type='submit' value='Find Words'>
+            <input type="submit" value="Find Words">
         </div>
     </form>
 {% endblock %}

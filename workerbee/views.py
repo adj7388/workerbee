@@ -173,6 +173,7 @@ def summary():
     return render_template(
         "summary.html",
         summaries=summaries,
+        dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
     )
 
 
