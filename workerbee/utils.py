@@ -1,7 +1,6 @@
 from dataclasses import asdict, is_dataclass
 from io import StringIO
-from typing import cast, Any
-import copy
+from typing import Any
 import csv
 import json
 
@@ -16,7 +15,7 @@ def error_check(args: dict) -> str:
     required_as_set = set(required)
     allowed_as_set = set(allowed)
     if required == "" or allowed == "":
-        return f'Neither "required" not "other" letters can be blank'
+        return f'Neither "required" nor "other" letters can be blank'
     if required.isalpha() is False or allowed.isalpha() is False:
         return f'"{required}" and "{allowed}" must contain only letters'
     if len(required) != Config.NUM_REQUIRED_LETTERS:
@@ -73,10 +72,8 @@ def make_serializable(obj2convert: Any) -> Any:
 
 
 def write_to_buffer(output_data: OutputData, file_type: str) -> StringIO:
-    # local copy so as not to accidentally change incoming data
-    sio = StringIO()
-    beewords_copy = cast(OutputData, copy.deepcopy(output_data))
     csv_output: list[dict] = []
+    sio = StringIO()
     if file_type in [Consts.CSV, Consts.WORD_URL_CSV]:
         if file_type == Consts.WORD_URL_CSV:
             WORD_FIELD = "word"
@@ -84,23 +81,27 @@ def write_to_buffer(output_data: OutputData, file_type: str) -> StringIO:
             fieldnames = [WORD_FIELD, URL_FIELD]
             csv_output = [
                 {WORD_FIELD: decorate_word(beeword), URL_FIELD: beeword.url}
-                for beeword in beewords_copy.flat
+                for beeword in output_data.flat
             ]
         if file_type == Consts.CSV:
-            fieldnames = beewords_copy.metadata.beeword_fieldnames
-            csv_output = make_serializable(beewords_copy.flat)
+            fieldnames = output_data.metadata.beeword_fieldnames
+            csv_output = make_serializable(output_data.flat)
         csvwriter = csv.DictWriter(sio, fieldnames=fieldnames)
         csvwriter.writeheader()
         csvwriter.writerows(csv_output)
 
     elif file_type == Consts.TXT:
-        sio.write("\n".join([decorate_word(word) for word in beewords_copy.flat]))
+        sio.write("\n".join([decorate_word(word) for word in output_data.flat]))
 
     elif file_type == Consts.JSON:
-        beewords_copy = make_serializable(
-            {"data": beewords_copy.nested, "metadata": beewords_copy.metadata}
+        sio.write(
+            json.dumps(
+                make_serializable(
+                    {"data": output_data.nested, "metadata": output_data.metadata}
+                ),
+                indent=2,
+            )
         )
-        sio.write(json.dumps(beewords_copy, indent=2))
 
     else:
         raise ValueError(f"Bad file_type: {file_type}")
