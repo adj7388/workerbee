@@ -4,7 +4,7 @@ import sys
 from .bee import get_beewords
 from .config import Config
 from .constants import Consts
-from .dictionaries import Dictionaries, WIKT, MW, FREE, DICT
+from .dictionaries import Dictionaries, WIKT
 from .types import Metadata, OutputData
 from .utils import error_check, write_to_buffer
 from .wordlists import WordLists, SCOWL_HUGE_80
@@ -28,7 +28,7 @@ def get_argparser() -> argparse.ArgumentParser:
         "--dictionary",
         type=str,
         required=False,
-        choices=[WIKT, MW, FREE, DICT],
+        choices=Dictionaries.keys(),
         default=WIKT,
         help="Dictionary for lookups",
     )
@@ -140,7 +140,7 @@ def main():
                 word_list=word_list,
                 required_letter=args.required,
                 allowed_letters=args.allowed,
-                dictionary=Dictionaries[MW],
+                dictionary=Dictionaries[WIKT],
             )
             print_meta_data(beewords.metadata)
         sys.exit(0)
