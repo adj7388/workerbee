@@ -206,17 +206,5 @@ def getfile():
 
 @app.route("/update-session", methods=["POST"])
 def update_session():
-    foo = request.get_json()
-    session[Consts.ARGS] = add_args_to_session(foo)
+    session[Consts.ARGS] = add_args_to_session(request.get_json())
     return jsonify({"success": "true"})
-
-    # data = {k: v for k, v in request.get_json().items()}
-    # session[Consts.ARGS] = add_args_to_session(data)
-    # return jsonify({"success": "true"})
-
-    # data = request.get_json()
-    # show_words = data.get(Consts.SHOW_WORDS)
-    # if not isinstance(show_words, bool):
-    #     return jsonify({"error": f"Invalid data"}), 400
-    # session[Consts.ARGS] = add_args_to_session({Consts.SHOW_WORDS: show_words})
-    # return jsonify({"success": "true"}), 200
