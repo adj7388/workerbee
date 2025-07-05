@@ -120,3 +120,6 @@ td.letters {
     border-radius: 0.25rem;
 }
 
+.hide-words {
+    display: none;
+}

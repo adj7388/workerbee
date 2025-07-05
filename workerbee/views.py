@@ -9,6 +9,7 @@ from flask import (
     flash,
     redirect,
     send_file,
+    jsonify,
 )
 from io import BytesIO
 from pyinstrument import Profiler
@@ -42,7 +43,7 @@ def before_request():
             Consts.GROUPING: Consts.INITIALS,
             Consts.FILE_TYPE: Consts.JSON,
             Consts.SUMMARY_SORT: Consts.DESCENDING,
-            Consts.SHOW_WORDS: Consts.SHOW_WORDS,
+            Consts.SHOW_WORDS: True,
             Consts.WORD_SORT: Consts.ALPHABETICALLY,
         },
     )
@@ -151,7 +152,7 @@ def convert_to_summaries(
 @app.route(f"/{Consts.SUMMARY_VIEW}", methods=["GET"])
 def summary():
     user_args: dict = dict(request.args)
-    user_args[Consts.SHOW_WORDS] = request.args.get(Consts.SHOW_WORDS)
+    user_args[Consts.SHOW_WORDS] = bool(Consts.SHOW_WORDS in request.args)
     if user_args[Consts.SHOW_WORDS]:
         user_args[Consts.WORD_SORT] = request.args.get(Consts.WORD_SORT)
     session[Consts.ARGS] = add_args_to_session(user_args)
@@ -201,3 +202,9 @@ def getfile():
         ),
         as_attachment=True,
     )
+
+
+@app.route("/update-session", methods=["POST"])
+def update_session():
+    session[Consts.ARGS] = add_args_to_session(request.get_json())
+    return jsonify({"success": "true"})
