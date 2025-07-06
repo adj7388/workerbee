@@ -58,7 +58,7 @@ h4 {
 }
 
 .subtext {
-    font-size: x-small;
+    font-size: smaller;
 }
 
 .pangram {
@@ -122,4 +122,8 @@ td.letters {
 
 .hide-words {
     display: none;
+}
+
+.input-labels {
+    font-weight: bold;
 }

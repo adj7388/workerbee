@@ -40,6 +40,7 @@
 {% macro show_words_grouped(output_data, grouping) %}
     {# top_level* and second_level* will be INITIALS or LENGTH, or vice versa #}
     {% set top_level_group, second_level_group = grouping[0], grouping[1] %}
+    <hr>
     <div>
         <table>
             {%for toplevel_heading, toplevel_values in output_data.nested.items() %}

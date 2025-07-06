@@ -11,8 +11,8 @@
 
         {{ letter_inputs() }}
 
-        <div class="mt-3">
-            <label for="{{ WORD_LIST }}">Search word list:</label>
+        <div class="mt-2">
+            <label class="input-labels" for="{{ WORD_LIST }}">Use word list:</label>
             <select id="{{ WORD_LIST }}" name="{{ WORD_LIST }}">
                 {% for k, v in WORDLISTS.items() %}
                    <option value="{{ k }}"
@@ -26,27 +26,29 @@
             </select>
         </div>
 
-        <div class="h6 mt-3">
+        <div class="mt-2 form-check-inline input-labels">
             Group the results:
         </div>
-        <div>
-            <input type="radio" name="{{ GROUPING }}" id="{{ INITIALS }}" value="{{ INITIALS }}" 
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ GROUPING }}" id="{{ INITIALS }}" value="{{ INITIALS }}" 
                 {{ "checked" if session[ARGS][GROUPING] == INITIALS else "" }}
             >
-            <label for="{{ INITIALS }}">By initial letters</label>&nbsp;&nbsp;
-
-            <input type="radio" name="{{ GROUPING }}" id="{{ LENGTH }}" value="{{ LENGTH }}" 
+            <label class="form-check-label" for="{{ INITIALS }}">By initial letters</label>&nbsp;&nbsp;
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ GROUPING }}" id="{{ LENGTH }}" value="{{ LENGTH }}" 
                 {{ "checked" if session[ARGS][GROUPING] == LENGTH else "" }}
             >
-            <label for="{{ LENGTH }}">By word length</label>&nbsp;&nbsp;
-
-            <input type="radio" name="{{ GROUPING }}" id="{{ NO_GROUPING }}" value="{{ NO_GROUPING }}" 
+            <label class="form-check-label" for="{{ LENGTH }}">By word length</label>&nbsp;&nbsp;
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ GROUPING }}" id="{{ NO_GROUPING }}" value="{{ NO_GROUPING }}" 
                 {{ "checked" if session[ARGS][GROUPING] == NO_GROUPING else "" }}
             >
-            <label for="{{ NO_GROUPING }}">No grouping</label>
+            <label class="form-check-label" for="{{ NO_GROUPING }}">No grouping</label>
         </div>
-        <div class="mt-3">
-            <label for="{{ DICTIONARY }}">Link words to:</label>
+        <div class="mt-2">
+            <label class="input-labels" for="{{ DICTIONARY }}">Link words to:</label>
             {{ dictionary_dropdown() }}
         </div>
         <div class="mt-3">
