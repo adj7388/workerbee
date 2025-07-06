@@ -154,6 +154,26 @@
     </div>
 {% endmacro %}
 
+{% macro letter_inputs() %}
+    <div class="h6 mt-3">
+        Enter the required letter 
+        <span class="subtext">(The yellow letter in the middle of the Spelling Bee page)</span>
+    </div>
+    <div><input type="text", id="{{ REQUIRED_LETTER }}" name="{{ REQUIRED_LETTER }}"
+            value="{{ session[ARGS][REQUIRED_LETTER] }}"
+        >
+    </div>
+    <div class="h6 mt-3">
+        Enter the other letters 
+        <span class="subtext">(The {{NUM_ALLOWED_LETTERS}} letters around the yellow, required letter)</span>
+    </div>
+    <div>
+        <input type="text", id="{{ ALLOWED_LETTERS }}" name="{{ ALLOWED_LETTERS }}"
+            value="{{ session[ARGS][ALLOWED_LETTERS] }}"
+        >
+    </div>
+{% endmacro %}
+
 {% macro dictionary_dropdown() %}
     <select id="{{ DICTIONARY }}" name="{{ DICTIONARY }}">
         {% for k, v in DICTIONARIES.items() %}

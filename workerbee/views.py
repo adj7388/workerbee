@@ -230,7 +230,41 @@ def beewords_results():
         dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
     )
     return render_template(
-        "_findword_results.html",
+        "_findwords_results.html",
         output_data=output_data,
         grouping=get_groupings(session[Consts.ARGS][Consts.GROUPING]),
+    )
+
+
+@app.route(f"/show-summaries", methods=["GET"])
+def show_summaries():
+    return abort(400) if request.args else render_template("show-summaries.html")
+
+
+@app.route(f"/_summaries-results", methods=["GET"])
+def summaries_results():
+    user_args: dict = dict(request.args)
+    # user_args[Consts.SHOW_WORDS] = bool(Consts.SHOW_WORDS in request.args)
+    # if user_args[Consts.SHOW_WORDS]:
+    #     user_args[Consts.WORD_SORT] = request.args.get(Consts.WORD_SORT)
+    session[Consts.ARGS] = add_args_to_session(user_args)
+    error_msg = error_check(args=session[Consts.ARGS])
+    if error_msg:
+        flash(message=error_msg)
+        return redirect("/summary_form")
+    output_list: list[OutputData] = []
+    for word_list in WordLists.values():
+        output_data = get_beewords(
+            word_list=word_list,
+            required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
+            allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
+            dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
+            grouping=Consts.NO_GROUPING,
+        )
+        output_list.append(output_data)
+    summaries = convert_to_summaries(output_data=output_list)
+    return render_template(
+        "_showsummaries_results.html",
+        summaries=summaries,
+        dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
     )

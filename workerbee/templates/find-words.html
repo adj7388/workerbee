@@ -1,15 +1,18 @@
 {% extends "layout.html" %}
 
-{% from "macros.html" import page_banner, dictionary_dropdown %}
+{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs %}
 
 {% block content %}
     {{ page_banner(text='Find Words') }}
-        <form id="searchForm" action="/beeword-results" method="GET">
+    <form id="searchForm" method="GET">
         {% if PROFILING is true %}
             <input type="hidden" name="{{ PROFILE_REQUEST_ARG }}" value="true">
         {% endif %}
+
+        {{ letter_inputs() }}
+
         <div class="mt-3">
-            <label for="{{ WORD_LIST }}">Search in this word list:</label>
+            <label for="{{ WORD_LIST }}">Search word list:</label>
             <select id="{{ WORD_LIST }}" name="{{ WORD_LIST }}">
                 {% for k, v in WORDLISTS.items() %}
                    <option value="{{ k }}"
@@ -24,46 +27,30 @@
         </div>
 
         <div class="h6 mt-3">
-            Enter the required letter:<br>
-            <span class="subtext">The yellow letter in the middle of the Spelling Bee page</span>
-        </div>
-        <div><input type="text", id="{{ REQUIRED_LETTER }}" name="{{ REQUIRED_LETTER }}"
-                value="{{ session[ARGS][REQUIRED_LETTER] }}"
-            >
-        </div>
-        <div class="h6 mt-3">
-            Enter the other letters:<br>
-            <span class="subtext">The {{NUM_ALLOWED_LETTERS}} letters around the yellow, required letter</span>
-        </div>
-        <div><input type="text", id="{{ ALLOWED_LETTERS }}" name="{{ ALLOWED_LETTERS }}"
-                value="{{ session[ARGS][ALLOWED_LETTERS] }}"
-            >
-        </div>
-        <div class="h6 mt-3">
-            How to group the results:
+            Group the results:
         </div>
         <div>
             <input type="radio" name="{{ GROUPING }}" id="{{ INITIALS }}" value="{{ INITIALS }}" 
                 {{ "checked" if session[ARGS][GROUPING] == INITIALS else "" }}
             >
-            <label for="{{ INITIALS }}">Group by initial letters</label><br>
+            <label for="{{ INITIALS }}">By initial letters</label>&nbsp;&nbsp;
 
             <input type="radio" name="{{ GROUPING }}" id="{{ LENGTH }}" value="{{ LENGTH }}" 
                 {{ "checked" if session[ARGS][GROUPING] == LENGTH else "" }}
             >
-            <label for="{{ LENGTH }}">Group by word length</label><br>
+            <label for="{{ LENGTH }}">By word length</label>&nbsp;&nbsp;
 
             <input type="radio" name="{{ GROUPING }}" id="{{ NO_GROUPING }}" value="{{ NO_GROUPING }}" 
                 {{ "checked" if session[ARGS][GROUPING] == NO_GROUPING else "" }}
             >
-            <label for="{{ NO_GROUPING }}">No grouping. Just an alphabetical list</label>
+            <label for="{{ NO_GROUPING }}">No grouping</label>
         </div>
         <div class="mt-3">
-            <label for="{{ DICTIONARY }}">Link to definitions in:</label>
+            <label for="{{ DICTIONARY }}">Link words to:</label>
             {{ dictionary_dropdown() }}
         </div>
         <div class="mt-3">
-            <input type="submit" value="Find Words">
+            <input id="submitButton" type="submit" value="Find Words">
         </div>
     </form>
 
@@ -71,6 +58,7 @@
 
     <script>
         document.getElementById('searchForm').addEventListener('submit', function (e) {
+            const submitButton = document.getElementById('submitButton').value = 'Update Results';
             e.preventDefault();
             const word_list = document.getElementById('{{WORD_LIST}}').value;
             const required = document.getElementById('{{REQUIRED_LETTER}}').value;

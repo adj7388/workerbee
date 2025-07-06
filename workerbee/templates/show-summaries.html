@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+
+{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs %}
+
+{% block content %}
+    {{ page_banner(text="Show Summaries of All Word Lists") }}
+    <div>
+        <scan style="font-weight: bold; font-size: smaller">Word Lists:</scan>
+        {% for word_list in WORDLISTS.values() %}
+            <scan style="font-size: x-small">{{ word_list.name }}</scan>&nbsp;|
+        {% endfor %}
+    </div>
+    <form id="searchForm" method="GET">
+        {% if PROFILING is true %}
+            <input type="hidden" name="{{ PROFILE_REQUEST_ARG }}" value="true">
+        {% endif %}
+
+        {{ letter_inputs() }}
+
+        <div class="mt-3 form-check-inline">
+            Sort summaries by number of words:
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ SUMMARY_SORT }}" id="{{ ASCENDING }}" value="{{ ASCENDING }}" 
+                {{ "checked" if session[ARGS][SUMMARY_SORT] == ASCENDING else "" }}
+            >
+            <label class="form-check-label" for="{{ ASCENDING }}">Ascending</label> 
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ SUMMARY_SORT }}" id="{{ DESCENDING}}" value="{{ DESCENDING}}"
+                {{ "checked" if session[ARGS][SUMMARY_SORT] == DESCENDING else "" }}
+            >
+            <label class="form-check-label" for="{{ DESCENDING}}">Descending</label> 
+        </div>
+
+        <div class="mt-3 form-check-inline">
+            <input type="checkbox" id="{{ SHOW_WORDS}}" name="{{ SHOW_WORDS}}"
+                {{ "checked" if session[ARGS][SHOW_WORDS] == True else "" }}
+            >
+            <label class="form-check-label" for="{{ SHOW_WORDS }}">Include words sorted: </label>            
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="{{ WORD_SORT }}" id="{{ ALPHABETICALLY }}" value="{{ ALPHABETICALLY }}"
+                    {{ "checked" if session[ARGS][WORD_SORT] == ALPHABETICALLY else "" }}
+                >
+                <label class="form-check-label" for="{{ ALPHABETICALLY }}">Alphabetically</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="{{ WORD_SORT }}" id="{{ BYWORDLENGTH }}" value="{{ BYWORDLENGTH }}"
+                    {{ "checked" if session[ARGS][WORD_SORT] == BYWORDLENGTH else "" }}
+                >
+                <label class="form-check-label" for="{{ BYWORDLENGTH }}">By word length</label>
+            </div>
+            <div class="d-inline-block mt-3">
+                <label id="{{ DICTIONARY }}Label" for="{{ DICTIONARY }}" class="form-label me-2">Link words to:</label>
+                {{ dictionary_dropdown() }}
+            </div>
+            <div class="mt-3">
+                <input id="submitButton" type="submit" value="Show Summaries">
+            </div>
+        </div>
+    </form>
+
+    <div id="results"></div>
+
+    <script>
+
+        document.getElementById('searchForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            document.getElementById('submitButton').value = "Update Summaries"
+            const required = document.getElementById('{{REQUIRED_LETTER}}').value;
+            const allowed = document.getElementById('{{ALLOWED_LETTERS}}').value;
+            const summary_sort = document.querySelector('input[name="{{ SUMMARY_SORT }}"]:checked')?.value;
+            const show_words = document.getElementById('{{SHOW_WORDS}}').checked;
+            const word_sort = document.querySelector('input[name="{{ WORD_SORT }}"]:checked')?.value;
+            query = `required=${required}&allowed=${allowed}&summary_sort=${summary_sort}&show_words=${show_words}&word_sort=${word_sort}`;
+            fetch(`/_summaries-results?${query}`)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('results').innerHTML = html;
+                    toggleRows(show_words);
+                });
+        });
+        function toggleRows(showWords) {
+            const rows = document.querySelectorAll('tr[data-words]');
+            rows.forEach(row => {
+                if (showWords == false) {
+                    row.classList.add('hide-words')
+                }
+                else {
+                    row.classList.remove('hide-words');
+                }
+            });
+        }
+
+    </script>
+
+
+{% endblock %}
