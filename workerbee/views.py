@@ -36,8 +36,8 @@ def before_request():
     session.setdefault(
         Consts.ARGS,
         {
-            Consts.REQUIRED_LETTER: "a",
-            Consts.ALLOWED_LETTERS: "cptive",
+            Consts.REQUIRED_LETTER: "l",
+            Consts.ALLOWED_LETTERS: "ewardy",
             Consts.DICTIONARY: WIKT,
             Consts.WORD_LIST: SCOWL_HUGE_80,
             Consts.GROUPING: Consts.INITIALS,
@@ -67,7 +67,7 @@ def after_request(response):
 
 @app.route("/")
 def root():
-    return abort(400) if request.args else redirect("home")
+    return abort(400) if request.args else redirect("find-words")
 
 
 @app.route("/home")
@@ -208,3 +208,29 @@ def getfile():
 def update_session():
     session[Consts.ARGS] = add_args_to_session(request.get_json())
     return jsonify({"success": "true"})
+
+
+@app.route(f"/find-words", methods=["GET"])
+def find_words():
+    return abort(400) if request.args else render_template("find-words.html")
+
+
+@app.route(f"/_beeword-results", methods=["GET"])
+def beewords_results():
+    session[Consts.ARGS] = add_args_to_session(request.args)
+    error_msg = error_check(args=session[Consts.ARGS])
+    if error_msg:
+        flash(message=error_msg)
+        return redirect("find_words")
+    output_data = get_beewords(
+        word_list=WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
+        required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
+        allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
+        grouping=session[Consts.ARGS][Consts.GROUPING],
+        dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
+    )
+    return render_template(
+        "_findword_results.html",
+        output_data=output_data,
+        grouping=get_groupings(session[Consts.ARGS][Consts.GROUPING]),
+    )

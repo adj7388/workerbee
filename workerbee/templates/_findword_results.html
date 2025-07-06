@@ -1,0 +1,20 @@
+{% from "macros.html" import show_metadata, word_row %}
+{% from "beewords.html" import show_words_grouped %}
+
+{{ show_metadata(metadata=output_data.metadata) }}
+
+{% if session[ARGS][GROUPING] == NO_GROUPING %}
+
+    <div>
+        <table>
+            {% for beeword in output_data.flat %}
+                {{ word_row(beeword=beeword) }}
+            {% endfor %}
+        </table>
+    </div>
+
+{% else %}
+
+    {{ show_words_grouped(output_data=output_data, grouping=grouping) }}
+
+{% endif %}
