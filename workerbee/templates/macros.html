@@ -179,18 +179,18 @@
 
 {% macro letter_inputs() %}
     <div class="d-flex align-items-center mt-3">
-        <label for="{{ REQUIRED_LETTER }}" class="me-2 input-labels">Enter the required letter</label>
+        <label for="{{ REQUIRED_LETTER }}" class="me-2 input-labels">Required letter</label>
         <input type="text" class="form-control" id="{{ REQUIRED_LETTER }}" 
             name="{{ REQUIRED_LETTER }}" value="{{ session[ARGS][REQUIRED_LETTER] }}"
             style="width: 5ch">
-        <span class="subtext">&nbsp;&nbsp;The yellow letter in the middle of the Spelling Bee page</span>
+        <span class="subtext">&nbsp;&nbsp;Yellow letter in the middle of the Spelling Bee page</span>
     </div>
     <div class="d-flex align-items-center">
-        <label for="{{ ALLOWED_LETTERS }}" class="me-2 input-labels">Enter the other letters</label>
+        <label for="{{ ALLOWED_LETTERS }}" class="me-2 input-labels">Other letters</label>
         <input type="text" class="form-control" id="{{ ALLOWED_LETTERS }}" 
             name="{{ ALLOWED_LETTERS }}" value="{{ session[ARGS][ALLOWED_LETTERS] }}"
             style="width: 10ch">
-        <span class="subtext">&nbsp;&nbsp;The {{NUM_ALLOWED_LETTERS}} letters around the yellow, required letter</span>
+        <span class="subtext">&nbsp;&nbsp;Letters surrounding the required letter</span>
     </div>
 {% endmacro %}
 
