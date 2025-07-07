@@ -1,10 +1,33 @@
 {% macro page_banner(text="") %}
-    {% set banner = "Worker Bee" %}
+    {% set banner = "Bee Word Play" %}
     {% if text %}
         <h1 class="banner">{{ text }}</h1>
     {% else %}
         <h1 class="banner">{{ banner }}</h1>
     {% endif %}
+{% endmacro %}
+
+{% macro findwords_metadata(metadata) %}
+    {% set all_pangrams = metadata.nonperfect_pangrams + metadata.perfect_pangrams %}
+    <hr>
+    <div class="d-flex flex-wrap">
+        <div class="me-3"><strong>Total Words: </strong>{{metadata.num_beewords}}</div>
+        <div class="me-3"><strong>Found in: </strong>{{metadata.word_list}}</div>
+        <div class="me-3"><strong>Perfect pangrams{{PERFECT_MARKER}}: </strong>{{ metadata.perfect_pangrams | length }}</div>
+        <div class="me-3"><strong>Other pangrams{{PANGRAM_MARKER}}: </strong>{{ metadata.nonperfect_pangrams | length }}</div>
+        <div class="me-3"><strong>Bingo: </strong>{{ "Yes" if metadata.bingo == True else "No" }}</div>
+        <div class="me-5">
+            <strong>Pangrams:</strong>
+            {% if all_pangrams %}
+                {% for pangram in all_pangrams | sort(attribute=WORD) %}
+                    {{ decorate_word(beeword=pangram, pangram_class="") }}
+                {% endfor %}
+            {% else %}
+                None
+            {% endif %}
+        </div>
+    </div>
+    <hr>
 {% endmacro %}
 
 {% macro show_metadata(metadata) %}

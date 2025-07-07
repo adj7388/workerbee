@@ -1,7 +1,7 @@
-{% from "macros.html" import show_metadata, word_row %}
+{% from "macros.html" import show_metadata, word_row, findwords_metadata %}
 {% from "beewords.html" import show_words_grouped %}
 
-{# {{ show_metadata(metadata=output_data.metadata) }} #}
+{{ findwords_metadata(metadata=output_data.metadata) }}
 
 {% if session[ARGS][GROUPING] == NO_GROUPING %}
 
@@ -15,6 +15,6 @@
 
 {% else %}
 
-    {{ show_words_grouped(output_data=output_data, grouping=grouping) }}
+{{ show_words_grouped(output_data=output_data, grouping=grouping) }}
 
 {% endif %}
