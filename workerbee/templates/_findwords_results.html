@@ -1,20 +1,37 @@
 {% from "macros.html" import show_metadata, word_row, findwords_metadata %}
 {% from "beewords.html" import show_words_grouped %}
 
-{{ findwords_metadata(metadata=output_data.metadata) }}
 
-{% if session[ARGS][GROUPING] == NO_GROUPING %}
+<div>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
 
-    <div>
-        <table>
-            {% for beeword in output_data.flat %}
-                {{ word_row(beeword=beeword) }}
+            {% for message in messages %}
+                <p class="alert alert-warning">{{ message }}</p>
             {% endfor %}
-        </table>
-    </div>
 
-{% else %}
+        {% else %}
 
-{{ show_words_grouped(output_data=output_data, grouping=grouping) }}
+            {{ findwords_metadata(metadata=output_data.metadata) }}
 
-{% endif %}
+            {% if session[ARGS][GROUPING] == NO_GROUPING %}
+
+                <div>
+                    <table>
+                        {% for beeword in output_data.flat %}
+                            {{ word_row(beeword=beeword) }}
+                        {% endfor %}
+                    </table>
+                </div>
+
+            {% else %}
+
+                {{ show_words_grouped(output_data=output_data, grouping=grouping) }}
+
+            {% endif %}
+
+        {% endif %}
+    {% endwith %}
+</div>
+
+

@@ -47,20 +47,11 @@
       </div>
     </nav>
 
-    <!-- Page content -->
-    <div>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    <p class="alert alert-warning">{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-    </div>
     <div class="body-content">
         {% block content %}
         {% endblock %}
     </div>
+
     <div>
         <hr/>
             <footer>

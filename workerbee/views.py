@@ -67,7 +67,7 @@ def after_request(response):
 
 @app.route("/")
 def root():
-    return abort(400) if request.args else redirect("find-words")
+    return abort(400) if request.args else redirect("find_words")
 
 
 @app.route("/home")
@@ -210,7 +210,7 @@ def update_session():
     return jsonify({"success": "true"})
 
 
-@app.route(f"/find-words", methods=["GET"])
+@app.route(f"/find_words", methods=["GET"])
 def find_words():
     return abort(400) if request.args else render_template("find-words.html")
 
@@ -221,7 +221,6 @@ def beewords_results():
     error_msg = error_check(args=session[Consts.ARGS])
     if error_msg:
         flash(message=error_msg)
-        return redirect("find_words")
     output_data = get_beewords(
         word_list=WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
         required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
@@ -244,25 +243,23 @@ def show_summaries():
 @app.route(f"/_summaries-results", methods=["GET"])
 def summaries_results():
     user_args: dict = dict(request.args)
-    # user_args[Consts.SHOW_WORDS] = bool(Consts.SHOW_WORDS in request.args)
-    # if user_args[Consts.SHOW_WORDS]:
-    #     user_args[Consts.WORD_SORT] = request.args.get(Consts.WORD_SORT)
     session[Consts.ARGS] = add_args_to_session(user_args)
     error_msg = error_check(args=session[Consts.ARGS])
+    summaries: list[Summary] = []
     if error_msg:
         flash(message=error_msg)
-        return redirect("/summary_form")
-    output_list: list[OutputData] = []
-    for word_list in WordLists.values():
-        output_data = get_beewords(
-            word_list=word_list,
-            required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
-            allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
-            dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
-            grouping=Consts.NO_GROUPING,
-        )
-        output_list.append(output_data)
-    summaries = convert_to_summaries(output_data=output_list)
+    else:
+        output_list: list[OutputData] = []
+        for word_list in WordLists.values():
+            output_data = get_beewords(
+                word_list=word_list,
+                required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
+                allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
+                dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
+                grouping=Consts.NO_GROUPING,
+            )
+            output_list.append(output_data)
+        summaries = convert_to_summaries(output_data=output_list)
     return render_template(
         "_showsummaries_results.html",
         summaries=summaries,
