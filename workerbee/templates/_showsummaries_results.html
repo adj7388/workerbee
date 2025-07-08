@@ -5,12 +5,12 @@
         <td class="align-middle">{{ summary.metadata.word_list }}</td>
         <td class="align-middle">{{ summary.metadata.num_beewords }}</td>
         <td class="align-middle">{{ "Yes" if summary.metadata.bingo else "No" }}</td>
-        <td class="align-middle">
+        <td class="align-middle">({{ summary.metadata.perfect_pangrams | length }})
             {% for pangram in summary.metadata.perfect_pangrams %}
                 {{ decorate_word(pangram, show_marker=False, pangram_class="") }}
             {% endfor %}
         </td>
-        <td class="align-middle">
+        <td class="align-middle">({{ summary.metadata.nonperfect_pangrams | length }})
             {% for pangram in summary.metadata.nonperfect_pangrams %}
                 {{ decorate_word(pangram, show_marker=False, pangram_class="") }}
             {% endfor %}
