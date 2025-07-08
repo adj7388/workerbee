@@ -42,31 +42,33 @@
 {% macro show_words_grouped(output_data, grouping) %}
     {# top_level* and second_level* will be INITIALS or LENGTH, or vice versa #}
     {% set top_level_group, second_level_group = grouping[0], grouping[1] %}
-    <div>
-        <table>
-            {%for toplevel_heading, toplevel_values in output_data.nested.items() %}
-                {{ heading_row(
-                    level=0,
-                    heading=decorate_heading(
-                            toplevel_heading,
-                            top_level_group
-                        )
-                    )
-                }}
-                {%for second_level_heading, beewords in toplevel_values.items() %}
+    <div class="row g-4">
+        {%for toplevel_heading, toplevel_values in output_data.nested.items() %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <table>
                     {{ heading_row(
-                        level=1,
+                        level=0,
                         heading=decorate_heading(
-                                second_level_heading,
-                                second_level_group
+                                toplevel_heading,
+                                top_level_group
                             )
                         )
                     }}
-                    {%for beeword in beewords %}
-                        {{ word_row(beeword=beeword) }}
+                    {%for second_level_heading, beewords in toplevel_values.items() %}
+                        {{ heading_row(
+                            level=1,
+                            heading=decorate_heading(
+                                    second_level_heading,
+                                    second_level_group
+                                )
+                            )
+                        }}
+                        {%for beeword in beewords %}
+                            {{ word_row(beeword=beeword) }}
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
-            {% endfor %}
-        </table>
+                </table>
+            </div>
+        {% endfor %}
     </div>
 {% endmacro %}
