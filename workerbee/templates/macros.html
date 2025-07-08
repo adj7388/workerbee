@@ -39,25 +39,31 @@
 </div>
 {% endmacro %}
 
+{% macro display_pangrams(pangrams) %}
+    {% if pangrams %}
+        {% for pangram in pangrams | sort(attribute='word') %}
+            {{ decorate_word(beeword=pangram, pangram_class="", show_marker=False) }}
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
 {% macro findwords_metadata(metadata) %}
     {% set all_pangrams = metadata.nonperfect_pangrams + metadata.perfect_pangrams %}
     <hr>
     <div class="d-flex flex-wrap">
         <div class="me-3"><strong>Total Words: </strong>{{metadata.num_beewords}}</div>
-        <div class="me-3"><strong>Bingo: </strong>{{ "Yes" if metadata.bingo == True else "No" }}</div>
         <div class="me-3"><strong>Found in: </strong>{{metadata.word_list}}</div>
-        <div class="me-3"><strong>Perfect pangrams{{PERFECT_MARKER}}: </strong>{{ metadata.perfect_pangrams | length }}</div>
-        <div class="me-3"><strong>Other pangrams{{PANGRAM_MARKER}}: </strong>{{ metadata.nonperfect_pangrams | length }}</div>
-        <div class="me-5">
-            <strong>Pangrams:</strong>
-            {% if all_pangrams %}
-                {% for pangram in all_pangrams | sort(attribute=WORD) %}
-                    {{ decorate_word(beeword=pangram, pangram_class="") }}
-                {% endfor %}
-            {% else %}
-                None
-            {% endif %}
+        <div class="me-3">
+            <strong>Perfect pangrams{{PERFECT_MARKER}} </strong>
+            ({{ metadata.perfect_pangrams | length }})
+            {{ display_pangrams(metadata.perfect_pangrams) }}
         </div>
+        <div class="me-3">
+            <strong>Other pangrams{{PANGRAM_MARKER}} </strong>
+            ({{ metadata.nonperfect_pangrams | length }})
+            {{ display_pangrams(metadata.nonperfect_pangrams) }}
+        </div>
+        <div class="me-3"><strong>Bingo: </strong>{{ "Yes" if metadata.bingo == True else "No" }}</div>
     </div>
 {% endmacro %}
 

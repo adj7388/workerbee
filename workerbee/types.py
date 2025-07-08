@@ -38,5 +38,5 @@ class OutputData:
 
 @dataclass
 class Summary:
-    beewords: dict[str, list[Beeword]]
+    beewords: dict[NestedKeyType, list[Beeword]]
     metadata: Metadata
