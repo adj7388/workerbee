@@ -21,18 +21,6 @@
     </p>
     <hr>
     <h2>Find Words</h2>
-        <h3 class="bulleted">Search in this word list</h3>
-            <p>
-                Choose the word list in which to search for words.
-                <span style="font-weight: bold;">If you don't know which one to use, 
-                just accept the default</span>. You might also try different lists to see the difference, 
-                or use Show Summaries&mdash;and check the Include Words option&mdash;to see which 
-                word list is likely to give you what you need (i.e, the words you're looking for).
-            </p>
-            <p>
-                What the heck are word lists?
-                See the <a href="{{ url_for('about') }}#word-lists">About page</a>.
-            </p> 
       <h3 class="bulleted">Required Letter and Other Letters</h3>
             <p>
                 These fields mimic how Spelling Bee works.
@@ -51,7 +39,19 @@
                 3) include one or more of these "other" letters.
                 Enter exactly six letters in this field.
             </p>
-        <h3 class="bulleted">How to group results</h3>
+        <h3 class="bulleted">Use word list</h3>
+            <p>
+                Choose the word list in which to search for words.
+                <span style="font-weight: bold;">If you don't know which one to use, 
+                just accept the default</span>. You might also try different lists to see the difference, 
+                or use Show Summaries&mdash;and check the Include Words option&mdash;to see which 
+                word list is likely to give you what you need (i.e, the words you're looking for).
+            </p>
+            <p>
+                What the heck are word lists?
+                See the <a href="{{ url_for('about') }}#word-lists">About page</a>.
+            </p> 
+        <h3 class="bulleted">Group the results by</h3>
             <p>
                 The grouping options mimic how the Spelling Bee hints page and in 
                 Spelling Bee Buddy work. The options are pretty self-explanatory.
@@ -67,16 +67,16 @@
                 <li>No grouping</br>
                     Just an alphabetical list</li> 
             </ul>
-        <h3 class="bulleted">Link to definitions</h3>
+        <h3 class="bulleted">Link words to</h3>
             <p>
                 Each word is linked to its definition in an online dictionary, which
                 is handy for looking up words you don't know. Choose your 
                 preferred dictionary here.  
             </p>
-        <h3 class="bulleted">Download (on display page)</h3>
+        <h3 class="bulleted">Download (after displaying words)</h3>
             <p>
-                After you have click the Find Words button, a Download button is displayed
-                with the results of your search.
+                After you click the Find Words button, a Download button is available
+                to export the results of your search.
             </p>
             <p>
                 Choose a format option (json, csv, or txt) and click Download. Note that the
@@ -93,7 +93,7 @@
             </p>
             <p>    
                 Optionally, you can include the words found in each word list in the list summary. 
-                See <span style="font-weight: bold;">Include all words in summaries</span> below.
+                See <span style="font-weight: bold;">Include words</span> below.
             </p>
             <p>Also, see the 
                 <a href="{{ url_for('about') }}#word-lists">About page</a> 
@@ -103,12 +103,12 @@
             <p>
                 Same as Find Words above.
             </p>
-        <h3 class="bulleted">Sort summaries by number of words&mdash;Ascending / Descending</h3>
+        <h3 class="bulleted">Sort by number of words&mdash;Ascending / Descending</h3>
             <p>
                 Summaries are always sorted by the number of words found in each word list. 
                 You can choose whether the sort is ascending or descending.
             </p>
-        <h3 class="bulleted">Include all words in summaries</h3>
+        <h3 class="bulleted">Include words, sorted</h3>
             <p>
                 Check this box to include all the words found in each word list.
                 This can result in a busier display but, depending on what you're doing, 
