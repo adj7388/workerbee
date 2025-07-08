@@ -49,7 +49,6 @@
 
 {% macro findwords_metadata(metadata) %}
     {% set all_pangrams = metadata.nonperfect_pangrams + metadata.perfect_pangrams %}
-    <hr>
     <div class="d-flex flex-wrap">
         <div class="me-3"><strong>Total Words: </strong>{{metadata.num_beewords}}</div>
         <div class="me-3"><strong>Found in: </strong>{{metadata.word_list}}</div>
