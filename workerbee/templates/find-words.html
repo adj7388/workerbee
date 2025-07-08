@@ -11,41 +11,43 @@
 
         {{ letter_inputs() }}
 
-        <div class="mt-2">
-            <label class="input-labels" for="{{ WORD_LIST }}">Use word list:</label>
-            <select id="{{ WORD_LIST }}" name="{{ WORD_LIST }}">
-                {% for k, v in WORDLISTS.items() %}
-                   <option value="{{ k }}"
-                        {% if session[ARGS][WORD_LIST] == k %}
-                            selected
-                        {% endif %}
-                    >
-                    {{ v.name }}
-                    </option>
-                {% endfor %}
-            </select>
+        <div class="d-flex flex-wrap align-items-center gap-3 mt-2">
+                <label class="input-labels" for="{{ WORD_LIST }}">Use word list:</label>
+                <select id="{{ WORD_LIST }}" name="{{ WORD_LIST }}">
+                    {% for k, v in WORDLISTS.items() %}
+                    <option value="{{ k }}"
+                            {% if session[ARGS][WORD_LIST] == k %}
+                                selected
+                            {% endif %}
+                        >
+                        {{ v.name }}
+                        </option>
+                    {% endfor %}
+                </select>
         </div>
 
-        <div class="mt-2 form-check-inline input-labels">
-            Group the results:
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="{{ GROUPING }}" id="{{ INITIALS }}" value="{{ INITIALS }}" 
-                {{ "checked" if session[ARGS][GROUPING] == INITIALS else "" }}
-            >
-            <label class="form-check-label" for="{{ INITIALS }}">By initial letters</label>&nbsp;&nbsp;
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="{{ GROUPING }}" id="{{ LENGTH }}" value="{{ LENGTH }}" 
-                {{ "checked" if session[ARGS][GROUPING] == LENGTH else "" }}
-            >
-            <label class="form-check-label" for="{{ LENGTH }}">By word length</label>&nbsp;&nbsp;
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="{{ GROUPING }}" id="{{ NO_GROUPING }}" value="{{ NO_GROUPING }}" 
-                {{ "checked" if session[ARGS][GROUPING] == NO_GROUPING else "" }}
-            >
-            <label class="form-check-label" for="{{ NO_GROUPING }}">No grouping</label>
+
+        <div class="d-flex flex-wrap align-items-center gap-3 mt-2">
+            <div class="input-labels">
+                Group the results by:
+            </div>
+            <div class="d-inline-flex flex-nowrap gap-2">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="{{ GROUPING }}" id="{{ INITIALS }}" value="{{ INITIALS }}" 
+                        {{ "checked" if session[ARGS][GROUPING] == INITIALS else "" }}>
+                    <label class="form-check-label" for="{{ INITIALS }}">Initial letters</label>&nbsp;&nbsp;
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="{{ GROUPING }}" id="{{ LENGTH }}" value="{{ LENGTH }}" 
+                        {{ "checked" if session[ARGS][GROUPING] == LENGTH else "" }}>
+                    <label class="form-check-label" for="{{ LENGTH }}">Word length</label>&nbsp;&nbsp;
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="{{ GROUPING }}" id="{{ NO_GROUPING }}" value="{{ NO_GROUPING }}" 
+                        {{ "checked" if session[ARGS][GROUPING] == NO_GROUPING else "" }}>
+                    <label class="form-check-label" for="{{ NO_GROUPING }}">No grouping</label>
+                </div>
+            </div>
         </div>
         <div class="mt-2">
             <label class="input-labels" for="{{ DICTIONARY }}">Link words to:</label>

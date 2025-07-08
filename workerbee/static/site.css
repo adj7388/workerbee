@@ -24,13 +24,16 @@ h2 {
 }
 
 h3 {
-    font-size: large;
-    font-style: italic;
+    font-size: medium;
+    font-weight: bold;
 }
 
-h3::before {
-  font-size: 1.5em; /* Adjust size as needed */
+.bulleted::before {
+  content: "– ";
+  margin-right: 0.5em;
 }
+
+
 
 h4 {
     font-size: medium;
