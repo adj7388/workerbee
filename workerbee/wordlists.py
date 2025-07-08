@@ -24,10 +24,6 @@ TWELVEDICTS_6of12 = "12dicts-6of12"
 TWELVEDICTS_602_DIR = "12dicts-6.0.2"
 
 WordLists = {
-    SCOWL_DEFAULT_60: WordList(
-        name=f"{SCOWL_DEFAULT_60}",
-        file_name=f"{WORDLIST_DIR}/{SCOWL_DEFAULT_60}/words.txt",
-    ),
     SCOWL_SMALL_35: WordList(
         name=f"{SCOWL_SMALL_35}", file_name=f"{WORDLIST_DIR}/{SCOWL_SMALL_35}/words.txt"
     ),
@@ -40,6 +36,10 @@ WordLists = {
     ),
     SCOWL_55: WordList(
         name=f"{SCOWL_55}", file_name=f"{WORDLIST_DIR}/{SCOWL_55}/words.txt"
+    ),
+    SCOWL_DEFAULT_60: WordList(
+        name=f"{SCOWL_DEFAULT_60}",
+        file_name=f"{WORDLIST_DIR}/{SCOWL_DEFAULT_60}/words.txt",
     ),
     SCOWL_LARGE_70: WordList(
         name=f"{SCOWL_LARGE_70}", file_name=f"{WORDLIST_DIR}/{SCOWL_LARGE_70}/words.txt"
