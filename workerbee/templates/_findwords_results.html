@@ -1,4 +1,4 @@
-{% from "macros.html" import show_metadata, word_row, findwords_metadata %}
+{% from "macros.html" import show_metadata, word_row, findwords_metadata, getfile_dropdown %}
 {% from "beewords.html" import show_words_grouped %}
 
 
@@ -13,6 +13,7 @@
         {% else %}
 
             {{ findwords_metadata(metadata=output_data.metadata) }}
+            {{ getfile_dropdown() }}
 
             {% if session[ARGS][GROUPING] == NO_GROUPING %}
 

@@ -7,15 +7,47 @@
     {% endif %}
 {% endmacro %}
 
+{% macro getfile_dropdown() %}
+<div class="mt-2">
+    <div class="d-flex flex-wrap">
+        <form action="{{ url_for(GETFILE_VIEW) }}" method="GET">
+            <div class="d-inline-flex flex-nowrap align-items-center gap-2">
+                <label for="{{FILE_TYPE}}" class="form-label mb-0 me-2 text-nowrap fst-italic">
+                    Export words as:
+                </label>
+                <select class="form-select form-select-sm flex-shrink-0" style="max-width: 24ch; min-width: 12ch;" name="{{FILE_TYPE}}">
+                    <option value="{{ TXT }}" 
+                        {{ "selected" if session[ARGS][FILE_TYPE] == TXT else "" }}>text (words only)
+                    </option>
+                    <option value="{{ WORD_URL_CSV }}" 
+                        {{ "selected" if session[ARGS][FILE_TYPE] == WORD_URL_CSV  else "" }}>csv (words, urls only)
+                    </option>
+                    <option value="{{ CSV }}" 
+                        {{ "selected" if session[ARGS][FILE_TYPE] == CSV }}>csv (all data)
+                    </option>
+                    <option value="{{ JSON }}" 
+                        {{ "selected" if session[ARGS][FILE_TYPE] == JSON }}>json (all data)
+                    </option>
+                </select>
+                <input class="btn btn-primary btn-sm" type="submit" value="Download">
+            </div>
+            <div class="mt-0 ms-1">
+                <span class="subtext small text-muted">Check Downloads folder. Page does not refresh.</span>
+            </div>
+        </form>
+    </div>
+</div>
+{% endmacro %}
+
 {% macro findwords_metadata(metadata) %}
     {% set all_pangrams = metadata.nonperfect_pangrams + metadata.perfect_pangrams %}
     <hr>
     <div class="d-flex flex-wrap">
         <div class="me-3"><strong>Total Words: </strong>{{metadata.num_beewords}}</div>
+        <div class="me-3"><strong>Bingo: </strong>{{ "Yes" if metadata.bingo == True else "No" }}</div>
         <div class="me-3"><strong>Found in: </strong>{{metadata.word_list}}</div>
         <div class="me-3"><strong>Perfect pangrams{{PERFECT_MARKER}}: </strong>{{ metadata.perfect_pangrams | length }}</div>
         <div class="me-3"><strong>Other pangrams{{PANGRAM_MARKER}}: </strong>{{ metadata.nonperfect_pangrams | length }}</div>
-        <div class="me-3"><strong>Bingo: </strong>{{ "Yes" if metadata.bingo == True else "No" }}</div>
         <div class="me-5">
             <strong>Pangrams:</strong>
             {% if all_pangrams %}
@@ -27,7 +59,6 @@
             {% endif %}
         </div>
     </div>
-    <hr>
 {% endmacro %}
 
 {% macro show_metadata(metadata) %}
