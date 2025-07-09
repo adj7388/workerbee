@@ -23,16 +23,16 @@ from .utils import error_check, get_filename, write_to_buffer
 from .wordlists import WordLists, SCOWL_HUGE_80
 
 
-def handle_checkboxes(session_args, request_args) -> dict:
+def handle_checkboxes(session_args: dict, request_args: dict) -> dict:
     for this_arg in [Consts.SHOW_WORDS]:
         value = request_args.get(this_arg, None)
         if value is not None:
-            session_args[this_arg] = True if value in ["true", "on"] else False
+            session_args[this_arg] = value in ("true", "on")
     return session_args
 
 
-def update_session_args(request_args) -> dict:
-    session_args: dict = session.get(Consts.ARGS, {})
+def update_session_args(request_args: dict) -> dict:
+    session_args: dict = session.get(Consts.ARGS, {}).copy()
     for k, v in request_args.items():
         session_args[k] = v
     return handle_checkboxes(session_args, request_args)
@@ -54,6 +54,7 @@ def before_request():
             Consts.WORD_SORT: Consts.ALPHABETICALLY,
         },
     )
+    session[Consts.ARGS] = update_session_args(request.args)
     if (
         app.config[Consts.PROFILING] is True
         and Consts.PROFILE_REQUEST_ARG in request.args
@@ -119,7 +120,6 @@ def convert_to_summaries(
 
 @app.route(f"/{Consts.GETFILE_VIEW}/", methods=["GET"])
 def getfile():
-    session[Consts.ARGS] = update_session_args(request.args)
     output_data = get_beewords(
         word_list=WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
         required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
@@ -149,7 +149,6 @@ def find_words():
 
 @app.route(f"/_findwords-results", methods=["GET"])
 def findwords_results():
-    session[Consts.ARGS] = update_session_args(request.args)
     error_msg = error_check(args=session[Consts.ARGS])
     if error_msg:
         flash(message=error_msg)
@@ -174,7 +173,6 @@ def show_summaries():
 
 @app.route(f"/_summaries-results", methods=["GET"])
 def summaries_results():
-    session[Consts.ARGS] = update_session_args(request.args)
     error_msg = error_check(args=session[Consts.ARGS])
     summaries: list[Summary] = []
     if error_msg:
