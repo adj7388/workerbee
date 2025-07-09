@@ -23,14 +23,19 @@ from .utils import error_check, get_filename, write_to_buffer
 from .wordlists import WordLists, SCOWL_HUGE_80
 
 
-def updates_args(request_args):
-    user_args = dict(session.get(Consts.ARGS, {}))
+def handle_checkboxes(session_args, request_args) -> dict:
+    for this_arg in [Consts.SHOW_WORDS]:
+        value = request_args.get(this_arg, None)
+        if value is not None:
+            session_args[this_arg] = True if value in ["true", "on"] else False
+    return session_args
+
+
+def update_session_args(request_args) -> dict:
+    session_args: dict = session.get(Consts.ARGS, {})
     for k, v in request_args.items():
-        user_args[k] = v
-    user_args[Consts.SHOW_WORDS] = (
-        True if user_args[Consts.SHOW_WORDS] == "true" else False
-    )
-    return user_args
+        session_args[k] = v
+    return handle_checkboxes(session_args, request_args)
 
 
 @app.before_request
@@ -38,8 +43,8 @@ def before_request():
     session.setdefault(
         Consts.ARGS,
         {
-            Consts.REQUIRED_LETTER: "l",
-            Consts.ALLOWED_LETTERS: "ewardy",
+            Consts.REQUIRED_LETTER: "c",
+            Consts.ALLOWED_LETTERS: "evitpa",
             Consts.DICTIONARY: WIKT,
             Consts.WORD_LIST: SCOWL_HUGE_80,
             Consts.GROUPING: Consts.INITIALS,
@@ -114,8 +119,7 @@ def convert_to_summaries(
 
 @app.route(f"/{Consts.GETFILE_VIEW}/", methods=["GET"])
 def getfile():
-    session[Consts.ARGS] = updates_args(request_args=request.args)
-    # if session[Consts.ARGS][Consts.GROUPING] == Consts.NO_GROUPING:
+    session[Consts.ARGS] = update_session_args(request.args)
     output_data = get_beewords(
         word_list=WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
         required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
@@ -145,7 +149,7 @@ def find_words():
 
 @app.route(f"/_findwords-results", methods=["GET"])
 def findwords_results():
-    session[Consts.ARGS] = updates_args(request.args)
+    session[Consts.ARGS] = update_session_args(request.args)
     error_msg = error_check(args=session[Consts.ARGS])
     if error_msg:
         flash(message=error_msg)
@@ -170,7 +174,7 @@ def show_summaries():
 
 @app.route(f"/_summaries-results", methods=["GET"])
 def summaries_results():
-    session[Consts.ARGS] = updates_args(dict(request.args))
+    session[Consts.ARGS] = update_session_args(request.args)
     error_msg = error_check(args=session[Consts.ARGS])
     summaries: list[Summary] = []
     if error_msg:
