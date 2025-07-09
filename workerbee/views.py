@@ -3,6 +3,7 @@ from flask import (
     Response,
     render_template,
     session,
+    flash,
     g,
     request,
     make_response,
@@ -21,6 +22,36 @@ from .dictionaries import Dictionaries, WIKT
 from .types import Beeword, Summary, OutputData
 from .utils import error_check, get_filename, write_to_buffer
 from .wordlists import WordLists, SCOWL_HUGE_80
+
+
+def convert_to_summaries(
+    output_data: list[OutputData],
+) -> list[Summary]:
+
+    def get_key(beeword: Beeword, sort_type: str) -> str | int:
+        return beeword.length if sort_type == Consts.BYWORDLENGTH else beeword.word[0]
+
+    summaries: list[Summary] = []
+    for output in output_data:
+        beeword_dict = defaultdict(list[Beeword])
+        saved_key = get_key(
+            beeword=output.flat[0],
+            sort_type=session[Consts.ARGS][Consts.WORD_SORT],
+        )
+        for beeword in output.flat:
+            this_key = get_key(
+                beeword, sort_type=session[Consts.ARGS][Consts.WORD_SORT]
+            )
+            saved_key = this_key if saved_key != this_key else saved_key
+            beeword_dict[this_key].append(beeword)
+        summaries.append(Summary(beewords=beeword_dict, metadata=output.metadata))
+    return sorted(
+        summaries,
+        key=lambda summary: summary.metadata.num_beewords,
+        reverse=(
+            True if session[Consts.ARGS][Consts.SUMMARY_SORT] == "descending" else False
+        ),
+    )
 
 
 def update_session_args(request_args: dict) -> dict:
@@ -84,33 +115,57 @@ def about():
     return abort(400) if request.args else render_template("about.html")
 
 
-def convert_to_summaries(
-    output_data: list[OutputData],
-) -> list[Summary]:
+@app.route(f"/find-words", methods=["GET"])
+def find_words():
+    return abort(400) if request.args else render_template("find_words.html")
 
-    def get_key(beeword: Beeword, sort_type: str) -> str | int:
-        return beeword.length if sort_type == Consts.BYWORDLENGTH else beeword.word[0]
 
-    summaries: list[Summary] = []
-    for output in output_data:
-        beeword_dict = defaultdict(list[Beeword])
-        saved_key = get_key(
-            beeword=output.flat[0],
-            sort_type=session[Consts.ARGS][Consts.WORD_SORT],
+@app.route(f"/find-words-results", methods=["GET"])
+def find_words_results():
+    output_data: OutputData | None = None
+    if error_msg := error_check(args=session[Consts.ARGS]):
+        flash(message=error_msg)
+    else:
+        output_data = get_beewords(
+            word_list=WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
+            required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
+            allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
+            grouping=session[Consts.ARGS][Consts.GROUPING],
+            dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
         )
-        for beeword in output.flat:
-            this_key = get_key(
-                beeword, sort_type=session[Consts.ARGS][Consts.WORD_SORT]
+    return render_template(
+        "_find_words_results.html",
+        output_data=output_data,
+        grouping=get_groupings(session[Consts.ARGS][Consts.GROUPING]),
+    )
+
+
+@app.route(f"/show-summaries", methods=["GET"])
+def show_summaries():
+    return abort(400) if request.args else render_template("show_summaries.html")
+
+
+@app.route(f"/show-summaries-results", methods=["GET"])
+def show_summaries_results():
+    summaries: list[Summary] = []
+    if error_msg := error_check(args=session[Consts.ARGS]):
+        flash(message=error_msg)
+    else:
+        output_list: list[OutputData] = []
+        for word_list in WordLists.values():
+            output_data = get_beewords(
+                word_list=word_list,
+                required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
+                allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
+                dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
+                grouping=Consts.NO_GROUPING,
             )
-            saved_key = this_key if saved_key != this_key else saved_key
-            beeword_dict[this_key].append(beeword)
-        summaries.append(Summary(beewords=beeword_dict, metadata=output.metadata))
-    return sorted(
-        summaries,
-        key=lambda summary: summary.metadata.num_beewords,
-        reverse=(
-            True if session[Consts.ARGS][Consts.SUMMARY_SORT] == "descending" else False
-        ),
+            output_list.append(output_data)
+        summaries = convert_to_summaries(output_data=output_list)
+    return render_template(
+        "_show_summaries_results.html",
+        summaries=summaries,
+        dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
     )
 
 
@@ -135,54 +190,4 @@ def get_file() -> Response:
             file_type=session[Consts.ARGS][Consts.FILE_TYPE],
         ),
         as_attachment=True,
-    )
-
-
-@app.route(f"/find-words", methods=["GET"])
-def find_words():
-    return abort(400) if request.args else render_template("find_words.html")
-
-
-@app.route(f"/find-words-results", methods=["GET"])
-def find_words_results():
-    output_data: OutputData | None = None
-    if not error_check(args=session[Consts.ARGS]):
-        output_data = get_beewords(
-            word_list=WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
-            required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
-            allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
-            grouping=session[Consts.ARGS][Consts.GROUPING],
-            dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
-        )
-    return render_template(
-        "_find_words_results.html",
-        output_data=output_data,
-        grouping=get_groupings(session[Consts.ARGS][Consts.GROUPING]),
-    )
-
-
-@app.route(f"/show-summaries", methods=["GET"])
-def show_summaries():
-    return abort(400) if request.args else render_template("show_summaries.html")
-
-
-@app.route(f"/show-summaries-results", methods=["GET"])
-def show_summaries_results():
-    summaries: list[Summary] = []
-    if not error_check(args=session[Consts.ARGS]):
-        output_list: list[OutputData] = []
-        for word_list in WordLists.values():
-            output_data = get_beewords(
-                word_list=word_list,
-                required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
-                allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
-                dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
-                grouping=Consts.NO_GROUPING,
-            )
-            output_list.append(output_data)
-        summaries = convert_to_summaries(output_data=output_list)
-    return render_template(
-        "_show_summaries_results.html",
-        summaries=summaries,
-        dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
     )

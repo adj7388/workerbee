@@ -1,7 +1,6 @@
 from dataclasses import asdict, is_dataclass
 from io import StringIO
 from typing import Any
-from flask import flash
 import csv
 import json
 
@@ -28,8 +27,6 @@ def error_check(args: dict) -> str | None:
         error_msg = f'"{allowed}" contains a duplicate letter.'
     elif set(required).issubset(set(allowed)):
         error_msg = f'Required letter "{required}" is also in Other letters "{allowed}"'
-    if error_msg:
-        flash(message=error_msg)
     return error_msg if error_msg else None
 
 
