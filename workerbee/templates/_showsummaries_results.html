@@ -43,7 +43,11 @@
         <div class="mt-3">
             <table class="table table-bordered bg-light">
                 <tr>
-                    <th>Word List</th><th>Total Words</th><th>Bingo</th><th>Perfect Pangrams</th><th>Non-Perfect Pangrams</th>
+                    <th>Word List</th>
+                    <th>Total Words</th>
+                    <th>Bingo</th>
+                    <th>Perfect Pangrams{{ PERFECT_MARKER}}</th>
+                    <th>Non-Perfect Pangrams{{ PANGRAM_MARKER}}</th>
                 </tr>
                 {% for summary in summaries %}
                     {{ summary_row(summary=summary) }}
