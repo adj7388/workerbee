@@ -82,7 +82,7 @@
             const dictionary = document.getElementById('{{DICTIONARY}}').value;
             const word_sort = document.querySelector('input[name="{{ WORD_SORT }}"]:checked')?.value;
             query = `required=${required}&allowed=${allowed}&summary_sort=${summary_sort}&show_words=${show_words}&word_sort=${word_sort}&dictionary=${dictionary}`;
-            fetch(`/_summaries-results?${query}`)
+            fetch(`/show-summaries-results?${query}`)
                 .then(res => res.text())
                 .then(html => {
                     document.getElementById('results').innerHTML = `

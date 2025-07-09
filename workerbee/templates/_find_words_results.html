@@ -111,7 +111,7 @@
 {% macro getfile_dropdown() %}
 <div class="mt-2">
     <div class="d-flex flex-wrap">
-        <form action="{{ url_for(GETFILE_VIEW) }}" method="GET">
+        <form action="{{ url_for('get_file') }}" method="GET">
             <div class="d-inline-flex flex-nowrap align-items-center gap-2">
                 <label for="{{FILE_TYPE}}" class="form-label mb-0 me-2 text-nowrap fst-italic">
                     Export words as:

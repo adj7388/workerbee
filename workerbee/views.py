@@ -114,8 +114,8 @@ def convert_to_summaries(
     )
 
 
-@app.route(f"/{Consts.GETFILE_VIEW}/", methods=["GET"])
-def getfile() -> Response:
+@app.route("/get-file", methods=["GET"])
+def get_file() -> Response:
     output_data = get_beewords(
         word_list=WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
         required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
@@ -140,11 +140,11 @@ def getfile() -> Response:
 
 @app.route(f"/find-words", methods=["GET"])
 def find_words():
-    return abort(400) if request.args else render_template("find-words.html")
+    return abort(400) if request.args else render_template("find_words.html")
 
 
-@app.route(f"/_findwords-results", methods=["GET"])
-def findwords_results():
+@app.route(f"/find-words-results", methods=["GET"])
+def find_words_results():
     output_data: OutputData | None = None
     if not error_check(args=session[Consts.ARGS]):
         output_data = get_beewords(
@@ -155,7 +155,7 @@ def findwords_results():
             dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
         )
     return render_template(
-        "_findwords_results.html",
+        "_find_words_results.html",
         output_data=output_data,
         grouping=get_groupings(session[Consts.ARGS][Consts.GROUPING]),
     )
@@ -163,11 +163,11 @@ def findwords_results():
 
 @app.route(f"/show-summaries", methods=["GET"])
 def show_summaries():
-    return abort(400) if request.args else render_template("show-summaries.html")
+    return abort(400) if request.args else render_template("show_summaries.html")
 
 
-@app.route(f"/_summaries-results", methods=["GET"])
-def summaries_results():
+@app.route(f"/show-summaries-results", methods=["GET"])
+def show_summaries_results():
     summaries: list[Summary] = []
     if not error_check(args=session[Consts.ARGS]):
         output_list: list[OutputData] = []
@@ -182,7 +182,7 @@ def summaries_results():
             output_list.append(output_data)
         summaries = convert_to_summaries(output_data=output_list)
     return render_template(
-        "_showsummaries_results.html",
+        "_show_summaries_results.html",
         summaries=summaries,
         dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
     )

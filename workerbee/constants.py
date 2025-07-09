@@ -13,11 +13,6 @@ class Consts:
     BEEPROFILE: str = "BEEPROFILE"
     PROFILE_REQUEST_ARG: str = "profile"
 
-    # route consts
-    BEEWORD_VIEW: str = "beewords"
-    GETFILE_VIEW: str = "getfile"
-    SUMMARY_VIEW: str = "summary"
-
     # Session consts
     ARGS: str = "args"
     ## for Find Words
