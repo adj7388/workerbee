@@ -70,7 +70,7 @@
             const grouping = document.querySelector('input[name="{{ GROUPING }}"]:checked')?.value;
             const dictionary = document.getElementById('{{DICTIONARY}}').value;
             query = `word_list=${word_list}&required=${required}&allowed=${allowed}&grouping=${grouping}&dictionary=${dictionary}`;
-            fetch(`/_beeword-results?${query}`)
+            fetch(`/_findwords-results?${query}`)
             .then(res => res.text())
             .then(html => {
                 document.getElementById('results').innerHTML = `

@@ -67,12 +67,12 @@ def after_request(response):
 
 @app.route("/")
 def root():
-    return abort(400) if request.args else redirect("find_words")
+    return abort(400) if request.args else redirect("find-words")
 
 
-@app.route("/home")
-def home():
-    return abort(400) if request.args else render_template("home.html")
+# @app.route("/home")
+# def home():
+#     return abort(400) if request.args else render_template("home.html")
 
 
 @app.route(f"/help")
@@ -85,38 +85,38 @@ def about():
     return abort(400) if request.args else render_template("about.html")
 
 
-@app.route(f"/{Consts.BEEWORD_VIEW}", methods=["GET"])
-def beewords():
-    session[Consts.ARGS] = add_args_to_session(request.args)
-    error_msg = error_check(args=session[Consts.ARGS])
-    if error_msg:
-        flash(message=error_msg)
-        return redirect("home")
-    beewords = get_beewords(
-        word_list=WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
-        required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
-        allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
-        grouping=session[Consts.ARGS][Consts.GROUPING],
-        dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
-    )
-    if session[Consts.ARGS][Consts.GROUPING] == Consts.NO_GROUPING:
-        return render_template(
-            "listwords.html",
-            beeword_list=beewords.flat,
-            metadata=beewords.metadata,
-        )
-    else:
-        return render_template(
-            "beewords.html",
-            beeword_data=beewords.nested,
-            metadata=beewords.metadata,
-            grouping=get_groupings(session[Consts.ARGS][Consts.GROUPING]),
-        )
+# @app.route(f"/{Consts.BEEWORD_VIEW}", methods=["GET"])
+# def beewords():
+#     session[Consts.ARGS] = add_args_to_session(request.args)
+#     error_msg = error_check(args=session[Consts.ARGS])
+#     if error_msg:
+#         flash(message=error_msg)
+#         return redirect("home")
+#     beewords = get_beewords(
+#         word_list=WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
+#         required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
+#         allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
+#         grouping=session[Consts.ARGS][Consts.GROUPING],
+#         dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
+#     )
+#     if session[Consts.ARGS][Consts.GROUPING] == Consts.NO_GROUPING:
+#         return render_template(
+#             "listwords.html",
+#             beeword_list=beewords.flat,
+#             metadata=beewords.metadata,
+#         )
+#     else:
+#         return render_template(
+#             "beewords.html",
+#             beeword_data=beewords.nested,
+#             metadata=beewords.metadata,
+#             grouping=get_groupings(session[Consts.ARGS][Consts.GROUPING]),
+#         )
 
 
-@app.route("/summary_form", methods=["GET"])
-def summary_form():
-    return abort(400) if request.args else render_template("summary_form.html")
+# @app.route("/summary_form", methods=["GET"])
+# def summary_form():
+#     return abort(400) if request.args else render_template("summary_form.html")
 
 
 def convert_to_summaries(
@@ -149,33 +149,33 @@ def convert_to_summaries(
     )
 
 
-@app.route(f"/{Consts.SUMMARY_VIEW}", methods=["GET"])
-def summary():
-    user_args: dict = dict(request.args)
-    user_args[Consts.SHOW_WORDS] = bool(Consts.SHOW_WORDS in request.args)
-    if user_args[Consts.SHOW_WORDS]:
-        user_args[Consts.WORD_SORT] = request.args.get(Consts.WORD_SORT)
-    session[Consts.ARGS] = add_args_to_session(user_args)
-    error_msg = error_check(args=session[Consts.ARGS])
-    if error_msg:
-        flash(message=error_msg)
-        return redirect("/summary_form")
-    output_list: list[OutputData] = []
-    for word_list in WordLists.values():
-        output_data = get_beewords(
-            word_list=word_list,
-            required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
-            allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
-            dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
-            grouping=Consts.NO_GROUPING,
-        )
-        output_list.append(output_data)
-    summaries = convert_to_summaries(output_data=output_list)
-    return render_template(
-        "summary.html",
-        summaries=summaries,
-        dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
-    )
+# @app.route(f"/{Consts.SUMMARY_VIEW}", methods=["GET"])
+# def summary():
+#     user_args: dict = dict(request.args)
+#     user_args[Consts.SHOW_WORDS] = bool(Consts.SHOW_WORDS in request.args)
+#     if user_args[Consts.SHOW_WORDS]:
+#         user_args[Consts.WORD_SORT] = request.args.get(Consts.WORD_SORT)
+#     session[Consts.ARGS] = add_args_to_session(user_args)
+#     error_msg = error_check(args=session[Consts.ARGS])
+#     if error_msg:
+#         flash(message=error_msg)
+#         return redirect("/summary_form")
+#     output_list: list[OutputData] = []
+#     for word_list in WordLists.values():
+#         output_data = get_beewords(
+#             word_list=word_list,
+#             required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
+#             allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
+#             dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
+#             grouping=Consts.NO_GROUPING,
+#         )
+#         output_list.append(output_data)
+#     summaries = convert_to_summaries(output_data=output_list)
+#     return render_template(
+#         "summary.html",
+#         summaries=summaries,
+#         dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
+#     )
 
 
 @app.route(f"/{Consts.GETFILE_VIEW}/", methods=["GET"])
@@ -204,18 +204,18 @@ def getfile():
     )
 
 
-@app.route("/update-session", methods=["POST"])
-def update_session():
-    session[Consts.ARGS] = add_args_to_session(request.get_json())
-    return jsonify({"success": "true"})
+# @app.route("/update-session", methods=["POST"])
+# def update_session():
+#     session[Consts.ARGS] = add_args_to_session(request.get_json())
+#     return jsonify({"success": "true"})
 
 
-@app.route(f"/find_words", methods=["GET"])
+@app.route(f"/find-words", methods=["GET"])
 def find_words():
     return abort(400) if request.args else render_template("find-words.html")
 
 
-@app.route(f"/_beeword-results", methods=["GET"])
+@app.route(f"/_findwords-results", methods=["GET"])
 def beewords_results():
     session[Consts.ARGS] = add_args_to_session(request.args)
     error_msg = error_check(args=session[Consts.ARGS])
