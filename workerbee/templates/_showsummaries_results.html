@@ -1,4 +1,4 @@
-{% from "macros.html" import decorate_word %}
+{% from "macros.html" import decorate_word, show_messages %}
 
 {% macro summary_row(summary) %}
     <tr>
@@ -31,12 +31,9 @@
 {% endmacro %}
 
 {% with messages = get_flashed_messages() %}
-
     {% if messages %}
 
-        {% for message in messages %}
-            <p class="alert alert-warning">{{ message }}</p>
-        {% endfor %}
+        {{ show_messages(messages) }}
 
     {% else %}
 
@@ -56,5 +53,4 @@
         </div>
 
     {% endif %}
-
 {% endwith %}

@@ -1,12 +1,12 @@
 from collections import defaultdict
 from flask import (
+    Response,
     render_template,
     session,
     g,
     request,
     make_response,
     abort,
-    flash,
     redirect,
     send_file,
 )
@@ -23,19 +23,15 @@ from .utils import error_check, get_filename, write_to_buffer
 from .wordlists import WordLists, SCOWL_HUGE_80
 
 
-def handle_checkboxes(session_args: dict, request_args: dict) -> dict:
-    for this_arg in [Consts.SHOW_WORDS]:
-        value = request_args.get(this_arg, None)
-        if value is not None:
-            session_args[this_arg] = value in ("true", "on")
-    return session_args
-
-
 def update_session_args(request_args: dict) -> dict:
     session_args: dict = session.get(Consts.ARGS, {}).copy()
     for k, v in request_args.items():
         session_args[k] = v
-    return handle_checkboxes(session_args, request_args)
+    # handle checkboxes
+    for this_arg in [Consts.SHOW_WORDS]:
+        if (value := request_args.get(this_arg)) is not None:
+            session_args[this_arg] = value in ("true", "on")
+    return session_args
 
 
 @app.before_request
@@ -119,7 +115,7 @@ def convert_to_summaries(
 
 
 @app.route(f"/{Consts.GETFILE_VIEW}/", methods=["GET"])
-def getfile():
+def getfile() -> Response:
     output_data = get_beewords(
         word_list=WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
         required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
@@ -149,16 +145,15 @@ def find_words():
 
 @app.route(f"/_findwords-results", methods=["GET"])
 def findwords_results():
-    error_msg = error_check(args=session[Consts.ARGS])
-    if error_msg:
-        flash(message=error_msg)
-    output_data = get_beewords(
-        word_list=WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
-        required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
-        allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
-        grouping=session[Consts.ARGS][Consts.GROUPING],
-        dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
-    )
+    output_data: OutputData | None = None
+    if not error_check(args=session[Consts.ARGS]):
+        output_data = get_beewords(
+            word_list=WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
+            required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
+            allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
+            grouping=session[Consts.ARGS][Consts.GROUPING],
+            dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
+        )
     return render_template(
         "_findwords_results.html",
         output_data=output_data,
@@ -173,11 +168,8 @@ def show_summaries():
 
 @app.route(f"/_summaries-results", methods=["GET"])
 def summaries_results():
-    error_msg = error_check(args=session[Consts.ARGS])
     summaries: list[Summary] = []
-    if error_msg:
-        flash(message=error_msg)
-    else:
+    if not error_check(args=session[Consts.ARGS]):
         output_list: list[OutputData] = []
         for word_list in WordLists.values():
             output_data = get_beewords(

@@ -8,132 +8,14 @@
 {% endmacro %}
 
 
-{% macro decorate_heading(heading, grouping) %}
-    {% if grouping == INITIALS %}
-        {{ heading | upper }}
-    {% elif grouping == LENGTH %}
-        {{ heading }}<span class="wordlength">-letter words</span>
-    {% endif %}
-{% endmacro %}
+{% macro show_messages(messages)%}
 
-
-{% macro heading_row(level, heading) %}
-    {% if level == 0 %}
-        <tr>
-            <td colspan="3">
-                <hr class="mb-1 mt-4" style="border-color: black; border-width: 2px;">
-            </td>
-        </tr>
-    {% endif %}
-    <tr>
-        {% if level == 1 %}
-            <td></td>
-        {% endif %}
-        <td>
-            {% if level == 0 %}
-                <span class="group0"> {{ heading }} </span>
-            {% elif level == 1 %}
-                <span class="group1"> {{ heading }} </span>
-            {% endif %}
-        </td>
-    </tr>
-{% endmacro %}
-
-
-{% macro getfile_dropdown() %}
-<div class="mt-2">
-    <div class="d-flex flex-wrap">
-        <form action="{{ url_for(GETFILE_VIEW) }}" method="GET">
-            <div class="d-inline-flex flex-nowrap align-items-center gap-2">
-                <label for="{{FILE_TYPE}}" class="form-label mb-0 me-2 text-nowrap fst-italic">
-                    Export words as:
-                </label>
-                <select class="form-select form-select-sm flex-shrink-0" style="max-width: 24ch; min-width: 12ch;" name="{{FILE_TYPE}}">
-                    <option value="{{ TXT }}" 
-                        {{ "selected" if session[ARGS][FILE_TYPE] == TXT else "" }}>text (words only)
-                    </option>
-                    <option value="{{ WORD_URL_CSV }}" 
-                        {{ "selected" if session[ARGS][FILE_TYPE] == WORD_URL_CSV  else "" }}>csv (words, urls only)
-                    </option>
-                    <option value="{{ CSV }}" 
-                        {{ "selected" if session[ARGS][FILE_TYPE] == CSV }}>csv (all data)
-                    </option>
-                    <option value="{{ JSON }}" 
-                        {{ "selected" if session[ARGS][FILE_TYPE] == JSON }}>json (all data)
-                    </option>
-                </select>
-                <input class="btn btn-primary btn-sm" type="submit" value="Download">
-            </div>
-            <div class="mt-0 ms-1">
-                <span class="subtext small text-muted">Check Downloads folder. Page does not refresh.</span>
-            </div>
-        </form>
-    </div>
-</div>
-{% endmacro %}
-
-
-{% macro display_pangrams(pangrams) %}
-    {% if pangrams %}
-        {% for pangram in pangrams | sort(attribute='word') %}
-            {{ decorate_word(beeword=pangram, pangram_class="", show_marker=False) }}
-        {% endfor %}
-    {% endif %}
-{% endmacro %}
-
-
-{% macro findwords_metadata(metadata) %}
-    {% set all_pangrams = metadata.nonperfect_pangrams + metadata.perfect_pangrams %}
-    <div class="d-flex flex-wrap">
-        <div class="me-3"><strong>Total Words: </strong>{{metadata.num_beewords}}</div>
-        <div class="me-3"><strong>Found in: </strong>{{metadata.word_list}}</div>
-        <div class="me-3">
-            <strong>Perfect pangrams{{PERFECT_MARKER}} </strong>
-            ({{ metadata.perfect_pangrams | length }})
-            {{ display_pangrams(metadata.perfect_pangrams) }}
-        </div>
-        <div class="me-3">
-            <strong>Other pangrams{{PANGRAM_MARKER}} </strong>
-            ({{ metadata.nonperfect_pangrams | length }})
-            {{ display_pangrams(metadata.nonperfect_pangrams) }}
-        </div>
-        <div class="me-3"><strong>Bingo: </strong>{{ "Yes" if metadata.bingo == True else "No" }}</div>
-    </div>
-{% endmacro %}
-
-
-{% macro show_words_grouped(output_data, grouping) %}
-    {# top_level* and second_level* will be INITIALS or LENGTH, or vice versa #}
-    {% set top_level_group, second_level_group = grouping[0], grouping[1] %}
-    <div class="row g-0">
-        {%for toplevel_heading, toplevel_values in output_data.nested.items() %}
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <table>
-                    {{ heading_row(
-                        level=0,
-                        heading=decorate_heading(
-                                toplevel_heading,
-                                top_level_group
-                            )
-                        )
-                    }}
-                    {%for second_level_heading, beewords in toplevel_values.items() %}
-                        {{ heading_row(
-                            level=1,
-                            heading=decorate_heading(
-                                    second_level_heading,
-                                    second_level_group
-                                )
-                            )
-                        }}
-                        {%for beeword in beewords %}
-                            {{ word_row(beeword=beeword) }}
-                        {% endfor %}
-                    {% endfor %}
-                </table>
+        {% for message in messages %}
+            <div class="bg-light" style="font-weight: bold">
+                {{ message }}
             </div>
         {% endfor %}
-    </div>
+
 {% endmacro %}
 
 
@@ -165,17 +47,6 @@
             >{{ v.name }}</option>
         {% endfor %}
     </select>
-{% endmacro %}
-
-
-{% macro word_row(beeword) %}
-    <tr>
-        <td></td>
-        <td></td>
-        <td>
-            {{ decorate_word(beeword=beeword) }}
-        </td>
-    </tr>
 {% endmacro %}
 
 

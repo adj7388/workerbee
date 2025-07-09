@@ -1,6 +1,7 @@
 from dataclasses import asdict, is_dataclass
 from io import StringIO
 from typing import Any
+from flask import flash
 import csv
 import json
 
@@ -9,24 +10,27 @@ from .constants import Consts
 from .types import Beeword, Metadata, OutputData
 
 
-def error_check(args: dict) -> str:
+def error_check(args: dict) -> str | None:
     required = args[Consts.REQUIRED_LETTER]
     allowed = args[Consts.ALLOWED_LETTERS]
-    required_as_set = set(required)
-    allowed_as_set = set(allowed)
+    error_msg = ""
     if required == "" or allowed == "":
-        return f'Neither "required" nor "other" letters can be blank'
-    if required.isalpha() is False or allowed.isalpha() is False:
-        return f'"{required}" and "{allowed}" must contain only letters'
-    if len(required) != Config.NUM_REQUIRED_LETTERS:
-        return f'"{required}" must be {Config.NUM_REQUIRED_LETTERS} character.'
-    if len(allowed) != Config.NUM_ALLOWED_LETTERS:
-        return f'"{allowed}" must be {Config.NUM_ALLOWED_LETTERS} characters'
-    if len(allowed_as_set) != Config.NUM_ALLOWED_LETTERS:
-        return f'"{allowed}" contains a duplicate letter.'
-    if required_as_set.issubset(allowed_as_set):
-        return f'The required letter "{required}" cannot also be in "{allowed}"'
-    return ""
+        error_msg = f'"Required" and "Other" letters cannot be blank'
+    elif required.isalpha() is False or allowed.isalpha() is False:
+        error_msg = f'Required "{required}" and Other letters "{allowed}" must contain only letters'
+    elif len(required) != Config.NUM_REQUIRED_LETTERS:
+        error_msg = f'Required must be {Config.NUM_REQUIRED_LETTERS} character, not "{required}"'
+    elif len(allowed) != Config.NUM_ALLOWED_LETTERS:
+        error_msg = (
+            f'Other letters "{allowed}" must be {Config.NUM_ALLOWED_LETTERS} characters'
+        )
+    elif len(set(allowed)) != Config.NUM_ALLOWED_LETTERS:
+        error_msg = f'"{allowed}" contains a duplicate letter.'
+    elif set(required).issubset(set(allowed)):
+        error_msg = f'Required letter "{required}" is also in Other letters "{allowed}"'
+    if error_msg:
+        flash(message=error_msg)
+    return error_msg if error_msg else None
 
 
 def get_filename(metadata: Metadata, file_type: str) -> str:
