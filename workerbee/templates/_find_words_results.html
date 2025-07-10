@@ -1,15 +1,6 @@
 {% from "macros.html" import show_messages, decorate_word %}
 
 
-{% macro decorate_heading(heading, grouping) %}
-    {% if grouping == INITIALS %}
-        {{ heading | upper }}
-    {% elif grouping == LENGTH %}
-        {{ heading }}<span class="wordlength">-letter words</span>
-    {% endif %}
-{% endmacro %}
-
-
 {% macro heading_row(level, heading) %}
     {% if level == 0 %}
         <tr>
@@ -33,14 +24,63 @@
 {% endmacro %}
 
 
+{% macro decorate_heading(heading, grouping) %}
+    {% if grouping == INITIALS %}
+        {{ heading | upper }}
+    {% elif grouping == LENGTH %}
+        {{ heading }}<span class="wordlength">-letter words</span>
+    {% endif %}
+{% endmacro %}
+
 {% macro word_row(beeword) %}
     <tr>
-        <td></td>
-        <td></td>
+        <td colspan="2"></td>
         <td>
             {{ decorate_word(beeword=beeword) }}
         </td>
     </tr>
+{% endmacro %}
+
+{% macro display_pangrams(pangrams) %}
+    {% if pangrams %}
+        {% for pangram in pangrams | sort(attribute='word') %}
+            {{ decorate_word(beeword=pangram, pangram_class="", show_marker=False) }}
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
+
+{% macro getfile_dropdown() %}
+    <div class="mt-2">
+        <div class="d-flex flex-wrap">
+            <form action="{{ url_for('get_file') }}" method="GET">
+                <div class="d-inline-flex flex-nowrap align-items-center gap-2">
+                    <label for="{{FILE_TYPE}}" class="form-label mb-0 me-2 text-nowrap fst-italic">
+                        Export words as:
+                    </label>
+                    <select class="form-select form-select-sm flex-shrink-0" 
+                            style="max-width: 24ch; min-width: 12ch;" name="{{FILE_TYPE}}">
+                        <option value="{{ TXT }}" 
+                            {{ "selected" if session[ARGS][FILE_TYPE] == TXT else "" }}>text (words only)
+                        </option>
+                        <option value="{{ WORD_URL_CSV }}" 
+                            {{ "selected" if session[ARGS][FILE_TYPE] == WORD_URL_CSV  else "" }}>csv (words, urls only)
+                        </option>
+                        <option value="{{ CSV }}" 
+                            {{ "selected" if session[ARGS][FILE_TYPE] == CSV }}>csv (all data)
+                        </option>
+                        <option value="{{ JSON }}" 
+                            {{ "selected" if session[ARGS][FILE_TYPE] == JSON }}>json (all data)
+                        </option>
+                    </select>
+                    <input class="btn btn-primary btn-sm" type="submit" value="Download">
+                </div>
+                <div class="mt-0 ms-1">
+                    <span class="subtext small text-muted">Check Downloads folder. Page does not refresh.</span>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endmacro %}
 
 
@@ -64,37 +104,22 @@
 {% endmacro %}
 
 
-{% macro display_pangrams(pangrams) %}
-    {% if pangrams %}
-        {% for pangram in pangrams | sort(attribute='word') %}
-            {{ decorate_word(beeword=pangram, pangram_class="", show_marker=False) }}
-        {% endfor %}
-    {% endif %}
-{% endmacro %}
-
-
 {% macro show_words_grouped(output_data, grouping) %}
     {# top_level* and second_level* will be INITIALS or LENGTH, or vice versa #}
     {% set top_level_group, second_level_group = grouping[0], grouping[1] %}
     <div class="row g-0">
-        {%for toplevel_heading, toplevel_values in output_data.nested.items() %}
+        {% for toplevel_heading, toplevel_values in output_data.nested.items() %}
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <table>
                     {{ heading_row(
-                        level=0,
-                        heading=decorate_heading(
-                                toplevel_heading,
-                                top_level_group
-                            )
+                            level=0,
+                            heading=decorate_heading(toplevel_heading, top_level_group)
                         )
                     }}
                     {%for second_level_heading, beewords in toplevel_values.items() %}
                         {{ heading_row(
-                            level=1,
-                            heading=decorate_heading(
-                                    second_level_heading,
-                                    second_level_group
-                                )
+                                level=1,
+                                heading=decorate_heading(second_level_heading, second_level_group)
                             )
                         }}
                         {%for beeword in beewords %}
@@ -108,66 +133,21 @@
 {% endmacro %}
 
 
-{% macro getfile_dropdown() %}
-<div class="mt-2">
-    <div class="d-flex flex-wrap">
-        <form action="{{ url_for('get_file') }}" method="GET">
-            <div class="d-inline-flex flex-nowrap align-items-center gap-2">
-                <label for="{{FILE_TYPE}}" class="form-label mb-0 me-2 text-nowrap fst-italic">
-                    Export words as:
-                </label>
-                <select class="form-select form-select-sm flex-shrink-0" style="max-width: 24ch; min-width: 12ch;" name="{{FILE_TYPE}}">
-                    <option value="{{ TXT }}" 
-                        {{ "selected" if session[ARGS][FILE_TYPE] == TXT else "" }}>text (words only)
-                    </option>
-                    <option value="{{ WORD_URL_CSV }}" 
-                        {{ "selected" if session[ARGS][FILE_TYPE] == WORD_URL_CSV  else "" }}>csv (words, urls only)
-                    </option>
-                    <option value="{{ CSV }}" 
-                        {{ "selected" if session[ARGS][FILE_TYPE] == CSV }}>csv (all data)
-                    </option>
-                    <option value="{{ JSON }}" 
-                        {{ "selected" if session[ARGS][FILE_TYPE] == JSON }}>json (all data)
-                    </option>
-                </select>
-                <input class="btn btn-primary btn-sm" type="submit" value="Download">
-            </div>
-            <div class="mt-0 ms-1">
-                <span class="subtext small text-muted">Check Downloads folder. Page does not refresh.</span>
-            </div>
-        </form>
-    </div>
-</div>
-{% endmacro %}
-
-
+{####### Main template #######}
 {% with messages = get_flashed_messages() %}
-
     {% if messages %}
-
         {{ show_messages(messages) }}
-
     {% else %}
-
         {{ findwords_metadata(metadata=output_data.metadata) }}
         {{ getfile_dropdown() }}
-
         {% if session[ARGS][GROUPING] == NO_GROUPING %}
-
-            <div>
-                <table>
-                    {% for beeword in output_data.flat %}
-                        {{ word_row(beeword=beeword) }}
-                    {% endfor %}
-                </table>
-            </div>
-
+            {% for beeword in output_data.flat %}
+                <p class="m-0 p-0">
+                    {{ decorate_word(beeword) }}
+                </p>
+            {% endfor %}
         {% else %}
-
             {{ show_words_grouped(output_data=output_data, grouping=grouping) }}
-
         {% endif %}
-
     {% endif %}
-    
 {% endwith %}
