@@ -9,17 +9,16 @@
 
 
 {% macro show_messages(messages)%}
-
-        {% for message in messages %}
-            <div class="bg-light" style="font-weight: bold">
-                {{ message }}
-            </div>
-        {% endfor %}
-
+    {% for message in messages %}
+        <div class="bg-light" style="font-weight: bold">
+            {{ message }}
+        </div>
+    {% endfor %}
 {% endmacro %}
 
 
 {% macro letter_inputs() %}
+    {# text inputs to enter required letter and other allowed letters #}
     <div class="d-flex align-items-center mt-3">
         <label for="{{ REQUIRED_LETTER }}" class="me-2 input-labels">Required letter</label>
         <input type="text" class="form-control" id="{{ REQUIRED_LETTER }}" 
@@ -41,10 +40,11 @@
     <select id="{{ DICTIONARY }}" name="{{ DICTIONARY }}">
         {% for k, v in DICTIONARIES.items() %}
             <option value="{{ k }}"
-                {% if session[ARGS][DICTIONARY] == k %}
-                    selected
-                {% endif %}
-            >{{ v.name }}</option>
+                    {% if session[ARGS][DICTIONARY] == k %}
+                        selected
+                    {% endif %}>
+                {{ v.name }}
+            </option>
         {% endfor %}
     </select>
 {% endmacro %}

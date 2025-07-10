@@ -17,6 +17,7 @@
 
         {{ letter_inputs() }}
 
+        {# Sort Summaries #}
         <div class="d-flex flex-wrap align-items-center gap-3 mt-2">
             <div class="input-labels">
                 Sort by number of words:
@@ -34,7 +35,7 @@
                 </div>
             </div>
         </div>
-
+        {# Show Words and Word Sort #}
         <div class="d-flex flex-wrap align-items-center gap-3 mt-2">
             <div class="form-check form-check-inline">
                 <label class="form-check-label input-labels" for="{{ SHOW_WORDS }}">Include words, sorted:</label>
@@ -57,21 +58,21 @@
                 </div>
             </div>
         </div>
-
-
+        {# Dictionary choice #}
         <div class="mt-3 input-labels">
             <label id="{{ DICTIONARY }}Label" for="{{ DICTIONARY }}" class="form-label me-2">Link words to:</label>
             {{ dictionary_dropdown() }}
         </div>
+        {# Submit #}
         <div class="mt-3">
             <input id="submitButton" type="submit" value="Show Summaries">
         </div>
     </form>
 
+    {# Results inserted here #}
     <div id="results"></div>
 
     <script>
-
         document.getElementById('searchForm').addEventListener('submit', function (e) {
             e.preventDefault();
             document.getElementById('submitButton').value = "Update Summaries"
@@ -85,6 +86,7 @@
             fetch(`/show-summaries-results?${query}`)
                 .then(res => res.text())
                 .then(html => {
+                    // Insert results in <div id='results'>
                     document.getElementById('results').innerHTML = `
                     <div class="mt-3 bg-light" style="padding: 1em; border-top: 1px solid #333;">
                         ${html}

@@ -30,13 +30,11 @@
     </tr>
 {% endmacro %}
 
+{######## Main template ########}
 {% with messages = get_flashed_messages() %}
     {% if messages %}
-
         {{ show_messages(messages) }}
-
     {% else %}
-
         <div class="mt-3">
             <table class="table table-bordered bg-light">
                 <tr>
@@ -51,6 +49,5 @@
                 {% endfor %}
             </table>
         </div>
-
     {% endif %}
 {% endwith %}
