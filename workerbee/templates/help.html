@@ -2,128 +2,131 @@
 {% from "macros.html" import page_banner %}
 
 {% block content %}
-{{ page_banner(text="Help") }}
-<h2>What is this?</h2>
-    <p>
-        This app allows you to finds words using one required letter and six optional letters,
-        like the New York Times Spelling Bee game.
-        At present, it has two primary features: Find Words and Show Summaries.
-    </p>
-<hr>
-<h2>Find Words</h2>
-    <p>
-        <span style="font-weight: bold;">Find Words</span>: enter letters 
-        &agrave; la Spelling Bee, and the app uses those letters to look for words 
-        in the word list of your choice.
-    </p>
-    <h3 class="bulleted">Required Letter and Other Letters</h3>
+
+    {{ page_banner(text="Help") }}
+    
+    <h2>What is this?</h2>
         <p>
-            These fields mimic how Spelling Bee works.
-        </p>
-        <p>
-            <span style="font-size:medium; font-weight: bold;">Required letter:</span> On the Spelling Bee page 
-            there is a letter in the middle with a yellow background. Every word you create is 
-            required to contain this letter. Enter only one letter in this field.
-        </p>
-        <p>
-            <span style="font-size:medium; font-weight: bold;">Other letters:</span> 
-            The required letter is surrounded by six other 
-            letters on the Spelling Bee page. Valid Spelling Bee words must 
-            1) have at least four letters, 
-            2) include the required letter, and 
-            3) include one or more of these "other" letters.
-            Enter exactly six letters in this field.
-        </p>
-    <h3 class="bulleted">Use word list</h3>
-        <p>
-            Choose the word list in which to search for words.
-            <span style="font-weight: bold;">If you don't know which one to use, 
-            just accept the default</span>. You might also try different lists to see the difference, 
-            or use Show Summaries&mdash;and check the Include Words option&mdash;to see which 
-            word list is likely to give you what you need (i.e, the words you're looking for).
-        </p>
-        <p>
-            What the heck are word lists?
-            See the <a href="{{ url_for('about') }}#word-lists">About page</a>.
-        </p> 
-    <h3 class="bulleted">Group the results by</h3>
-        <p>
-            The grouping options mimic how the Spelling Bee hints page and in 
-            Spelling Bee Buddy work. The options are pretty self-explanatory.
-        </p>
-        <ul>
-            <li>
-                Group by initial letters</br>
-                Note: this is the first <span style="text-decoration: underline;">two</span> 
-                letters, not just the first letter
-            </li>
-            <li>Group by word length</br>
-                All the 4-letter words together, all the 5-letter words together, etc.
-            </li>
-            <li>No grouping</br>
-                Just an alphabetical list</li> 
-        </ul>
-    <h3 class="bulleted">Link words to</h3>
-        <p>
-            Each word is linked to its definition in an online dictionary, which
-            is handy for looking up words you don't know. Choose your 
-            preferred dictionary here.  
-        </p>
-    <h3 class="bulleted">Download (after displaying words)</h3>
-        <p>
-            After you click the Find Words button, a Download button is available
-            to export the results of your search.
-        </p>
-        <p>
-            Choose a format option (json, csv, or txt) and click Download. Note that the
-            screen does not refresh after the download. Just look in your Downloads folder
-            for the data export.
+            This app allows you to finds words using one required letter and six optional letters,
+            like the New York Times Spelling Bee game.
+            At present, it has two primary features: Find Words and Show Summaries.
         </p>
     <hr>
-<h2>Show Summaries</h2>
-    <p>    
-        <span style="font-weight: bold;">Show Summaries</span>: similar to Find Words, except that 
-        it searches all word lists in one go, displays a summary of what it finds in each list, 
-        optionally including all the words found in each list. 
-    </p>
-    <h3 class="bulleted">Word Lists</h3>
+    <h2>Find Words</h2>
         <p>
-            All the word lists supported by the app are displayed here. There is no option to choose 
-            a word list (as there is in Find Words). All word lists are searched and a summary 
-            (number of words found, pangrams, etc.) is displayed for each list.
+            <span style="font-weight: bold;">Find Words</span>: enter letters 
+            &agrave; la Spelling Bee, and the app uses those letters to look for words 
+            in the word list of your choice.
         </p>
-        <p>    
-            Optionally, you can include the words found in each word list in the list summary. 
-            See <span style="font-weight: bold;">Include words</span> below.
-        </p>
-        <p>
-            Also, see the 
-            <a href="{{ url_for('about') }}#word-lists">About page</a> 
-            for more information on word lists.
-        </p>
-    <h3 class="bulleted">Required Letter and Other Letters</h3>
-        <p>
-            Same as Find Words above.
-        </p>
-    <h3 class="bulleted">Sort by number of words&mdash;Ascending / Descending</h3>
-        <p>
-            Summaries are always sorted by the number of words found in each word list. 
-            You can choose whether the sort is ascending or descending.
-        </p>
-    <h3 class="bulleted">Include words, sorted</h3>
-        <p>
-            Check this box to include all the words found in each word list.
-            This can result in a busier display but, depending on what you're doing, 
-            can be quite useful.
-        </p>
-        <h4 class="indent">Alphabetically / By Word Length</h4>
-            <p class="indent">
-                Choose how to sort the included words.
+        <h3 class="bulleted">Required Letter and Other Letters</h3>
+            <p>
+                These fields mimic how Spelling Bee works.
             </p>
-        <h4 class="indent">Link Words to ...</h4>
-            <p class="indent">
-                Each word will be linked to its definition in the dictionary 
-                you select here.
-            </p>    
+            <p>
+                <span style="font-size:medium; font-weight: bold;">Required letter:</span> On the Spelling Bee page 
+                there is a letter in the middle with a yellow background. Every word you create is 
+                required to contain this letter. Enter only one letter in this field.
+            </p>
+            <p>
+                <span style="font-size:medium; font-weight: bold;">Other letters:</span> 
+                The required letter is surrounded by six other 
+                letters on the Spelling Bee page. Valid Spelling Bee words must 
+                1) have at least four letters, 
+                2) include the required letter, and 
+                3) include one or more of these "other" letters.
+                Enter exactly six letters in this field.
+            </p>
+        <h3 class="bulleted">Use word list</h3>
+            <p>
+                Choose the word list in which to search for words.
+                <span style="font-weight: bold;">If you don't know which one to use, 
+                just accept the default</span>. You might also try different lists to see the difference, 
+                or use Show Summaries&mdash;and check the Include Words option&mdash;to see which 
+                word list is likely to give you what you need (i.e, the words you're looking for).
+            </p>
+            <p>
+                What the heck are word lists?
+                See the <a href="{{ url_for('about') }}#word-lists">About page</a>.
+            </p> 
+        <h3 class="bulleted">Group the results by</h3>
+            <p>
+                The grouping options mimic how the Spelling Bee hints page and in 
+                Spelling Bee Buddy work. The options are pretty self-explanatory.
+            </p>
+            <ul>
+                <li>
+                    Group by initial letters</br>
+                    Note: this is the first <span style="text-decoration: underline;">two</span> 
+                    letters, not just the first letter
+                </li>
+                <li>Group by word length</br>
+                    All the 4-letter words together, all the 5-letter words together, etc.
+                </li>
+                <li>No grouping</br>
+                    Just an alphabetical list
+                </li> 
+            </ul>
+        <h3 class="bulleted">Link words to</h3>
+            <p>
+                Each word is linked to its definition in an online dictionary, which
+                is handy for looking up words you don't know. Choose your 
+                preferred dictionary here.  
+            </p>
+        <h3 class="bulleted">Download (after displaying words)</h3>
+            <p>
+                After you click the Find Words button, a Download button is available
+                to export the results of your search.
+            </p>
+            <p>
+                Choose a format option (json, csv, or txt) and click Download. Note that the
+                screen does not refresh after the download. Just look in your Downloads folder
+                for the data export.
+            </p>
+        <hr>
+    <h2>Show Summaries</h2>
+        <p>    
+            <span style="font-weight: bold;">Show Summaries</span>: similar to Find Words, except that 
+            it searches all word lists in one go, displays a summary of what it finds in each list, 
+            optionally including all the words found in each list. 
+        </p>
+        <h3 class="bulleted">Word Lists</h3>
+            <p>
+                All the word lists supported by the app are displayed here. There is no option to choose 
+                a word list (as there is in Find Words). All word lists are searched and a summary 
+                (number of words found, pangrams, etc.) is displayed for each list.
+            </p>
+            <p>    
+                Optionally, you can include the words found in each word list in the list summary. 
+                See <span style="font-weight: bold;">Include words</span> below.
+            </p>
+            <p>
+                Also, see the 
+                <a href="{{ url_for('about') }}#word-lists">About page</a> 
+                for more information on word lists.
+            </p>
+        <h3 class="bulleted">Required Letter and Other Letters</h3>
+            <p>
+                Same as Find Words above.
+            </p>
+        <h3 class="bulleted">Sort by number of words&mdash;Ascending / Descending</h3>
+            <p>
+                Summaries are always sorted by the number of words found in each word list. 
+                You can choose whether the sort is ascending or descending.
+            </p>
+        <h3 class="bulleted">Include words, sorted</h3>
+            <p>
+                Check this box to include all the words found in each word list.
+                This can result in a busier display but, depending on what you're doing, 
+                can be quite useful.
+            </p>
+            <h4 class="indent">Alphabetically / By Word Length</h4>
+                <p class="indent">
+                    Choose how to sort the included words.
+                </p>
+            <h4 class="indent">Link Words to ...</h4>
+                <p class="indent">
+                    Each word will be linked to its definition in the dictionary 
+                    you select here.
+                </p>    
 
 {% endblock %}
