@@ -1,14 +1,16 @@
+from collections import defaultdict
 from dataclasses import asdict
 from itertools import groupby
 
 from .config import Config
 from .constants import Consts
 from .dictionaries import Dictionary
-from .types import Beeword, Metadata, NestedBeewords, OutputData
-from .wordlists import WordList
+from .types import Beeword, Metadata, NestedBeewords, OutputData, Summary
+from .wordlists import WordList, WordLists
 from .cache import FIFOCache
 
 _beewords_cache = FIFOCache()
+_summaries_cache = FIFOCache()
 
 
 def _check_bingo(data: list[Beeword], pangram_set: set) -> bool:
@@ -176,3 +178,87 @@ def get_beewords(
             word_list=word_list,
         ),
     )
+
+
+def _convert_to_summaries(
+    output_data: list[OutputData],
+    word_sort: str,
+    summary_sort: str,
+) -> list[Summary]:
+
+    def get_key(beeword: Beeword, sort_type: str) -> str | int:
+        return beeword.length if sort_type == Consts.BYWORDLENGTH else beeword.word[0]
+
+    summaries: list[Summary] = []
+    for output in output_data:
+        beeword_dict = defaultdict(list[Beeword])
+        saved_key = get_key(
+            beeword=output.flat[0],
+            sort_type=word_sort,
+        )
+        for beeword in output.flat:
+            this_key = get_key(beeword, sort_type=word_sort)
+            saved_key = this_key if saved_key != this_key else saved_key
+            beeword_dict[this_key].append(beeword)
+        summaries.append(Summary(beewords=beeword_dict, metadata=output.metadata))
+    return sorted(
+        summaries,
+        key=lambda summary: summary.metadata.num_beewords,
+        reverse=(True if summary_sort == "descending" else False),
+    )
+
+
+def get_summaries(
+    required_letter: str,
+    allowed_letters: str,
+    dictionary: Dictionary,
+    word_sort: str,
+    summary_sort: str,
+    grouping: str = Consts.NO_GROUPING,
+) -> list[Summary]:
+    output_list: list[OutputData] = []
+    for word_list in WordLists.values():
+        output_data = get_beewords(
+            word_list=word_list,
+            required_letter=required_letter,
+            allowed_letters=allowed_letters,
+            dictionary=dictionary,
+            grouping=grouping,
+        )
+        output_list.append(output_data)
+    return _convert_to_summaries(
+        output_data=output_list,
+        word_sort=word_sort,
+        summary_sort=summary_sort,
+    )
+
+
+def get_summaries_cached(
+    required_letter: str,
+    allowed_letters: str,
+    word_sort: str,
+    summary_sort: str,
+    dictionary: Dictionary,
+    grouping: str = Consts.NO_GROUPING,
+) -> list[Summary]:
+    key = (
+        required_letter,
+        allowed_letters,
+        word_sort,
+        summary_sort,
+        dictionary.name,
+    )
+
+    cached = _summaries_cache.get(key)
+    if cached is not None:
+        return cached
+
+    result = get_summaries(
+        required_letter=required_letter,
+        allowed_letters=allowed_letters,
+        word_sort=word_sort,
+        summary_sort=summary_sort,
+        dictionary=dictionary,
+    )
+    _summaries_cache.set(key, result)
+    return result
