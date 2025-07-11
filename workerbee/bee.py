@@ -6,6 +6,9 @@ from .constants import Consts
 from .dictionaries import Dictionary
 from .types import Beeword, Metadata, NestedBeewords, OutputData
 from .wordlists import WordList
+from .cache import FIFOCache
+
+_beewords_cache = FIFOCache()
 
 
 def _check_bingo(data: list[Beeword], pangram_set: set) -> bool:
@@ -92,6 +95,38 @@ def get_groupings(grouping: str) -> list:
         return [Consts.NO_GROUPING]
     else:
         raise ValueError(f"Bad grouping: {grouping}")
+
+
+def get_beewords_cached(
+    word_list: WordList,
+    required_letter: str,
+    allowed_letters: str,
+    dictionary: Dictionary,
+    grouping: str = Consts.NO_GROUPING,
+) -> OutputData:
+
+    key = (
+        word_list.name,
+        word_list.file_name,
+        dictionary.name,
+        required_letter,
+        allowed_letters,
+        grouping,
+    )
+
+    cached = _beewords_cache.get(key)
+    if cached is not None:
+        return cached
+
+    result = get_beewords(
+        word_list=word_list,
+        required_letter=required_letter,
+        allowed_letters=allowed_letters,
+        dictionary=dictionary,
+        grouping=grouping,
+    )
+    _beewords_cache.set(key, result)
+    return result
 
 
 def get_beewords(

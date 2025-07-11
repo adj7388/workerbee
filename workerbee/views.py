@@ -16,7 +16,7 @@ from pyinstrument import Profiler
 
 from . import app
 
-from .bee import get_beewords, get_groupings
+from .bee import get_beewords, get_beewords_cached, get_groupings
 from .constants import Consts
 from .dictionaries import Dictionaries, WIKT
 from .types import Beeword, Summary, OutputData
@@ -126,7 +126,7 @@ def find_words_results():
     if error_msg := error_check(args=session[Consts.ARGS]):
         flash(message=error_msg)
     else:
-        output_data = get_beewords(
+        output_data = get_beewords_cached(
             word_list=WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
             required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
             allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
