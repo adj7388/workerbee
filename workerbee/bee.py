@@ -66,11 +66,9 @@ def _get_beewords(
     allowed_letters: str,
     dictionary: Dictionary,
 ) -> list[Beeword]:
-    with open(word_list.file_name, mode="r") as f:
-        words = [line for line in f.read().splitlines()]
     all_letters_set = set(required_letter + allowed_letters)
     beewords: list[Beeword] = []
-    for this_word in words:
+    for this_word in word_list.data:  # type: ignore
         if required_letter in this_word and len(this_word) >= Config.MIN_WORD_LENGTH:
             this_word_as_set = set(this_word)
             if this_word_as_set.issubset(all_letters_set):
