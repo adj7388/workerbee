@@ -91,21 +91,22 @@ def find_words():
 
 @app.route(f"/find-words-results", methods=["GET"])
 def find_words_results():
+    args = session[Consts.ARGS]
     output_data: OutputData | None = None
-    if error_msg := error_check(args=session[Consts.ARGS]):
+    if error_msg := error_check(args=args):
         flash(message=error_msg)
     else:
         output_data = get_beewords_cached(
-            word_list=WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
-            required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
-            allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
-            grouping=session[Consts.ARGS][Consts.GROUPING],
-            dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
+            word_list=WordLists[args[Consts.WORD_LIST]],
+            required_letter=args[Consts.REQUIRED_LETTER],
+            allowed_letters=args[Consts.ALLOWED_LETTERS],
+            grouping=args[Consts.GROUPING],
+            dictionary=Dictionaries[args[Consts.DICTIONARY]],
         )
     return render_template(
         "_find_words_results.html",
         output_data=output_data,
-        grouping=get_groupings(session[Consts.ARGS][Consts.GROUPING]),
+        grouping=get_groupings(args[Consts.GROUPING]),
     )
 
 
@@ -116,43 +117,45 @@ def show_summaries():
 
 @app.route(f"/show-summaries-results", methods=["GET"])
 def show_summaries_results():
+    args = session[Consts.ARGS]
     summaries: list[Summary] = []
-    if error_msg := error_check(args=session[Consts.ARGS]):
+    if error_msg := error_check(args=args):
         flash(message=error_msg)
     else:
         summaries = get_summaries_cached(
-            required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
-            allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
-            dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
-            word_sort=session[Consts.ARGS][Consts.WORD_SORT],
-            summary_sort=session[Consts.ARGS][Consts.SUMMARY_SORT],
+            required_letter=args[Consts.REQUIRED_LETTER],
+            allowed_letters=args[Consts.ALLOWED_LETTERS],
+            dictionary=Dictionaries[args[Consts.DICTIONARY]],
+            word_sort=args[Consts.WORD_SORT],
+            summary_sort=args[Consts.SUMMARY_SORT],
         )
     return render_template(
         "_show_summaries_results.html",
         summaries=summaries,
-        dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
+        dictionary=Dictionaries[args[Consts.DICTIONARY]],
     )
 
 
 @app.route("/get-file", methods=["GET"])
 def get_file() -> Response:
+    args = session[Consts.ARGS]
     output_data = get_beewords(
-        word_list=WordLists[session[Consts.ARGS][Consts.WORD_LIST]],
-        required_letter=session[Consts.ARGS][Consts.REQUIRED_LETTER],
-        allowed_letters=session[Consts.ARGS][Consts.ALLOWED_LETTERS],
-        dictionary=Dictionaries[session[Consts.ARGS][Consts.DICTIONARY]],
+        word_list=WordLists[args[Consts.WORD_LIST]],
+        required_letter=args[Consts.REQUIRED_LETTER],
+        allowed_letters=args[Consts.ALLOWED_LETTERS],
+        dictionary=Dictionaries[args[Consts.DICTIONARY]],
         grouping=Consts.NO_GROUPING,
     )
     buffer = write_to_buffer(
         output_data=output_data,
-        file_type=session[Consts.ARGS][Consts.FILE_TYPE],
-        grouping=session[Consts.ARGS][Consts.GROUPING],
+        file_type=args[Consts.FILE_TYPE],
+        grouping=args[Consts.GROUPING],
     )
     return send_file(
         BytesIO(buffer.getvalue().encode(encoding="utf-8")),
         download_name=get_filename(
             metadata=output_data.metadata,
-            file_type=session[Consts.ARGS][Consts.FILE_TYPE],
+            file_type=args[Consts.FILE_TYPE],
         ),
         as_attachment=True,
     )
