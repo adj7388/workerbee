@@ -11,9 +11,6 @@
         {% endfor %}
     </div>
     <form id="searchForm" method="GET">
-        {% if PROFILING is true %}
-            <input type="hidden" name="{{ PROFILE_REQUEST_ARG }}" value="true">
-        {% endif %}
 
         {{ letter_inputs() }}
 

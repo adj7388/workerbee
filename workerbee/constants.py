@@ -8,11 +8,6 @@ class Consts:
     PANGRAM_MARKER: str = "*"
     PERFECT_MARKER: str = "+"
 
-    # debugging
-    PROFILING: str = "PROFILING"
-    BEEPROFILE: str = "BEEPROFILE"
-    PROFILE_REQUEST_ARG: str = "profile"
-
     # Session consts
     ARGS: str = "args"
     ## for Find Words

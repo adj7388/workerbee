@@ -10,8 +10,3 @@ class Config:
     MIN_WORD_LENGTH = 4
     SECRET_KEY = os.environ.get("SECRETBEEKEY")
     DEBUG = os.getenv("FLASK_DEBUG", "false").lower() == "true"
-    PROFILING = (
-        True
-        if os.environ.get(Consts.BEEPROFILE, "").lower() == Consts.BEEPROFILE.lower()
-        else False
-    )
