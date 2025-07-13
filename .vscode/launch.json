@@ -25,7 +25,7 @@
             "request": "launch",
             "module": "flask",
             "env": {
-                "FLASK_APP": "workerbee",
+                "FLASK_APP": "wsgi:app",
                 "FLASK_DEBUG": "1",
                 "SECRETBEEKEY": "Shhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
             },
