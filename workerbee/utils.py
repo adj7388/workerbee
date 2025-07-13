@@ -36,10 +36,7 @@ def get_filename(metadata: Metadata, file_type: str) -> str:
         f"{metadata.required}",
         f"{metadata.allowed}",
         f"{metadata.num_beewords}",
-        f"{len(metadata.nonperfect_pangrams)}",  # how many plain pangrams
-        f"{len(metadata.perfect_pangrams)}",  # how many perfect pangrams
         f"{metadata.word_list}",
-        f"{metadata.dictionary}",
     ]
     return "-".join(metadata_as_list) + f".{ext}"
 

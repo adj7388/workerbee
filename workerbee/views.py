@@ -11,7 +11,7 @@ from flask import (
 )
 from io import BytesIO
 
-from .bee import get_beewords, get_beewords_cached, get_groupings, get_summaries_cached
+from .bee import get_groupings, get_beewords_cached, get_summaries_cached
 from .constants import Consts
 from .dictionaries import Dictionaries, WIKT
 from .types import Summary, OutputData
@@ -119,7 +119,7 @@ def init_routes(app: Flask) -> None:
     @app.route("/get-file", methods=["GET"])
     def get_file() -> Response:  # type: ignore reportUnusedFunction
         args = session[Consts.ARGS]
-        output_data = get_beewords(
+        output_data = get_beewords_cached(
             word_list=WordLists[args[Consts.WORD_LIST]],
             required_letter=args[Consts.REQUIRED_LETTER],
             allowed_letters=args[Consts.ALLOWED_LETTERS],
