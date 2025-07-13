@@ -1,16 +1,19 @@
 >>>>>>>>>>>>>>>>>>>> app dir
 alan@alan-ASUSPRO-P5440UF:/opt/workerbee$ ls -la
-total 3816
-drwxr-x--- 7 gunicorn gunicorn    4096 Jan 19 13:03 .
-drwxr-xr-x 3 root     root        4096 Jan 19 10:49 ..
-drwxr-xr-x 8 gunicorn gunicorn    4096 Jan 19 10:49 .git
--rw-r--r-- 1 gunicorn gunicorn      71 Jan 19 10:49 .gitignore
--rw-r--r-- 1 gunicorn gunicorn     843 Jan 19 10:49 README.md
--rw-r--r-- 1 gunicorn gunicorn     176 Jan 19 10:49 requirements.txt
-drwxr-xr-x 5 gunicorn gunicorn    4096 Jan 19 13:03 .venv
-drwxr-xr-x 2 gunicorn gunicorn    4096 Jan 19 10:49 .vscode
--rw-r--r-- 1 gunicorn gunicorn 3864812 Jan 19 10:49 words_alpha.txt
-drwxr-x--- 6 gunicorn gunicorn    4096 Jan 19 10:49 workerbee
+total 52
+drwxrwx---  8 gunicorn gunicorn 4096 Jul 13 15:29 .
+drwxr-xr-x  4 root     root     4096 Mar  3 22:15 ..
+drwxrwxr-x 16 gunicorn gunicorn 4096 Jul  4 22:08 data
+drwxrwxr-x  8 gunicorn gunicorn 4096 Jul 13 15:19 .git
+-rw-rw-r--  1 gunicorn gunicorn  142 Jul 13 15:29 .gitignore
+drwxr-xr-x  2 gunicorn www-data 4096 Jul 13 15:19 __pycache__
+-rw-rw-r--  1 gunicorn gunicorn  860 Mar  3 22:35 README.md
+-rw-rw-r--  1 gunicorn gunicorn  176 Mar  3 22:21 requirements.txt
+drwxrwxr-x  5 gunicorn gunicorn 4096 Mar  3 22:26 .venv
+drwxrwxr-x  2 gunicorn gunicorn 4096 Jul 13 15:19 .vscode
+drwxrwxr-x  7 gunicorn gunicorn 4096 Jul 13 14:46 workerbee
+-rw-rw-r--  1 gunicorn gunicorn 2013 Mar  3 22:21 workerbee-architecture.md
+-rw-rw-r--  1 alan     alan       53 Jul 13 15:19 wsgi.py
 
 >>>>>>>>>>>>>>>>>>>> /etc/systemd/system/workerbee.service
 [Unit]
@@ -20,12 +23,15 @@ After=network.target
 [Service]
 User=gunicorn
 Group=www-data
+
+RuntimeDirectory=workerbee
+RuntimeDirectoryMode=0770
+ExecStartPre=/bin/mkdir -p /var/run/workerbee
+ExecStartPre=/bin/chown -R gunicorn:www-data /var/run/workerbee
+
 WorkingDirectory=/opt/workerbee/
-ExecStart=/opt/workerbee/.venv/bin/gunicorn \
-    --access-logfile /var/log/gunicorn/workerbee-access.log \
-    --error-logfile=/var/log/gunicorn/workerbee-error.log \
-    -w 4 --bind unix:/var/run/workerbee/workerbee.sock \
-    --umask 007 workerbee:app
+ExecStart=/opt/workerbee/.venv/bin/gunicorn --access-logfile /var/log/gunicorn/workerbee-access.log --error-logfile=/var/log/gunicorn/workerbee-error.log -w 4 --bind unix:/var/run/workerbee/workerbee.sock --umask 007 "wsgi:app"
+
 Restart=always
 RestartSec=5
 Environment="SECRETBEEKEY=qwertyuiopasdfjkl;zxc,vmn.,masdflkjweqriouasdfjhalkjh139087471234"
