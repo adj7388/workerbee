@@ -29,8 +29,8 @@ def create_app(config_class=Config) -> flask.Flask:
 for wl in WordLists.values():
     with open(wl.file_name, mode="r") as f:
         wl.data = [
-            line
+            line.lower()
             for line in f.read().splitlines()
-            if len(line) >= Config.NUM_ALLOWED_LETTERS and line.isalpha()
+            if len(line) >= Config.MIN_WORD_LENGTH and line.isalpha()
         ]
     wl.num_words = len(wl.data)

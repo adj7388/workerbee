@@ -88,18 +88,32 @@
 
 {% macro findwords_metadata(metadata) %}
     {% set all_pangrams = metadata.nonperfect_pangrams + metadata.perfect_pangrams %}
+    {% set num_perfect_pangrams = metadata.perfect_pangrams | length %}
+    {% set num_nonperfect_pangrams = metadata.nonperfect_pangrams | length %}
     <div class="d-flex flex-wrap">
         <div class="me-3"><strong>Total Words: </strong>{{metadata.num_beewords}}</div>
         <div class="me-3"><strong>Found in: </strong>{{metadata.word_list}}</div>
         <div class="me-3">
-            <strong>Perfect pangrams{{PERFECT_MARKER}} </strong>
-            ({{ metadata.perfect_pangrams | length }})
-            {{ display_pangrams(metadata.perfect_pangrams) }}
+            <strong>
+                {{ num_perfect_pangrams }} 
+                perfect pangram{{ "s" if num_perfect_pangrams != 1 else ''}}{{PERFECT_MARKER}}
+            </strong>            
+            {% if num_perfect_pangrams != 0 %}
+                {{ display_pangrams(metadata.perfect_pangrams) }}
+            {% else %}
+                &nbsp;&hyphen;&hyphen;&nbsp;
+            {% endif %}
         </div>
         <div class="me-3">
-            <strong>Other pangrams{{PANGRAM_MARKER}} </strong>
-            ({{ metadata.nonperfect_pangrams | length }})
-            {{ display_pangrams(metadata.nonperfect_pangrams) }}
+            <strong>
+                {{ num_nonperfect_pangrams }}
+                    other pangram{{ "s" if num_nonperfect_pangrams != 1 else ''}}{{PANGRAM_MARKER}}
+            </strong>
+            {% if num_nonperfect_pangrams != 0 %}
+                {{ display_pangrams(metadata.nonperfect_pangrams) }}
+            {% else %}
+                &nbsp;&hyphen;&hyphen;&nbsp;
+            {% endif %}
         </div>
         <div class="me-3"><strong>Bingo: </strong>{{ "Yes" if metadata.bingo == True else "No" }}</div>
     </div>
