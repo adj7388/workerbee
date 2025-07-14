@@ -1,6 +1,5 @@
 import os
 from dataclasses import dataclass
-from .constants import Consts
 
 
 @dataclass(frozen=True)

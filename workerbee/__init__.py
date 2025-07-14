@@ -29,5 +29,7 @@ def create_app(config_class=Config) -> flask.Flask:
 for wl in WordLists.values():
     with open(wl.file_name, mode="r") as f:
         wl.data = [
-            line for line in f.read().splitlines() if len(line) > 3 and line.isalpha()
+            line
+            for line in f.read().splitlines()
+            if len(line) >= Config.NUM_ALLOWED_LETTERS and line.isalpha()
         ]
