@@ -33,3 +33,4 @@ for wl in WordLists.values():
             for line in f.read().splitlines()
             if len(line) >= Config.NUM_ALLOWED_LETTERS and line.isalpha()
         ]
+    wl.num_words = len(wl.data)

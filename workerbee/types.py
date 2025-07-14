@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import TypeAlias
 
 
-@dataclass
+@dataclass(slots=True)
 class Beeword:
     word: str
     length: int
@@ -12,7 +12,7 @@ class Beeword:
     url: str
 
 
-@dataclass
+@dataclass(slots=True)
 class Metadata:
     num_beewords: int
     required: str
@@ -29,14 +29,14 @@ NestedKeyType: TypeAlias = str | int
 NestedBeewords: TypeAlias = dict[NestedKeyType, dict[NestedKeyType, list[Beeword]]]
 
 
-@dataclass
+@dataclass(slots=True)
 class OutputData:
     nested: NestedBeewords
     flat: list[Beeword]
     metadata: Metadata
 
 
-@dataclass
+@dataclass(slots=True)
 class Summary:
     beewords: dict[NestedKeyType, list[Beeword]]
     metadata: Metadata

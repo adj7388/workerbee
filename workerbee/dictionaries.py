@@ -8,7 +8,7 @@ def make_url_template(source: str) -> Template:
     return _jinja_env.from_string(source)
 
 
-@dataclass
+@dataclass(slots=True)
 class Dictionary:
     name: str
     url_template: Template

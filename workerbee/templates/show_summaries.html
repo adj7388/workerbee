@@ -5,10 +5,14 @@
 {% block content %}
     {{ page_banner(text="Show Summaries of All Word Lists") }}
     <div>
-        <scan style="font-weight: bold; font-size: smaller">Word Lists:</scan>
-        {% for word_list in WORDLISTS.values() %}
-            <scan style="font-size: x-small">{{ word_list.name }}</scan>&nbsp;|
+        <scan style="font-weight: bold; font-size: smaller">Word Lists (number of words):</scan>
+
+        {% for word_list in WORDLISTS.values() | sort(attribute="num_words", reverse=True) %}
+            |&nbsp;<span style="font-size: x-small">
+                {{ word_list.name }} ({{ "{:,}".format(word_list.num_words) }})
+            </span>&nbsp;
         {% endfor %}
+        |
     </div>
     <form id="searchForm" method="GET">
 

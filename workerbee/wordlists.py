@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(slots=True)
 class WordList:
     name: str
     file_name: str
-    data: list[str] | None
+    data: list[str] | None = None
+    num_words: int | None = None
 
 
 WORDLIST_DIR = "data"
@@ -28,61 +29,49 @@ WordLists = {
     SCOWL_SMALL_35: WordList(
         name=f"{SCOWL_SMALL_35}",
         file_name=f"{WORDLIST_DIR}/{SCOWL_SMALL_35}/words.txt",
-        data=None,
     ),
     SCOWL_40: WordList(
         name=f"{SCOWL_40}",
         file_name=f"{WORDLIST_DIR}/{SCOWL_40}/words.txt",
-        data=None,
     ),
     SCOWL_MEDIUM_50: WordList(
         name=f"{SCOWL_MEDIUM_50}",
         file_name=f"{WORDLIST_DIR}/{SCOWL_MEDIUM_50}/words.txt",
-        data=None,
     ),
     SCOWL_55: WordList(
         name=f"{SCOWL_55}",
         file_name=f"{WORDLIST_DIR}/{SCOWL_55}/words.txt",
-        data=None,
     ),
     SCOWL_DEFAULT_60: WordList(
         name=f"{SCOWL_DEFAULT_60}",
         file_name=f"{WORDLIST_DIR}/{SCOWL_DEFAULT_60}/words.txt",
-        data=None,
     ),
     SCOWL_LARGE_70: WordList(
         name=f"{SCOWL_LARGE_70}",
         file_name=f"{WORDLIST_DIR}/{SCOWL_LARGE_70}/words.txt",
-        data=None,
     ),
     SCOWL_HUGE_80: WordList(
         name=f"{SCOWL_HUGE_80}",
         file_name=f"{WORDLIST_DIR}/{SCOWL_HUGE_80}/words.txt",
-        data=None,
     ),
     SCOWL_INSANE_95: WordList(
         name=f"{SCOWL_INSANE_95}",
         file_name=f"{WORDLIST_DIR}/{SCOWL_INSANE_95}/words.txt",
-        data=None,
     ),
     TWELVEDICTS_2of12: WordList(
         name="12dicts-2of12",
         file_name=f"{WORDLIST_DIR}/{TWELVEDICTS_602_DIR}/2of12.txt",
-        data=None,
     ),
     TWELVEDICTS_2of12inf: WordList(
         name="12dicts-2of12inf",
         file_name=f"{WORDLIST_DIR}/{TWELVEDICTS_602_DIR}/2of12inf.txt",
-        data=None,
     ),
     TWELVEDICTS_3esl: WordList(
         name="12dicts-3esl",
         file_name=f"{WORDLIST_DIR}/{TWELVEDICTS_602_DIR}/3esl.txt",
-        data=None,
     ),
     TWELVEDICTS_6of12: WordList(
         name="12dicts-6of12",
         file_name=f"{WORDLIST_DIR}/{TWELVEDICTS_602_DIR}/6of12.txt",
-        data=None,
     ),
 }
