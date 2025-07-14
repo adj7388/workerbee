@@ -69,10 +69,10 @@
                             {{ "selected" if session[ARGS][FILE_TYPE] == WORD_URL_CSV  else "" }}>csv (words, urls only)
                         </option>
                         <option value="{{ CSV }}" 
-                            {{ "selected" if session[ARGS][FILE_TYPE] == CSV }}>csv (all data)
+                            {{ "selected" if session[ARGS][FILE_TYPE] == CSV }}>csv (all word data)
                         </option>
                         <option value="{{ JSON }}" 
-                            {{ "selected" if session[ARGS][FILE_TYPE] == JSON }}>json (all data)
+                            {{ "selected" if session[ARGS][FILE_TYPE] == JSON }}>json (data and metadata)
                         </option>
                     </select>
                     <input class="btn btn-primary btn-sm" type="submit" value="Download">
