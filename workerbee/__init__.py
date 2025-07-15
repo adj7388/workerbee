@@ -26,27 +26,29 @@ def create_app(config_class=Config) -> flask.Flask:
 
 
 def is_eligible(word: str, rejects) -> bool:
-    reasons = []
+    rejection_reason = ""
     if any(letter.isupper() for letter in word):
-        reasons.append(f"reject: has capital: {word}\n")
-    if word.isalpha() is False:
-        reasons.append(f"reject: non-alpha: {word}\n")
-    if len(set(word)) > (Config.NUM_ALLOWED_LETTERS + Config.NUM_REQUIRED_LETTERS):
-        reasons.append(f"reject: too many unique letters: {word}\n")
-    if reasons:
-        rejects.writelines(reasons)
+        rejection_reason = f"reject: has capital: {word}\n"
+    elif not word.isalpha():
+        rejection_reason = f"reject: non-alpha: {word}\n"
+    elif len(set(word)) > (Config.NUM_ALLOWED_LETTERS + Config.NUM_REQUIRED_LETTERS):
+        rejection_reason = f"reject: too many unique letters: {word}\n"
+    if rejection_reason:
+        rejects.write(rejection_reason)
         return False
     return True
 
 
+print("START")
 # read word list data into memory for speed
 with open("rejected-words.txt", mode="w") as rejects:
     for wl in WordLists.values():
         with open(wl.file_name, mode="r") as f:
-            rejects.write("==================" + wl.file_name + "==================\n")
+            rejects.write("========" + wl.file_name + "========\n")
             wl.data = [
                 line.lower()
                 for line in f.read().splitlines()
                 if len(line) >= Config.MIN_WORD_LENGTH and is_eligible(line, rejects)
             ]
         wl.num_words = len(wl.data)
+print("DONE")
