@@ -37,7 +37,7 @@ def get_argparser() -> argparse.ArgumentParser:
         "--wordlist",
         type=str,
         required=False,
-        choices=[wordlist.name for wordlist in WordLists.values()],
+        choices=WordLists.keys(),
         default=SCOWL_HUGE_80,
         help="Master word list",
     )
@@ -133,7 +133,6 @@ def print_beewords_list(output_data: OutputData) -> None:
 ############ main ############
 def main():
     args = get_commandline_args()
-    output_data: OutputData
     if args.summary == True:
         load_word_lists()
         for word_list in WordLists.values():
@@ -145,9 +144,8 @@ def main():
             )
             print_meta_data(beewords.metadata)
         sys.exit(0)
-    else:
-        load_word_lists(args.wordlist)
 
+    load_word_lists(args.wordlist)
     output_data = get_beewords(
         word_list=WordLists[args.wordlist],
         required_letter=args.required,

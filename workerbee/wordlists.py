@@ -114,6 +114,6 @@ def load_word_lists(*list_keys: str) -> str:
                     ]
                 wl.num_words = len(wl.data)
     end = time.perf_counter()
-    msg = f"Loaded: {"\n".join([wl.name for wl in load_list]) if load_list else 'None'}\nLoad time: {end - start:.6f} seconds"
+    msg = f"Loaded: {"  ".join(sorted([wl.name for wl in load_list])) if load_list else 'None'}\nLoad time: {end - start:.6f} seconds"
     print(msg)
     return msg
