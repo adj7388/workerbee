@@ -7,7 +7,7 @@ from .constants import Consts
 from .dictionaries import Dictionaries, WIKT
 from .types import Metadata, OutputData
 from .utils import error_check, write_to_buffer
-from .wordlists import WordLists, SCOWL_HUGE_80
+from .wordlists import WordLists, load_word_lists, SCOWL_HUGE_80
 
 
 def get_argparser() -> argparse.ArgumentParser:
@@ -46,7 +46,7 @@ def get_argparser() -> argparse.ArgumentParser:
         "--groupby",
         type=str,
         choices=[Consts.INITIALS, Consts.LENGTH, Consts.NO_GROUPING],
-        default=Consts.NO_GROUPING,
+        default=Consts.INITIALS,
         help="Output grouped by initials, word length, or no grouping (plain list)",
     )
 
@@ -135,6 +135,7 @@ def main():
     args = get_commandline_args()
     output_data: OutputData
     if args.summary == True:
+        load_word_lists()
         for word_list in WordLists.values():
             beewords = get_beewords(
                 word_list=word_list,
@@ -144,6 +145,8 @@ def main():
             )
             print_meta_data(beewords.metadata)
         sys.exit(0)
+    else:
+        load_word_lists(args.wordlist)
 
     output_data = get_beewords(
         word_list=WordLists[args.wordlist],

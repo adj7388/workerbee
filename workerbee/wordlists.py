@@ -1,4 +1,7 @@
+import time
+
 from dataclasses import dataclass
+from .config import Config
 
 
 @dataclass(slots=True)
@@ -75,3 +78,42 @@ WordLists = {
         file_name=f"{WORDLIST_DIR}/{TWELVEDICTS_602_DIR}/6of12.txt",
     ),
 }
+
+
+def is_beeword_candidate(word: str, rejects) -> bool:
+    rejection_reason = ""
+    if any(letter.isupper() for letter in word):
+        rejection_reason = f"reject: has capital: {word}\n"
+    elif not word.isalpha():
+        rejection_reason = f"reject: has non-alpha character: {word}\n"
+    elif len(set(word)) > (Config.NUM_ALLOWED_LETTERS + Config.NUM_REQUIRED_LETTERS):
+        rejection_reason = f"reject: too many unique letters: {word}\n"
+    if rejection_reason:
+        rejects.write(rejection_reason)
+        return False
+    return True
+
+
+def load_word_lists(*list_keys: str) -> str:
+    # read word list data into memory for speed
+    load_list = (
+        [WordLists[key] for key in list_keys] if list_keys else WordLists.values()
+    )
+
+    start = time.perf_counter()
+    if load_list:
+        with open("rejected-words.txt", mode="w") as rejects:
+            for wl in load_list:
+                with open(wl.file_name, mode="r") as f:
+                    rejects.write(f"{'=' * 8} + wl.file_name + {'=' * 8}\n")
+                    wl.data = [
+                        line.lower()
+                        for line in f.read().splitlines()
+                        if len(line) >= Config.MIN_WORD_LENGTH
+                        and is_beeword_candidate(line, rejects)
+                    ]
+                wl.num_words = len(wl.data)
+    end = time.perf_counter()
+    msg = f"Loaded: {[wl.name for wl in load_list] if load_list else 'None'}\nLoad time: {end - start:.6f} seconds"
+    print(msg)
+    return msg
