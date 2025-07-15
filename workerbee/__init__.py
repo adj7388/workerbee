@@ -31,6 +31,8 @@ def is_eligible(word: str, rejects) -> bool:
         reasons.append(f"reject: has capital: {word}\n")
     if word.isalpha() is False:
         reasons.append(f"reject: non-alpha: {word}\n")
+    if len(set(word)) > (Config.NUM_ALLOWED_LETTERS + Config.NUM_REQUIRED_LETTERS):
+        reasons.append(f"reject: too many unique letters: {word}\n")
     if reasons:
         rejects.writelines(reasons)
         return False
