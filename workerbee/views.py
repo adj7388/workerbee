@@ -16,13 +16,13 @@ from .constants import Consts
 from .dictionaries import Dictionaries, WIKT
 from .types import Summary, OutputData
 from .utils import error_check, get_filename, write_to_buffer
-from .wordlists import WordLists, SCOWL_HUGE_80
+from .wordlists import WordLists, SCOWL_DEFAULT_60
 
 ARG_DEFAULTS = {
     Consts.REQUIRED_LETTER: "c",
     Consts.ALLOWED_LETTERS: "evitpa",
     Consts.DICTIONARY: WIKT,
-    Consts.WORD_LIST: SCOWL_HUGE_80,
+    Consts.WORD_LIST: SCOWL_DEFAULT_60,
     Consts.GROUPING: Consts.INITIALS,
     Consts.FILE_TYPE: Consts.JSON,
     Consts.SUMMARY_SORT: Consts.DESCENDING,
