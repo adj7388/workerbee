@@ -107,13 +107,13 @@ def load_word_lists(*list_keys: str) -> str:
                 with open(wl.file_name, mode="r") as f:
                     rejects.write(f"{'=' * 8} + wl.file_name + {'=' * 8}\n")
                     wl.data = [
-                        line.lower()
+                        line
                         for line in f.read().splitlines()
-                        if len(line) >= Config.MIN_WORD_LENGTH
+                        if len(line.strip()) >= Config.MIN_WORD_LENGTH
                         and is_beeword_candidate(line, rejects)
                     ]
                 wl.num_words = len(wl.data)
     end = time.perf_counter()
-    msg = f"Loaded: {[wl.name for wl in load_list] if load_list else 'None'}\nLoad time: {end - start:.6f} seconds"
+    msg = f"Loaded: {"\n".join([wl.name for wl in load_list]) if load_list else 'None'}\nLoad time: {end - start:.6f} seconds"
     print(msg)
     return msg
