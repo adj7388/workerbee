@@ -105,7 +105,7 @@ def load_word_lists(*list_keys: str) -> str:
         with open("rejected-words.txt", mode="w") as rejects:
             for wl in load_list:
                 with open(wl.file_name, mode="r") as f:
-                    rejects.write(f"{'=' * 8} + wl.file_name + {'=' * 8}\n")
+                    rejects.write(f"{'=' * 8} + {wl.file_name} + {'=' * 8}\n")
                     wl.data = [
                         line
                         for line in f.read().splitlines()
