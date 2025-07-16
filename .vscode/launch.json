@@ -13,10 +13,11 @@
             "justMyCode": true,
             "args": [
                 "-s",
-                "-r", "n",
-                "-a", "lazyed",
+                "-r", "c",
+                "-a", "evitpa",
                 "--groupby", "length",
-                "--json"
+                "--json",
+                "-w", "SCOWL-default-60"
             ]
         },
         {
