@@ -31,7 +31,7 @@ ARG_DEFAULTS = {
 }
 
 # whitelist args for session updates
-ALLOWED_ARGS = set(key for key in ARG_DEFAULTS)
+ALLOWED_ARGS = set(ARG_DEFAULTS.keys())
 
 
 def update_session_args(request_args: dict) -> dict:

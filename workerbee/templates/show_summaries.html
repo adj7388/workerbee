@@ -7,7 +7,7 @@
     <div>
         <scan style="font-weight: bold; font-size: smaller">Word Lists (number of words):</scan>
 
-        {% for word_list in WORDLISTS.values() | sort(attribute="num_words", reverse=True) %}
+        {% for word_list in word_lists.values() | sort(attribute="num_words", reverse=True) %}
             |&nbsp;<span style="font-size: x-small">
                 {{ word_list.name }} ({{ "{:,}".format(word_list.num_words) }})
             </span>&nbsp;

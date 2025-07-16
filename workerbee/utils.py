@@ -1,8 +1,9 @@
+import csv
+import json
+
 from dataclasses import asdict, is_dataclass
 from io import StringIO
 from typing import Any
-import csv
-import json
 
 from .config import Config
 from .constants import Consts

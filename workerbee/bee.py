@@ -2,12 +2,12 @@ from collections import defaultdict
 from dataclasses import asdict
 from itertools import groupby
 
+from .cache import FIFOCache
 from .config import Config
 from .constants import Consts
 from .dictionaries import Dictionary
 from .types import Beeword, Metadata, NestedBeewords, OutputData, Summary
 from .wordlists import WordList, WordLists
-from .cache import FIFOCache
 
 _beewords_cache = FIFOCache()
 _summaries_cache = FIFOCache()
@@ -156,17 +156,17 @@ def get_beewords_cached(
     grouping: str = Consts.NO_GROUPING,
 ) -> OutputData:
 
-    key = (
-        word_list.name,
-        word_list.file_name,
-        dictionary.name,
-        required_letter,
-        allowed_letters,
-        grouping,
+    key = frozenset(
+        (
+            word_list.name,
+            word_list.file_name,
+            dictionary.name,
+            required_letter,
+            frozenset(allowed_letters),
+            grouping,
+        )
     )
-
-    cached = _beewords_cache.get(key)
-    if cached is not None:
+    if cached := _beewords_cache.get(key):
         return cached
 
     result = get_beewords(
@@ -241,16 +241,16 @@ def get_summaries_cached(
     dictionary: Dictionary,
     grouping: str = Consts.NO_GROUPING,
 ) -> list[Summary]:
-    key = (
-        required_letter,
-        allowed_letters,
-        word_sort,
-        summary_sort,
-        dictionary.name,
+    key = frozenset(
+        (
+            required_letter,
+            frozenset(allowed_letters),
+            word_sort,
+            summary_sort,
+            dictionary.name,
+        )
     )
-
-    cached = _summaries_cache.get(key)
-    if cached is not None:
+    if cached := _summaries_cache.get(key):
         return cached
 
     result = get_summaries(

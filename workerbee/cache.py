@@ -10,9 +10,9 @@ class FIFOCache:
     def get(self, key) -> Any | None:
         return self.cache.get(key)
 
-    def set(self, key, result) -> None:
+    def set(self, key, value) -> None:
         if key in self.cache:
             del self.cache[key]
         elif len(self.cache) >= self.maxsize:
             self.cache.popitem(last=False)
-        self.cache[key] = result
+        self.cache[key] = value

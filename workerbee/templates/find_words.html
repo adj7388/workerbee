@@ -12,7 +12,7 @@
         <div class="d-flex flex-wrap align-items-center gap-3 mt-2">
                 <label class="input-labels" for="{{ WORD_LIST }}">Use word list:</label>
                 <select id="{{ WORD_LIST }}" name="{{ WORD_LIST }}">
-                    {% for k, v in WORDLISTS.items() %}
+                    {% for k, v in word_lists.items() %}
                     <option value="{{ k }}"
                             {% if session[ARGS][WORD_LIST] == k %}
                                 selected

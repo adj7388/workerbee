@@ -1,11 +1,13 @@
 import flask
-from .views import init_routes
+
+from dataclasses import asdict
+from datetime import datetime
+
 from .config import Config
 from .constants import Consts
 from .dictionaries import Dictionaries
+from .views import init_routes
 from .wordlists import WordLists, load_word_lists
-from dataclasses import asdict
-from datetime import datetime
 
 
 def create_app(config_class=Config) -> flask.Flask:
@@ -14,7 +16,7 @@ def create_app(config_class=Config) -> flask.Flask:
 
     # inject consts into Jinja for templates
     app.jinja_env.globals.update(**asdict(Consts()))
-    app.jinja_env.globals.update(WORDLISTS=WordLists, DICTIONARIES=Dictionaries)
+    app.jinja_env.globals.update(word_lists=WordLists, dictionaries=Dictionaries)
 
     @app.context_processor
     def inject_current_year() -> dict[str, str]:  # type: ignore
