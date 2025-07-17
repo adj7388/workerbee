@@ -3,7 +3,6 @@ from dataclasses import asdict
 from itertools import groupby
 
 from .cache import FIFOCache
-from .config import Config
 from .constants import Consts
 from .dictionaries import Dictionary
 from .types import Beeword, Metadata, NestedBeewords, OutputData, Summary, PangramStatus
@@ -42,19 +41,18 @@ def _get_metadata(
 
 def _get_pangram_status(word: str, pangram_set: set) -> PangramStatus:
     is_pangram = bool(set(word) == pangram_set)
-    is_perfect = bool(
-        is_pangram
-        and len(word) == (Config.NUM_ALLOWED_LETTERS + Config.NUM_REQUIRED_LETTERS)
-    )
+    is_perfect = bool(is_pangram and len(word) == len(pangram_set))
     return PangramStatus(
         is_pangram=is_pangram,
         is_perfect=is_perfect,
     )
 
 
-def _get_beeword(
-    word: str, pangram_status: PangramStatus, dictionary: Dictionary
-) -> Beeword:
+def _get_beeword(word: str, pangram_set: set, dictionary: Dictionary) -> Beeword:
+    pangram_status = _get_pangram_status(
+        word=word,
+        pangram_set=pangram_set,
+    )
     return Beeword(
         word=word,
         length=len(word),
@@ -80,10 +78,7 @@ def _get_beewords(
                 beewords.append(
                     _get_beeword(
                         word=this_word,
-                        pangram_status=_get_pangram_status(
-                            word=this_word,
-                            pangram_set=set(required_letter + allowed_letters),
-                        ),
+                        pangram_set=all_letters_set,
                         dictionary=dictionary,
                     )
                 )
