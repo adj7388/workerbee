@@ -41,7 +41,7 @@ def _get_metadata(
 
 def _get_pangram_status(word: str, pangram_set: set) -> PangramStatus:
     is_pangram = bool(set(word) == pangram_set)
-    is_perfect = bool(is_pangram and len(word) == len(pangram_set))
+    is_perfect = bool(is_pangram and (len(word) == len(pangram_set)))
     return PangramStatus(
         is_pangram=is_pangram,
         is_perfect=is_perfect,
@@ -73,8 +73,7 @@ def _get_beewords(
     beewords: list[Beeword] = []
     for this_word in word_list.words:  # type: ignore
         if required_letter in this_word:
-            this_word_as_set = set(this_word)
-            if this_word_as_set.issubset(all_letters_set):
+            if set(this_word).issubset(all_letters_set):
                 beewords.append(
                     _get_beeword(
                         word=this_word,
@@ -155,12 +154,11 @@ def get_beewords_cached(
 
     key = frozenset(
         (
-            word_list.name,
             word_list.file_name,
-            dictionary.name,
-            required_letter,
             frozenset(allowed_letters),
+            required_letter,
             grouping,
+            dictionary.url_template,
         )
     )
     if cached := _beewords_cache.get(key):
@@ -242,9 +240,9 @@ def get_summaries_cached(
         (
             required_letter,
             frozenset(allowed_letters),
-            word_sort,
             summary_sort,
-            dictionary.name,
+            word_sort,
+            dictionary.url_template,
         )
     )
     if cached := _summaries_cache.get(key):
