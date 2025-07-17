@@ -99,24 +99,20 @@ def is_beeword_candidate(word: str, rejects: TextIO) -> bool:
 
 
 def load_word_lists(*list_keys: str) -> str:
-    # read word list data into memory for speed
     load_list = (
         [WordLists[key] for key in list_keys] if list_keys else WordLists.values()
     )
-
     start = time.perf_counter()
-    if load_list:
-        rejects: TextIO
-        with open("rejected-words.txt", mode="w") as rejects:
-            for wl in load_list:
-                with open(wl.file_name, mode="r") as f:
-                    rejects.write(f"{'=' * 8} + {wl.file_name} + {'=' * 8}\n")
-                    wl.words = [
-                        line
-                        for line in f.read().splitlines()
-                        if is_beeword_candidate(line, rejects)
-                    ]
-                wl.num_words = len(wl.words)
+    with open("rejected-words.txt", mode="w") as rejects:
+        for wl in load_list:
+            rejects.write(f"{'=' * 4} + {wl.file_name} + {'=' * 4}\n")
+            with open(wl.file_name, mode="r") as f:
+                wl.words = [
+                    line.strip()
+                    for line in f.read().splitlines()
+                    if is_beeword_candidate(line, rejects)
+                ]
+            wl.num_words = len(wl.words)
     end = time.perf_counter()
     msg = f"Loaded: {"  ".join(sorted([wl.name for wl in load_list])) if load_list else 'None'}\nLoad time: {end - start:.6f} seconds"
     print(msg)
