@@ -6,7 +6,7 @@ from .config import Config
 from .constants import Consts
 from .dictionaries import Dictionaries, WIKT
 from .types import Metadata, OutputData
-from .utils import error_check, write_to_buffer
+from .utils import error_check, write_to_buffer, decorate_word
 from .wordlists import WordLists, load_word_lists, SCOWL_HUGE_80
 
 
@@ -109,24 +109,14 @@ def print_beewords_grouped(output_data: OutputData) -> None:
         for second_level_label, words in first_level_words.items():
             print(f"{SPACING * 1}{second_level_label}")
             for beeword in words:
-                marker = (
-                    Consts.PERFECT_MARKER
-                    if beeword.is_perfect
-                    else Consts.PANGRAM_MARKER if beeword.is_pangram else ""
-                )
-                print(f"{SPACING * 2}{beeword.word} {marker}")
+                print(f"{SPACING * 2}{decorate_word(beeword)}")
     print_meta_data(output_data.metadata)
 
 
 def print_beewords_list(output_data: OutputData) -> None:
     print_meta_data(output_data.metadata)
     for beeword in output_data.flat:
-        marker = (
-            Consts.PERFECT_MARKER
-            if beeword.is_perfect
-            else Consts.PANGRAM_MARKER if beeword.is_pangram else ""
-        )
-        print(f"{beeword.word} {marker}")
+        print(decorate_word(beeword))
     print_meta_data(output_data.metadata)
 
 
@@ -146,7 +136,7 @@ def main():
         sys.exit(0)
 
     load_word_lists(args.wordlist)
-    output_data = get_beewords(
+    output_data: OutputData = get_beewords(
         word_list=WordLists[args.wordlist],
         required_letter=args.required,
         allowed_letters=args.allowed,
