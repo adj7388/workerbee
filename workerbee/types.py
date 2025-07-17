@@ -9,7 +9,13 @@ class Beeword:
     initials: str
     is_pangram: bool
     is_perfect: bool
-    url: str
+    definition_url: str
+
+
+@dataclass(slots=True)
+class PangramStatus:
+    is_pangram: bool
+    is_perfect: bool
 
 
 @dataclass(slots=True)

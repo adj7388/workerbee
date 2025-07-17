@@ -6,7 +6,7 @@ from .cache import FIFOCache
 from .config import Config
 from .constants import Consts
 from .dictionaries import Dictionary
-from .types import Beeword, Metadata, NestedBeewords, OutputData, Summary
+from .types import Beeword, Metadata, NestedBeewords, OutputData, Summary, PangramStatus
 from .wordlists import WordList, WordLists
 
 _beewords_cache = FIFOCache()
@@ -40,28 +40,28 @@ def _get_metadata(
     )
 
 
-def _get_pangram_status(word: str, pangram_set: set) -> tuple:
+def _get_pangram_status(word: str, pangram_set: set) -> PangramStatus:
     is_pangram = bool(set(word) == pangram_set)
     is_perfect = bool(
         is_pangram
         and len(word) == (Config.NUM_ALLOWED_LETTERS + Config.NUM_REQUIRED_LETTERS)
     )
-    return (is_pangram, is_perfect)
+    return PangramStatus(
+        is_pangram=is_pangram,
+        is_perfect=is_perfect,
+    )
 
 
 def _get_beeword(
-    word: str, required: str, allowed: str, dictionary: Dictionary
+    word: str, pangram_status: PangramStatus, dictionary: Dictionary
 ) -> Beeword:
-    is_pangram, is_perfect = _get_pangram_status(
-        word=word, pangram_set=set(required + allowed)
-    )
     return Beeword(
         word=word,
         length=len(word),
         initials=word[0:2],
-        is_pangram=is_pangram,
-        is_perfect=is_perfect,
-        url=dictionary.url_template.render(word=word),
+        is_pangram=pangram_status.is_pangram,
+        is_perfect=pangram_status.is_perfect,
+        definition_url=dictionary.url_template.render(word=word),
     )
 
 
@@ -73,15 +73,17 @@ def _get_beewords(
 ) -> list[Beeword]:
     all_letters_set = set(required_letter + allowed_letters)
     beewords: list[Beeword] = []
-    for this_word in word_list.data:  # type: ignore
+    for this_word in word_list.words:  # type: ignore
         if required_letter in this_word:
             this_word_as_set = set(this_word)
             if this_word_as_set.issubset(all_letters_set):
                 beewords.append(
                     _get_beeword(
                         word=this_word,
-                        required=required_letter,
-                        allowed=allowed_letters,
+                        pangram_status=_get_pangram_status(
+                            word=this_word,
+                            pangram_set=set(required_letter + allowed_letters),
+                        ),
                         dictionary=dictionary,
                     )
                 )

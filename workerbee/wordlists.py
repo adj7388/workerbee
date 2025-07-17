@@ -10,7 +10,7 @@ from .config import Config
 class WordList:
     name: str
     file_name: str
-    data: list[str] | None = None
+    words: list[str] | None = None
     num_words: int | None = None
 
 
@@ -111,12 +111,12 @@ def load_word_lists(*list_keys: str) -> str:
             for wl in load_list:
                 with open(wl.file_name, mode="r") as f:
                     rejects.write(f"{'=' * 8} + {wl.file_name} + {'=' * 8}\n")
-                    wl.data = [
+                    wl.words = [
                         line
                         for line in f.read().splitlines()
                         if is_beeword_candidate(line, rejects)
                     ]
-                wl.num_words = len(wl.data)
+                wl.num_words = len(wl.words)
     end = time.perf_counter()
     msg = f"Loaded: {"  ".join(sorted([wl.name for wl in load_list])) if load_list else 'None'}\nLoad time: {end - start:.6f} seconds"
     print(msg)

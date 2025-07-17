@@ -78,10 +78,13 @@ def write_to_buffer(
     if file_type in [Consts.CSV, Consts.WORD_URL_CSV]:
         if file_type == Consts.WORD_URL_CSV:
             WORD_FIELD = "word"
-            URL_FIELD = "url"
-            fieldnames = [WORD_FIELD, URL_FIELD]
+            DEFINITION_URL_FIELD = "definition_url"
+            fieldnames = [WORD_FIELD, DEFINITION_URL_FIELD]
             csv_output = [
-                {WORD_FIELD: decorate_word(beeword), URL_FIELD: beeword.url}
+                {
+                    WORD_FIELD: decorate_word(beeword),
+                    DEFINITION_URL_FIELD: beeword.definition_url,
+                }
                 for beeword in output_data.flat
             ]
         if file_type == Consts.CSV:
