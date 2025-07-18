@@ -16,13 +16,13 @@ def create_app(config_class=Config, cli_mode=False) -> flask.Flask:
     app = flask.Flask(__name__)
     app.config.from_object(config_class())
 
-    handler = RotatingFileHandler("workerbee.log", maxBytes=10000, backupCount=1)
+    handler = RotatingFileHandler("workerbee.log", maxBytes=100000, backupCount=1)
     handler.setLevel(logging.INFO)
     formatter = logging.Formatter("%(asctime)s %(levelname)s: %(message)s")
     handler.setFormatter(formatter)
     app.logger.addHandler(handler)
     app.logger.setLevel(logging.INFO)
-    app.logger.info(f"Logging set up completed {type(app)}")
+    app.logger.info(f"Logging enabled")
 
     if not cli_mode:
         load_word_lists(app)
