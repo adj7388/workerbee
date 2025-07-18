@@ -1,4 +1,6 @@
 import flask
+import logging
+from logging.handlers import RotatingFileHandler
 
 from dataclasses import asdict
 from datetime import datetime
@@ -10,20 +12,28 @@ from .views import init_routes
 from .wordlists import WordLists, load_word_lists
 
 
-def create_app(config_class=Config) -> flask.Flask:
+def create_app(config_class=Config, cli_mode=False) -> flask.Flask:
     app = flask.Flask(__name__)
     app.config.from_object(config_class())
 
-    # inject consts into Jinja for templates
-    app.jinja_env.globals.update(**asdict(Consts()))
-    app.jinja_env.globals.update(word_lists=WordLists, dictionaries=Dictionaries)
+    handler = RotatingFileHandler("workerbee.log", maxBytes=10000, backupCount=1)
+    handler.setLevel(logging.INFO)
+    formatter = logging.Formatter("%(asctime)s %(levelname)s: %(message)s")
+    handler.setFormatter(formatter)
+    app.logger.addHandler(handler)
+    app.logger.setLevel(logging.INFO)
+    app.logger.info(f"Logging set up completed {type(app)}")
 
-    @app.context_processor
-    def inject_current_year() -> dict[str, str]:  # type: ignore
-        return {"CURRENT_YEAR": str(datetime.now().year)}
+    if not cli_mode:
+        load_word_lists(app)
+        init_routes(app)
 
-    load_word_lists()
+        # inject consts into Jinja for templates
+        app.jinja_env.globals.update(**asdict(Consts()))
+        app.jinja_env.globals.update(word_lists=WordLists, dictionaries=Dictionaries)
 
-    init_routes(app)
+        @app.context_processor
+        def inject_current_year() -> dict[str, str]:  # type: ignore
+            return {"CURRENT_YEAR": str(datetime.now().year)}
 
     return app

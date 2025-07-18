@@ -42,15 +42,16 @@ def update_session_args(request_args: dict) -> dict:
                 session_args[key] = request_args[key]
             else:
                 abort(400)
-        # handle checkboxes
-        for this_arg in [Consts.SHOW_WORDS]:
-            if (value := request_args.get(this_arg)) is not None:
-                session_args[this_arg] = value.lower() in ("true", "on")
+        # add checkboxes to this list
+        for this_checkbox in [Consts.SHOW_WORDS]:
+            if (value := request_args.get(this_checkbox)) is not None:
+                session_args[this_checkbox] = value.lower() in ("true", "on")
     return session_args
 
 
 def init_routes(app: Flask) -> None:
 
+    ### Middleware ###
     @app.before_request
     def before_request() -> None:  # type: ignore reportUnusedFunction
         session.setdefault(Consts.ARGS, ARG_DEFAULTS.copy())
@@ -68,10 +69,16 @@ def init_routes(app: Flask) -> None:
     def about() -> str:  # type: ignore reportUnusedFunction
         return render_template("about.html")
 
+    ### Forms ###
     @app.route(f"/find-words", methods=["GET"])
     def find_words() -> str:  # type: ignore reportUnusedFunction
         return render_template("find_words.html")
 
+    @app.route(f"/show-summaries", methods=["GET"])
+    def show_summaries() -> str:  # type: ignore reportUnusedFunction
+        return render_template("show_summaries.html")
+
+    ### Partials and downloads ###
     @app.route(f"/find-words-results", methods=["GET"])
     def find_words_results() -> str:  # type: ignore reportUnusedFunction
         args = session[Consts.ARGS]
@@ -91,10 +98,6 @@ def init_routes(app: Flask) -> None:
             output_data=output_data,
             grouping=get_groupings(args[Consts.GROUPING]),
         )
-
-    @app.route(f"/show-summaries", methods=["GET"])
-    def show_summaries() -> str:  # type: ignore reportUnusedFunction
-        return render_template("show_summaries.html")
 
     @app.route(f"/show-summaries-results", methods=["GET"])
     def show_summaries_results() -> str:  # type: ignore reportUnusedFunction

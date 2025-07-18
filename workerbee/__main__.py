@@ -124,7 +124,7 @@ def print_beewords_list(output_data: OutputData) -> None:
 def main():
     args = get_commandline_args()
     if args.summary == True:
-        load_word_lists()
+        load_word_lists(current_app)
         for word_list in WordLists.values():
             beewords = get_beewords(
                 word_list=word_list,
@@ -135,7 +135,7 @@ def main():
             print_meta_data(beewords.metadata)
         sys.exit(0)
 
-    load_word_lists(args.wordlist)
+    load_word_lists(current_app, args.wordlist)
     output_data: OutputData = get_beewords(
         word_list=WordLists[args.wordlist],
         required_letter=args.required,
@@ -161,4 +161,10 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    from workerbee import create_app
+    from flask import current_app
+
+    app = create_app(cli_mode=True)
+
+    with app.app_context():
+        main()

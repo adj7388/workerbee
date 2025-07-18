@@ -2,7 +2,7 @@ import time
 
 from dataclasses import dataclass
 from typing import TextIO
-
+from flask import Flask
 from .config import Config
 
 
@@ -98,7 +98,7 @@ def is_beeword_candidate(word: str, rejects: TextIO) -> bool:
     return True
 
 
-def load_word_lists(*list_keys: str) -> str:
+def load_word_lists(app: Flask, *list_keys: str) -> None:
     load_list = (
         [WordLists[key] for key in list_keys] if list_keys else WordLists.values()
     )
@@ -114,6 +114,7 @@ def load_word_lists(*list_keys: str) -> str:
                 ]
             wl.num_words = len(wl.words)
     end = time.perf_counter()
-    msg = f"Loaded: {"  ".join(sorted([wl.name for wl in load_list])) if load_list else 'None'}\nLoad time: {end - start:.6f} seconds"
-    print(msg)
-    return msg
+    app.logger.info(
+        f"Loaded: {"  ".join(sorted([wl.name for wl in load_list])) if load_list else 'None'}"
+    )
+    app.logger.info(f"Load time: {end - start:.6f} seconds")

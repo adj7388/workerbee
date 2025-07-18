@@ -7,3 +7,4 @@ workerbee/temp/*json
 .dbxignore
 SCOWL*/README*
 rejected-words.txt
+workerbee.log
