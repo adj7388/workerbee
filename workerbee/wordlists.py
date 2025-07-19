@@ -98,25 +98,31 @@ def is_beeword_candidate(word: str, rejects: TextIO) -> bool:
     return True
 
 
+_lists_loaded = False
+
+
 def load_word_lists(app: Flask, *list_keys: str) -> None:
-    rejects_filename = "rejected-words.txt"
-    load_list = (
-        [WordLists[key] for key in list_keys] if list_keys else WordLists.values()
-    )
-    start = time.perf_counter()
-    with open(rejects_filename, mode="w") as rejects:
-        for wl in load_list:
-            rejects.write(f"{'=' * 4} + {wl.file_name} + {'=' * 4}\n")
-            with open(wl.file_name, mode="r") as f:
-                wl.words = [
-                    line.strip()
-                    for line in f.read().splitlines()
-                    if is_beeword_candidate(line, rejects)
-                ]
-            wl.num_words = len(wl.words)
-    end = time.perf_counter()
-    app.logger.info(
-        f"Loaded: {"  ".join(sorted([wl.name for wl in load_list])) if load_list else 'None'}"
-    )
-    app.logger.info(f"Load time: {end - start:.6f} seconds")
-    app.logger.info(f"Rejected words written to '{rejects_filename}'")
+    global _lists_loaded
+    if not _lists_loaded:
+        rejects_filename = "rejected-words.txt"
+        load_list = (
+            [WordLists[key] for key in list_keys] if list_keys else WordLists.values()
+        )
+        start = time.perf_counter()
+        with open(rejects_filename, mode="w") as rejects:
+            for wl in load_list:
+                rejects.write(f"{'=' * 4} + {wl.file_name} + {'=' * 4}\n")
+                with open(wl.file_name, mode="r") as f:
+                    wl.words = [
+                        line.strip()
+                        for line in f.read().splitlines()
+                        if is_beeword_candidate(line, rejects)
+                    ]
+                wl.num_words = len(wl.words)
+        end = time.perf_counter()
+        app.logger.info(
+            f"Loaded: {"  ".join(sorted([wl.name for wl in load_list])) if load_list else 'None'}"
+        )
+        app.logger.info(f"Load time: {end - start:.6f} seconds")
+        app.logger.info(f"Rejected words written to '{rejects_filename}'")
+        _lists_loaded = True
