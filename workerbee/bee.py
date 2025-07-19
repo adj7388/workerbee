@@ -2,6 +2,8 @@ from collections import defaultdict
 from dataclasses import asdict
 from itertools import groupby
 
+from flask import current_app
+
 from .cache import FIFOCache
 from .constants import Consts
 from .dictionaries import Dictionary
@@ -162,17 +164,19 @@ def get_beewords_cached(
         )
     )
     if cached := _beewords_cache.get(key):
+        current_app.logger.info(f"Get beewords from cache: {key}")
         return cached
 
-    result = get_beewords(
+    beewords = get_beewords(
         word_list=word_list,
         required_letter=required_letter,
         allowed_letters=allowed_letters,
         dictionary=dictionary,
         grouping=grouping,
     )
-    _beewords_cache.set(key, result)
-    return result
+    _beewords_cache.set(key, beewords)
+    current_app.logger.info(f"Set beewords in cache: {key}")
+    return beewords
 
 
 def _convert_to_summaries(
@@ -246,6 +250,7 @@ def get_summaries_cached(
         )
     )
     if cached := _summaries_cache.get(key):
+        current_app.logger.info(f"Get summary from cache: {key}")
         return cached
 
     result = get_summaries(
@@ -257,4 +262,5 @@ def get_summaries_cached(
         grouping=grouping,
     )
     _summaries_cache.set(key, result)
+    current_app.logger.info(f"Set summary in cache: {key}")
     return result

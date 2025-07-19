@@ -99,11 +99,12 @@ def is_beeword_candidate(word: str, rejects: TextIO) -> bool:
 
 
 def load_word_lists(app: Flask, *list_keys: str) -> None:
+    rejects_filename = "rejected-words.txt"
     load_list = (
         [WordLists[key] for key in list_keys] if list_keys else WordLists.values()
     )
     start = time.perf_counter()
-    with open("rejected-words.txt", mode="w") as rejects:
+    with open(rejects_filename, mode="w") as rejects:
         for wl in load_list:
             rejects.write(f"{'=' * 4} + {wl.file_name} + {'=' * 4}\n")
             with open(wl.file_name, mode="r") as f:
@@ -118,3 +119,4 @@ def load_word_lists(app: Flask, *list_keys: str) -> None:
         f"Loaded: {"  ".join(sorted([wl.name for wl in load_list])) if load_list else 'None'}"
     )
     app.logger.info(f"Load time: {end - start:.6f} seconds")
+    app.logger.info(f"Rejected words written to '{rejects_filename}'")

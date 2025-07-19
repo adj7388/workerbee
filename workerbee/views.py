@@ -42,7 +42,7 @@ def update_session_args(request_args: dict) -> dict:
                 session_args[key] = request_args[key]
             else:
                 abort(400)
-        # add checkboxes to this list
+        # to support more checkboxes add them to this list
         for this_checkbox in [Consts.SHOW_WORDS]:
             if (value := request_args.get(this_checkbox)) is not None:
                 session_args[this_checkbox] = value.lower() in ("true", "on")

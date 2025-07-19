@@ -16,7 +16,7 @@ def create_app(config_class=Config, cli_mode=False) -> flask.Flask:
     app = flask.Flask(__name__)
     app.config.from_object(config_class())
 
-    handler = RotatingFileHandler("workerbee.log", maxBytes=100000, backupCount=1)
+    handler = RotatingFileHandler("workerbee.log", maxBytes=1000000, backupCount=1)
     handler.setLevel(logging.INFO)
     formatter = logging.Formatter("%(asctime)s %(levelname)s: %(message)s")
     handler.setFormatter(formatter)
@@ -25,6 +25,7 @@ def create_app(config_class=Config, cli_mode=False) -> flask.Flask:
     app.logger.info(f"Logging enabled")
 
     if not cli_mode:
+        app.logger.info("Running web app")
         load_word_lists(app)
         init_routes(app)
 
@@ -35,5 +36,8 @@ def create_app(config_class=Config, cli_mode=False) -> flask.Flask:
         @app.context_processor
         def inject_current_year() -> dict[str, str]:  # type: ignore
             return {"CURRENT_YEAR": str(datetime.now().year)}
+
+    else:
+        app.logger.info("Running CLI")
 
     return app
