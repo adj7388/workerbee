@@ -1,5 +1,4 @@
 from collections import OrderedDict
-from flask import current_app
 from typing import Any
 
 

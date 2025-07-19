@@ -1,7 +1,6 @@
 import flask
 import logging
-import os
-from logging.handlers import RotatingFileHandler
+import sys
 
 from dataclasses import asdict
 from datetime import datetime
@@ -17,7 +16,7 @@ def create_app(config_class=Config, cli_mode=False) -> flask.Flask:
     app = flask.Flask(__name__)
     app.config.from_object(config_class())
 
-    handler = RotatingFileHandler("workerbee.log", maxBytes=1000000, backupCount=1)
+    handler = logging.StreamHandler(sys.stdout)
     handler.setLevel(logging.INFO)
     formatter = logging.Formatter("%(asctime)s %(levelname)s: %(message)s")
     handler.setFormatter(formatter)
@@ -26,7 +25,7 @@ def create_app(config_class=Config, cli_mode=False) -> flask.Flask:
     app.logger.info(f"Logging enabled")
 
     if not cli_mode:
-        app.logger.info(f"Running web app in PID {os.getpid()}")
+        app.logger.info(f"Running web app")
         load_word_lists(app)
         init_routes(app)
 
