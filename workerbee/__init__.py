@@ -1,5 +1,6 @@
 import flask
 import logging
+import os
 from logging.handlers import RotatingFileHandler
 
 from dataclasses import asdict
@@ -25,7 +26,7 @@ def create_app(config_class=Config, cli_mode=False) -> flask.Flask:
     app.logger.info(f"Logging enabled")
 
     if not cli_mode:
-        app.logger.info("Running web app")
+        app.logger.info(f"Running web app in PID {os.getpid()}")
         load_word_lists(app)
         init_routes(app)
 
