@@ -160,7 +160,7 @@ def get_beewords_cached(
             frozenset(allowed_letters),
             required_letter,
             grouping,
-            dictionary.url_template,
+            dictionary.name,
         )
     )
     if cached := _beewords_cache.get(key):
@@ -246,7 +246,7 @@ def get_summaries_cached(
             frozenset(allowed_letters),
             summary_sort,
             word_sort,
-            dictionary.url_template,
+            dictionary.name,
         )
     )
     if cached := _summaries_cache.get(key):
