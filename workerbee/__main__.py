@@ -5,6 +5,7 @@ from .bee import get_beewords
 from .config import Config
 from .constants import Consts
 from .dictionaries import Dictionaries, WIKT
+from .logging_setup import configure_logging
 from .types import Metadata, OutputData
 from .utils import error_check, write_to_buffer, decorate_word
 from .wordlists import WordLists, load_word_lists, SCOWL_HUGE_80
@@ -124,7 +125,7 @@ def print_beewords_list(output_data: OutputData) -> None:
 def main():
     args = get_commandline_args()
     if args.summary == True:
-        load_word_lists(current_app)
+        load_word_lists()
         for word_list in WordLists.values():
             beewords = get_beewords(
                 word_list=word_list,
@@ -135,7 +136,7 @@ def main():
             print_meta_data(beewords.metadata)
         sys.exit(0)
 
-    load_word_lists(current_app, args.wordlist)
+    load_word_lists(args.wordlist)
     output_data: OutputData = get_beewords(
         word_list=WordLists[args.wordlist],
         required_letter=args.required,
@@ -161,10 +162,5 @@ def main():
 
 
 if __name__ == "__main__":
-    from workerbee import create_app
-    from flask import current_app
-
-    app = create_app(cli_mode=True)
-
-    with app.app_context():
-        main()
+    configure_logging()
+    main()

@@ -1,9 +1,11 @@
+import logging
 import time
 
 from dataclasses import dataclass
 from typing import TextIO
-from flask import Flask
 from .config import Config
+
+_logger = logging.getLogger(__name__)
 
 
 @dataclass(slots=True)
@@ -98,7 +100,7 @@ def is_beeword_candidate(word: str, rejects: TextIO) -> bool:
     return True
 
 
-def load_word_lists(app: Flask, *list_keys: str) -> None:
+def load_word_lists(*list_keys: str) -> None:
     rejects_filename = "rejected-words.txt"
     load_list = (
         [WordLists[key] for key in list_keys] if list_keys else WordLists.values()
@@ -115,8 +117,8 @@ def load_word_lists(app: Flask, *list_keys: str) -> None:
                 ]
             wl.num_words = len(wl.words)
     end = time.perf_counter()
-    app.logger.info(
+    _logger.info(
         f"Loaded: {"  ".join(sorted([wl.name for wl in load_list])) if load_list else 'None'}"
     )
-    app.logger.info(f"Load time: {end - start:.6f} seconds")
-    app.logger.info(f"Rejected words written to '{rejects_filename}'")
+    _logger.info(f"Load time: {end - start:.6f} seconds")
+    _logger.info(f"Rejected words written to '{rejects_filename}'")
