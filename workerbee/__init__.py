@@ -1,10 +1,10 @@
 import flask
-import logging
+import os
 
 from dataclasses import asdict
 from datetime import datetime
 
-from .config import Config
+from .config import Config, DevConfig, ProdConfig
 from .constants import Consts
 from .dictionaries import Dictionaries
 from .views import init_routes
@@ -12,13 +12,19 @@ from .wordlists import WordLists, load_word_lists
 from .logging_setup import configure_logging
 
 
-def create_app(config_class=Config, cli_mode=False) -> flask.Flask | None:
+def create_app(config_class=DevConfig) -> flask.Flask | None:
+    config_name = os.getenv("FLASK_CONFIG", "Config")
+    config_class = {
+        "Config": Config,
+        "DevConfig": DevConfig,
+        "ProdConfig": ProdConfig,
+    }.get(config_name, "Config")
 
-    configure_logging(level=logging.INFO)
+    configure_logging(level=config_class.LOG_LEVEL)
 
     app = flask.Flask(__name__)
-    app.config.from_object(config_class())
-    app.logger.info(f"Running web app")
+    app.config.from_object(config_class)
+
     load_word_lists()
     init_routes(app)
 
