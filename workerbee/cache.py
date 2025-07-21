@@ -10,6 +10,7 @@ class FIFOCache:
     def __init__(self, maxsize=10) -> None:
         self.maxsize: int = maxsize
         self.cache: OrderedDict = OrderedDict()
+        _logger.debug(f"cache initialized with maxsize {maxsize}")
 
     @property
     def cache_size(self):
@@ -25,13 +26,24 @@ class FIFOCache:
         )
 
     def get(self, key: frozenset) -> Any | None:
-        return self.cache.get(key, None)
+        result = self.cache.get(key, None)
+        (
+            _logger.debug(f"get key successful: {key}")
+            if result
+            else _logger.debug(f"get key returned None: {key} ")
+        )
+        return result
 
     def set(self, key: frozenset, value: Any) -> None:
         if key not in self.cache:
             self.cache[key] = value
+            _logger.debug(f"set value with key: {key}")
             if self.cache_size > self.maxsize:
                 self._evict_cache_items()
+        else:
+            # found key. replace value
+            self.cache[key] = value
+            _logger.debug(f"replaced value for key: {key}")
 
 
 _beewords_cache: FIFOCache | None = None
