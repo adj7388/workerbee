@@ -165,8 +165,8 @@ def get_beewords_cached(
             dictionary.name,
         )
     )
-    _logger.info(f"_beewords_cache size; {_beewords_cache.cache_size}")
     if cached := _beewords_cache.get(key):
+        _logger.info(f"GET: _beewords_cache size; {_beewords_cache.cache_size}")
         return cached
 
     beewords = get_beewords(
@@ -177,6 +177,7 @@ def get_beewords_cached(
         grouping=grouping,
     )
     _beewords_cache.set(key, beewords)
+    _logger.info(f"SET: _beewords_cache size; {_beewords_cache.cache_size}")
     return beewords
 
 
@@ -251,8 +252,8 @@ def get_summaries_cached(
         )
     )
 
-    _logger.info(f"_summaries_cache size; {_summaries_cache.cache_size}")
     if cached := _summaries_cache.get(key):
+        _logger.info(f"GET: _summaries_cache size; {_summaries_cache.cache_size}")
         return cached
 
     result = get_summaries(
@@ -264,4 +265,5 @@ def get_summaries_cached(
         grouping=grouping,
     )
     _summaries_cache.set(key, result)
+    _logger.info(f"SET: _summaries_cache size; {_summaries_cache.cache_size}")
     return result
