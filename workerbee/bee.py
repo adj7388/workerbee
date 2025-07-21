@@ -1,3 +1,5 @@
+import logging
+
 from collections import defaultdict
 from dataclasses import asdict
 from itertools import groupby
@@ -7,6 +9,8 @@ from .constants import Consts
 from .dictionaries import Dictionary
 from .types import Beeword, Metadata, NestedBeewords, OutputData, Summary, PangramStatus
 from .wordlists import WordList, WordLists
+
+_logger = logging.getLogger(__name__)
 
 _beewords_cache = FIFOCache()
 _summaries_cache = FIFOCache()
@@ -161,6 +165,7 @@ def get_beewords_cached(
             dictionary.name,
         )
     )
+    _logger.info(f"_beewords_cache size; {_beewords_cache.cache_size}")
     if cached := _beewords_cache.get(key):
         return cached
 
@@ -245,6 +250,8 @@ def get_summaries_cached(
             dictionary.name,
         )
     )
+
+    _logger.info(f"_summaries_cache size; {_summaries_cache.cache_size}")
     if cached := _summaries_cache.get(key):
         return cached
 
