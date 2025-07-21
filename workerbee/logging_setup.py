@@ -2,13 +2,13 @@ import logging
 import sys
 
 
-def configure_logging():
+def configure_logging(level=logging.INFO):
     root_logger = logging.getLogger()
     if root_logger.hasHandlers():
         # already configured
         return
 
-    root_logger.setLevel(logging.INFO)
+    root_logger.setLevel(level)
 
     handler = logging.StreamHandler(sys.stderr)
     handler.setFormatter(
@@ -17,3 +17,4 @@ def configure_logging():
         )
     )
     root_logger.addHandler(handler)
+    root_logger.info(f"logging level set to: {level}")

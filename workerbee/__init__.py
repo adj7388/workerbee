@@ -1,4 +1,5 @@
 import flask
+import logging
 
 from dataclasses import asdict
 from datetime import datetime
@@ -13,7 +14,7 @@ from .logging_setup import configure_logging
 
 def create_app(config_class=Config, cli_mode=False) -> flask.Flask | None:
 
-    configure_logging()
+    configure_logging(level=logging.INFO)
 
     app = flask.Flask(__name__)
     app.config.from_object(config_class())
