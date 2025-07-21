@@ -4,6 +4,7 @@ import os
 from dataclasses import asdict
 from datetime import datetime
 
+from .cache import init_cache
 from .config import Config, DevConfig, ProdConfig
 from .constants import Consts
 from .dictionaries import Dictionaries
@@ -25,8 +26,9 @@ def create_app(config_class=DevConfig) -> flask.Flask | None:
     app = flask.Flask(__name__)
     app.config.from_object(config_class)
 
-    load_word_lists()
     init_routes(app)
+    init_cache(cache_size=config_class.MAX_CACHE_SIZE)
+    load_word_lists()
 
     # inject consts into Jinja for templates
     app.jinja_env.globals.update(**asdict(Consts()))

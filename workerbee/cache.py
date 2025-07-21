@@ -1,5 +1,6 @@
 import logging
-from typing import Any, OrderedDict
+
+from typing import Any
 from collections import OrderedDict
 
 _logger = logging.getLogger(__name__)
@@ -7,8 +8,8 @@ _logger = logging.getLogger(__name__)
 
 class FIFOCache:
     def __init__(self, maxsize=10) -> None:
-        self.maxsize = maxsize
-        self.cache = OrderedDict()
+        self.maxsize: int = maxsize
+        self.cache: OrderedDict = OrderedDict()
 
     @property
     def cache_size(self):
@@ -31,3 +32,25 @@ class FIFOCache:
             self.cache[key] = value
             if self.cache_size > self.maxsize:
                 self._evict_cache_items()
+
+
+_beewords_cache: FIFOCache | None = None
+_summaries_cache: FIFOCache | None = None
+
+
+def init_cache(cache_size: int):
+    global _beewords_cache, _summaries_cache
+    _beewords_cache = FIFOCache(maxsize=cache_size)
+    _summaries_cache = FIFOCache(maxsize=cache_size)
+
+
+def get_beewords_cache() -> FIFOCache:
+    if _beewords_cache is None:
+        raise RuntimeError("BeeWords cache not initialized")
+    return _beewords_cache
+
+
+def get_summaries_cache() -> FIFOCache:
+    if _summaries_cache is None:
+        raise RuntimeError("Summaries cache not initialized")
+    return _summaries_cache

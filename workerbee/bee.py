@@ -4,16 +4,13 @@ from collections import defaultdict
 from dataclasses import asdict
 from itertools import groupby
 
-from .cache import FIFOCache
+from .cache import get_beewords_cache, get_summaries_cache
 from .constants import Consts
 from .dictionaries import Dictionary
 from .types import Beeword, Metadata, NestedBeewords, OutputData, Summary, PangramStatus
 from .wordlists import WordList, WordLists
 
 _logger = logging.getLogger(__name__)
-
-_beewords_cache = FIFOCache()
-_summaries_cache = FIFOCache()
 
 
 def _check_bingo(data: list[Beeword], pangram_set: set) -> bool:
@@ -165,8 +162,8 @@ def get_beewords_cached(
             dictionary.name,
         )
     )
-    if cached := _beewords_cache.get(key):
-        _logger.info(f"GET: _beewords_cache size; {_beewords_cache.cache_size}")
+    if cached := get_beewords_cache().get(key):
+        _logger.info(f"GET:  beewords cache size; {get_beewords_cache().cache_size}")
         return cached
 
     beewords = get_beewords(
@@ -176,8 +173,8 @@ def get_beewords_cached(
         dictionary=dictionary,
         grouping=grouping,
     )
-    _beewords_cache.set(key, beewords)
-    _logger.info(f"SET: _beewords_cache size; {_beewords_cache.cache_size}")
+    get_beewords_cache().set(key, beewords)
+    _logger.info(f"SET: beewords cache size; {get_beewords_cache().cache_size}")
     return beewords
 
 
@@ -252,8 +249,8 @@ def get_summaries_cached(
         )
     )
 
-    if cached := _summaries_cache.get(key):
-        _logger.info(f"GET: _summaries_cache size; {_summaries_cache.cache_size}")
+    if cached := get_summaries_cache().get(key):
+        _logger.info(f"GET:  summaries cache size; {get_summaries_cache().cache_size}")
         return cached
 
     result = get_summaries(
@@ -264,6 +261,6 @@ def get_summaries_cached(
         dictionary=dictionary,
         grouping=grouping,
     )
-    _summaries_cache.set(key, result)
-    _logger.info(f"SET: _summaries_cache size; {_summaries_cache.cache_size}")
+    get_summaries_cache().set(key, result)
+    _logger.info(f"SET: summaries cache size; {get_summaries_cache().cache_size}")
     return result

@@ -3,20 +3,22 @@ import os
 
 
 class Config:
-    NUM_REQUIRED_LETTERS = 1
-    NUM_ALLOWED_LETTERS = 6
-    MIN_WORD_LENGTH = 4
-    SECRET_KEY = os.environ.get("SECRETBEEKEY")
+    NUM_REQUIRED_LETTERS: int = 1
+    NUM_ALLOWED_LETTERS: int = 6
+    MIN_WORD_LENGTH: int = 4
+    SECRET_KEY: str | None = os.environ.get("SECRETBEEKEY")
 
-    LOG_LEVEL = logging.WARNING
-    DEBUG = False
+    LOG_LEVEL: int = logging.WARNING
+    DEBUG: bool = False
+    MAX_CACHE_SIZE: int = 10
 
 
 class DevConfig(Config):
-    LOG_LEVEL = logging.DEBUG
-    DEBUG = True
+    LOG_LEVEL: int = logging.DEBUG
+    DEBUG: bool = True
 
 
 class ProdConfig(Config):
-    LOG_LEVEL = logging.INFO
-    DEBUG = False
+    LOG_LEVEL: int = logging.INFO
+    DEBUG: bool = False
+    MAX_CACHE_SIZE: int = 30
