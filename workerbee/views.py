@@ -8,6 +8,7 @@ from flask import (
     Response,
     send_file,
     session,
+    url_for,
 )
 from io import BytesIO
 
@@ -59,7 +60,7 @@ def init_routes(app: Flask) -> None:
 
     @app.route("/")
     def root():  # type: ignore reportUnusedFunction
-        return redirect("find-words")
+        return redirect(url_for("help"))
 
     @app.route(f"/help")
     def help() -> str:  # type: ignore reportUnusedFunctio

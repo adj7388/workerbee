@@ -1,5 +1,3 @@
-import logging
-
 from collections import defaultdict
 from dataclasses import asdict
 from itertools import groupby
@@ -9,8 +7,6 @@ from .constants import Consts
 from .dictionaries import Dictionary
 from .types import Beeword, Metadata, NestedBeewords, OutputData, Summary, PangramStatus
 from .wordlists import WordList, WordLists
-
-_logger = logging.getLogger(__name__)
 
 
 def _check_bingo(data: list[Beeword], pangram_set: set) -> bool:
@@ -163,7 +159,6 @@ def get_beewords_cached(
         )
     )
     if cached := get_beewords_cache().get(key):
-        _logger.info(f"GET:  beewords cache size: {get_beewords_cache().cache_size}")
         return cached
 
     beewords = get_beewords(
@@ -174,7 +169,6 @@ def get_beewords_cached(
         grouping=grouping,
     )
     get_beewords_cache().set(key, beewords)
-    _logger.info(f"SET: beewords cache size: {get_beewords_cache().cache_size}")
     return beewords
 
 
@@ -250,7 +244,6 @@ def get_summaries_cached(
     )
 
     if cached := get_summaries_cache().get(key):
-        _logger.info(f"GET:  summaries cache size: {get_summaries_cache().cache_size}")
         return cached
 
     result = get_summaries(
@@ -262,5 +255,4 @@ def get_summaries_cached(
         grouping=grouping,
     )
     get_summaries_cache().set(key, result)
-    _logger.info(f"SET: summaries cache size: {get_summaries_cache().cache_size}")
     return result
