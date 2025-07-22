@@ -2,7 +2,7 @@ from collections import defaultdict
 from dataclasses import asdict
 from itertools import groupby
 
-from .cache import get_cached_findwords, get_cached_summaries
+from .cache import get_cache, find_words_cache, show_summaries_cache
 from .constants import Consts
 from .dictionaries import Dictionary
 from .types import Beeword, Metadata, NestedBeewords, OutputData, Summary, PangramStatus
@@ -158,7 +158,7 @@ def get_beewords_cached(
             dictionary.name,
         )
     )
-    if cached := get_cached_findwords().get(key):
+    if cached := get_cache(find_words_cache).get(key):
         return cached
 
     beewords = get_beewords(
@@ -168,7 +168,7 @@ def get_beewords_cached(
         dictionary=dictionary,
         grouping=grouping,
     )
-    get_cached_findwords().set(key, beewords)
+    get_cache(find_words_cache).set(key, beewords)
     return beewords
 
 
@@ -243,7 +243,7 @@ def get_summaries_cached(
         )
     )
 
-    if cached := get_cached_summaries().get(key):
+    if cached := get_cache(show_summaries_cache).get(key):
         return cached
 
     result = get_summaries(
@@ -254,5 +254,5 @@ def get_summaries_cached(
         dictionary=dictionary,
         grouping=grouping,
     )
-    get_cached_summaries().set(key, result)
+    get_cache(show_summaries_cache).set(key, result)
     return result

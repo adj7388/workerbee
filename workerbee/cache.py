@@ -1,17 +1,17 @@
 import logging
 
-from typing import Any
+from typing import Any, cast
 from collections import OrderedDict
 
 _logger = logging.getLogger(__name__)
 
 
 class FIFOCache:
-    def __init__(self, name, maxsize=10) -> None:
-        self.name = name
+    def __init__(self, tag: str, maxsize=10) -> None:
+        self.tag: str = tag
         self.maxsize: int = maxsize
         self.cache: OrderedDict = OrderedDict()
-        _logger.debug(f"'{self.name}' initialized with maxsize {maxsize}")
+        _logger.debug(f"'{self.tag}' initialized with maxsize {maxsize}")
 
     @property
     def cache_size(self):
@@ -19,59 +19,56 @@ class FIFOCache:
 
     def _evict_cache_items(self, denominator=2):
         _logger.warning(
-            f"'{self.name}' size {self.cache_size} exceeds maxsize {self.maxsize}"
+            f"'{self.tag}' size {self.cache_size} exceeds maxsize {self.maxsize}"
         )
         number_to_evict = self.cache_size // denominator
         for _ in range(number_to_evict):
             self.cache.popitem(last=False)
         _logger.warning(
-            f"'{self.name}' evicted {number_to_evict} items from cache. Size now {self.cache_size}"
+            f"'{self.tag}' evicted {number_to_evict} items from cache. Size now {self.cache_size}"
         )
 
-    def get(self, key: frozenset) -> Any | None:
+    def get(self, key: Any) -> Any | None:
         result = self.cache.get(key, None)
         (
-            _logger.debug(
-                f"'{self.name}' ({self.cache_size}) get key successful: {key}"
-            )
+            _logger.debug(f"'{self.tag}' ({self.cache_size}) get key successful: {key}")
             if result
             else _logger.debug(
-                f"'{self.name}' ({self.cache_size}) get key returned None: {key}"
+                f"'{self.tag}' ({self.cache_size}) get key returned None: {key}"
             )
         )
         return result
 
-    def set(self, key: frozenset, value: Any) -> None:
+    def set(self, key: Any, value: Any) -> None:
         if key not in self.cache:
             self.cache[key] = value
-            _logger.debug(f"SET '{self.name}' ({self.cache_size}) new item key: {key}")
+            _logger.debug(f"SET '{self.tag}' ({self.cache_size}) new item key: {key}")
             if self.cache_size > self.maxsize:
                 self._evict_cache_items()
         else:
             # found key. replace value
             self.cache[key] = value
             _logger.debug(
-                f"SET '{self.name}' ({self.cache_size}) replace item key: {key}"
+                f"SET '{self.tag}' ({self.cache_size}) replace item key: {key}"
             )
 
 
-_findwords_cache: FIFOCache | None = None
-_show_summaries_cache: FIFOCache | None = None
+find_words_cache: str = "findwords"
+show_summaries_cache: str = "showsummaries"
+
+_caches: dict[str, FIFOCache | None] = {
+    find_words_cache: None,
+    show_summaries_cache: None,
+}
 
 
 def init_cache(cache_size: int):
-    global _findwords_cache, _show_summaries_cache
-    _findwords_cache = FIFOCache(name="findwords cache", maxsize=cache_size)
-    _show_summaries_cache = FIFOCache(name="summaries cache", maxsize=cache_size)
+    global _caches
+    for key in _caches:
+        _caches[key] = FIFOCache(tag=key, maxsize=cache_size)
 
 
-def get_cached_findwords() -> FIFOCache:
-    if _findwords_cache is None:
-        raise RuntimeError("Findwords cache not initialized")
-    return _findwords_cache
-
-
-def get_cached_summaries() -> FIFOCache:
-    if _show_summaries_cache is None:
-        raise RuntimeError("Summaries cache not initialized")
-    return _show_summaries_cache
+def get_cache(key: str) -> FIFOCache:
+    if key not in _caches or _caches[key] is None:
+        raise RuntimeError(f"cache {key} not initialized")
+    return cast(FIFOCache, _caches[key])
