@@ -29,44 +29,49 @@ class FIFOCache:
         )
 
     def get(self, key: frozenset) -> Any | None:
-        _logger.info(f"GET:  '{self.name}' size: {self.cache_size}")
         result = self.cache.get(key, None)
         (
-            _logger.debug(f"'{self.name}' get key successful: {key}")
+            _logger.debug(
+                f"'{self.name}' ({self.cache_size}) get key successful: {key}"
+            )
             if result
-            else _logger.debug(f"'{self.name}' get key returned None: {key} ")
+            else _logger.debug(
+                f"'{self.name}' ({self.cache_size}) get key returned None: {key}"
+            )
         )
         return result
 
     def set(self, key: frozenset, value: Any) -> None:
         if key not in self.cache:
             self.cache[key] = value
-            _logger.debug(f"SET '{self.name}' new item with key: {key}")
+            _logger.debug(f"SET '{self.name}' ({self.cache_size}) new item key: {key}")
             if self.cache_size > self.maxsize:
                 self._evict_cache_items()
         else:
             # found key. replace value
             self.cache[key] = value
-            _logger.debug(f"SET '{self.name}' replaced item with key: {key}")
+            _logger.debug(
+                f"SET '{self.name}' ({self.cache_size}) replace item key: {key}"
+            )
 
 
-_beewords_cache: FIFOCache | None = None
-_summaries_cache: FIFOCache | None = None
+_findwords_cache: FIFOCache | None = None
+_show_summaries_cache: FIFOCache | None = None
 
 
 def init_cache(cache_size: int):
-    global _beewords_cache, _summaries_cache
-    _beewords_cache = FIFOCache(name="beewords cache", maxsize=cache_size)
-    _summaries_cache = FIFOCache(name="summaries cache", maxsize=cache_size)
+    global _findwords_cache, _show_summaries_cache
+    _findwords_cache = FIFOCache(name="beewords cache", maxsize=cache_size)
+    _show_summaries_cache = FIFOCache(name="summaries cache", maxsize=cache_size)
 
 
-def get_beewords_cache() -> FIFOCache:
-    if _beewords_cache is None:
-        raise RuntimeError("BeeWords cache not initialized")
-    return _beewords_cache
+def get_cached_findwords() -> FIFOCache:
+    if _findwords_cache is None:
+        raise RuntimeError("Findwords cache not initialized")
+    return _findwords_cache
 
 
-def get_summaries_cache() -> FIFOCache:
-    if _summaries_cache is None:
+def get_cached_summaries() -> FIFOCache:
+    if _show_summaries_cache is None:
         raise RuntimeError("Summaries cache not initialized")
-    return _summaries_cache
+    return _show_summaries_cache
