@@ -1,4 +1,5 @@
 import flask
+import logging
 import os
 
 from dataclasses import asdict
@@ -12,6 +13,8 @@ from .views import init_routes
 from .wordlists import WordLists, load_word_lists
 from .logging_setup import configure_logging
 
+_logger = logging.getLogger(__name__)
+
 
 def create_app(config_class=DevConfig) -> flask.Flask | None:
     config_name = os.getenv("FLASK_CONFIG", "Config")
@@ -22,6 +25,8 @@ def create_app(config_class=DevConfig) -> flask.Flask | None:
     }.get(config_name, "Config")
 
     configure_logging(level=config_class.LOG_LEVEL)
+
+    _logger.info(f"create_app configuring with {config_class.__name__} class")
 
     app = flask.Flask(__name__)
     app.config.from_object(config_class)
@@ -38,4 +43,5 @@ def create_app(config_class=DevConfig) -> flask.Flask | None:
     def inject_current_year() -> dict[str, str]:  # type: ignore
         return {"CURRENT_YEAR": str(datetime.now().year)}
 
+    _logger.info(f"create_app completed")
     return app

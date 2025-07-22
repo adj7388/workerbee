@@ -17,3 +17,4 @@ def configure_logging(level=logging.INFO):
         )
     )
     root_logger.addHandler(handler)
+    root_logger.debug(f"Logging configured. Level {level}")

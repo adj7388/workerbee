@@ -1,3 +1,4 @@
+import logging
 from flask import (
     abort,
     flash,
@@ -19,6 +20,8 @@ from .types import Summary, OutputData
 from .utils import error_check, get_filename, write_to_buffer
 from .wordlists import WordLists, SCOWL_DEFAULT_60
 
+_logger = logging.getLogger(__name__)
+
 ARG_DEFAULTS = {
     Consts.REQUIRED_LETTER: "c",
     Consts.ALLOWED_LETTERS: "evitpa",
@@ -37,6 +40,7 @@ ALLOWED_ARGS = set(ARG_DEFAULTS.keys())
 
 def update_session_args(request_args: dict) -> dict:
     session_args: dict = session.get(Consts.ARGS, {}).copy()
+    _logger.debug(f"session args before update: {session_args}")
     if request_args:
         for key in request.args:
             if key in ALLOWED_ARGS:
@@ -47,6 +51,7 @@ def update_session_args(request_args: dict) -> dict:
         for this_checkbox in [Consts.SHOW_WORDS]:
             if (value := request_args.get(this_checkbox)) is not None:
                 session_args[this_checkbox] = value.lower() in ("true", "on")
+    _logger.debug(f"session args after update: {session_args}")
     return session_args
 
 

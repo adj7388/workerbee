@@ -61,7 +61,7 @@ _show_summaries_cache: FIFOCache | None = None
 
 def init_cache(cache_size: int):
     global _findwords_cache, _show_summaries_cache
-    _findwords_cache = FIFOCache(name="beewords cache", maxsize=cache_size)
+    _findwords_cache = FIFOCache(name="findwords cache", maxsize=cache_size)
     _show_summaries_cache = FIFOCache(name="summaries cache", maxsize=cache_size)
 
 
