@@ -17,7 +17,7 @@ class FIFOCache:
     def cache_size(self):
         return len(self.cache)
 
-    def _evict_cache_items(self, denominator=2):
+    def _evict_cache_items(self, denominator=2) -> None:
         _logger.warning(
             f"'{self.tag}' size {self.cache_size} exceeds maxsize {self.maxsize}"
         )
@@ -31,10 +31,12 @@ class FIFOCache:
     def get(self, key: Any) -> Any | None:
         result = self.cache.get(key, None)
         (
-            _logger.debug(f"'{self.tag}' ({self.cache_size}) get key successful: {key}")
+            _logger.debug(
+                f"GET '{self.tag}' ({self.cache_size}) get key successful: {key}"
+            )
             if result
             else _logger.debug(
-                f"'{self.tag}' ({self.cache_size}) get key returned None: {key}"
+                f"GET '{self.tag}' ({self.cache_size}) get key returned None: {key}"
             )
         )
         return result
@@ -53,16 +55,16 @@ class FIFOCache:
             )
 
 
-find_words_cache: str = "findwords"
-show_summaries_cache: str = "showsummaries"
+FIND_WORDS: str = "findwords"
+SUMMARIES: str = "showsummaries"
 
 _caches: dict[str, FIFOCache | None] = {
-    find_words_cache: None,
-    show_summaries_cache: None,
+    FIND_WORDS: None,
+    SUMMARIES: None,
 }
 
 
-def init_cache(cache_size: int):
+def init_caches(cache_size: int) -> None:
     global _caches
     for key in _caches:
         _caches[key] = FIFOCache(tag=key, maxsize=cache_size)
@@ -70,5 +72,5 @@ def init_cache(cache_size: int):
 
 def get_cache(key: str) -> FIFOCache:
     if key not in _caches or _caches[key] is None:
-        raise RuntimeError(f"cache {key} not initialized")
+        raise RuntimeError(f"cache {key} does not exist or is not initialized")
     return cast(FIFOCache, _caches[key])

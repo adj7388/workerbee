@@ -2,7 +2,7 @@ from collections import defaultdict
 from dataclasses import asdict
 from itertools import groupby
 
-from .cache import get_cache, find_words_cache, show_summaries_cache
+from . import cache
 from .constants import Consts
 from .dictionaries import Dictionary
 from .types import Beeword, Metadata, NestedBeewords, OutputData, Summary, PangramStatus
@@ -149,6 +149,8 @@ def get_beewords_cached(
     grouping: str = Consts.NO_GROUPING,
 ) -> OutputData:
 
+    findwords_cache = cache.get_cache(cache.FIND_WORDS)
+
     key = frozenset(
         (
             word_list.file_name,
@@ -158,18 +160,19 @@ def get_beewords_cached(
             dictionary.name,
         )
     )
-    if cached := get_cache(find_words_cache).get(key):
-        return cached
 
-    beewords = get_beewords(
-        word_list=word_list,
-        required_letter=required_letter,
-        allowed_letters=allowed_letters,
-        dictionary=dictionary,
-        grouping=grouping,
-    )
-    get_cache(find_words_cache).set(key, beewords)
-    return beewords
+    if cached := findwords_cache.get(key):
+        return cached
+    else:
+        words = get_beewords(
+            word_list=word_list,
+            required_letter=required_letter,
+            allowed_letters=allowed_letters,
+            dictionary=dictionary,
+            grouping=grouping,
+        )
+        findwords_cache.set(key, words)
+        return words
 
 
 def _convert_to_summaries(
@@ -233,6 +236,9 @@ def get_summaries_cached(
     dictionary: Dictionary,
     grouping: str = Consts.NO_GROUPING,
 ) -> list[Summary]:
+
+    summaries_cache = cache.get_cache(cache.SUMMARIES)
+
     key = frozenset(
         (
             required_letter,
@@ -243,16 +249,16 @@ def get_summaries_cached(
         )
     )
 
-    if cached := get_cache(show_summaries_cache).get(key):
-        return cached
-
-    result = get_summaries(
-        required_letter=required_letter,
-        allowed_letters=allowed_letters,
-        word_sort=word_sort,
-        summary_sort=summary_sort,
-        dictionary=dictionary,
-        grouping=grouping,
-    )
-    get_cache(show_summaries_cache).set(key, result)
-    return result
+    if cached_summaries := summaries_cache.get(key):
+        return cached_summaries
+    else:
+        summaries = get_summaries(
+            required_letter=required_letter,
+            allowed_letters=allowed_letters,
+            word_sort=word_sort,
+            summary_sort=summary_sort,
+            dictionary=dictionary,
+            grouping=grouping,
+        )
+        summaries_cache.set(key, summaries)
+        return summaries
