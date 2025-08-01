@@ -31,10 +31,6 @@ def create_app(config_class=DevConfig) -> flask.Flask | None:
     app = flask.Flask(__name__)
     app.config.from_object(config_class)
 
-    init_routes(app)
-    init_caches(cache_size=config_class.MAX_CACHE_SIZE)
-    load_word_lists()
-
     # inject consts into Jinja for templates
     app.jinja_env.globals.update(**asdict(Consts()))
     app.jinja_env.globals.update(word_lists=WordLists, dictionaries=Dictionaries)
@@ -42,6 +38,10 @@ def create_app(config_class=DevConfig) -> flask.Flask | None:
     @app.context_processor
     def inject_current_year() -> dict[str, str]:  # type: ignore
         return {"CURRENT_YEAR": str(datetime.now().year)}
+
+    init_routes(app)
+    init_caches(cache_size=config_class.MAX_CACHE_SIZE)
+    load_word_lists()
 
     _logger.info(f"create_app completed")
     return app

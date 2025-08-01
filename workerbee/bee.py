@@ -5,17 +5,24 @@ from itertools import groupby
 from . import cache
 from .constants import Consts
 from .dictionaries import Dictionary
-from .types import Beeword, Metadata, NestedBeewords, OutputData, Summary, PangramStatus
+from .types import (
+    SpellingBeeWord,
+    Metadata,
+    NestedSpellingBeeWords,
+    FindWordsOutput,
+    ShowSummariesOutput,
+    PangramStatus,
+)
 from .wordlists import WordList, WordLists
 
 
-def _check_bingo(data: list[Beeword], pangram_set: set) -> bool:
+def _check_bingo(data: list[SpellingBeeWord], pangram_set: set) -> bool:
     initials_set = set([beeword.word[0] for beeword in data])
     return initials_set == pangram_set
 
 
 def _get_metadata(
-    data: list[Beeword],
+    data: list[SpellingBeeWord],
     required: str,
     allowed: str,
     dictionary: Dictionary,
@@ -45,12 +52,14 @@ def _get_pangram_status(word: str, pangram_set: set) -> PangramStatus:
     )
 
 
-def _get_beeword(word: str, pangram_set: set, dictionary: Dictionary) -> Beeword:
+def _get_beeword(
+    word: str, pangram_set: set, dictionary: Dictionary
+) -> SpellingBeeWord:
     pangram_status = _get_pangram_status(
         word=word,
         pangram_set=pangram_set,
     )
-    return Beeword(
+    return SpellingBeeWord(
         word=word,
         length=len(word),
         initials=word[0:2],
@@ -65,9 +74,9 @@ def _get_beewords(
     required_letter: str,
     allowed_letters: str,
     dictionary: Dictionary,
-) -> list[Beeword]:
+) -> list[SpellingBeeWord]:
     all_letters_set = set(required_letter + allowed_letters)
-    beewords: list[Beeword] = []
+    beewords: list[SpellingBeeWord] = []
     for this_word in word_list.words:  # type: ignore
         if required_letter in this_word:
             if set(this_word).issubset(all_letters_set):
@@ -98,27 +107,27 @@ def get_beewords(
     allowed_letters: str,
     dictionary: Dictionary,
     grouping: str = Consts.NO_GROUPING,
-) -> OutputData:
-    beewords: list[Beeword] = _get_beewords(
+) -> FindWordsOutput:
+    beewords: list[SpellingBeeWord] = _get_beewords(
         word_list=word_list,
         required_letter=required_letter,
         allowed_letters=allowed_letters,
         dictionary=dictionary,
     )
-    # for OutputData.nested, default to initials/length grouping
+    # for FindWordsOutput.nested, default to initials/length grouping
     grouping_list: list[str] = (
         get_groupings(Consts.INITIALS)
         if grouping == Consts.NO_GROUPING
         else get_groupings(grouping)
     )
 
-    def get_group0_key(beeword: Beeword) -> str | int:
+    def get_group0_key(beeword: SpellingBeeWord) -> str | int:
         return getattr(beeword, grouping_list[0])
 
-    def get_group1_key(beeword: Beeword) -> str | int:
+    def get_group1_key(beeword: SpellingBeeWord) -> str | int:
         return getattr(beeword, grouping_list[1])
 
-    nested_beewords: NestedBeewords = {}
+    nested_beewords: NestedSpellingBeeWords = {}
     for group0, data0 in groupby(
         sorted(beewords, key=get_group0_key), key=get_group0_key
     ):
@@ -128,7 +137,7 @@ def get_beewords(
         ):
             nested_beewords[group0][group1] = [beeword for beeword in data1]
 
-    return OutputData(
+    return FindWordsOutput(
         flat=beewords,
         nested=nested_beewords,
         metadata=_get_metadata(
@@ -147,7 +156,7 @@ def get_beewords_cached(
     allowed_letters: str,
     dictionary: Dictionary,
     grouping: str = Consts.NO_GROUPING,
-) -> OutputData:
+) -> FindWordsOutput:
 
     findwords_cache = cache.get_cache(cache.FIND_WORDS)
 
@@ -176,17 +185,17 @@ def get_beewords_cached(
 
 
 def _convert_to_summaries(
-    output_data: list[OutputData],
+    find_words_output: list[FindWordsOutput],
     word_sort: str,
     summary_sort: str,
-) -> list[Summary]:
+) -> list[ShowSummariesOutput]:
 
-    def get_key(beeword: Beeword, sort_type: str) -> str | int:
+    def get_key(beeword: SpellingBeeWord, sort_type: str) -> str | int:
         return beeword.length if sort_type == Consts.BYWORDLENGTH else beeword.word[0]
 
-    summaries: list[Summary] = []
-    for output in output_data:
-        beeword_dict = defaultdict(list[Beeword])
+    summaries: list[ShowSummariesOutput] = []
+    for output in find_words_output:
+        beeword_dict = defaultdict(list[SpellingBeeWord])
         saved_key = get_key(
             beeword=output.flat[0],
             sort_type=word_sort,
@@ -195,7 +204,9 @@ def _convert_to_summaries(
             this_key = get_key(beeword, sort_type=word_sort)
             saved_key = this_key if saved_key != this_key else saved_key
             beeword_dict[this_key].append(beeword)
-        summaries.append(Summary(beewords=beeword_dict, metadata=output.metadata))
+        summaries.append(
+            ShowSummariesOutput(beewords=beeword_dict, metadata=output.metadata)
+        )
     return sorted(
         summaries,
         key=lambda summary: summary.metadata.num_beewords,
@@ -210,19 +221,19 @@ def get_summaries(
     word_sort: str,
     summary_sort: str,
     grouping: str = Consts.NO_GROUPING,
-) -> list[Summary]:
-    output_list: list[OutputData] = []
+) -> list[ShowSummariesOutput]:
+    output_list: list[FindWordsOutput] = []
     for word_list in WordLists.values():
-        output_data = get_beewords(
+        find_words_output = get_beewords(
             word_list=word_list,
             required_letter=required_letter,
             allowed_letters=allowed_letters,
             dictionary=dictionary,
             grouping=grouping,
         )
-        output_list.append(output_data)
+        output_list.append(find_words_output)
     return _convert_to_summaries(
-        output_data=output_list,
+        find_words_output=output_list,
         word_sort=word_sort,
         summary_sort=summary_sort,
     )
@@ -235,7 +246,7 @@ def get_summaries_cached(
     summary_sort: str,
     dictionary: Dictionary,
     grouping: str = Consts.NO_GROUPING,
-) -> list[Summary]:
+) -> list[ShowSummariesOutput]:
 
     summaries_cache = cache.get_cache(cache.SUMMARIES)
 

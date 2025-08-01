@@ -7,7 +7,7 @@ from typing import Any
 
 from .config import Config
 from .constants import Consts
-from .types import Beeword, Metadata, OutputData
+from .types import SpellingBeeWord, Metadata, FindWordsOutput
 
 
 def error_check(args: dict) -> str | None:
@@ -42,7 +42,7 @@ def get_filename(metadata: Metadata, file_type: str) -> str:
     return "-".join(metadata_as_list) + f".{ext}"
 
 
-def decorate_word(beeword: Beeword) -> str:
+def decorate_word(beeword: SpellingBeeWord) -> str:
     pangram_marker = (
         Consts.PERFECT_MARKER
         if beeword.is_perfect
@@ -71,7 +71,9 @@ def make_serializable(obj2convert: Any) -> Any:
 
 
 def write_to_buffer(
-    output_data: OutputData, file_type: str, grouping: str = Consts.NO_GROUPING
+    find_words_output: FindWordsOutput,
+    file_type: str,
+    grouping: str = Consts.NO_GROUPING,
 ) -> StringIO:
     csv_output: list[dict] = []
     sio = StringIO()
@@ -85,25 +87,29 @@ def write_to_buffer(
                     WORD_FIELD: decorate_word(beeword),
                     DEFINITION_URL_FIELD: beeword.definition_url,
                 }
-                for beeword in output_data.flat
+                for beeword in find_words_output.flat
             ]
         if file_type == Consts.CSV:
-            fieldnames = output_data.metadata.beeword_fieldnames
-            csv_output = make_serializable(output_data.flat)
+            fieldnames = find_words_output.metadata.beeword_fieldnames
+            csv_output = make_serializable(find_words_output.flat)
         csvwriter = csv.DictWriter(sio, fieldnames=fieldnames)
         csvwriter.writeheader()
         csvwriter.writerows(csv_output)
 
     elif file_type == Consts.TXT:
-        sio.write("\n".join([decorate_word(word) for word in output_data.flat]))
+        sio.write("\n".join([decorate_word(word) for word in find_words_output.flat]))
 
     elif file_type == Consts.JSON:
         data = (
-            output_data.flat if grouping == Consts.NO_GROUPING else output_data.nested
+            find_words_output.flat
+            if grouping == Consts.NO_GROUPING
+            else find_words_output.nested
         )
         sio.write(
             json.dumps(
-                make_serializable({"data": data, "metadata": output_data.metadata}),
+                make_serializable(
+                    {"data": data, "metadata": find_words_output.metadata}
+                ),
                 indent=2,
             )
         )

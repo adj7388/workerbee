@@ -32,7 +32,7 @@ ExecStartPre=/bin/mkdir -p /var/run/workerbee
 ExecStartPre=/bin/chown -R gunicorn:www-data /var/run/workerbee
 
 WorkingDirectory=/opt/workerbee/
-ExecStart=/opt/workerbee/.venv/bin/gunicorn --capture-output --access-logfile /var/log/gunicorn/workerbee-access.log --error-logfile=/var/log/gunicorn/workerbee-error.log -w 4 --bind unix:/var/run/workerbee/workerbee.sock --umask 007 "wsgi:app"
+ExecStart=/opt/workerbee/.venv/bin/gunicorn --capture-output --access-logfile /var/log/gunicorn/workerbee-access.log --error-logfile=/var/log/gunicorn/workerbee-error.log -w 2 --bind unix:/var/run/workerbee/workerbee.sock --umask 007 "wsgi:app"
 
 Restart=always
 RestartSec=5

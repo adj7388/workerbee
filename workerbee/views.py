@@ -16,7 +16,7 @@ from io import BytesIO
 from .bee import get_groupings, get_beewords_cached, get_summaries_cached
 from .constants import Consts
 from .dictionaries import Dictionaries, WIKT
-from .types import Summary, OutputData
+from .types import ShowSummariesOutput, FindWordsOutput
 from .utils import error_check, get_filename, write_to_buffer
 from .wordlists import WordLists, SCOWL_DEFAULT_60
 
@@ -86,11 +86,11 @@ def init_routes(app: Flask) -> None:
     @app.route(f"/find-words-results", methods=["GET"])
     def find_words_results() -> str:  # type: ignore reportUnusedFunction
         args = session[Consts.ARGS]
-        output_data: OutputData | None = None
+        find_words_output: FindWordsOutput | None = None
         if error_msg := error_check(args=args):
             flash(message=error_msg)
         else:
-            output_data = get_beewords_cached(
+            find_words_output = get_beewords_cached(
                 word_list=WordLists[args[Consts.WORD_LIST]],
                 required_letter=args[Consts.REQUIRED_LETTER],
                 allowed_letters=args[Consts.ALLOWED_LETTERS],
@@ -99,18 +99,18 @@ def init_routes(app: Flask) -> None:
             )
         return render_template(
             "_find_words_results.html",
-            output_data=output_data,
+            find_words_output=find_words_output,
             grouping=get_groupings(args[Consts.GROUPING]),
         )
 
     @app.route(f"/show-summaries-results", methods=["GET"])
     def show_summaries_results() -> str:  # type: ignore reportUnusedFunction
         args = session[Consts.ARGS]
-        summaries: list[Summary] = []
+        show_summaries_output: list[ShowSummariesOutput] = []
         if error_msg := error_check(args=args):
             flash(message=error_msg)
         else:
-            summaries = get_summaries_cached(
+            show_summaries_output = get_summaries_cached(
                 required_letter=args[Consts.REQUIRED_LETTER],
                 allowed_letters=args[Consts.ALLOWED_LETTERS],
                 dictionary=Dictionaries[args[Consts.DICTIONARY]],
@@ -119,14 +119,14 @@ def init_routes(app: Flask) -> None:
             )
         return render_template(
             "_show_summaries_results.html",
-            summaries=summaries,
+            summaries=show_summaries_output,
             dictionary=Dictionaries[args[Consts.DICTIONARY]],
         )
 
     @app.route("/get-file", methods=["GET"])
     def get_file() -> Response:  # type: ignore reportUnusedFunction
         args = session[Consts.ARGS]
-        output_data = get_beewords_cached(
+        find_words_output = get_beewords_cached(
             word_list=WordLists[args[Consts.WORD_LIST]],
             required_letter=args[Consts.REQUIRED_LETTER],
             allowed_letters=args[Consts.ALLOWED_LETTERS],
@@ -134,14 +134,14 @@ def init_routes(app: Flask) -> None:
             grouping=Consts.NO_GROUPING,
         )
         buffer = write_to_buffer(
-            output_data=output_data,
+            find_words_output=find_words_output,
             file_type=args[Consts.FILE_TYPE],
             grouping=args[Consts.GROUPING],
         )
         return send_file(
             BytesIO(buffer.getvalue().encode(encoding="utf-8")),
             download_name=get_filename(
-                metadata=output_data.metadata,
+                metadata=find_words_output.metadata,
                 file_type=args[Consts.FILE_TYPE],
             ),
             as_attachment=True,

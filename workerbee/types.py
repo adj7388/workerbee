@@ -3,7 +3,7 @@ from typing import TypeAlias
 
 
 @dataclass(slots=True)
-class Beeword:
+class SpellingBeeWord:
     word: str
     length: int
     initials: str
@@ -24,25 +24,27 @@ class Metadata:
     required: str
     allowed: str
     bingo: bool
-    perfect_pangrams: list[Beeword]
-    nonperfect_pangrams: list[Beeword]
+    perfect_pangrams: list[SpellingBeeWord]
+    nonperfect_pangrams: list[SpellingBeeWord]
     dictionary: str
     word_list: str
     beeword_fieldnames: list[str]
 
 
 NestedKeyType: TypeAlias = str | int
-NestedBeewords: TypeAlias = dict[NestedKeyType, dict[NestedKeyType, list[Beeword]]]
+NestedSpellingBeeWords: TypeAlias = dict[
+    NestedKeyType, dict[NestedKeyType, list[SpellingBeeWord]]
+]
 
 
 @dataclass(slots=True)
-class OutputData:
-    nested: NestedBeewords
-    flat: list[Beeword]
+class FindWordsOutput:
+    nested: NestedSpellingBeeWords
+    flat: list[SpellingBeeWord]
     metadata: Metadata
 
 
 @dataclass(slots=True)
-class Summary:
-    beewords: dict[NestedKeyType, list[Beeword]]
+class ShowSummariesOutput:
+    beewords: dict[NestedKeyType, list[SpellingBeeWord]]
     metadata: Metadata
