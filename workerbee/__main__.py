@@ -150,7 +150,9 @@ def main():
         buffer = write_to_buffer(find_words_output, file_type="csv")
         print(buffer.getvalue())
     elif args.json:
-        buffer = write_to_buffer(find_words_output, file_type="json")
+        buffer = write_to_buffer(
+            find_words_output, grouping=args.groupby, file_type="json"
+        )
         print(buffer.getvalue())
     ### ... if not csv/json (above), then print to stdout based on groupby
     elif args.groupby == Consts.NO_GROUPING:

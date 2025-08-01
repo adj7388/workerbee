@@ -55,7 +55,7 @@ def _get_pangram_status(word: str, pangram_set: set) -> PangramStatus:
 def _get_beeword(
     word: str, pangram_set: set, dictionary: Dictionary
 ) -> SpellingBeeWord:
-    pangram_status = _get_pangram_status(
+    pangram_status: PangramStatus = _get_pangram_status(
         word=word,
         pangram_set=pangram_set,
     )
@@ -90,13 +90,13 @@ def _get_beewords(
     return sorted(beewords, key=lambda beeword: beeword.word)
 
 
-def get_groupings(grouping: str) -> list:
+def get_groupings(grouping: str) -> tuple[str, ...]:
     if grouping == Consts.LENGTH:
-        return [Consts.LENGTH, Consts.INITIALS]
+        return (Consts.LENGTH, Consts.INITIALS)
     elif grouping == Consts.INITIALS:
-        return [Consts.INITIALS, Consts.LENGTH]
+        return (Consts.INITIALS, Consts.LENGTH)
     elif grouping == Consts.NO_GROUPING:
-        return [Consts.NO_GROUPING]
+        return (Consts.NO_GROUPING,)
     else:
         raise ValueError(f"Bad grouping: {grouping}")
 
@@ -115,7 +115,7 @@ def get_beewords(
         dictionary=dictionary,
     )
     # for FindWordsOutput.nested, default to initials/length grouping
-    grouping_list: list[str] = (
+    grouping_list: tuple[str, ...] = (
         get_groupings(Consts.INITIALS)
         if grouping == Consts.NO_GROUPING
         else get_groupings(grouping)
