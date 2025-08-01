@@ -74,11 +74,11 @@ def init_routes(app: Flask) -> None:
         return render_template("about.html")
 
     ### Forms ###
-    @app.route(f"/find-words", methods=["GET"])
+    @app.route(f"/find-words")
     def find_words() -> str:  # type: ignore reportUnusedFunction
         return render_template("find_words.html")
 
-    @app.route(f"/show-summaries", methods=["GET"])
+    @app.route(f"/show-summaries")
     def show_summaries() -> str:  # type: ignore reportUnusedFunction
         return render_template("show_summaries.html")
 

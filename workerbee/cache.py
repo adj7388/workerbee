@@ -59,12 +59,12 @@ class FIFOCache:
             )
 
 
-FIND_WORDS: str = "findwords"
-SUMMARIES: str = "showsummaries"
+FIND_WORDS: str = "find_words"
+SHOW_SUMMARIES: str = "show_summaries"
 
 _caches: dict[str, FIFOCache | None] = {
     FIND_WORDS: None,
-    SUMMARIES: None,
+    SHOW_SUMMARIES: None,
 }
 
 

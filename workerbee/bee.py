@@ -248,7 +248,7 @@ def get_summaries_cached(
     grouping: str = Consts.NO_GROUPING,
 ) -> list[ShowSummariesOutput]:
 
-    summaries_cache = cache.get_cache(cache.SUMMARIES)
+    summaries_cache = cache.get_cache(cache.SHOW_SUMMARIES)
 
     key = frozenset(
         (

@@ -83,8 +83,18 @@
             const show_words = document.getElementById('{{SHOW_WORDS}}').checked;
             const dictionary = document.getElementById('{{DICTIONARY}}').value;
             const word_sort = document.querySelector('input[name="{{ WORD_SORT }}"]:checked')?.value;
-            query = `required=${required}&allowed=${allowed}&summary_sort=${summary_sort}&show_words=${show_words}&word_sort=${word_sort}&dictionary=${dictionary}`;
-            fetch(`/show-summaries-results?${query}`)
+
+            const showSummariesUrl = "{{ url_for('show_summaries_results') }}";
+            const params = new URLSearchParams({
+                required,
+                allowed,
+                summary_sort,
+                show_words,
+                word_sort,
+                dictionary,
+            });
+
+            fetch(`${showSummariesUrl}?${params.toString()}`)
                 .then(res => res.text())
                 .then(html => {
                     // Insert results in <div id='results'>

@@ -60,26 +60,34 @@
     {# Results inserted here #}
     <div id="results"></div>
 
-    <script>
-        document.getElementById('searchForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const submitButton = document.getElementById('submitButton').value = 'Update Results';
-            const word_list = document.getElementById('{{WORD_LIST}}').value;
-            const required = document.getElementById('{{REQUIRED_LETTER}}').value;
-            const allowed = document.getElementById('{{ALLOWED_LETTERS}}').value;
-            const grouping = document.querySelector('input[name="{{ GROUPING }}"]:checked')?.value;
-            const dictionary = document.getElementById('{{DICTIONARY}}').value;
-            query = `word_list=${word_list}&required=${required}&allowed=${allowed}&grouping=${grouping}&dictionary=${dictionary}`;
-            fetch(`/find-words-results?${query}`)
-                .then(res => res.text())
-                .then(html => {
-                    // Insert results in <div id='results'>
-                    document.getElementById('results').innerHTML = `
-                        <div class="mt-3 bg-light" style="padding: 1em; border-top: 1px solid #333;">
-                            ${html}
-                        </div>`;
-                });
+<script>
+    document.getElementById('searchForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const submitButton = document.getElementById('submitButton').value = 'Update Results';
+        const word_list = document.getElementById('{{ WORD_LIST }}').value;
+        const required = document.getElementById('{{ REQUIRED_LETTER }}').value;
+        const allowed = document.getElementById('{{ ALLOWED_LETTERS }}').value;
+        const grouping = document.querySelector('input[name="{{ GROUPING }}"]:checked')?.value;
+        const dictionary = document.getElementById('{{ DICTIONARY }}').value;
+
+        const findWordsUrl = "{{ url_for('find_words_results') }}";
+        const params = new URLSearchParams({
+            word_list,
+            required,
+            allowed,
+            grouping,
+            dictionary,
         });
-  </script>
+
+        fetch(`${findWordsUrl}?${params.toString()}`)
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('results').innerHTML = `
+                    <div class="mt-3 bg-light" style="padding: 1em; border-top: 1px solid #333;">
+                        ${html}
+                    </div>`;
+            });
+    });
+</script>
 
 {% endblock %}
