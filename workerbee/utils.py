@@ -7,7 +7,7 @@ from typing import Any, cast
 
 from .config import Config
 from .constants import Consts
-from .types import SpellingBeeWord, Metadata, NestedSpellingBeeWords, Metadata
+from .types import SpellingBeeWord, Metadata, NestedSpellingBeeWords
 
 
 def error_check(args: dict) -> str | None:
