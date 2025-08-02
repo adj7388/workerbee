@@ -56,8 +56,9 @@
 
     <div>
         <hr/>
-            <footer>
+            <footer style="display: flex; justify-content: space-between;">
                 <p>&copy;{{ CURRENT_YEAR }} - Alan Johnston</p>
+                <p style="font-size: smaller">Commit: {{ COMMIT_HASH[:7] }}</p>
             </footer>
     </div>
 

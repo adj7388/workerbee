@@ -39,6 +39,10 @@ def create_app(config_class=DevConfig) -> flask.Flask | None:
     def inject_current_year() -> dict[str, str]:  # type: ignore
         return {"CURRENT_YEAR": str(datetime.now().year)}
 
+    @app.context_processor
+    def inject_commit_hash() -> dict[str, str]:  # type: ignore
+        return {"COMMIT_HASH": app.config["COMMIT_HASH"]}
+
     init_routes(app)
     init_caches(cache_size=config_class.MAX_CACHE_SIZE)
     load_word_lists()
