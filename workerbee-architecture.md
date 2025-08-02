@@ -1,3 +1,8 @@
+>>>> to deploy to production (see scripts/deploy.sh)
+$ cd /opt/workerbee
+$ git pull
+$ .workerbee/scripts/deploy.sh
+
 >>>>>>>>>>>>>>>>>>>> app dir
 alan@alan-ASUSPRO-P5440UF:/opt/workerbee$ ls -la
 total 35968
@@ -42,8 +47,6 @@ Environment="SECRETBEEKEY=Shhh"
 [Install]
 WantedBy=multi-user.target
 
-
-
 >>>>>>>>>>>>>>> nginx.conf
 location / {
     # Proxy pass to Gunicorn
@@ -55,7 +58,8 @@ location / {
     proxy_set_header X-Forwarded-Proto $scheme;
 }
 
->>>>>>>>>>>>>>>>>>>>> nginx <> gunicorn communication
+>>>>>>>>>>>>>>>> service and nginx config should create /var/run/workerbee/workerbee.sock
+>>>>>>>>>>>>>>>> for nginx <> gunicorn communication
 alan@alan-ASUSPRO-P5440UF:/opt/workerbee$ ls -la /var/run/workerbee/
 total 0
 drwxrwx---  2 gunicorn www-data   60 Jan 19 15:40 .
