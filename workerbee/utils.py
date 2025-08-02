@@ -77,24 +77,30 @@ def write_to_buffer(
 ) -> StringIO:
     csv_output: list[dict] = []
     sio = StringIO()
-    if file_type in [Consts.CSV, Consts.WORD_URL_CSV]:
-        if file_type == Consts.WORD_URL_CSV:
-            WORD_FIELD = "word"
-            DEFINITION_URL_FIELD = "definition_url"
-            fieldnames = [WORD_FIELD, DEFINITION_URL_FIELD]
-            csv_output = [
-                {
-                    WORD_FIELD: decorate_word(beeword),
-                    DEFINITION_URL_FIELD: beeword.definition_url,
-                }
-                for beeword in cast(list[SpellingBeeWord], data)
-            ]
-        if file_type == Consts.CSV:
-            fieldnames = metadata.field_names
-            csv_output = make_serializable(data)
+
+    if file_type == Consts.CSV:
+        fieldnames = metadata.field_names
+        csv_output = make_serializable(data)
         csvwriter = csv.DictWriter(sio, fieldnames=fieldnames)
         csvwriter.writeheader()
         csvwriter.writerows(csv_output)
+        return sio
+
+    elif file_type == Consts.WORD_URL_CSV:
+        WORD_FIELD = "word"
+        URL_FIELD = "definition_url"
+        fieldnames = [WORD_FIELD, URL_FIELD]
+        csv_output = [
+            {
+                WORD_FIELD: decorate_word(beeword),
+                URL_FIELD: beeword.definition_url,
+            }
+            for beeword in cast(list[SpellingBeeWord], data)
+        ]
+        csvwriter = csv.DictWriter(sio, fieldnames=fieldnames)
+        csvwriter.writeheader()
+        csvwriter.writerows(csv_output)
+        return sio
 
     elif file_type == Consts.TXT:
         sio.write(
@@ -102,6 +108,7 @@ def write_to_buffer(
                 [decorate_word(word) for word in cast(list[SpellingBeeWord], data)]
             )
         )
+        return sio
 
     elif file_type == Consts.JSON:
         sio.write(
@@ -110,8 +117,7 @@ def write_to_buffer(
                 indent=2,
             )
         )
+        return sio
 
     else:
         raise ValueError(f"Bad file_type: {file_type}")
-
-    return sio
