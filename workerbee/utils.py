@@ -89,7 +89,6 @@ def write_to_buffer(
     elif file_type == Consts.WORD_URL_CSV:
         WORD_FIELD = "word"
         URL_FIELD = "definition_url"
-        fieldnames = [WORD_FIELD, URL_FIELD]
         csv_output = [
             {
                 WORD_FIELD: decorate_word(beeword),
@@ -97,7 +96,7 @@ def write_to_buffer(
             }
             for beeword in cast(list[SpellingBeeWord], data)
         ]
-        csvwriter = csv.DictWriter(sio, fieldnames=fieldnames)
+        csvwriter = csv.DictWriter(sio, fieldnames=[WORD_FIELD, URL_FIELD])
         csvwriter.writeheader()
         csvwriter.writerows(csv_output)
         return sio
