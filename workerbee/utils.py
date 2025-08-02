@@ -3,11 +3,11 @@ import json
 
 from dataclasses import asdict, is_dataclass
 from io import StringIO
-from typing import Any
+from typing import Any, cast
 
 from .config import Config
 from .constants import Consts
-from .types import SpellingBeeWord, Metadata, FindWordsOutput
+from .types import SpellingBeeWord, Metadata, NestedSpellingBeeWords, Metadata
 
 
 def error_check(args: dict) -> str | None:
@@ -71,9 +71,9 @@ def make_serializable(obj2convert: Any) -> Any:
 
 
 def write_to_buffer(
-    found_words: FindWordsOutput,
+    data: NestedSpellingBeeWords | list[SpellingBeeWord],
+    metadata: Metadata,
     file_type: str,
-    grouping: str = Consts.NO_GROUPING,
 ) -> StringIO:
     csv_output: list[dict] = []
     sio = StringIO()
@@ -87,25 +87,26 @@ def write_to_buffer(
                     WORD_FIELD: decorate_word(beeword),
                     DEFINITION_URL_FIELD: beeword.definition_url,
                 }
-                for beeword in found_words.flat
+                for beeword in cast(list[SpellingBeeWord], data)
             ]
         if file_type == Consts.CSV:
-            fieldnames = found_words.metadata.field_names
-            csv_output = make_serializable(found_words.flat)
+            fieldnames = metadata.field_names
+            csv_output = make_serializable(data)
         csvwriter = csv.DictWriter(sio, fieldnames=fieldnames)
         csvwriter.writeheader()
         csvwriter.writerows(csv_output)
 
     elif file_type == Consts.TXT:
-        sio.write("\n".join([decorate_word(word) for word in found_words.flat]))
+        sio.write(
+            "\n".join(
+                [decorate_word(word) for word in cast(list[SpellingBeeWord], data)]
+            )
+        )
 
     elif file_type == Consts.JSON:
-        data = (
-            found_words.flat if grouping == Consts.NO_GROUPING else found_words.nested
-        )
         sio.write(
             json.dumps(
-                make_serializable({"data": data, "metadata": found_words.metadata}),
+                make_serializable({"data": data, "metadata": metadata}),
                 indent=2,
             )
         )

@@ -149,11 +149,13 @@ def main():
 
     ### check for csv or json output first, if they're specified in args ...
     if args.csv:
-        buffer: StringIO = write_to_buffer(found_words, file_type="csv")
+        buffer: StringIO = write_to_buffer(
+            found_words.flat, metadata=found_words.metadata, file_type="csv"
+        )
         print(buffer.getvalue())
     elif args.json:
         buffer: StringIO = write_to_buffer(
-            found_words, grouping=args.groupby, file_type="json"
+            found_words.nested, metadata=found_words.metadata, file_type="json"
         )
         print(buffer.getvalue())
     ### ... if not csv/json (above), then print to stdout based on groupby

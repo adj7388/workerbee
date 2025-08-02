@@ -13,10 +13,19 @@ from flask import (
 )
 from io import BytesIO, StringIO
 
-from .bee import get_groupings, get_beewords_cached, get_summaries_cached
+from .bee import (
+    get_groupings,
+    get_beewords_cached,
+    get_summaries_cached,
+)
 from .constants import Consts
 from .dictionaries import Dictionaries, WIKT
-from .types import ShowSummariesOutput, FindWordsOutput
+from .types import (
+    SpellingBeeWord,
+    NestedSpellingBeeWords,
+    ShowSummariesOutput,
+    FindWordsOutput,
+)
 from .utils import error_check, get_filename, write_to_buffer
 from .wordlists import WordLists, SCOWL_DEFAULT_60
 
@@ -126,17 +135,23 @@ def init_routes(app: Flask) -> None:
     @app.route("/get-file", methods=["GET"])
     def get_file() -> Response:  # type: ignore reportUnusedFunction
         args = session[Consts.ARGS]
-        found_words = get_beewords_cached(
+        found_words: FindWordsOutput = get_beewords_cached(
             word_list=WordLists[args[Consts.WORD_LIST]],
             required_letter=args[Consts.REQUIRED_LETTER],
             allowed_letters=args[Consts.ALLOWED_LETTERS],
             dictionary=Dictionaries[args[Consts.DICTIONARY]],
-            grouping=Consts.NO_GROUPING,
+            grouping=args[Consts.GROUPING],
+        )
+        data: NestedSpellingBeeWords | list[SpellingBeeWord] = (
+            found_words.nested
+            if args[Consts.FILE_TYPE] == Consts.JSON
+            and (args[Consts.GROUPING] != Consts.NO_GROUPING)
+            else found_words.flat
         )
         buffer: StringIO = write_to_buffer(
-            found_words=found_words,
+            data=data,
+            metadata=found_words.metadata,
             file_type=args[Consts.FILE_TYPE],
-            grouping=args[Consts.GROUPING],
         )
         return send_file(
             BytesIO(buffer.getvalue().encode(encoding="utf-8")),
