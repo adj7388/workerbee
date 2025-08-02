@@ -20,7 +20,7 @@ class PangramStatus:
 
 @dataclass(slots=True)
 class Metadata:
-    num_beewords: int
+    num_words: int
     required: str
     allowed: str
     bingo: bool
@@ -28,7 +28,7 @@ class Metadata:
     nonperfect_pangrams: list[SpellingBeeWord]
     dictionary: str
     word_list: str
-    beeword_fieldnames: list[str]
+    field_names: list[str]
 
 
 NestedKeyType: TypeAlias = str | int

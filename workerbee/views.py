@@ -11,7 +11,7 @@ from flask import (
     session,
     url_for,
 )
-from io import BytesIO
+from io import BytesIO, StringIO
 
 from .bee import get_groupings, get_beewords_cached, get_summaries_cached
 from .constants import Consts
@@ -86,11 +86,11 @@ def init_routes(app: Flask) -> None:
     @app.route(f"/find-words-results", methods=["GET"])
     def find_words_results() -> str:  # type: ignore reportUnusedFunction
         args = session[Consts.ARGS]
-        find_words_output: FindWordsOutput | None = None
+        found_words: FindWordsOutput | None = None
         if error_msg := error_check(args=args):
             flash(message=error_msg)
         else:
-            find_words_output = get_beewords_cached(
+            found_words = get_beewords_cached(
                 word_list=WordLists[args[Consts.WORD_LIST]],
                 required_letter=args[Consts.REQUIRED_LETTER],
                 allowed_letters=args[Consts.ALLOWED_LETTERS],
@@ -99,7 +99,7 @@ def init_routes(app: Flask) -> None:
             )
         return render_template(
             "_find_words_results.html",
-            find_words_output=find_words_output,
+            found_words=found_words,
             grouping=get_groupings(args[Consts.GROUPING]),
         )
 
@@ -126,22 +126,22 @@ def init_routes(app: Flask) -> None:
     @app.route("/get-file", methods=["GET"])
     def get_file() -> Response:  # type: ignore reportUnusedFunction
         args = session[Consts.ARGS]
-        find_words_output = get_beewords_cached(
+        found_words = get_beewords_cached(
             word_list=WordLists[args[Consts.WORD_LIST]],
             required_letter=args[Consts.REQUIRED_LETTER],
             allowed_letters=args[Consts.ALLOWED_LETTERS],
             dictionary=Dictionaries[args[Consts.DICTIONARY]],
             grouping=Consts.NO_GROUPING,
         )
-        buffer = write_to_buffer(
-            find_words_output=find_words_output,
+        buffer: StringIO = write_to_buffer(
+            found_words=found_words,
             file_type=args[Consts.FILE_TYPE],
             grouping=args[Consts.GROUPING],
         )
         return send_file(
             BytesIO(buffer.getvalue().encode(encoding="utf-8")),
             download_name=get_filename(
-                metadata=find_words_output.metadata,
+                metadata=found_words.metadata,
                 file_type=args[Consts.FILE_TYPE],
             ),
             as_attachment=True,

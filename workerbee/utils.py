@@ -36,7 +36,7 @@ def get_filename(metadata: Metadata, file_type: str) -> str:
     metadata_as_list = [
         f"{metadata.required}",
         f"{metadata.allowed}",
-        f"{metadata.num_beewords}",
+        f"{metadata.num_words}",
         f"{metadata.word_list}",
     ]
     return "-".join(metadata_as_list) + f".{ext}"
@@ -71,7 +71,7 @@ def make_serializable(obj2convert: Any) -> Any:
 
 
 def write_to_buffer(
-    find_words_output: FindWordsOutput,
+    found_words: FindWordsOutput,
     file_type: str,
     grouping: str = Consts.NO_GROUPING,
 ) -> StringIO:
@@ -87,29 +87,25 @@ def write_to_buffer(
                     WORD_FIELD: decorate_word(beeword),
                     DEFINITION_URL_FIELD: beeword.definition_url,
                 }
-                for beeword in find_words_output.flat
+                for beeword in found_words.flat
             ]
         if file_type == Consts.CSV:
-            fieldnames = find_words_output.metadata.beeword_fieldnames
-            csv_output = make_serializable(find_words_output.flat)
+            fieldnames = found_words.metadata.field_names
+            csv_output = make_serializable(found_words.flat)
         csvwriter = csv.DictWriter(sio, fieldnames=fieldnames)
         csvwriter.writeheader()
         csvwriter.writerows(csv_output)
 
     elif file_type == Consts.TXT:
-        sio.write("\n".join([decorate_word(word) for word in find_words_output.flat]))
+        sio.write("\n".join([decorate_word(word) for word in found_words.flat]))
 
     elif file_type == Consts.JSON:
         data = (
-            find_words_output.flat
-            if grouping == Consts.NO_GROUPING
-            else find_words_output.nested
+            found_words.flat if grouping == Consts.NO_GROUPING else found_words.nested
         )
         sio.write(
             json.dumps(
-                make_serializable(
-                    {"data": data, "metadata": find_words_output.metadata}
-                ),
+                make_serializable({"data": data, "metadata": found_words.metadata}),
                 indent=2,
             )
         )

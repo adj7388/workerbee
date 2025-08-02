@@ -3,7 +3,7 @@
 {% macro summary_row(summary) %}
     <tr>
         <td class="align-middle">{{ summary.metadata.word_list }}</td>
-        <td class="align-middle">{{ summary.metadata.num_beewords }}</td>
+        <td class="align-middle">{{ summary.metadata.num_words }}</td>
         <td class="align-middle">{{ "Yes" if summary.metadata.bingo else "No" }}</td>
         <td class="align-middle">({{ summary.metadata.perfect_pangrams | length }})
             {% for pangram in summary.metadata.perfect_pangrams %}

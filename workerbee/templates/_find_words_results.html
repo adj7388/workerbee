@@ -102,7 +102,7 @@
     {% set num_perfect_pangrams = metadata.perfect_pangrams | length %}
     {% set num_nonperfect_pangrams = metadata.nonperfect_pangrams | length %}
     <div class="d-flex flex-wrap">
-        <div class="me-3"><strong>Total Words: </strong>{{metadata.num_beewords}}</div>
+        <div class="me-3"><strong>Total Words: </strong>{{metadata.num_words}}</div>
         <div class="me-3"><strong>Found in: </strong>{{metadata.word_list}}</div>
         <div class="me-3">
             <strong>
@@ -132,11 +132,11 @@
 {% endmacro %}
 
 
-{% macro show_words_grouped(find_words_output, grouping) %}
+{% macro show_words_grouped(found_words, grouping) %}
     {# top_level* and second_level* will be INITIALS or LENGTH, or vice versa #}
     {% set top_level_group, second_level_group = grouping[0], grouping[1] %}
     <div class="row g-0">
-        {% for toplevel_heading, toplevel_values in find_words_output.nested.items() %}
+        {% for toplevel_heading, toplevel_values in found_words.nested.items() %}
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <table>
                     {{ heading_row(
@@ -166,16 +166,16 @@
     {% if messages %}
         {{ show_messages(messages) }}
     {% else %}
-        {{ find_words_metadata(metadata=find_words_output.metadata) }}
+        {{ find_words_metadata(metadata=found_words.metadata) }}
         {{ getfile_dropdown() }}
         {% if session[ARGS][GROUPING] == NO_GROUPING %}
-            {% for beeword in find_words_output.flat %}
+            {% for beeword in found_words.flat %}
                 <p class="m-0 p-0">
                     {{ decorate_word(beeword) }}
                 </p>
             {% endfor %}
         {% else %}
-            {{ show_words_grouped(find_words_output, grouping) }}
+            {{ show_words_grouped(found_words, grouping) }}
         {% endif %}
     {% endif %}
 {% endwith %}

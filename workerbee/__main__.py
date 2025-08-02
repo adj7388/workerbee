@@ -1,6 +1,8 @@
 import argparse
 import sys
 
+from io import StringIO
+
 from .bee import get_beewords
 from .config import Config
 from .constants import Consts
@@ -86,7 +88,7 @@ def get_commandline_args() -> argparse.Namespace:
 
 def print_meta_data(metadata: Metadata):
     print()
-    print(f"Number Spelling Bee Words:  {metadata.num_beewords}")
+    print(f"Number Spelling Bee Words:  {metadata.num_words}")
     print(f"Required letters: {metadata.required}")
     print(f"Allowed letters:  {metadata.allowed}")
     print(
@@ -102,23 +104,23 @@ def print_meta_data(metadata: Metadata):
     print()
 
 
-def print_beewords_grouped(find_words_output: FindWordsOutput) -> None:
+def print_beewords_grouped(found_words: FindWordsOutput) -> None:
     SPACING = "   "
-    print_meta_data(find_words_output.metadata)
-    for first_level_label, first_level_words in find_words_output.nested.items():
+    print_meta_data(found_words.metadata)
+    for first_level_label, first_level_words in found_words.nested.items():
         print(first_level_label)
         for second_level_label, words in first_level_words.items():
             print(f"{SPACING * 1}{second_level_label}")
             for beeword in words:
                 print(f"{SPACING * 2}{decorate_word(beeword)}")
-    print_meta_data(find_words_output.metadata)
+    print_meta_data(found_words.metadata)
 
 
-def print_beewords_list(find_words_output: FindWordsOutput) -> None:
-    print_meta_data(find_words_output.metadata)
-    for beeword in find_words_output.flat:
+def print_beewords_list(found_words: FindWordsOutput) -> None:
+    print_meta_data(found_words.metadata)
+    for beeword in found_words.flat:
         print(decorate_word(beeword))
-    print_meta_data(find_words_output.metadata)
+    print_meta_data(found_words.metadata)
 
 
 ############ main ############
@@ -137,7 +139,7 @@ def main():
         sys.exit(0)
 
     load_word_lists(args.wordlist)
-    find_words_output: FindWordsOutput = get_beewords(
+    found_words: FindWordsOutput = get_beewords(
         word_list=WordLists[args.wordlist],
         required_letter=args.required,
         allowed_letters=args.allowed,
@@ -147,18 +149,18 @@ def main():
 
     ### check for csv or json output first, if they're specified in args ...
     if args.csv:
-        buffer = write_to_buffer(find_words_output, file_type="csv")
+        buffer: StringIO = write_to_buffer(found_words, file_type="csv")
         print(buffer.getvalue())
     elif args.json:
-        buffer = write_to_buffer(
-            find_words_output, grouping=args.groupby, file_type="json"
+        buffer: StringIO = write_to_buffer(
+            found_words, grouping=args.groupby, file_type="json"
         )
         print(buffer.getvalue())
     ### ... if not csv/json (above), then print to stdout based on groupby
     elif args.groupby == Consts.NO_GROUPING:
-        print_beewords_list(find_words_output=find_words_output)
+        print_beewords_list(found_words=found_words)
     elif args.groupby in [Consts.INITIALS, Consts.LENGTH]:
-        print_beewords_grouped(find_words_output=find_words_output)
+        print_beewords_grouped(found_words=found_words)
     else:
         raise ValueError("Error: Don't know how to output.")
 
