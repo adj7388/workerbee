@@ -5,16 +5,11 @@ import pathlib
 _logger = logging.getLogger(__name__)
 
 
-def _get_commit_hash(path_str: str, delete_file=True) -> str:
-    path = pathlib.Path(path_str)
+def _get_commit_hash(path_str: str) -> str:
     commit = "unknown"
+    path = pathlib.Path(path_str)
     if path.exists():
         commit = path.read_text().strip()
-        if delete_file:
-            try:
-                path.unlink()
-            except Exception as e:
-                _logger.warning(f"Failed to delete commit hash file: {e}")
     return commit
 
 
