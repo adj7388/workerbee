@@ -2,7 +2,7 @@
 2. Create virtual environment `python3 -m venv .venv`
 3. Activate virutal environemt with `source .venv/bin/activate` (Linux) or `.venv/Scripts/activate` (Windows)
 4. Install dependencies `pip install -r requirements.txt`
-5. Set required env variable: `export SECRETBEEKEY='Shhhh' (Linux) or `set SECRETBEEKEY=Shhhhhhhh` (Windows)
+5. Set required env variable: `export SECRET_KEY='Shhhh' (Linux) or `set SECRET_KEY=Shhhhhhhh` (Windows)
 6. For development, launch Flask `flask workerbee:app`
 7. Create gunicorn user:group, no-login.
 8. Create `/etc/systemd/system/workerbee.service` file; then `sudo systemctl daemon-reload`

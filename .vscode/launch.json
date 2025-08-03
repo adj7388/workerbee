@@ -27,7 +27,7 @@
             "module": "flask",
             "env": {
                 "FLASK_APP": "wsgi:app",
-                "SECRETBEEKEY": "OPIEUR0983475098SADFKNB,.MA;LKSDFJLAk;ljasdkltqopiuy340987564qtigf",
+                "SECRET_KEY": "dev",
                 "FLASK_CONFIG": "DevConfig"
             },
             "args": [

@@ -41,9 +41,7 @@ ExecStart=/opt/workerbee/.venv/bin/gunicorn --capture-output --access-logfile /v
 
 Restart=always
 RestartSec=5
-Environment="FLASK_CONFIG=ProdConfig"
-Environment="SECRETBEEKEY=Shhh"
-
+EnvironmentFile=/etc/workerbee.env
 [Install]
 WantedBy=multi-user.target
 
