@@ -1,0 +1,23 @@
+[Unit]
+Description=Workerbee App
+After=network.target
+
+[Service]
+User=gunicorn
+Group=www-data
+
+RuntimeDirectory=workerbee
+RuntimeDirectoryMode=0770
+ExecStartPre=/bin/mkdir -p /var/run/workerbee
+ExecStartPre=/bin/chown -R gunicorn:www-data /var/run/workerbee
+
+WorkingDirectory=/opt/workerbee/
+ExecStart=/opt/workerbee/.venv/bin/gunicorn --capture-output --access-logfile /var/log/gunicorn/workerbee-access.log --error-logfile=/var/log/gunicorn/workerbee-error.log -w 2 --bind unix:/var/run/workerbee/workerbee.sock --umask 007 "wsgi:app"
+
+Restart=always
+RestartSec=5
+Environment="FLASK_CONFIG=ProdConfig"
+Environment="SECRETBEEKEY=qwertyuiopasdfjkl;zxc,vmn.,masdflkjweqriouasdfjhalkjh139087471234"
+
+[Install]
+WantedBy=multi-user.target
