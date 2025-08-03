@@ -14,8 +14,12 @@ if [ ! -f "$ENV_FILE" ]; then
     exit 1
 fi
 
-echo "Copy $NGINX_CONF to /etc/nginx"
+echo "Copying $NGINX_CONF to /etc/nginx"
 sudo cp deploy/$NGINX_CONF /etc/nginx
+
+echo "Testing $NGINX_CONF"
+sudo nginx -t -c /etc/nginx/$NGINX_CONF
+echo "$NGINX_CONF is valid"
 
 echo "Copy $SERVICE_NAME to /etc/systemd/system"
 sudo cp deploy/$SERVICE_NAME /etc/systemd/system
