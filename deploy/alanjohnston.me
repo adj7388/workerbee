@@ -6,8 +6,12 @@
         }
 
         location / {
-            # Proxy pass to Gunicorn. See /etc/systemd/system/workerbee.service
-            proxy_pass http://unix:/run/workerbee/workerbee.sock;
+            # Proxy pass to Gunicorn, http via unix socket.
+            # See `workerbee.service` for the other end of the connection
+            # Yes, this URI is weird.
+            # Yes, the colon at the end is necessary (or maybe not? don't ask).
+            # Yes, it works — DO NOT TOUCH — unless you want to change and proxy with vanilla http
+            proxy_pass http://unix:/run/workerbee/workerbee.sock:;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
