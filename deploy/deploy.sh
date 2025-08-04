@@ -29,14 +29,14 @@ sudo cp "deploy/$SERVICE_NAME" "/etc/systemd/system"
 echo "Reloading systemd daemon"
 sudo systemctl daemon-reload
 
-echo "Restarting Nginx"
-sudo systemctl restart nginx.service
+echo "Writing Git commit hash to $COMMIT_HASH_FILE"
+git rev-parse HEAD > "$COMMIT_HASH_FILE"
 
 echo "Restarting $SERVICE_NAME"
 sudo systemctl restart "$SERVICE_NAME"
 
-echo "Writing Git commit hash to $COMMIT_HASH_FILE"
-git rev-parse HEAD > "$COMMIT_HASH_FILE"
+echo "Restarting Nginx"
+sudo systemctl reload nginx
 
 echo "Deploy complete. Current commit: $(cat "$COMMIT_HASH_FILE")"
 echo "That is all"
