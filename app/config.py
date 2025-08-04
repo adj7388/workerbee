@@ -6,7 +6,7 @@ _logger = logging.getLogger(__name__)
 
 
 def _get_commit_hash(path_str: str) -> str:
-    commit = "Not Found"
+    commit = "None"
     path = pathlib.Path(path_str)
     if path.exists():
         commit = path.read_text().strip()
