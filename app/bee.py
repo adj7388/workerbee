@@ -92,7 +92,7 @@ def _get_beewords(
     return sorted(beewords, key=lambda beeword: beeword.word)
 
 
-def get_groupings(grouping: str) -> tuple[str, ...]:
+def get_grouping_keys(grouping: str) -> tuple[str, ...]:
     if grouping == Consts.LENGTH:
         return (Consts.LENGTH, Consts.INITIALS)
     elif grouping == Consts.INITIALS:
@@ -116,28 +116,32 @@ def get_beewords(
         allowed_letters=allowed_letters,
         dictionary=dictionary,
     )
-    # for FindWordsOutput.nested, default to initials/length grouping
-    grouping_list: tuple[str, ...] = (
-        get_groupings(Consts.INITIALS)
+    grouping_keys: tuple[str, ...] = (
+        get_grouping_keys(
+            Consts.INITIALS
+        )  # nested data needs grouping even if none specified, so default to INITIALS
         if grouping == Consts.NO_GROUPING
-        else get_groupings(grouping)
+        else get_grouping_keys(grouping)
     )
 
-    def get_group0_key(beeword: SpellingBeeWord) -> str | int:
-        return getattr(beeword, grouping_list[0])
+    def get_top_level_key(beeword: SpellingBeeWord) -> str | int:
+        return getattr(beeword, grouping_keys[0])
 
-    def get_group1_key(beeword: SpellingBeeWord) -> str | int:
-        return getattr(beeword, grouping_list[1])
+    def get_second_level_key(beeword: SpellingBeeWord) -> str | int:
+        return getattr(beeword, grouping_keys[1])
 
     nested_beewords: NestedSpellingBeeWords = {}
-    for group0, beewords0 in groupby(
-        sorted(beewords, key=get_group0_key), key=get_group0_key
+    for top_level_group, top_level_beewords in groupby(
+        sorted(beewords, key=get_top_level_key), key=get_top_level_key
     ):
-        nested_beewords[group0] = {}
-        for group1, beewords1 in groupby(
-            sorted(beewords0, key=get_group1_key), key=get_group1_key
+        nested_beewords[top_level_group] = {}
+        for second_level_group, second_level_beewords in groupby(
+            sorted(top_level_beewords, key=get_second_level_key),
+            key=get_second_level_key,
         ):
-            nested_beewords[group0][group1] = [beeword for beeword in beewords1]
+            nested_beewords[top_level_group][second_level_group] = [
+                beeword for beeword in second_level_beewords
+            ]
 
     return FindWordsOutput(
         flat=beewords,

@@ -14,7 +14,7 @@ from flask import (
 from io import BytesIO, StringIO
 
 from .bee import (
-    get_groupings,
+    get_grouping_keys,
     get_beewords_cached,
     get_summaries_cached,
 )
@@ -109,7 +109,7 @@ def init_routes(app: Flask) -> None:
         return render_template(
             "_find_words_results.html",
             found_words=found_words,
-            grouping=get_groupings(args[Consts.GROUPING]),
+            grouping=get_grouping_keys(args[Consts.GROUPING]),
         )
 
     @app.route(f"/show-summaries-results", methods=["GET"])
