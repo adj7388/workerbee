@@ -1,0 +1,103 @@
+# user www-data;
+# worker_processes auto;
+# pid /run/nginx.pid;
+# error_log /var/log/nginx/error.log info;
+# include /etc/nginx/modules-enabled/*.conf;
+
+# events {
+#     worker_connections 768;
+#     # multi_accept on;
+# }
+
+# http {
+
+#     ##
+#     # Basic Settings
+#     ##
+#     sendfile on;
+#     tcp_nopush on;
+#     types_hash_max_size 2048;
+#     # server_tokens off;
+
+#     # server_names_hash_bucket_size 64;
+#     # server_name_in_redirect off;
+
+#     include /etc/nginx/mime.types;
+#     default_type application/octet-stream;
+
+#     ##
+#     # SSL Settings
+#     ##
+#     ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
+#     ssl_prefer_server_ciphers on;
+
+#     ##
+#     # Logging Settings
+#     ##
+#     log_format custom_combined  '-------------------------------\n'
+#                                 '"$remote_addr" "$remote_user" [$time_local]\n'
+#                                 '  "$scheme" "$host" "$server_port" "$request"\n'
+#                                 '  "$upstream_status >> $status" "$http_referer" "$http_user_agent"';
+
+#     access_log /var/log/nginx/access.log custom_combined;
+
+#     ##
+#     # Gzip Settings
+#     ##
+
+#     gzip on;
+
+#     # gzip_vary on;
+#     # gzip_proxied any;
+#     # gzip_comp_level 6;
+#     # gzip_buffers 16 8k;
+#     # gzip_http_version 1.1;
+#     # gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
+#     ##
+#     # Virtual Host Configs
+#     ##
+
+#     include /etc/nginx/conf.d/*.conf;
+#     # include /etc/nginx/sites-enabled/*;
+
+    server {
+        server_name alanjohnston.me www.alanjohnston.me;
+
+        if ($host !~* alanjohnston.me$) {
+            return 444;
+        }
+
+        location / {
+            # Proxy pass to Gunicorn. See /etc/systemd/system/workerbee.service
+            proxy_pass http://unix:/run/workerbee/workerbee.sock;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        listen 443 ssl; # managed by Certbot
+        ssl_certificate /etc/letsencrypt/live/alanjohnston.me/fullchain.pem; # managed by Certbot
+        ssl_certificate_key /etc/letsencrypt/live/alanjohnston.me/privkey.pem; # managed by Certbot
+        include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+    }
+
+    server {
+
+        listen 80;
+        server_name alanjohnston.me www.alanjohnston.me;
+
+        if ($host = www.alanjohnston.me) {
+            return 301 https://$host$request_uri;
+        } # managed by Certbot
+
+        if ($host = alanjohnston.me) {
+            return 301 https://$host$request_uri;
+        } # managed by Certbot
+
+        return 444; # managed by Certbot
+
+    }
+# }
