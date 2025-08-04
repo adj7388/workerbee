@@ -34,6 +34,6 @@ class DevConfig(Config):
 
 
 class ProdConfig(Config):
-    LOG_LEVEL: int = logging.INFO
+    LOG_LEVEL: int = logging.DEBUG
     DEBUG: bool = False
     MAX_CACHE_SIZE: int = 30
