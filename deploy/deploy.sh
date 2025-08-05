@@ -14,13 +14,12 @@ if [ ! -f "$ENV_FILE" ]; then
     exit 1
 fi
 
-echo "Copying $AVAILABLE"
+echo "Copying $SITE_NAME to $AVAILABLE"
 sudo cp "deploy/$SITE_NAME" "$AVAILABLE"
 
-echo "Symlink to sites-available"
+echo "Symlink $ENABLED to $AVAILABLE"
 sudo ln -sfn "$AVAILABLE" "$ENABLED"
 
-echo "Testing nginx.conf"
 sudo nginx -t
 
 echo "Copy $SERVICE_NAME to /etc/systemd/system"
