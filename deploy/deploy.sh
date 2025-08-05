@@ -35,7 +35,7 @@ git rev-parse HEAD > "$COMMIT_HASH_FILE"
 echo "Restarting $SERVICE_NAME"
 sudo systemctl restart "$SERVICE_NAME"
 
-echo "Restarting Nginx"
+echo "Reloading Nginx"
 sudo systemctl reload nginx
 
 echo "Deploy complete. Current commit: $(cat "$COMMIT_HASH_FILE")"

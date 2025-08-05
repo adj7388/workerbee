@@ -72,7 +72,7 @@ def init_routes(app: Flask) -> None:
 
     @app.route("/")
     def root():  # type: ignore reportUnusedFunction
-        return redirect(url_for("help"))
+        return redirect(url_for("find_words"))
 
     @app.route(f"/help")
     def help() -> str:  # type: ignore reportUnusedFunctio
