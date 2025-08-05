@@ -168,11 +168,11 @@ def get_beewords_cached(
 
     key = frozenset(
         (
-            word_list.file_name,
-            frozenset(allowed_letters),
             required_letter,
-            grouping,
+            frozenset(allowed_letters),
             dictionary.name,
+            grouping,
+            word_list.file_name,
         )
     )
 
@@ -260,9 +260,9 @@ def get_summaries_cached(
         (
             required_letter,
             frozenset(allowed_letters),
+            dictionary.name,
             summary_sort,
             word_sort,
-            dictionary.name,
         )
     )
 
