@@ -11,19 +11,20 @@ class FIFOCache:
         self.tag: str = tag
         self.maxsize: int = maxsize
         self.cache: OrderedDict = OrderedDict()
-        _logger.debug(f"'{self.tag}' initialized with maxsize {maxsize}")
+        _logger.debug(f"'{self.tag}' initialized w/ maxsize {maxsize}")
 
     @property
     def cache_size(self):
         return len(self.cache)
 
     def _evict(self, denominator=2) -> None:
+        _logger.info(f"'{self.tag}' ({self.cache_size}) EVICT")
         if self.cache_size > self.maxsize:
             number_to_evict = self.cache_size // denominator
             for _ in range(number_to_evict):
                 self.cache.popitem(last=False)
             _logger.info(
-                f"'{self.tag}' evicted {number_to_evict} items from cache. Size now {self.cache_size}"
+                f"'{self.tag}' evicted {number_to_evict} items. Size now {self.cache_size}"
             )
         else:
             _logger.warning(
@@ -33,30 +34,24 @@ class FIFOCache:
     def get(self, key: Any) -> Any | None:
         result = self.cache.get(key, None)
         (
-            _logger.debug(
-                f"GET '{self.tag}' ({self.cache_size}) get key successful: {key}"
-            )
+            _logger.debug(f"'{self.tag}' ({self.cache_size}) GET success: {key}")
             if result
-            else _logger.debug(
-                f"GET '{self.tag}' ({self.cache_size}) get key returned None: {key}"
-            )
+            else _logger.debug(f"'{self.tag}' ({self.cache_size}) GET None: {key}")
         )
         return result
 
     def set(self, key: Any, value: Any) -> None:
         if key not in self.cache:
             self.cache[key] = value
-            _logger.debug(f"SET '{self.tag}' ({self.cache_size}) new item key: {key}")
+            _logger.debug(f"'{self.tag}' ({self.cache_size}) SET key: {key}")
             if self.cache_size > self.maxsize:
                 _logger.info(
-                    f"'{self.tag}' size {self.cache_size} exceeds maxsize {self.maxsize}"
+                    f"'{self.tag}' {self.cache_size} exceeds maxsize {self.maxsize}"
                 )
                 self._evict()
         else:
             self.cache[key] = value
-            _logger.debug(
-                f"SET '{self.tag}' ({self.cache_size}) replace item key: {key}"
-            )
+            _logger.debug(f"'{self.tag}' ({self.cache_size}) REPLACE key: {key}")
 
 
 FIND_WORDS: str = "find_words"
