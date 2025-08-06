@@ -3,7 +3,7 @@ The original intent of this project was to develop a simple web application (sim
 
 Long story short: I never did the tutorials, but decided to make the code public anyway in case it interests anyone.
 
-# Initial Deployment
+# Initial Deployment - Part 1 - dev
 1. `cd /opt`
 1. `git clone git@github.com:adj7388/workerbee.git`
 1. `sudo chown gunicorn:www-data -R .`
@@ -11,15 +11,18 @@ Long story short: I never did the tutorials, but decided to make the code public
 1. `python3 -m venv .venv`
 1. `source .venv/bin/activate`
 1. `pip install -r requirements.txt`
-1. I used VS Code to develop this, so you should be able to launch VS Code now and open the `workerbee` folder. 
+1. VS Code was used to develop the app and the repo has a .vscode/launch.json file so, at this point, you should be able to start VS Code, open the `workerbee` folder, and launch the app in development mode. 
 
-
-1. Create `/etc/workerbee.env` file -- see `workerbee.env.example` in repo
-1. `./deploy/deploy.sh`
+# Initial Deployment - Part 2 - "production"*
+1. Make sure the present working directory (`pwd`) in `/opt/workerbee`
+1. Create `/etc/workerbee.env` file -- see `workerbee.env.example` in repo for a template.
 1. Use certbot to install Let's Encrypt certificates into nginx.
-1. To run behind router, forward port 80/443 on router to this box port 80/443
+1. `./deploy/deploy.sh`
 
-# Subsequent Deployments
+# After Initial Deployment
+All you need to do subsequent deployments is:
 1. `cd /opt/workerbee`
 1. `git pull`
 1. `./deploy/deploy.sh`
+
+\* I put "production" in quotes because unlikely that anyone will run this app in a production environment. Again, the app was originally developed as a teaching tool, and part of the learning process was to show how an app gets deployed to production.
