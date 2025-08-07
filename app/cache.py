@@ -12,51 +12,45 @@ class FIFOCache:
         self.tag: str = tag
         self.maxsize: int = maxsize
         self.cache: OrderedDict = OrderedDict()
-        _logger.debug(f"'{self.tag}' initialized w/ maxsize {maxsize}")
+        _logger.info(f"{self.log_prefix} initialized w/ maxsize {maxsize}")
 
     @property
     def cache_size(self):
         return len(self.cache)
 
     @property
-    def show_cache_size(self):
-        return f"( size:{self.cache_size} / max:{self.maxsize} )"
+    def log_prefix(self):
+        return f"[cache: {self.tag} size: {self.cache_size}  max: {self.maxsize}]"
 
     def _evict(self, denominator=2) -> None:
-        _logger.info(f"'{self.tag}' EVICT {self.show_cache_size}")
+        _logger.info(f"{self.log_prefix} EVICT ")
         if self.cache_size > self.maxsize:
             number_to_evict = self.cache_size // denominator
             for _ in range(number_to_evict):
                 self.cache.popitem(last=False)
-            _logger.info(
-                f"'{self.tag}' evicted {number_to_evict} items. {self.show_cache_size}"
-            )
+            _logger.info(f"{self.log_prefix} evicted {number_to_evict} items")
         else:
-            _logger.warning(
-                f"Skipping eviction in '{self.tag}': cache_size {self.cache_size} < maxsize {self.maxsize}"
-            )
+            _logger.warning(f"{self.log_prefix} eviction skipped")
 
     def get(self, key: Any) -> Any | None:
         result = self.cache.get(key, None)
         (
-            _logger.debug(f"'{self.tag}' {self.show_cache_size} cache hit: {key}")
+            _logger.debug(f"{self.log_prefix} cache hit: {key}")
             if result
-            else _logger.debug(f"'{self.tag}' {self.show_cache_size} cache miss: {key}")
+            else _logger.debug(f"{self.log_prefix} cache miss: {key}")
         )
         return result
 
     def set(self, key: Any, value: Any) -> None:
         if key not in self.cache:
             self.cache[key] = value
-            _logger.debug(f"'{self.tag}' {self.show_cache_size} cache set: {key}")
+            _logger.debug(f"{self.log_prefix} cache set: {key}")
             if self.cache_size > self.maxsize:
-                _logger.info(
-                    f"'{self.tag}' {self.cache_size} exceeds maxsize {self.maxsize}"
-                )
+                _logger.info(f"{self.log_prefix} cache size exceeded")
                 self._evict()
         else:
             self.cache[key] = value
-            _logger.debug(f"'{self.tag}' {self.show_cache_size} cache replace: {key}")
+            _logger.debug(f"{self.log_prefix} cache replace: {key}")
 
 
 FIND_WORDS: str = "find_words"

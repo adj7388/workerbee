@@ -12,7 +12,7 @@ RuntimeDirectory=workerbee
 RuntimeDirectoryMode=0770
 
 WorkingDirectory=/opt/workerbee/
-ExecStart=/opt/workerbee/.venv/bin/gunicorn wsgi:app --capture-output -w 2 --bind unix:/run/workerbee/workerbee.sock --umask 007 --access-logfile /var/log/gunicorn/workerbee-access.log --error-logfile=/var/log/gunicorn/workerbee-error.log 
+ExecStart=/opt/workerbee/.venv/bin/gunicorn wsgi:app --capture-output -w 1 --bind unix:/run/workerbee/workerbee.sock --umask 007 --access-logfile /var/log/gunicorn/workerbee-access.log --error-logfile=/var/log/gunicorn/workerbee-error.log 
 
 Restart=always
 RestartSec=5
