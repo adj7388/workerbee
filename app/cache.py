@@ -3,11 +3,12 @@ import logging
 from typing import Any, cast
 from collections import OrderedDict
 
+
 _logger = logging.getLogger(__name__)
 
 
 class FIFOCache:
-    def __init__(self, tag: str, maxsize=10) -> None:
+    def __init__(self, tag: str, maxsize) -> None:
         self.tag: str = tag
         self.maxsize: int = maxsize
         self.cache: OrderedDict = OrderedDict()
@@ -17,14 +18,18 @@ class FIFOCache:
     def cache_size(self):
         return len(self.cache)
 
+    @property
+    def show_cache_size(self):
+        return f"( size:{self.cache_size} / max:{self.maxsize} )"
+
     def _evict(self, denominator=2) -> None:
-        _logger.info(f"'{self.tag}' ({self.cache_size}) EVICT")
+        _logger.info(f"'{self.tag}' EVICT {self.show_cache_size}")
         if self.cache_size > self.maxsize:
             number_to_evict = self.cache_size // denominator
             for _ in range(number_to_evict):
                 self.cache.popitem(last=False)
             _logger.info(
-                f"'{self.tag}' evicted {number_to_evict} items. Size now {self.cache_size}"
+                f"'{self.tag}' evicted {number_to_evict} items. {self.show_cache_size}"
             )
         else:
             _logger.warning(
@@ -34,16 +39,16 @@ class FIFOCache:
     def get(self, key: Any) -> Any | None:
         result = self.cache.get(key, None)
         (
-            _logger.debug(f"'{self.tag}' ({self.cache_size}) GET success: {key}")
+            _logger.debug(f"'{self.tag}' {self.show_cache_size} cache hit: {key}")
             if result
-            else _logger.debug(f"'{self.tag}' ({self.cache_size}) GET None: {key}")
+            else _logger.debug(f"'{self.tag}' {self.show_cache_size} cache miss: {key}")
         )
         return result
 
     def set(self, key: Any, value: Any) -> None:
         if key not in self.cache:
             self.cache[key] = value
-            _logger.debug(f"'{self.tag}' ({self.cache_size}) SET key: {key}")
+            _logger.debug(f"'{self.tag}' {self.show_cache_size} cache set: {key}")
             if self.cache_size > self.maxsize:
                 _logger.info(
                     f"'{self.tag}' {self.cache_size} exceeds maxsize {self.maxsize}"
@@ -51,7 +56,7 @@ class FIFOCache:
                 self._evict()
         else:
             self.cache[key] = value
-            _logger.debug(f"'{self.tag}' ({self.cache_size}) REPLACE key: {key}")
+            _logger.debug(f"'{self.tag}' {self.show_cache_size} cache replace: {key}")
 
 
 FIND_WORDS: str = "find_words"
@@ -63,7 +68,7 @@ _caches: dict[str, FIFOCache | None] = {
 }
 
 
-def init_caches(cache_size: int = 30) -> None:
+def init_caches(cache_size: int) -> None:
     global _caches
     for key in _caches:
         _caches[key] = FIFOCache(tag=key, maxsize=cache_size)
