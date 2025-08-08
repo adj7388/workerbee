@@ -5,6 +5,12 @@
             return 444;
         }
 
+        location /static/ {
+            alias /opt/workerbee/static/;
+            expires 30d;
+            access_log off;
+        }
+
         location / {
             # Proxy pass to Gunicorn, http via unix socket.
             # See `workerbee.service` for the other end of the connection
