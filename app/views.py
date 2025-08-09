@@ -52,7 +52,10 @@ def update_session_args(request_args: dict) -> dict:
     if request_args:
         for key in request.args:
             if key in ALLOWED_ARGS:
-                session_args[key] = request_args[key]
+                if key in (Consts.REQUIRED_LETTER, Consts.ALLOWED_LETTERS):
+                    session_args[key] = request_args[key].lower().strip()
+                else:
+                    session_args[key] = request_args[key]
             else:
                 abort(400)
         # to support more checkboxes add them to this list

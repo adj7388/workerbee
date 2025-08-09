@@ -65,10 +65,14 @@
         e.preventDefault();
         const submitButton = document.getElementById('submitButton').value = 'Update Results';
         const word_list = document.getElementById('{{ WORD_LIST }}').value;
-        const required = document.getElementById('{{ REQUIRED_LETTER }}').value;
-        const allowed = document.getElementById('{{ ALLOWED_LETTERS }}').value;
         const grouping = document.querySelector('input[name="{{ GROUPING }}"]:checked')?.value;
         const dictionary = document.getElementById('{{ DICTIONARY }}').value;
+
+        const required = document.getElementById('{{ REQUIRED_LETTER }}').value.toLowerCase().trim();
+        const allowed = document.getElementById('{{ ALLOWED_LETTERS }}').value.toLowerCase().trim();
+        // display lower case, trimmed values
+        document.getElementById('{{ REQUIRED_LETTER }}').value = required;
+        document.getElementById('{{ ALLOWED_LETTERS }}').value = allowed;
 
         const findWordsUrl = "{{ url_for('find_words_results') }}";
         const params = new URLSearchParams({
