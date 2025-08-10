@@ -33,6 +33,17 @@
             style="width: 10ch">
         <span class="subtext">&nbsp;&nbsp;Letters surrounding the required letter</span>
     </div>
+
+    <script>
+        function clean_letter_inputs() {
+            const required_input = document.getElementById('{{REQUIRED_LETTER}}');
+            required_input.value = required_input.value.trim().toLowerCase(); 
+            const allowed_input = document.getElementById('{{ALLOWED_LETTERS}}');
+            allowed_input.value = allowed_input.value.trim().toLowerCase();
+        };
+        document.getElementById('{{REQUIRED_LETTER}}').addEventListener('input', clean_letter_inputs);
+        document.getElementById('{{ALLOWED_LETTER}}').addEventListener('input', clean_letter_inputs);
+    </script>
 {% endmacro %}
 
 
