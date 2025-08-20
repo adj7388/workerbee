@@ -122,8 +122,11 @@
             </strong>            
 
             {% if num_perfect_pangrams != 0 %}
+
                 {{ display_pangrams(metadata.perfect_pangrams) }}
+
             {% else %}
+                {# no pangrams #}
                 &nbsp;&hyphen;&hyphen;&nbsp;
             {% endif %}
         </div>
@@ -134,8 +137,11 @@
             </strong>
 
             {% if num_nonperfect_pangrams != 0 %}
+
                 {{ display_pangrams(metadata.nonperfect_pangrams) }}
+
             {% else %}
+                {# no pangrams #}
                 &nbsp;&hyphen;&hyphen;&nbsp;
             {% endif %}
         </div>
@@ -172,7 +178,9 @@
                         }}
 
                         {%for beeword in beewords %}
+
                             {{ word_row(beeword=beeword) }}
+
                         {% endfor %}
 
                     {% endfor %}
@@ -192,13 +200,16 @@
     {% else %}
     
         {{ find_words_metadata(metadata=found_words.metadata) }}
+
         {{ getfile_dropdown() }}
 
         {% if session[ARGS][GROUPING] == NO_GROUPING %}
 
             {% for beeword in found_words.flat %}
                 <p class="m-0 p-0">
+
                     {{ decorate_word(beeword) }}
+
                 </p>
             {% endfor %}
 
