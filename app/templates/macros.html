@@ -72,11 +72,16 @@
 
         {% if beeword.is_pangram %}
             {% set pangram_marker = PERFECT_MARKER if beeword.is_perfect else PANGRAM_MARKER %}
+
             <span class="{{ pangram_class }}">
                 {{ beeword.word }}{{ pangram_marker if show_marker else "" }}
             </span>
+
         {% else %}
+
             <span>{{ beeword.word }}</span>
+
         {% endif %}
+
     </a>
 {% endmacro %}
