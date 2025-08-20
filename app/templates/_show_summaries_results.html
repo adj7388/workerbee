@@ -2,34 +2,52 @@
 
 {% macro summary_row(summary) %}
     <tr>
-        <td class="align-middle">{{ summary.metadata.word_list }}</td>
-        <td class="align-middle">{{ summary.metadata.num_words }}</td>
-        <td class="align-middle">{{ "Yes" if summary.metadata.bingo else "No" }}</td>
+        <td class="align-middle">
+            {{ summary.metadata.word_list }}
+        </td>
+        <td class="align-middle">
+            {{ summary.metadata.num_words }}
+        </td>
+        <td class="align-middle">
+            {{ "Yes" if summary.metadata.bingo else "No" }}
+        </td>
         <td class="align-middle">
             ({{ summary.metadata.perfect_pangrams | length }})
 
             {% for pangram in summary.metadata.perfect_pangrams %}
+
                 {{ decorate_word(pangram, show_marker=False, pangram_class="") }}
+            
             {% endfor %}
         </td>
         <td class="align-middle">
+
             ({{ summary.metadata.nonperfect_pangrams | length }})
 
             {% for pangram in summary.metadata.nonperfect_pangrams %}
+
                 {{ decorate_word(pangram, show_marker=False, pangram_class="") }}
+
             {% endfor %}
         </td>
     </tr>
     <tr data-words>
-        <td style="font-size: smaller; text-align: right; background-color: aliceblue;">Words</td>
+        <td style="font-size: smaller; text-align: right; background-color: aliceblue;">
+            Words
+        </td>
         <td style="background-color: aliceblue; font-size: smaller;" colspan="4">
 
             {% for key in summary.beewords.keys() | sort %}
                 {% set key_suffix = "&nbsp;letters" if session[ARGS][WORD_SORT] == BYWORDLENGTH else "" %}
-                <span style="font-weight: bold;">[{{ key | upper }}{{ key_suffix | safe }}]</span>
+
+                <span style="font-weight: bold;">
+                    [{{ key | upper }}{{ key_suffix | safe }}]
+                </span>
 
                 {% for beeword in summary.beewords[key] %}
+
                     {{ decorate_word(beeword) }}
+    
                 {% endfor %}
             {% endfor %}
         </td>
@@ -40,7 +58,9 @@
 {% with messages = get_flashed_messages() %}
 
     {% if messages %}
+
         {{ show_messages(messages) }}
+
     {% else %}
         <div class="mt-3">
             <table class="table table-bordered bg-light">
@@ -51,9 +71,11 @@
                     <th>Perfect Pangrams{{ PERFECT_MARKER}}</th>
                     <th>Non-Perfect Pangrams{{ PANGRAM_MARKER}}</th>
                 </tr>
+
                 {% for summary in summaries %}
                     {{ summary_row(summary=summary) }}
                 {% endfor %}
+
             </table>
         </div>
     {% endif %}

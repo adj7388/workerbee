@@ -14,11 +14,15 @@
             <td></td>
         {% endif %}
         <td>
-            {% if level == 0 %}
-                <span class="group0"> {{ heading }} </span>
-            {% elif level == 1 %}
-                <span class="group1"> {{ heading }} </span>
-            {% endif %}
+            <span 
+                {% if level == 0 %}
+                    class="group0"
+                {% elif level == 1 %}
+                    class="group1"
+                {% endif %}
+            >
+                {{ heading }}
+            </span>
         </td>
     </tr>
 {% endmacro %}
@@ -45,9 +49,11 @@
 
 {% macro display_pangrams(pangrams) %}
     {% if pangrams %}
+
         {% for pangram in pangrams | sort(attribute='word') %}
             {{ decorate_word(beeword=pangram, pangram_class="", show_marker=False) }}
         {% endfor %}
+
     {% endif %}
 {% endmacro %}
 
@@ -101,9 +107,14 @@
     {% set all_pangrams = metadata.nonperfect_pangrams + metadata.perfect_pangrams %}
     {% set num_perfect_pangrams = metadata.perfect_pangrams | length %}
     {% set num_nonperfect_pangrams = metadata.nonperfect_pangrams | length %}
+
     <div class="d-flex flex-wrap">
-        <div class="me-3"><strong>Total Words: </strong>{{metadata.num_words}}</div>
-        <div class="me-3"><strong>Found in: </strong>{{metadata.word_list}}</div>
+        <div class="me-3">
+            <strong>Total Words: </strong>{{metadata.num_words}}
+        </div>
+        <div class="me-3">
+            <strong>Found in: </strong>{{metadata.word_list}}
+        </div>
         <div class="me-3">
             <strong>
                 {{ num_perfect_pangrams }} 
@@ -128,8 +139,12 @@
                 &nbsp;&hyphen;&hyphen;&nbsp;
             {% endif %}
         </div>
-        <div class="me-3"><strong>Bingo: </strong>{{ "Yes" if metadata.bingo == True else "No" }}</div>
-        <div class="me-3"><strong>Words linked to:</strong> {{ metadata.dictionary }}</div>
+        <div class="me-3">
+            <strong>Bingo: </strong>{{ "Yes" if metadata.bingo == True else "No" }}
+        </div>
+        <div class="me-3">
+            <strong>Words linked to:</strong> {{ metadata.dictionary }}
+        </div>
     </div>
 {% endmacro %}
 
@@ -137,6 +152,7 @@
 {% macro show_words_grouped(found_words, grouping) %}
     {# top_level* and second_level* will be INITIALS or LENGTH, or vice versa #}
     {% set top_level_group, second_level_group = grouping[0], grouping[1] %}
+
     <div class="row g-0">
 
         {% for toplevel_heading, toplevel_values in found_words.nested.items() %}
@@ -170,19 +186,26 @@
 {####### Main template #######}
 {% with messages = get_flashed_messages() %}
     {% if messages %}
+
         {{ show_messages(messages) }}
+
     {% else %}
+    
         {{ find_words_metadata(metadata=found_words.metadata) }}
         {{ getfile_dropdown() }}
 
         {% if session[ARGS][GROUPING] == NO_GROUPING %}
+
             {% for beeword in found_words.flat %}
                 <p class="m-0 p-0">
                     {{ decorate_word(beeword) }}
                 </p>
             {% endfor %}
+
         {% else %}
+
             {{ show_words_grouped(found_words, grouping) }}
+
         {% endif %}
     {% endif %}
 {% endwith %}
