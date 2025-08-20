@@ -27,7 +27,7 @@ from .types import (
     FindWordsOutput,
 )
 from .utils import error_check, get_filename, write_to_buffer
-from .wordlists import WordLists, SCOWL_DEFAULT_60
+from .wordlists import WordLists, SCOWL_LARGE_70
 
 _logger = logging.getLogger(__name__)
 
@@ -35,7 +35,7 @@ ARG_DEFAULTS = {
     Consts.REQUIRED_LETTER: "c",
     Consts.ALLOWED_LETTERS: "evitpa",
     Consts.DICTIONARY: WIKT,
-    Consts.WORD_LIST: SCOWL_DEFAULT_60,
+    Consts.WORD_LIST: SCOWL_LARGE_70,
     Consts.GROUPING: Consts.INITIALS,
     Consts.FILE_TYPE: Consts.JSON,
     Consts.SUMMARY_SORT: Consts.DESCENDING,

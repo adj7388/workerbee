@@ -8,21 +8,21 @@ _logger = logging.getLogger(__name__)
 
 
 class FIFOCache:
-    def __init__(self, tag: str, maxsize) -> None:
+    def __init__(self, tag: str, maxsize: int) -> None:
         self.tag: str = tag
         self.maxsize: int = maxsize
         self.cache: OrderedDict = OrderedDict()
         _logger.info(f"{self.log_prefix} initialized w/ maxsize {maxsize}")
 
     @property
-    def cache_size(self):
+    def cache_size(self) -> int:
         return len(self.cache)
 
     @property
-    def log_prefix(self):
+    def log_prefix(self) -> str:
         return f"[cache: {self.tag} size: {self.cache_size}  max: {self.maxsize}]"
 
-    def _evict(self, denominator=2) -> None:
+    def _evict(self, denominator: int = 2) -> None:
         _logger.info(f"{self.log_prefix} EVICT ")
         if self.cache_size > self.maxsize:
             number_to_evict = self.cache_size // denominator

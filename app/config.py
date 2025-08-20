@@ -16,7 +16,7 @@ def _get_commit_hash(path_str: str) -> str:
 class Config:
     _COMMIT_HASH_FILE = "commit.txt"
 
-    COMMIT_HASH = _get_commit_hash(_COMMIT_HASH_FILE)
+    COMMIT_HASH: str = _get_commit_hash(_COMMIT_HASH_FILE)
     SECRET_KEY: str = str(os.environ.get("SECRET_KEY"))
     MAX_CACHE_SIZE: int = int(os.environ.get("MAX_CACHE_SIZE", 10))
 
