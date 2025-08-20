@@ -109,6 +109,7 @@
                 {{ num_perfect_pangrams }} 
                 perfect pangram{{ "s" if num_perfect_pangrams != 1 else ''}}{{PERFECT_MARKER}}
             </strong>            
+
             {% if num_perfect_pangrams != 0 %}
                 {{ display_pangrams(metadata.perfect_pangrams) }}
             {% else %}
@@ -120,6 +121,7 @@
                 {{ num_nonperfect_pangrams }}
                     other pangram{{ "s" if num_nonperfect_pangrams != 1 else ''}}{{PANGRAM_MARKER}}
             </strong>
+
             {% if num_nonperfect_pangrams != 0 %}
                 {{ display_pangrams(metadata.nonperfect_pangrams) }}
             {% else %}
@@ -136,6 +138,7 @@
     {# top_level* and second_level* will be INITIALS or LENGTH, or vice versa #}
     {% set top_level_group, second_level_group = grouping[0], grouping[1] %}
     <div class="row g-0">
+
         {% for toplevel_heading, toplevel_values in found_words.nested.items() %}
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <table>
@@ -144,15 +147,18 @@
                             heading=decorate_heading(toplevel_heading, top_level_group)
                         )
                     }}
+
                     {%for second_level_heading, beewords in toplevel_values.items() %}
                         {{ heading_row(
                                 level=1,
                                 heading=decorate_heading(second_level_heading, second_level_group)
                             )
                         }}
+
                         {%for beeword in beewords %}
                             {{ word_row(beeword=beeword) }}
                         {% endfor %}
+
                     {% endfor %}
                 </table>
             </div>
@@ -168,6 +174,7 @@
     {% else %}
         {{ find_words_metadata(metadata=found_words.metadata) }}
         {{ getfile_dropdown() }}
+
         {% if session[ARGS][GROUPING] == NO_GROUPING %}
             {% for beeword in found_words.flat %}
                 <p class="m-0 p-0">
