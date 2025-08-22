@@ -79,11 +79,9 @@ def write_to_buffer(
     sio = StringIO()
 
     if file_type == Consts.CSV:
-        fieldnames = metadata.field_names
-        csv_output = make_serializable(data)
-        csvwriter = csv.DictWriter(sio, fieldnames=fieldnames)
+        csvwriter = csv.DictWriter(sio, fieldnames=metadata.field_names)
         csvwriter.writeheader()
-        csvwriter.writerows(csv_output)
+        csvwriter.writerows(make_serializable(data))
         return sio
 
     elif file_type == Consts.WORD_URL_CSV:

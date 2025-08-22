@@ -44,19 +44,20 @@ ARG_DEFAULTS = {
 }
 
 # whitelist args for session updates
-ALLOWED_ARGS = set(ARG_DEFAULTS.keys())
+ARG_WHITELIST = set(ARG_DEFAULTS.keys())
 
 
 def update_session_args(request_args: dict) -> dict:
     session_args: dict = session.get(Consts.ARGS, {}).copy()
     if request_args:
         for key in request.args:
-            if key in ALLOWED_ARGS:
+            if key in ARG_WHITELIST:
                 if key in (Consts.REQUIRED_LETTER, Consts.ALLOWED_LETTERS):
                     session_args[key] = request_args[key].lower().strip()
                 else:
                     session_args[key] = request_args[key]
             else:
+                # arg not in whitelist? nope
                 abort(400)
         # to support more checkboxes add them to this list
         for this_checkbox in [Consts.SHOW_WORDS]:
