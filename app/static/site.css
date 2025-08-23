@@ -128,3 +128,21 @@ td.letters {
 .input-labels {
     font-weight: bold;
 }
+
+.updatePopup {
+    white-space: pre-wrap;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* true center */
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 1rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 9999; /* make sure it's above everything */
+}
+
+.updatePopup.show {
+    opacity: 1;
+}

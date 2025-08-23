@@ -86,53 +86,8 @@
     {# Results inserted here #}
     <div id="results"></div>
 
-    <style>
-        .updatePopup {
-            white-space: pre-wrap;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%); /* true center */
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 1rem;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: 9999; /* make sure it's above everything */
-        }
-
-        .updatePopup.show {
-            opacity: 1;
-        }
-    </style>
-
-
     <script>
 
-        function showUpdatePopup(message = "Updated") {
-            let popup = document.createElement('div');
-            popup.className = 'updatePopup bg-primary text-white shadow';
-            popup.textContent = message;
-            document.body.appendChild(popup);
-
-            // fade in
-            requestAnimationFrame(() => popup.classList.add('show'));
-
-            // handler to remove the popup
-            const removePopup = () => {
-                popup.classList.remove('show');
-                popup.addEventListener('transitionend', () => popup.remove());
-                window.removeEventListener('scroll', removePopup);
-                window.removeEventListener('keydown', removePopup);
-                window.removeEventListener('click', removePopup);
-            };
-
-            // remove on scroll, key press, or click
-            window.addEventListener('scroll', removePopup);
-            window.addEventListener('keydown', removePopup);
-            window.addEventListener('click', removePopup);
-        }
-        
         document.getElementById('searchForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const firstSubmit = document.getElementById('submitButton').value === 'Find Words'
