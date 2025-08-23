@@ -107,6 +107,18 @@
     <div id="results"></div>
 
     <script>
+        function toggleRows(showWords) {
+            const rows = document.querySelectorAll('tr[data-words]');
+            rows.forEach(row => {
+                if (showWords == false) {
+                    row.classList.add('hide-words')
+                }
+                else {
+                    row.classList.remove('hide-words');
+                }
+            });
+        }
+
         document.getElementById('searchForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const firstSubmit = document.getElementById('submitButton').value === 'Show Summaries'
@@ -119,20 +131,7 @@
             const word_sort = document.querySelector('input[name="{{ WORD_SORT }}"]:checked')?.value;
 
             const currentState = {required, allowed, summary_sort, show_words, dictionary, word_sort};
-
-            const prevStateJSON = localStorage.getItem('searchFormState');
-            const prevState = prevStateJSON ? JSON.parse(prevStateJSON) : null;
-
-            const changes = [];
-            if (prevState) {
-                for (const [key, value] of Object.entries(currentState)) {
-                    if (prevState[key] !== value) {
-                        changes.push(`"${prevState[key]}" changed to "${value}"`);
-                    }
-                }
-            }
-
-            localStorage.setItem('searchFormState', JSON.stringify(currentState));
+            const changes = getUpdateDiff(currentState, storageKey = "showSummariesKey");
 
             const showSummariesUrl = "{{ url_for('show_summaries_results') }}";
             const params = new URLSearchParams(currentState);
@@ -160,18 +159,6 @@
                 });
 
         });
-
-        function toggleRows(showWords) {
-            const rows = document.querySelectorAll('tr[data-words]');
-            rows.forEach(row => {
-                if (showWords == false) {
-                    row.classList.add('hide-words')
-                }
-                else {
-                    row.classList.remove('hide-words');
-                }
-            });
-        }
 
     </script>
 

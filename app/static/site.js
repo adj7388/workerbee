@@ -22,3 +22,17 @@ function showUpdatePopup(message = "Updated") {
     window.addEventListener('click', removePopup);
 }
 
+function getUpdateDiff(currentState, storageKey = 'searchFormState') {
+    const prevStateJSON = localStorage.getItem(storageKey);
+    const prevState = prevStateJSON ? JSON.parse(prevStateJSON) : null;
+    const changes = [];
+    if (prevState) {
+        for (const [key, value] of Object.entries(currentState)) {
+            if (prevState[key] !== value) {
+                changes.push(`${prevState[key]} changed to ${value}`);
+            }
+        }
+    }
+    localStorage.setItem(storageKey, JSON.stringify(currentState));
+    return changes;
+}

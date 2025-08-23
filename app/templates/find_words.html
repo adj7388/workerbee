@@ -100,19 +100,7 @@
 
             const currentState = { required, allowed, word_list, grouping, dictionary };
 
-            const prevStateJSON = localStorage.getItem('searchFormState');
-            const prevState = prevStateJSON ? JSON.parse(prevStateJSON) : null;
-
-            const changes = [];
-            if (prevState) {
-                for (const [key, value] of Object.entries(currentState)) {
-                    if (prevState[key] !== value) {
-                        changes.push(`"${prevState[key]}" changed to "${value}"`);
-                    }
-                }
-            }
-
-            localStorage.setItem('searchFormState', JSON.stringify(currentState));
+            const changes = getUpdateDiff(currentState, storageKey="findWordsKey");
 
             const findWordsUrl = "{{ url_for('find_words_results') }}";
             const params = new URLSearchParams(currentState);
