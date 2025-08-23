@@ -86,102 +86,102 @@
     {# Results inserted here #}
     <div id="results"></div>
 
-<style>
-.updatePopup {
-    white-space: pre-wrap;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* true center */
-    padding: 5px 10px;
-    border-radius: 6px;
-    font-size: 1rem;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 9999; /* make sure it's above everything */
-}
-
-.updatePopup.show {
-    opacity: 1;
-}
-</style>
-
-
-<script>
-
-    function showUpdatePopup(message = "Updated") {
-        let popup = document.createElement('div');
-        popup.className = 'updatePopup bg-primary text-white shadow';
-        popup.textContent = message;
-        document.body.appendChild(popup);
-
-        // fade in
-        requestAnimationFrame(() => popup.classList.add('show'));
-
-        // handler to remove the popup
-        const removePopup = () => {
-            popup.classList.remove('show');
-            popup.addEventListener('transitionend', () => popup.remove());
-            window.removeEventListener('scroll', removePopup);
-            window.removeEventListener('keydown', removePopup);
-            window.removeEventListener('click', removePopup);
-        };
-
-        // remove on scroll, key press, or click
-        window.addEventListener('scroll', removePopup);
-        window.addEventListener('keydown', removePopup);
-        window.addEventListener('click', removePopup);
-    }
-    
-    document.getElementById('searchForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const firstSubmit = document.getElementById('submitButton').value === 'Find Words'
-
-        const required = document.getElementById('{{ REQUIRED_LETTER }}').value;
-        const allowed = document.getElementById('{{ ALLOWED_LETTERS }}').value;
-        const word_list = document.getElementById('{{ WORD_LIST }}').value;
-        const grouping = document.querySelector('input[name="{{ GROUPING }}"]:checked')?.value;
-        const dictionary = document.getElementById('{{ DICTIONARY }}').value;
-
-        const currentState = { required, allowed, word_list, grouping, dictionary };
-
-        const prevStateJSON = localStorage.getItem('searchFormState');
-        const prevState = prevStateJSON ? JSON.parse(prevStateJSON) : null;
-
-        const changes = [];
-        if (prevState) {
-            for (const [key, value] of Object.entries(currentState)) {
-                if (prevState[key] !== value) {
-                    changes.push(`${key}: "${prevState[key]}" → "${value}"`);
-                }
-            }
+    <style>
+        .updatePopup {
+            white-space: pre-wrap;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* true center */
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 1rem;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 9999; /* make sure it's above everything */
         }
 
-        localStorage.setItem('searchFormState', JSON.stringify(currentState));
+        .updatePopup.show {
+            opacity: 1;
+        }
+    </style>
 
-        const findWordsUrl = "{{ url_for('find_words_results') }}";
-        const params = new URLSearchParams(currentState);
 
-        fetch(`${findWordsUrl}?${params.toString()}`)
-            .then(res => res.text())
-            .then(html => {
-                document.getElementById('results').innerHTML = `
-                    <div class="mt-3 bg-light" style="padding: 1em; border-top: 1px solid #333;">
-                        ${html}
-                    </div>`;
+    <script>
 
-                if (!firstSubmit) {
-                    if (changes.length > 0) {
-                        showUpdatePopup(`Updated: \n${changes.join('\n')}`);
-                    } else {
-                        showUpdatePopup("Nothing to update");
+        function showUpdatePopup(message = "Updated") {
+            let popup = document.createElement('div');
+            popup.className = 'updatePopup bg-primary text-white shadow';
+            popup.textContent = message;
+            document.body.appendChild(popup);
+
+            // fade in
+            requestAnimationFrame(() => popup.classList.add('show'));
+
+            // handler to remove the popup
+            const removePopup = () => {
+                popup.classList.remove('show');
+                popup.addEventListener('transitionend', () => popup.remove());
+                window.removeEventListener('scroll', removePopup);
+                window.removeEventListener('keydown', removePopup);
+                window.removeEventListener('click', removePopup);
+            };
+
+            // remove on scroll, key press, or click
+            window.addEventListener('scroll', removePopup);
+            window.addEventListener('keydown', removePopup);
+            window.addEventListener('click', removePopup);
+        }
+        
+        document.getElementById('searchForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const firstSubmit = document.getElementById('submitButton').value === 'Find Words'
+
+            const required = document.getElementById('{{ REQUIRED_LETTER }}').value;
+            const allowed = document.getElementById('{{ ALLOWED_LETTERS }}').value;
+            const word_list = document.getElementById('{{ WORD_LIST }}').value;
+            const grouping = document.querySelector('input[name="{{ GROUPING }}"]:checked')?.value;
+            const dictionary = document.getElementById('{{ DICTIONARY }}').value;
+
+            const currentState = { required, allowed, word_list, grouping, dictionary };
+
+            const prevStateJSON = localStorage.getItem('searchFormState');
+            const prevState = prevStateJSON ? JSON.parse(prevStateJSON) : null;
+
+            const changes = [];
+            if (prevState) {
+                for (const [key, value] of Object.entries(currentState)) {
+                    if (prevState[key] !== value) {
+                        changes.push(`"${prevState[key]}" changed to "${value}"`);
                     }
-                } else {
-                    document.getElementById('submitButton').value = 'Update Results';
                 }
-            });
-    });
+            }
 
-</script>
+            localStorage.setItem('searchFormState', JSON.stringify(currentState));
+
+            const findWordsUrl = "{{ url_for('find_words_results') }}";
+            const params = new URLSearchParams(currentState);
+
+            fetch(`${findWordsUrl}?${params.toString()}`)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('results').innerHTML = `
+                        <div class="mt-3 bg-light" style="padding: 1em; border-top: 1px solid #333;">
+                            ${html}
+                        </div>`;
+
+                    if (!firstSubmit) {
+                        if (changes.length > 0) {
+                            showUpdatePopup(`Updated: \n${changes.join('\n')}`);
+                        } else {
+                            showUpdatePopup("Nothing to update");
+                        }
+                    } else {
+                        document.getElementById('submitButton').value = 'Update Results';
+                    }
+                });
+        });
+
+    </script>
 
 {% endblock %}
