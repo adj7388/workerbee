@@ -121,7 +121,9 @@
 
         document.getElementById('searchForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            const firstSubmit = document.getElementById('submitButton').value === 'Show Summaries'
+            const submitButton = document.getElementById('submitButton');
+            const isFirstSubmit = submitButton.value === 'Show Summaries'
+            submitButton.value = "Update Summaries";
             
             const required = document.getElementById('{{REQUIRED_LETTER}}').value;
             const allowed = document.getElementById('{{ALLOWED_LETTERS}}').value;
@@ -131,7 +133,6 @@
             const word_sort = document.querySelector('input[name="{{ WORD_SORT }}"]:checked')?.value;
 
             const currentState = {required, allowed, summary_sort, show_words, dictionary, word_sort};
-            const changes = getUpdateDiff(currentState, storageKey = "showSummariesKey");
 
             const showSummariesUrl = "{{ url_for('show_summaries_results') }}";
             const params = new URLSearchParams(currentState);
@@ -145,17 +146,14 @@
                         ${html}
                     </div>`;
                     toggleRows(show_words);
-
-                    if (!firstSubmit) {
-                        if (changes.length > 0) {
-                            showUpdatePopup(`Updated: \n${changes.join('\n')}`);
-                        } else {
-                            showUpdatePopup("Nothing to update");
-                        }
-                    } else {
-                        document.getElementById('submitButton').value = "Update Summaries"
+                    const storageKey = "showSummariesKey"
+                    const prevStateJSON = localStorage.getItem(storageKey);
+                    const prevState = prevStateJSON ? JSON.parse(prevStateJSON) : null;
+                    const changes = getUpdateDiff(prevState, currentState);
+                    localStorage.setItem(storageKey, JSON.stringify(currentState));
+                    if (!isFirstSubmit) {
+                        showUpdates(changes);
                     }
-
                 });
 
         });
