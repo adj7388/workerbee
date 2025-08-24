@@ -146,11 +146,7 @@
                         ${html}
                     </div>`;
                     toggleRows(show_words);
-                    const storageKey = "showSummariesKey"
-                    const prevStateJSON = localStorage.getItem(storageKey);
-                    const prevState = prevStateJSON ? JSON.parse(prevStateJSON) : null;
-                    const changes = getUpdateDiff(prevState, currentState);
-                    localStorage.setItem(storageKey, JSON.stringify(currentState));
+                    changes = handleDiff("showSummariesStorageKey", currentState);
                     if (!isFirstSubmit) {
                         showUpdates(changes);
                     }

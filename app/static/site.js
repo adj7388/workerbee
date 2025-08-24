@@ -40,5 +40,12 @@ function showUpdates(changes) {
     } else {
         showUpdatePopup("No updates");
     }
-}                    
+}
 
+function handleDiff(storageKey, currentState) {
+    const prevStateJSON = localStorage.getItem(storageKey);
+    const prevState = prevStateJSON ? JSON.parse(prevStateJSON) : null;
+    const changes = getUpdateDiff(prevState, currentState);
+    localStorage.setItem(storageKey, JSON.stringify(currentState));
+    return changes;
+}

@@ -102,8 +102,6 @@
 
             const currentState = { required, allowed, word_list, grouping, dictionary };
 
-//            const changes = getUpdateDiff(currentState, storageKey="findWordsKey");
-
             const findWordsUrl = "{{ url_for('find_words_results') }}";
             const params = new URLSearchParams(currentState);
 
@@ -114,11 +112,7 @@
                         <div class="mt-3 bg-light" style="padding: 1em; border-top: 1px solid #333;">
                             ${html}
                         </div>`;
-                    const storageKey = "findWordsStorageKey"
-                    const prevStateJSON = localStorage.getItem(storageKey);
-                    const prevState = prevStateJSON ? JSON.parse(prevStateJSON) : null;
-                    const changes = getUpdateDiff(prevState, currentState);
-                    localStorage.setItem(storageKey, JSON.stringify(currentState));
+                    changes = handleDiff("findWordsStorageKey", currentState);
                     if (!isFirstSubmit) {
                         showUpdates(changes);
                     }
