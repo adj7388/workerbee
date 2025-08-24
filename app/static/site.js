@@ -22,7 +22,10 @@ function showUpdatePopup(message = "Updated") {
     window.addEventListener('click', removePopup);
 }
 
-function getUpdateDiff(prevState, currentState) {
+function handleChanges(storageKey, currentState) {
+    const prevStateJSON = localStorage.getItem(storageKey);
+    const prevState = prevStateJSON ? JSON.parse(prevStateJSON) : null;
+
     const changes = [];
     if (prevState) {
         for (const [key, value] of Object.entries(currentState)) {
@@ -31,21 +34,14 @@ function getUpdateDiff(prevState, currentState) {
             }
         }
     }
+    localStorage.setItem(storageKey, JSON.stringify(currentState));
     return changes;
 }
 
-function showUpdates(changes) {
+function showChanges(changes) {
     if (changes.length > 0) {
         showUpdatePopup(`Updated: \n${changes.join('\n')}`);
     } else {
         showUpdatePopup("No updates");
     }
-}
-
-function handleDiff(storageKey, currentState) {
-    const prevStateJSON = localStorage.getItem(storageKey);
-    const prevState = prevStateJSON ? JSON.parse(prevStateJSON) : null;
-    const changes = getUpdateDiff(prevState, currentState);
-    localStorage.setItem(storageKey, JSON.stringify(currentState));
-    return changes;
 }
