@@ -9,8 +9,9 @@ function showUpdatePopup(message = "Updated") {
 
     // handler to remove the popup
     const removePopup = () => {
+        popup.addEventListener('transitionend', () => popup.remove(), { once: true });
         popup.classList.remove('show');
-        popup.addEventListener('transitionend', () => popup.remove());
+
         window.removeEventListener('scroll', removePopup);
         window.removeEventListener('keydown', removePopup);
         window.removeEventListener('click', removePopup);
