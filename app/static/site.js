@@ -23,7 +23,7 @@ function showUpdatePopup(message = "Updated") {
     window.addEventListener('click', removePopup);
 }
 
-function handleChanges(storageKey, currentState) {
+function handleChanges(storageKey, currentState, inputLabels) {
     const prevStateJSON = localStorage.getItem(storageKey);
     const prevState = prevStateJSON ? JSON.parse(prevStateJSON) : null;
 
@@ -31,7 +31,7 @@ function handleChanges(storageKey, currentState) {
     if (prevState) {
         for (const [key, value] of Object.entries(currentState)) {
             if (prevState[key] !== value) {
-                changes.push(`'${prevState[key]}' changed to '${value}'`);
+                changes.push(`${inputLabels[key]} '${prevState[key]}' changed to '${value}'`);
             }
         }
     }
@@ -41,8 +41,17 @@ function handleChanges(storageKey, currentState) {
 
 function showChanges(changes) {
     if (changes.length > 0) {
-        showUpdatePopup(`Updated: \n${changes.join('\n')}`);
+        showUpdatePopup(`${changes.join('\n')}`);
     } else {
         showUpdatePopup("No updates");
     }
 }
+
+const getInputLabelOrLegend = (input, { combine = false } = {}) => {
+    const legend = input.closest('fieldset')?.querySelector('legend')?.textContent.trim();
+    const label  = input.labels?.[0]?.textContent.trim();
+
+    if (combine && legend && label) return `${legend}: ${label}`;
+    return legend || label || null;
+};
+

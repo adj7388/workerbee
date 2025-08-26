@@ -32,40 +32,28 @@
         </div>
 
         {# Group results radio buttons #}
-        <div class="d-flex flex-wrap align-items-center gap-3 mt-2">
-            <div class="input-labels">
-                Group the results by:
-            </div>
-            <div class="d-inline-flex flex-nowrap gap-2">
-                <div class="form-check form-check-inline">
-                    <label class="form-check-label" for="{{ INITIALS }}">
-                        Initial letters
-                    </label>&nbsp;&nbsp;
-                    <input class="form-check-input" type="radio"
-                        id="{{ INITIALS }}" name="{{ GROUPING }}" value="{{ INITIALS }}" 
-                        {{ "checked" if session[ARGS][GROUPING] == INITIALS else "" }}
-                    >
-                </div>
-                <div class="form-check form-check-inline">
-                    <label class="form-check-label" for="{{ LENGTH }}">
-                        Word length
-                    </label>&nbsp;&nbsp;
-                    <input class="form-check-input" type="radio"
-                        id="{{ LENGTH }}" name="{{ GROUPING }}" value="{{ LENGTH }}" 
-                        {{ "checked" if session[ARGS][GROUPING] == LENGTH else "" }}
-                    >
-                </div>
-                <div class="form-check form-check-inline">
-                    <label class="form-check-label" for="{{ NO_GROUPING }}">
-                        No grouping
-                    </label>
-                    <input class="form-check-input" type="radio"
-                        id="{{ NO_GROUPING }}" name="{{ GROUPING }}" value="{{ NO_GROUPING }}" 
-                        {{ "checked" if session[ARGS][GROUPING] == NO_GROUPING else "" }}
-                    >
-                </div>
-            </div>
+
+        <fieldset class="d-flex flex-wrap align-items-center gap-3 mt-2">
+        <legend class="input-labels mb-0 me-3">Group the results by:</legend>
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="{{ INITIALS }}" name="{{ GROUPING }}" value="{{ INITIALS }}"
+                {{ "checked" if session[ARGS][GROUPING] == INITIALS else "" }}>
+            <label class="form-check-label" for="{{ INITIALS }}">Initial letters</label>
         </div>
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="{{ LENGTH }}" name="{{ GROUPING }}" value="{{ LENGTH }}"
+                {{ "checked" if session[ARGS][GROUPING] == LENGTH else "" }}>
+            <label class="form-check-label" for="{{ LENGTH }}">Word length</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="{{ NO_GROUPING }}" name="{{ GROUPING }}" value="{{ NO_GROUPING }}"
+                {{ "checked" if session[ARGS][GROUPING] == NO_GROUPING else "" }}>
+            <label class="form-check-label" for="{{ NO_GROUPING }}">No grouping</label>
+        </div>
+        </fieldset>
 
         {# Dictionary choice #}
         <div class="mt-2">
@@ -87,20 +75,33 @@
     <div id="results"></div>
 
     <script>
-
-        document.getElementById('searchForm').addEventListener('submit', function (e) {
+       document.getElementById('searchForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const submitButton = document.getElementById('submitButton');
             const isFirstSubmit = submitButton.value === 'Find Words'
             submitButton.value = "Update Results";
 
-            const required = document.getElementById('{{ REQUIRED_LETTER }}').value;
-            const allowed = document.getElementById('{{ ALLOWED_LETTERS }}').value;
-            const word_list = document.getElementById('{{ WORD_LIST }}').value;
-            const grouping = document.querySelector('input[name="{{ GROUPING }}"]:checked')?.value;
-            const dictionary = document.getElementById('{{ DICTIONARY }}').value;
+            const required = document.getElementById('{{ REQUIRED_LETTER }}');
+            const allowed = document.getElementById('{{ ALLOWED_LETTERS }}');
+            const word_list = document.getElementById('{{ WORD_LIST }}');
+            const grouping = document.querySelector('input[name="{{ GROUPING }}"]:checked');
+            const dictionary = document.getElementById('{{ DICTIONARY }}');
 
-            const currentState = { required, allowed, word_list, grouping, dictionary };
+            const currentState = {
+                required : required.value,
+                allowed : allowed.value,
+                word_list : word_list.value,
+                grouping : grouping.value,
+                dictionary : dictionary.value
+            };
+
+            const inputLabels = {
+                required : getInputLabelOrLegend(required),
+                allowed : getInputLabelOrLegend(allowed),
+                word_list : getInputLabelOrLegend(word_list),
+                grouping : getInputLabelOrLegend(grouping),
+                dictionary : getInputLabelOrLegend(dictionary)
+            }
 
             const findWordsUrl = "{{ url_for('find_words_results') }}";
             const params = new URLSearchParams(currentState);
@@ -112,7 +113,7 @@
                         <div class="mt-3 bg-light" style="padding: 1em; border-top: 1px solid #333;">
                             ${html}
                         </div>`;
-                    changes = handleChanges("findWordsStorageKey", currentState);
+                    changes = handleChanges("findWordsStorageKey", currentState, inputLabels);
                     if ( ! isFirstSubmit ) {
                         showChanges(changes);
                     }
