@@ -87,7 +87,7 @@
             const grouping = document.querySelector('input[name="{{ GROUPING }}"]:checked');
             const dictionary = document.getElementById('{{ DICTIONARY }}');
 
-            const inputValuesAndLabels = {
+            const currentValuesAndLabels = {
                 required : { value : required.value, label : getInputLabelOrLegend(required) },
                 allowed  : { value : allowed .value, label : getInputLabelOrLegend(allowed ) },
                 word_list : { value : word_list.value, label : getInputLabelOrLegend(word_list) },
@@ -96,7 +96,7 @@
             };
 
             const findWordsUrl = "{{ url_for('find_words_results') }}";
-            const params = new URLSearchParams(pluck(inputValuesAndLabels, "value"));
+            const params = new URLSearchParams(pluck(currentValuesAndLabels, "value"));
 
             fetch(`${findWordsUrl}?${params.toString()}`)
                 .then(res => res.text())
@@ -107,8 +107,7 @@
                         </div>`;
                     changes = handleChanges(
                         "findWordsStorageKey",
-                        pluck(inputValuesAndLabels, "value"),
-                        pluck(inputValuesAndLabels, "label")
+                        currentValuesAndLabels
                     );
                     if ( ! isFirstSubmit ) {
                         showChanges(changes);

@@ -23,15 +23,18 @@ function showUpdatePopup(message = "Updated") {
     window.addEventListener('click', removePopup);
 }
 
-function handleChanges(storageKey, currentState, inputLabels) {
-    const prevStateJSON = localStorage.getItem(storageKey);
-    const prevState = prevStateJSON ? JSON.parse(prevStateJSON) : null;
+function handleChanges(storageKey, currentValuesAndLabels) {
+    const currentState = pluck(currentValuesAndLabels, "value");
+    const labels = pluck(currentValuesAndLabels, "label");
+
+    const previousStateJSON = localStorage.getItem(storageKey);
+    const previousState = previousStateJSON ? JSON.parse(previousStateJSON) : null;
 
     const changes = [];
-    if (prevState) {
-        for (const [key, value] of Object.entries(currentState)) {
-            if (prevState[key] !== value) {
-                changes.push(`${inputLabels[key]} '${prevState[key]}' changed to '${value}'`);
+    if (previousState) {
+        for (const [key, currentValue] of Object.entries(currentState)) {
+            if (previousState[key] !== currentValue) {
+                changes.push(`${labels[key]} '${previousState[key]}' changed to '${currentValue}'`);
             }
         }
     }
