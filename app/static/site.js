@@ -55,3 +55,8 @@ const getInputLabelOrLegend = (input, { combine = false } = {}) => {
     return legend || label || null;
 };
 
+function pluck(obj, key) {
+    return Object.fromEntries(
+        Object.entries(obj).map(([k, v]) => [k, v[key]])
+    );
+}
