@@ -155,9 +155,9 @@ fieldset {
 }
 
 legend {
-  font: inherit;       /* use same font as body text */
+  font: inherit;          /* use same font as body text */
   margin: 0;
   padding: 0;
-  display: inline-block;  /* <-- make legend behave like a normal label */
+  display: inline-block;  /* legend behave like a normal label */
   width: auto;            /* prevent it from spanning full width */
 }

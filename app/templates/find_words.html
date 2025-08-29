@@ -34,25 +34,25 @@
         {# Group results radio buttons #}
 
         <fieldset class="d-flex flex-wrap align-items-center gap-3 mt-2">
-        <legend class="input-labels mb-0 me-3">Group the results by:</legend>
+            <legend class="input-labels mb-0 me-3">Group the results by:</legend>
 
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" id="{{ INITIALS }}" name="{{ GROUPING }}" value="{{ INITIALS }}"
-                {{ "checked" if session[ARGS][GROUPING] == INITIALS else "" }}>
-            <label class="form-check-label" for="{{ INITIALS }}">Initial letters</label>
-        </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="{{ INITIALS }}" name="{{ GROUPING }}" value="{{ INITIALS }}"
+                    {{ "checked" if session[ARGS][GROUPING] == INITIALS else "" }}>
+                <label class="form-check-label" for="{{ INITIALS }}">Initial letters</label>
+            </div>
 
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" id="{{ LENGTH }}" name="{{ GROUPING }}" value="{{ LENGTH }}"
-                {{ "checked" if session[ARGS][GROUPING] == LENGTH else "" }}>
-            <label class="form-check-label" for="{{ LENGTH }}">Word length</label>
-        </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="{{ LENGTH }}" name="{{ GROUPING }}" value="{{ LENGTH }}"
+                    {{ "checked" if session[ARGS][GROUPING] == LENGTH else "" }}>
+                <label class="form-check-label" for="{{ LENGTH }}">Word length</label>
+            </div>
 
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" id="{{ NO_GROUPING }}" name="{{ GROUPING }}" value="{{ NO_GROUPING }}"
-                {{ "checked" if session[ARGS][GROUPING] == NO_GROUPING else "" }}>
-            <label class="form-check-label" for="{{ NO_GROUPING }}">No grouping</label>
-        </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="{{ NO_GROUPING }}" name="{{ GROUPING }}" value="{{ NO_GROUPING }}"
+                    {{ "checked" if session[ARGS][GROUPING] == NO_GROUPING else "" }}>
+                <label class="form-check-label" for="{{ NO_GROUPING }}">No grouping</label>
+            </div>
         </fieldset>
 
         {# Dictionary choice #}
