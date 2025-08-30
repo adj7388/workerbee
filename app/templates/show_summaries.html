@@ -102,6 +102,31 @@
     <div id="results"></div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const showWordsCheckbox = document.getElementById("{{ SHOW_WORDS }}");
+            const radios = [
+                document.getElementById("{{ ALPHABETICALLY }}"),
+                document.getElementById("{{ BYWORDLENGTH }}")
+            ];
+
+            function toggleRadios() {
+                const enabled = showWordsCheckbox.checked;
+                radios.forEach(radio => {
+                    radio.disabled = !enabled;
+
+                    // find the label for this radio
+                    const label = document.querySelector(`label[for="${radio.id}"]`);
+                    if (label) {
+                        label.classList.toggle("text-muted", !enabled);   // dim when disabled
+                        label.classList.toggle("opacity-50", !enabled);   // extra fade
+                    }
+                });
+            }
+            
+            toggleRadios(); // run on load
+            showWordsCheckbox.addEventListener("change", toggleRadios);
+        });
+
         function toggleRows(showWords) {
             const rows = document.querySelectorAll('tr[data-words]');
             rows.forEach(row => {
@@ -146,7 +171,7 @@
                         <div class="mt-3 bg-light" style="padding: 1em; border-top: 1px solid #333;">
                             ${html}
                         </div>`;
-                    changes = handleChanges(
+                    changes = getChanges(
                         "showSummariesStorageKey",
                         currentValuesAndLabels
                     );
@@ -155,34 +180,7 @@
                     }
                     toggleRows(currentValuesAndLabels.show_words.value);
                 });
-
         });
-
-            document.addEventListener("DOMContentLoaded", function () {
-            const checkbox = document.getElementById("{{ SHOW_WORDS }}");
-            const radios = [
-                document.getElementById("{{ ALPHABETICALLY }}"),
-                document.getElementById("{{ BYWORDLENGTH }}")
-            ];
-
-            function toggleRadios() {
-                const enabled = checkbox.checked;
-                radios.forEach(radio => {
-                    radio.disabled = !enabled;
-
-                    // find the label for this radio
-                    const label = document.querySelector(`label[for="${radio.id}"]`);
-                    if (label) {
-                        label.classList.toggle("text-muted", !enabled);   // dim when disabled
-                        label.classList.toggle("opacity-50", !enabled);   // extra fade
-                    }
-                });
-            }
-
-            toggleRadios(); // run on load
-            checkbox.addEventListener("change", toggleRadios);
-        });
-
     </script>
 
 {% endblock %}

@@ -23,7 +23,7 @@ function showUpdatePopup(message = "Updated") {
     window.addEventListener('click', removePopup);
 }
 
-function handleChanges(storageKey, currentValuesAndLabels) {
+function getChanges(storageKey, currentValuesAndLabels) {
     const currentState = pluck(currentValuesAndLabels, "value");
     const labels = pluck(currentValuesAndLabels, "label");
 
@@ -46,7 +46,7 @@ function showChanges(changes) {
     if (changes.length > 0) {
         showUpdatePopup(`${changes.join('\n')}`);
     } else {
-        showUpdatePopup("No updates");
+        showUpdatePopup("Nothing changed");
     }
 }
 
