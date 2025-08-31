@@ -28,25 +28,22 @@
                 grouping : { value : grouping.value, label : getInputLabelOrLegend(grouping) },
                 dictionary : { value : dictionary.value, label : getInputLabelOrLegend(dictionary) },
             };
-
-            const findWordsUrl = "{{ url_for('find_words_results') }}";
-            const params = new URLSearchParams(pluck(currentValuesAndLabels, "value"));
-
-            fetch(`${findWordsUrl}?${params.toString()}`)
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById('results').innerHTML = `
-                        <div class="mt-3 bg-light" style="padding: 1em; border-top: 1px solid #333;">
-                            ${html}
-                        </div>`;
-                    changes = getChanges(
-                        "findWordsStorageKey",
-                        currentValuesAndLabels
-                    );
-                    if ( ! isFirstSubmit ) {
-                        showChanges(changes);
-                    }
-                });
+            changes = getChanges("findWordsStorageKey", currentValuesAndLabels);
+            if ( ! isFirstSubmit ) {
+                showChanges(changes);
+            }
+            if ( isFirstSubmit || changes.length > 0 ) {
+                const findWordsUrl = "{{ url_for('find_words_results') }}";
+                const params = new URLSearchParams(pluck(currentValuesAndLabels, "value"));
+                fetch(`${findWordsUrl}?${params.toString()}`)
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('results').innerHTML = `
+                            <div class="mt-3 bg-light" style="padding: 1em; border-top: 1px solid #333;">
+                                ${html}
+                            </div>`;
+                    });
+            }
         });
 
     </script>

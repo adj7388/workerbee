@@ -139,7 +139,6 @@ td.letters {
     border-radius: 6px;
     font-size: 1rem;
     opacity: 0;
-    transition: opacity 0.4s ease;
     z-index: 9999; /* make sure it's above everything */
 }
 
