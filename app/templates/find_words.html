@@ -2,6 +2,57 @@
 
 {% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs %}
 
+{% block scripts %}
+
+    <script src="{{ url_for('static', filename='site.js') }}" defer></script>
+
+    <script>
+
+        document.getElementById('searchForm').addEventListener('submit', function (e) {
+            // do our own form submit so we can insert results in this page and show changes
+            e.preventDefault();
+            const submitButton = document.getElementById('submitButton');
+            const isFirstSubmit = submitButton.value === 'Find Words'
+            submitButton.value = "Update Results";
+
+            const required = document.getElementById('{{ REQUIRED_LETTER }}');
+            const allowed = document.getElementById('{{ ALLOWED_LETTERS }}');
+            const word_list = document.getElementById('{{ WORD_LIST }}');
+            const grouping = document.querySelector('input[name="{{ GROUPING }}"]:checked');
+            const dictionary = document.getElementById('{{ DICTIONARY }}');
+
+            const currentValuesAndLabels = {
+                required : { value : required.value, label : getInputLabelOrLegend(required) },
+                allowed  : { value : allowed .value, label : getInputLabelOrLegend(allowed ) },
+                word_list : { value : word_list.value, label : getInputLabelOrLegend(word_list) },
+                grouping : { value : grouping.value, label : getInputLabelOrLegend(grouping) },
+                dictionary : { value : dictionary.value, label : getInputLabelOrLegend(dictionary) },
+            };
+
+            const findWordsUrl = "{{ url_for('find_words_results') }}";
+            const params = new URLSearchParams(pluck(currentValuesAndLabels, "value"));
+
+            fetch(`${findWordsUrl}?${params.toString()}`)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('results').innerHTML = `
+                        <div class="mt-3 bg-light" style="padding: 1em; border-top: 1px solid #333;">
+                            ${html}
+                        </div>`;
+                    changes = getChanges(
+                        "findWordsStorageKey",
+                        currentValuesAndLabels
+                    );
+                    if ( ! isFirstSubmit ) {
+                        showChanges(changes);
+                    }
+                });
+        });
+
+    </script>
+
+{% endblock %}
+
 {% block content %}
 
     {{ page_banner(text='Find Words') }}
@@ -73,48 +124,5 @@
 
     {# Results inserted here #}
     <div id="results"></div>
-
-    <script>
-       document.getElementById('searchForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const submitButton = document.getElementById('submitButton');
-            const isFirstSubmit = submitButton.value === 'Find Words'
-            submitButton.value = "Update Results";
-
-            const required = document.getElementById('{{ REQUIRED_LETTER }}');
-            const allowed = document.getElementById('{{ ALLOWED_LETTERS }}');
-            const word_list = document.getElementById('{{ WORD_LIST }}');
-            const grouping = document.querySelector('input[name="{{ GROUPING }}"]:checked');
-            const dictionary = document.getElementById('{{ DICTIONARY }}');
-
-            const currentValuesAndLabels = {
-                required : { value : required.value, label : getInputLabelOrLegend(required) },
-                allowed  : { value : allowed .value, label : getInputLabelOrLegend(allowed ) },
-                word_list : { value : word_list.value, label : getInputLabelOrLegend(word_list) },
-                grouping : { value : grouping.value, label : getInputLabelOrLegend(grouping) },
-                dictionary : { value : dictionary.value, label : getInputLabelOrLegend(dictionary) },
-            };
-
-            const findWordsUrl = "{{ url_for('find_words_results') }}";
-            const params = new URLSearchParams(pluck(currentValuesAndLabels, "value"));
-
-            fetch(`${findWordsUrl}?${params.toString()}`)
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById('results').innerHTML = `
-                        <div class="mt-3 bg-light" style="padding: 1em; border-top: 1px solid #333;">
-                            ${html}
-                        </div>`;
-                    changes = getChanges(
-                        "findWordsStorageKey",
-                        currentValuesAndLabels
-                    );
-                    if ( ! isFirstSubmit ) {
-                        showChanges(changes);
-                    }
-                });
-        });
-
-    </script>
 
 {% endblock %}
