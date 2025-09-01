@@ -92,9 +92,12 @@
 
 {% block content %}
 
-    {{ page_banner(text="Show Summaries of All Word Lists") }}
+    <div class="banner-container">
 
-    {{ display_changes_checkbox(redirect="show_summaries") }}
+        {{ page_banner(text='Summarize All Word Lists') }}
+        {{ display_changes_checkbox(redirect="show_summaries") }}
+
+    </div>
 
     <div>
         {# display all word lists in a continuous line #}

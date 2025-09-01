@@ -53,9 +53,12 @@
 
 {% block content %}
 
-    {{ page_banner(text='Find Words') }}
+    <div class="banner-container">
 
-    {{ display_changes_checkbox(redirect="find_words") }}
+        {{ page_banner(text='Find Words') }}
+        {{ display_changes_checkbox(redirect="find_words") }}
+
+    </div>
 
     <form id="searchForm" method="GET">
 

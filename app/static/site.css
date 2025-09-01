@@ -105,11 +105,6 @@ td.letters {
     margin-left: 20px;
 }
 
-.banner {
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
 .anchor-target {
   scroll-margin-top: 70px; /* adjust fixed navbar height */
 }
@@ -159,4 +154,31 @@ legend {
   padding: 0;
   display: inline-block;  /* legend behave like a normal label */
   width: auto;            /* prevent it from spanning full width */
+}
+
+
+.banner {
+  margin: 0; /* avoid extra spacing from default h1 margins */
+}
+.banner-container {
+  display: flex;
+  align-items: baseline; /* vertically centers input with the h1 */
+  gap: 0.5rem;         /* spacing between elements */
+}
+
+.banner-container label {
+  font-size: 0.75rem;
+  font-weight: normal;
+  color: #555;
+  line-height: 1;
+  margin-left: 1rem;
+}
+
+.banner-container h1 {
+  margin: 0;
+}
+
+.banner-container .form-check-input {
+  transform: scale(0.75) translateY(4px);
+  margin: 0;
 }
