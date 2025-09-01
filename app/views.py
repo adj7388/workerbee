@@ -34,7 +34,7 @@ from .wordlists import WordLists, SCOWL_LARGE_70
 _logger = logging.getLogger(__name__)
 
 ARG_DEFAULTS = {
-    Consts.DISPLAY_CHANGES: True,
+    Consts.DISPLAY_CHANGES: False,
     Consts.DISPLAY_CHANGES_REDIRECT: None,
     Consts.REQUIRED_LETTER: "c",
     Consts.ALLOWED_LETTERS: "evitpa",

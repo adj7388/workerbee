@@ -129,16 +129,23 @@ td.letters {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* true center */
-    padding: 5px 10px;
-    border-radius: 6px;
+    transform: translate(-50%, -50%);
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
     font-size: 1rem;
     opacity: 0;
-    z-index: 9999; /* make sure it's above everything */
+    z-index: 9999;
+    
+    /* NEW STYLES */
+    background-color: #fff9e6;
+    border: 3px solid #f0e1b8;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .updatePopup.show {
     opacity: 1;
+    transform: translate(-50%, -50%) scale(1); /* optional: small scale-up effect */
 }
 
 fieldset {
@@ -149,21 +156,21 @@ fieldset {
 }
 
 legend {
-  font: inherit;          /* use same font as body text */
+  font: inherit;
   margin: 0;
   padding: 0;
-  display: inline-block;  /* legend behave like a normal label */
-  width: auto;            /* prevent it from spanning full width */
+  display: inline-block;
+  width: auto;
 }
-
 
 .banner {
-  margin: 0; /* avoid extra spacing from default h1 margins */
+  margin: 0;
 }
+
 .banner-container {
   display: flex;
-  align-items: baseline; /* vertically centers input with the h1 */
-  gap: 0.5rem;         /* spacing between elements */
+  align-items: baseline;
+  gap: 0.5rem;
 }
 
 .banner-container label {

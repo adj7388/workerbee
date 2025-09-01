@@ -1,7 +1,8 @@
 function showUpdatePopup(message = "Updated") {
     let popup = document.createElement('div');
-    popup.className = 'updatePopup bg-primary text-white shadow';
-    popup.textContent = message;
+    popup.className = 'updatePopup';
+    popup.innerHTML = message;
+    popup.style.display = "block";
     document.body.appendChild(popup);
 
     // fade in
@@ -34,7 +35,13 @@ function getChanges(storageKey, currentValuesAndLabels) {
     if (previousState) {
         for (const [key, currentValue] of Object.entries(currentState)) {
             if (previousState[key] !== currentValue) {
-                changes.push(`${labels[key]} '${previousState[key]}' changed to '${currentValue}'`);
+                changes.push(
+                    `<span style="font-weight: bold">${labels[key]}</span> ` +
+                    `<span style="font-style: italic">${currentValue}</span>` +
+                    ` <span style="font-weight: bold">was</span> ` +
+                    `<span style="font-style: italic">${previousState[key]}</span> `
+                );
+
             }
         }
     }
@@ -43,11 +50,11 @@ function getChanges(storageKey, currentValuesAndLabels) {
 }
 
 function showChanges(changes) {
-    if (changes.length > 0) {
-        showUpdatePopup(`${changes.join('\n')}`);
-    } else {
-        showUpdatePopup("Nothing changed");
-    }
+    const message = changes.length > 0
+        ? changes.join('<br>')
+        : "Nothing changed";
+
+    showUpdatePopup(message);
 }
 
 const getInputLabelOrLegend = (input, { combine = false } = {}) => {
