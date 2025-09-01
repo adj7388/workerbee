@@ -13,6 +13,8 @@ from flask import (
 )
 from io import BytesIO, StringIO
 
+from werkzeug.wrappers.response import Response
+
 from .bee import (
     get_grouping_keys,
     get_beewords_cached,
@@ -32,6 +34,8 @@ from .wordlists import WordLists, SCOWL_LARGE_70
 _logger = logging.getLogger(__name__)
 
 ARG_DEFAULTS = {
+    Consts.DISPLAY_CHANGES: True,
+    Consts.DISPLAY_CHANGES_REDIRECT: None,
     Consts.REQUIRED_LETTER: "c",
     Consts.ALLOWED_LETTERS: "evitpa",
     Consts.DICTIONARY: WIKT,
@@ -50,17 +54,16 @@ ARG_WHITELIST = set(ARG_DEFAULTS.keys())
 def update_session_args(request_args: dict) -> dict:
     session_args: dict = session.get(Consts.ARGS, {}).copy()
     if request_args:
-        for key in request.args:
+        for key in request_args:
             if key in ARG_WHITELIST:
                 if key in (Consts.REQUIRED_LETTER, Consts.ALLOWED_LETTERS):
                     session_args[key] = request_args[key].lower().strip()
                 else:
                     session_args[key] = request_args[key]
             else:
-                # arg not in whitelist? nope
                 abort(400)
         # to support more checkboxes add them to this list
-        for this_checkbox in [Consts.SHOW_WORDS]:
+        for this_checkbox in [Consts.SHOW_WORDS, Consts.DISPLAY_CHANGES]:
             if (value := request_args.get(this_checkbox)) is not None:
                 session_args[this_checkbox] = value.lower() in ("true", "on")
     return session_args
@@ -75,7 +78,7 @@ def init_routes(app: Flask) -> None:
         session[Consts.ARGS] = update_session_args(request.args)
 
     @app.route("/")
-    def root():  # type: ignore reportUnusedFunction
+    def root() -> Response:  # type: ignore reportUnusedFunction
         return redirect(url_for("find_words"))
 
     @app.route(f"/help")
@@ -94,6 +97,10 @@ def init_routes(app: Flask) -> None:
     @app.route(f"/show-summaries")
     def show_summaries() -> str:  # type: ignore reportUnusedFunction
         return render_template("show_summaries.html")
+
+    @app.route("/display-changes")
+    def display_changes() -> Response:  # type: ignore reportUnusedFunction
+        return redirect(url_for(session[Consts.ARGS][Consts.DISPLAY_CHANGES_REDIRECT]))
 
     ### Partials and downloads ###
     @app.route(f"/find-words-results", methods=["GET"])

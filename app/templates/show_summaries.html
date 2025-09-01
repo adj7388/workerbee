@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs %}
+{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, display_changes_checkbox %}
 
 {% block scripts %}
 
@@ -93,6 +93,8 @@
 {% block content %}
 
     {{ page_banner(text="Show Summaries of All Word Lists") }}
+
+    {{ display_changes_checkbox(redirect="show_summaries") }}
 
     <div>
         {# display all word lists in a continuous line #}

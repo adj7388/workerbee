@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs %}
+{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, display_changes_checkbox %}
 
 {% block scripts %}
 
@@ -28,8 +28,9 @@
                 grouping : { value : grouping.value, label : getInputLabelOrLegend(grouping) },
                 dictionary : { value : dictionary.value, label : getInputLabelOrLegend(dictionary) },
             };
-            changes = getChanges("findWordsStorageKey", currentValuesAndLabels);
-            if ( ! isFirstSubmit ) {
+            const displayChanges = document.getElementById('{{ DISPLAY_CHANGES }}').checked;
+            const changes = getChanges("findWordsStorageKey", currentValuesAndLabels);
+            if ( ! isFirstSubmit && displayChanges ) {
                 showChanges(changes);
             }
             if ( isFirstSubmit || changes.length > 0 ) {
@@ -53,6 +54,8 @@
 {% block content %}
 
     {{ page_banner(text='Find Words') }}
+
+    {{ display_changes_checkbox(redirect="find_words") }}
 
     <form id="searchForm" method="GET">
 

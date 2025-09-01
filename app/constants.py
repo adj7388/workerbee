@@ -10,6 +10,9 @@ class Consts:
 
     # Session consts
     ARGS: str = "args"
+    ## for Find Words and Show Summaries
+    DISPLAY_CHANGES: str = "display_changes"
+    DISPLAY_CHANGES_REDIRECT: str = "display_changes_redirect"
     ## for Find Words
     REQUIRED_LETTER: str = "required"
     ALLOWED_LETTERS: str = "allowed"
