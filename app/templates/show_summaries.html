@@ -80,7 +80,7 @@
                     .then(res => res.text())
                     .then(html => {
                         document.getElementById('results').innerHTML = `
-                            <div class="mt-3 bg-light" style="padding: 1em; border-top: 1px solid #333;">
+                            <div class="mt-3 bg-light results">
                                 ${html}
                             </div>`;
                         toggleRows(currentValuesAndLabels.show_words.value);
