@@ -68,8 +68,9 @@
                 dictionary : {value : dictionary.value, label : getInputLabelOrLegend(dictionary) }, 
                 word_sort : {value : word_sort.value, label : "Word sort:" }
             };
+            const displayChanges = document.getElementById('{{ DISPLAY_CHANGES }}').checked;
             changes = getChanges("showSummariesStorageKey", currentValuesAndLabels);
-            if ( ! isFirstSubmit ) {
+            if ( ! isFirstSubmit && displayChanges ) {
                 showChanges(changes);
             }
             if ( isFirstSubmit || changes.length > 0 ) {
