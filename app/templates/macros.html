@@ -89,7 +89,7 @@
 {% endmacro %}
 
 
-{% macro display_changes_checkbox(redirect) %}
+{% macro display_changes_checkbox() %}
 
     <label class="banner-label" for="{{DISPLAY_CHANGES}}">Display Changes</label>
     <input class="form-check-input" type="checkbox"
@@ -99,12 +99,15 @@
 
     <script>
         document.getElementById("{{DISPLAY_CHANGES}}").addEventListener("change", function () {
+            const displayChangesUrl = "{{ url_for('display_changes') }}";
             const params = new URLSearchParams({
                 display_changes : document.getElementById("{{DISPLAY_CHANGES}}").checked,
-                display_changes_redirect : "{{ redirect }}" 
             });
-
-            window.location.href = "/display-changes?" + params.toString();
+            fetch(`${displayChangesUrl}?${params.toString()}`)
+                .then(res => res.text())
+                .then(responseText => {
+                    showUpdatePopup(responseText);
+                });
         });
     </script>
 

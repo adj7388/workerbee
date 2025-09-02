@@ -35,7 +35,6 @@ _logger = logging.getLogger(__name__)
 
 ARG_DEFAULTS = {
     Consts.DISPLAY_CHANGES: False,
-    Consts.DISPLAY_CHANGES_REDIRECT: None,
     Consts.REQUIRED_LETTER: "c",
     Consts.ALLOWED_LETTERS: "evitpa",
     Consts.DICTIONARY: WIKT,
@@ -99,8 +98,9 @@ def init_routes(app: Flask) -> None:
         return render_template("show_summaries.html")
 
     @app.route("/display-changes")
-    def display_changes() -> Response:  # type: ignore reportUnusedFunction
-        return redirect(url_for(session[Consts.ARGS][Consts.DISPLAY_CHANGES_REDIRECT]))
+    def display_changes() -> str:  # type: ignore reportUnusedFunction
+        state = "on" if session[Consts.ARGS][Consts.DISPLAY_CHANGES] else "off"
+        return f"Display Changes: {state}"
 
     ### Partials and downloads ###
     @app.route(f"/find-words-results", methods=["GET"])

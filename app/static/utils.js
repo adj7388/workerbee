@@ -38,8 +38,7 @@ function getChanges(storageKey, currentValuesAndLabels) {
                 changes.push(
                     `<span style="font-weight: bold">${labels[key]}</span> ` +
                     `<span style="font-style: italic">${currentValue}</span> ` +
-                    `<span style="font-weight: bold">was</span> ` +
-                    `<span style="font-style: italic">${previousState[key]}</span>`
+                    `(was <span style="font-style: italic">${previousState[key]}</span>)`
                 );
 
             }
