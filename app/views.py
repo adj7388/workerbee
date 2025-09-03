@@ -6,14 +6,13 @@ from flask import (
     redirect,
     render_template,
     request,
-    Response,
     send_file,
     session,
     url_for,
 )
-from io import BytesIO, StringIO
+from flask.typing import ResponseReturnValue
 
-from werkzeug.wrappers.response import Response
+from io import BytesIO, StringIO
 
 from .bee import (
     get_grouping_keys,
@@ -72,39 +71,39 @@ def init_routes(app: Flask) -> None:
 
     ### Middleware ###
     @app.before_request
-    def before_request() -> None:  # type: ignore reportUnusedFunction
+    def before_request() -> ResponseReturnValue:  # type: ignore reportUnusedFunction
         session.setdefault(Consts.ARGS, ARG_DEFAULTS.copy())
         session[Consts.ARGS] = update_session_args(request.args)
 
     @app.route("/")
-    def root() -> Response:  # type: ignore reportUnusedFunction
+    def root() -> ResponseReturnValue:  # type: ignore reportUnusedFunction
         return redirect(url_for("find_words"))
 
     @app.route(f"/help")
-    def help() -> str:  # type: ignore reportUnusedFunctio
+    def help() -> ResponseReturnValue:  # type: ignore reportUnusedFunctio
         return render_template("help.html")
 
     @app.route("/about")
-    def about() -> str:  # type: ignore reportUnusedFunction
+    def about() -> ResponseReturnValue:  # type: ignore reportUnusedFunction
         return render_template("about.html")
 
     ### Forms ###
     @app.route(f"/find-words")
-    def find_words() -> str:  # type: ignore reportUnusedFunction
+    def find_words() -> ResponseReturnValue:  # type: ignore reportUnusedFunction
         return render_template("find_words.html")
 
     @app.route(f"/show-summaries")
-    def show_summaries() -> str:  # type: ignore reportUnusedFunction
+    def show_summaries() -> ResponseReturnValue:  # type: ignore reportUnusedFunction
         return render_template("show_summaries.html")
 
     @app.route("/display-changes")
-    def display_changes() -> str:  # type: ignore reportUnusedFunction
+    def display_changes() -> ResponseReturnValue:  # type: ignore reportUnusedFunction
         state = "on" if session[Consts.ARGS][Consts.DISPLAY_CHANGES] else "off"
         return f"Display Changes: {state}"
 
     ### Partials and downloads ###
     @app.route(f"/find-words-results", methods=["GET"])
-    def find_words_results() -> str:  # type: ignore reportUnusedFunction
+    def find_words_results() -> ResponseReturnValue:  # type: ignore reportUnusedFunction
         args = session[Consts.ARGS]
         found_words: FindWordsOutput | None = None
         if error_msg := error_check(args=args):
@@ -124,7 +123,7 @@ def init_routes(app: Flask) -> None:
         )
 
     @app.route(f"/show-summaries-results", methods=["GET"])
-    def show_summaries_results() -> str:  # type: ignore reportUnusedFunction
+    def show_summaries_results() -> ResponseReturnValue:  # type: ignore reportUnusedFunction
         args = session[Consts.ARGS]
         show_summaries_output: list[ShowSummariesOutput] = []
         if error_msg := error_check(args=args):
@@ -144,7 +143,7 @@ def init_routes(app: Flask) -> None:
         )
 
     @app.route("/get-file", methods=["GET"])
-    def get_file() -> Response:  # type: ignore reportUnusedFunction
+    def get_file() -> ResponseReturnValue:  # type: ignore reportUnusedFunction
         args = session[Consts.ARGS]
         found_words: FindWordsOutput = get_beewords_cached(
             word_list=WordLists[args[Consts.WORD_LIST]],
