@@ -4,9 +4,12 @@
 
 {% block scripts %}
 
-    <script src="{{ url_for('static', filename='utils.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='formHistory.js') }}"></script>
 
     <script>
+        
+        initFormHistory("searchForm","backBtn","forwardBtn");
 
         document.getElementById('searchForm').addEventListener('submit', function (e) {
             // do our own form submit so we can insert results in this page and show changes
@@ -57,7 +60,8 @@
 
         {{ page_banner(text='Find Words') }}
         {{ display_changes_checkbox() }}
-
+        <button id="backBtn" style="padding: 4px; border: 0; border-radius: 5px">&lt;</button>
+        <button id="forwardBtn" style="padding: 4px; border: 0; border-radius: 5px">&gt;</button>
     </div>
 
     <form id="searchForm" method="GET">
