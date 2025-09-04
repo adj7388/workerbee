@@ -91,11 +91,11 @@
 
 {% macro display_changes_checkbox() %}
 
-    <label class="banner-label" for="{{DISPLAY_CHANGES}}">Display Changes</label>
-    <input class="form-check-input" type="checkbox"
+    <input class="form-check-input me-0" type="checkbox"
         id="{{DISPLAY_CHANGES}}" name="{{DISPLAY_CHANGES}}"
         {{ "checked" if session[ARGS][DISPLAY_CHANGES] == True else "" }}
     >
+    <label for="{{DISPLAY_CHANGES}}">Display Changes</label>
 
     <script>
         document.getElementById("{{DISPLAY_CHANGES}}").addEventListener("change", function () {
