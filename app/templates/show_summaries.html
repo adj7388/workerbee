@@ -1,12 +1,16 @@
 {% extends "base.html" %}
 
-{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, display_changes_checkbox %}
+{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, display_changes_checkbox, display_history_buttons %}
 
 {% block scripts %}
 
     <script src="{{ url_for('static', filename='utils.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='formHistory.js') }}"></script>
 
     <script>
+        
+        initFormHistory("summarySearchForm","backBtn","forwardBtn", "indexDisplay");
+
         document.addEventListener("DOMContentLoaded", function () {
             // gray out word sort radio buttons when show words is not checked
             const showWordsCheckbox = document.getElementById("{{ SHOW_WORDS }}");
@@ -97,6 +101,7 @@
 
         {{ page_banner(text='Summarize All Word Lists') }}
         {{ display_changes_checkbox() }}
+        {{ display_history_buttons() }}
 
     </div>
 
@@ -116,7 +121,7 @@
         |
     </div>
     
-    <form id="searchForm" method="GET">
+    <form id="summarySearchForm" method="GET">
 
         {{ letter_inputs() }}
 

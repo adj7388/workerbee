@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, display_changes_checkbox %}
+{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, display_changes_checkbox, display_history_buttons%}
 
 {% block scripts %}
 
@@ -9,9 +9,9 @@
 
     <script>
         
-        initFormHistory("searchForm","backBtn","forwardBtn", "indexDisplay");
+        initFormHistory("findWordssSearchForm","backBtn","forwardBtn", "indexDisplay");
 
-        document.getElementById('searchForm').addEventListener('submit', function (e) {
+        document.getElementById('findWordssSearchForm').addEventListener('submit', function (e) {
             // do our own form submit so we can insert results in this page and show changes
             e.preventDefault();
             const submitButton = document.getElementById('submitButton');
@@ -60,12 +60,11 @@
 
         {{ page_banner(text='Find Words') }}
         {{ display_changes_checkbox() }}&nbsp;&nbsp;&nbsp;
-        <button id="backBtn" class="history-button">&lt;</button>
-        <span id="indexDisplay" style="font-size: smaller"></span>
-        <button id="forwardBtn" class="history-button">&gt;</button>
+        {{ display_history_buttons() }}
+
     </div>
 
-    <form id="searchForm" method="GET">
+    <form id="findWordssSearchForm" method="GET">
 
         {{ letter_inputs() }}
 
