@@ -1,8 +1,9 @@
 
-function initFormHistory(formId, backBtnId, forwardBtnId) {
+function initFormHistory(formId, backBtnId, forwardBtnId, indexDisplayId) {
   const form = document.getElementById(formId);
   const backBtn = document.getElementById(backBtnId);
   const forwardBtn = document.getElementById(forwardBtnId);
+  const indexDisplay = document.getElementById(indexDisplayId);
 
   if (!form || !backBtn || !forwardBtn) return; // safety check
 
@@ -28,10 +29,9 @@ function initFormHistory(formId, backBtnId, forwardBtnId) {
       }
     }
 
-    history = history.slice(0, index + 1); // drop "forward" history
     history.push(values);
     index = history.length - 1;
-
+    displayIndex(index);
     localStorage.setItem(`history:${formId}`, JSON.stringify(history));
   }
 
@@ -49,11 +49,18 @@ function initFormHistory(formId, backBtnId, forwardBtnId) {
     }
   }
 
+  function displayIndex(index) {
+    indexDisplay.textContent = index + 1;
+    forwardBtn.disabled = (index >= history.length - 1);
+    backBtn.disabled = (index <= 0);
+  }
+
   // Load saved history (if any)
   const saved = localStorage.getItem(`history:${formId}`);
   if (saved) {
     history = JSON.parse(saved);
     index = history.length - 1;
+    displayIndex(index);
     if (index >= 0) restoreState(history[index]);
   }
 
@@ -65,6 +72,7 @@ function initFormHistory(formId, backBtnId, forwardBtnId) {
   backBtn.addEventListener("click", () => {
     if (index > 0) {
       index--;
+      displayIndex(index);
       restoreState(history[index]);
     }
   });
@@ -72,6 +80,7 @@ function initFormHistory(formId, backBtnId, forwardBtnId) {
   forwardBtn.addEventListener("click", () => {
     if (index < history.length - 1) {
       index++;
+      displayIndex(index);
       restoreState(history[index]);
     }
   });
