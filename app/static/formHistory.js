@@ -64,11 +64,6 @@ function initFormHistory(formId, backBtnId, forwardBtnId, indexDisplayId) {
     if (index >= 0) restoreState(history[index]);
   }
 
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-    saveState();
-  });
-
   backBtn.addEventListener("click", () => {
     if (index > 0) {
       index--;
@@ -84,4 +79,6 @@ function initFormHistory(formId, backBtnId, forwardBtnId, indexDisplayId) {
       restoreState(history[index]);
     }
   });
+
+  return saveState;
 }

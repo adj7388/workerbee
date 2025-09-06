@@ -9,7 +9,7 @@
 
     <script>
         
-        initFormHistory("summarySearchForm","backBtn","forwardBtn", "indexDisplay");
+        const saveState = initFormHistory("summarySearchForm","backBtn","forwardBtn", "indexDisplay");
 
         document.addEventListener("DOMContentLoaded", function () {
             // gray out word sort radio buttons when show words is not checked
@@ -74,7 +74,10 @@
             };
             const displayChanges = document.getElementById('{{ DISPLAY_CHANGES }}').checked;
             changes = getChanges("showSummariesStorageKey", currentValuesAndLabels);
-            if ( ! isFirstSubmit && displayChanges ) {
+            if (isFirstSubmit || changes.length) {
+                saveState();
+            }
+            if ( !isFirstSubmit && displayChanges ) {
                 showChanges(changes);
             }
             if ( isFirstSubmit || changes.length > 0 ) {
