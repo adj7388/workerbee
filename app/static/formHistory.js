@@ -22,8 +22,6 @@ function initFormHistory(formId, backBtnId, forwardBtnId, indexDisplayId) {
         if (el.checked) values[el.name].push(el.value);
       } else if (el.type === "radio") {
         if (el.checked) values[el.name] = el.value;
-        console.log(el);
-        console.log(el.checked);
       } else {
         values[el.name] = el.value;
       }
