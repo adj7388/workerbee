@@ -1,19 +1,25 @@
 
-function initFormHistory(formId, backBtnId, forwardBtnId, indexDisplayId, saveHistoryBtnId) {
+function initFormHistory(
+    formId,
+    backBtnId,
+    forwardBtnId,
+    indexDisplayId,
+    saveHistoryBtnId)
+  {
 
   const form = document.getElementById(formId);
   const backBtn = document.getElementById(backBtnId);
   const forwardBtn = document.getElementById(forwardBtnId);
   const indexDisplay = document.getElementById(indexDisplayId);
   const saveHistoryBtn = document.getElementById(saveHistoryBtnId);
-
+  
   let history = [];
   let index = -1;
 
   function saveState() {
     const values = {};
 
-    // Collect form element values
+    // Collect values of all form elements
     for (const el of form.elements) {
       if (!el.name) continue;
 
@@ -48,6 +54,10 @@ function initFormHistory(formId, backBtnId, forwardBtnId, indexDisplayId, saveHi
       } else {
         el.value = values[el.name];
       }
+    }
+    // shotgun approach to keeping UI updated 
+    for (const el of form.elements) {
+      el.dispatchEvent(new Event("change", { bubbles: true }));
     }
   }
 
