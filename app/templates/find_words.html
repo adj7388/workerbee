@@ -9,7 +9,13 @@
 
     <script>
         
-        const saveState = initFormHistory("findWordssSearchForm","backBtn","forwardBtn", "indexDisplay");
+         initFormHistory(
+            "findWordssSearchForm",
+            "backBtn",
+            "forwardBtn",
+            "indexDisplay",
+            "saveHistoryBtn"
+        );
 
         document.getElementById('findWordssSearchForm').addEventListener('submit', function (e) {
             // do our own form submit so we can insert results in this page and show changes
@@ -33,13 +39,10 @@
             };
             const displayChanges = document.getElementById('{{ DISPLAY_CHANGES }}').checked;
             const changes = getChanges("findWordsStorageKey", currentValuesAndLabels);
-            if (isFirstSubmit || changes.length) {
-                saveState();
-            }
             if ( ! isFirstSubmit && displayChanges ) {
                 showChanges(changes);
             }
-            if ( isFirstSubmit || changes.length > 0 ) {
+            if ( isFirstSubmit || changes.length ) {
                 const findWordsUrl = "{{ url_for('find_words_results') }}";
                 const params = new URLSearchParams(pluck(currentValuesAndLabels, "value"));
                 fetch(`${findWordsUrl}?${params.toString()}`)

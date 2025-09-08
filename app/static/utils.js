@@ -8,10 +8,14 @@ function showUpdatePopup(message = "Updated") {
     // fade in
     requestAnimationFrame(() => popup.classList.add('show'));
 
-    // handler to remove the popup
+    // remove popup when transition ends
+    popup.addEventListener('transitionend', () => popup.remove(), { once: true });
+
+    let removed = false;
     const removePopup = () => {
-        popup.addEventListener('transitionend', () => popup.remove(), { once: true });
-        popup.classList.remove('show');
+        if (removed) return;   // guard so it only runs once
+        removed = true;
+        popup.classList.remove('show');  // triggers fade-out
 
         window.removeEventListener('scroll', removePopup);
         window.removeEventListener('keydown', removePopup);
@@ -69,3 +73,12 @@ function pluck(obj, key) {
         Object.entries(obj).map(([k, v]) => [k, v[key]])
     );
 }
+
+const stableStringify = obj => 
+    JSON.stringify(obj, Object.keys(obj).sort());
+
+const objsAreEqual = (obj1, obj2) => 
+    stableStringify(obj1) === stableStringify(obj2);
+
+const arrayIncludesObject = (arr, obj) =>
+  arr.some(item => objsAreEqual(item, obj));

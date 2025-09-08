@@ -1,11 +1,11 @@
 
-function initFormHistory(formId, backBtnId, forwardBtnId, indexDisplayId) {
+function initFormHistory(formId, backBtnId, forwardBtnId, indexDisplayId, saveHistoryBtnId) {
+
   const form = document.getElementById(formId);
   const backBtn = document.getElementById(backBtnId);
   const forwardBtn = document.getElementById(forwardBtnId);
   const indexDisplay = document.getElementById(indexDisplayId);
-
-  if (!form || !backBtn || !forwardBtn) return; // safety check
+  const saveHistoryBtn = document.getElementById(saveHistoryBtnId);
 
   let history = [];
   let index = -1;
@@ -27,10 +27,14 @@ function initFormHistory(formId, backBtnId, forwardBtnId, indexDisplayId) {
       }
     }
 
-    history.push(values);
-    index = history.length - 1;
-    displayIndex(index);
-    localStorage.setItem(`history:${formId}`, JSON.stringify(history));
+    if ( arrayIncludesObject(history, values) ) {
+      showUpdatePopup("Already in history");
+    } else {
+      history.push(values);
+      index = history.length - 1;
+      displayIndex(index);
+      localStorage.setItem(`history:${formId}`, JSON.stringify(history));
+    }
   }
 
   function restoreState(values) {
@@ -78,5 +82,9 @@ function initFormHistory(formId, backBtnId, forwardBtnId, indexDisplayId) {
     }
   });
 
-  return saveState;
+  saveHistoryBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    saveState();
+  });
+
 }

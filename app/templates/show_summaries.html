@@ -9,7 +9,13 @@
 
     <script>
         
-        const saveState = initFormHistory("summarySearchForm","backBtn","forwardBtn", "indexDisplay");
+        initFormHistory(
+            "summarySearchForm",
+            "backBtn",
+            "forwardBtn",
+            "indexDisplay",
+            "saveHistoryBtn"
+        );
 
         document.addEventListener("DOMContentLoaded", function () {
             // gray out word sort radio buttons when show words is not checked
@@ -73,14 +79,11 @@
                 word_sort : {value : word_sort.value, label : "Word sort:" }
             };
             const displayChanges = document.getElementById('{{ DISPLAY_CHANGES }}').checked;
-            changes = getChanges("showSummariesStorageKey", currentValuesAndLabels);
-            if (isFirstSubmit || changes.length) {
-                saveState();
-            }
+            const changes = getChanges("showSummariesStorageKey", currentValuesAndLabels);
             if ( !isFirstSubmit && displayChanges ) {
                 showChanges(changes);
             }
-            if ( isFirstSubmit || changes.length > 0 ) {
+            if ( isFirstSubmit || changes.length ) {
                 const showSummariesUrl = "{{ url_for('show_summaries_results') }}";
                 const params = new URLSearchParams(pluck(currentValuesAndLabels, "value"));
                 fetch(`${showSummariesUrl}?${params.toString()}`)
@@ -94,6 +97,7 @@
                     });
             }
         });
+
     </script>
 
 {% endblock %}
