@@ -82,3 +82,6 @@ const objsAreEqual = (obj1, obj2) =>
 
 const arrayIncludesObject = (arr, obj) =>
   arr.some(item => objsAreEqual(item, obj));
+
+const arrayIncludesNestedObject = (arr, key, obj) =>
+  arr.some(item => objsAreEqual(item[key], obj));

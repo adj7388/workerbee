@@ -4,7 +4,8 @@ function initFormHistory(
     backBtnId,
     forwardBtnId,
     indexDisplayId,
-    saveHistoryBtnId)
+    saveHistoryBtnId,
+    resultsHtmlId)
   {
 
   const form = document.getElementById(formId);
@@ -12,50 +13,58 @@ function initFormHistory(
   const forwardBtn = document.getElementById(forwardBtnId);
   const indexDisplay = document.getElementById(indexDisplayId);
   const saveHistoryBtn = document.getElementById(saveHistoryBtnId);
-  
+  const resultsDiv = document.getElementById(resultsHtmlId);
+
   let history = [];
   let index = -1;
 
   function saveState() {
-    const values = {};
+    const searchParams = {};
 
-    // Collect values of all form elements
-    for (const el of form.elements) {
-      if (!el.name) continue;
+    // Collect searchParams of all form elements
+    for ( const el of form.elements ) {
+      if ( !el.name ) continue;
 
-      if (el.type === "checkbox") {
-        if (!values[el.name]) values[el.name] = [];
-        if (el.checked) values[el.name].push(el.value);
-      } else if (el.type === "radio") {
-        if (el.checked) values[el.name] = el.value;
+      if ( el.type === "checkbox" ) {
+        if ( !searchParams[el.name] ) searchParams[el.name] = [];
+        if ( el.checked ) searchParams[el.name].push(el.value);
+      } else if ( el.type === "radio" ) {
+        if ( el.checked ) searchParams[el.name] = el.value;
       } else {
-        values[el.name] = el.value;
+        searchParams[el.name] = el.value;
       }
     }
 
-    if ( arrayIncludesObject(history, values) ) {
+    const historyEntry = {
+      search : searchParams,
+      results : resultsDiv.innerHTML
+    }
+
+    // TODO: this no longers works for finding duplicates
+    if ( arrayIncludesNestedObject(history, "search", searchParams) ) {
       showUpdatePopup("Already in history");
     } else {
-      history.push(values);
+      history.push(historyEntry);
       index = history.length - 1;
       displayIndex(index);
       localStorage.setItem(`history:${formId}`, JSON.stringify(history));
     }
   }
 
-  function restoreState(values) {
+  function restoreState(historyEntry) {
     for (const el of form.elements) {
-      if (!el.name || !(el.name in values)) continue;
+      if (!el.name || !(el.name in historyEntry.search)) continue;
 
       if (el.type === "checkbox") {
-        el.checked = values[el.name].includes(el.value);
+        el.checked = historyEntry.search[el.name].includes(el.value);
       } else if (el.type === "radio") {
-        el.checked = values[el.name] === el.value;
+        el.checked = historyEntry.search[el.name] === el.value;
       } else {
-        el.value = values[el.name];
+        el.value = historyEntry.search[el.name];
       }
     }
-    // shotgun approach to keeping UI updated 
+    resultsDiv.innerHTML = historyEntry.results;
+    // shotgun approach to keeping form UI updated 
     for (const el of form.elements) {
       el.dispatchEvent(new Event("change", { bubbles: true }));
     }
