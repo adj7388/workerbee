@@ -17,10 +17,10 @@ function initFormHistory(
 
   let history = [];
   let index = -1;
+  displayIndex(index);
 
   function saveState() {
     const searchParams = {};
-
     // Collect searchParams of all form elements
     for ( const el of form.elements ) {
       if ( !el.name ) continue;
@@ -38,11 +38,10 @@ function initFormHistory(
     const historyEntry = {
       search : searchParams,
       results : resultsDiv.innerHTML
-    }
+    } 
 
-    // TODO: this no longers works for finding duplicates
     if ( arrayIncludesNestedObject(history, "search", searchParams) ) {
-      showUpdatePopup("Already in history");
+      showUpdatePopup("Query already saved");
     } else {
       history.push(historyEntry);
       index = history.length - 1;
@@ -63,7 +62,7 @@ function initFormHistory(
         el.value = historyEntry.search[el.name];
       }
     }
-    resultsDiv.innerHTML = historyEntry.results;
+    resultsDiv.innerHTML = "";
     // shotgun approach to keeping form UI updated 
     for (const el of form.elements) {
       el.dispatchEvent(new Event("change", { bubbles: true }));

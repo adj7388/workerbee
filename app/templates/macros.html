@@ -113,11 +113,11 @@
 
 {% endmacro %}
 
-{% macro display_history_buttons() %}
+{% macro display_history_buttons(backBtnId, forwardBtnId, saveHistoryBtnId, indexDisplayId) %}
 
-    <button id="backBtn" class="history-button">&lt;</button>
-    <span id="indexDisplay" style="font-size: smaller"></span>
-    <button id="forwardBtn" class="history-button">&gt;</button>
-    <button id="saveHistoryBtn" class="history-button">+</button>
+    <button id="{{backBtnId}}" class="history-button">&lt;</button>
+    <span id="{{indexDisplayId}}" style="font-size: smaller"></span>
+    <button id="{{forwardBtnId}}" class="history-button">&gt;</button>
+    <button id="{{saveHistoryBtnId}}" class="history-button">+</button>
 
 {% endmacro %}
