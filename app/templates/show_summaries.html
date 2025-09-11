@@ -23,7 +23,7 @@
     const ids = {{ IDs | tojson }}
 
     const displayChanges = initDisplayChanges({
-        displayChangesId : "{{ DISPLAY_CHANGES }}",
+        displayChangesCheckbox : document.getElementById("{{ DISPLAY_CHANGES }}"),
         url : "{{ url_for('display_changes') }}"
     });
 
