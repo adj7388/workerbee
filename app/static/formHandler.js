@@ -8,7 +8,7 @@ function initFormHandler({
     submitButtonId,
     resultsId, 
     formHistory,
-    displayChangesId,
+    displayChanges,
     postSubmitCallbacks = [],
     buttonLabels = { first: "Submit", after: "Update" }
 }) {
@@ -22,7 +22,7 @@ function initFormHandler({
 
         const valuesAndLabels = gatherValues();
 
-        const displayChangesChecked = document.getElementById(displayChangesId).checked;
+        const displayChangesChecked = displayChanges.getDisplayChangesState();
         const changes = getChanges(storageKey, valuesAndLabels);
         saveCurrentState(storageKey, valuesAndLabels);
 

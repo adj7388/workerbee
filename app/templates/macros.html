@@ -97,19 +97,7 @@
     >
     <label for="{{DISPLAY_CHANGES}}">Display Changes</label>
 
-    <script>
-        document.getElementById("{{DISPLAY_CHANGES}}").addEventListener("change", function () {
-            const displayChangesUrl = "{{ url_for('display_changes') }}";
-            const params = new URLSearchParams({
-                display_changes : document.getElementById("{{DISPLAY_CHANGES}}").checked,
-            });
-            fetch(`${displayChangesUrl}?${params.toString()}`)
-                .then(res => res.text())
-                .then(responseText => {
-                    showUpdatePopup(responseText);
-                });
-        });
-    </script>
+    <script src="{{ url_for('static', filename='displayChanges.js') }}"></script>
 
 {% endmacro %}
 

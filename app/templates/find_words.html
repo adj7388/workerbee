@@ -22,6 +22,11 @@
     // convert Jinja IDs to ids for js
     const ids = {{ IDs | tojson }};
 
+    const displayChanges = initDisplayChanges({
+        displayChangesId : "{{ DISPLAY_CHANGES }}",
+        url : "{{ url_for('display_changes') }}"
+    });
+
     const formHistory = initFormHistory(ids);
 
     initFormHandler({
@@ -34,7 +39,7 @@
             word_list   : inputValue('{{ WORD_LIST }}'),
             dictionary  : inputValue('{{ DICTIONARY }}'),
         }),
-        displayChangesId    : '{{ DISPLAY_CHANGES }}',
+        displayChanges      : displayChanges,
         submitButtonId      : 'submitButton',
         resultsId           : ids.resultsId,
         formHistory         : formHistory,
