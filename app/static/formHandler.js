@@ -15,6 +15,7 @@ function initFormHandler({
     document.getElementById(formId).addEventListener('submit', function (e) {
         e.preventDefault();
 
+        const storageKey = `state:${formId}`;
         const submitButton = document.getElementById(submitButtonId);
         const isFirstSubmit = submitButton.value === buttonLabels.first;
         submitButton.value = buttonLabels.after;
@@ -22,7 +23,8 @@ function initFormHandler({
         const valuesAndLabels = gatherValues();
 
         const displayChangesChecked = document.getElementById(displayChangesId).checked;
-        const changes = getChanges(`state:${formId}`, valuesAndLabels);
+        const changes = getChanges(storageKey, valuesAndLabels);
+        saveCurrentState(storageKey, valuesAndLabels);
 
         console.log(
             `${formId} - displayChangesChecked: ${displayChangesChecked}, changes.length: ${changes.length}, isFirstSubmit: ${isFirstSubmit}, dirtyFlag: ${formHistory.getDirtyFlag()}`
@@ -48,6 +50,11 @@ function initFormHandler({
     });
 }
 
+function saveCurrentState (storageKey, currentValuesAndLabels) {
+    const currentState = pluck(currentValuesAndLabels, "value");
+    localStorage.setItem(storageKey, JSON.stringify(currentState));
+}
+
 function getChanges(storageKey, currentValuesAndLabels) {
     const currentState = pluck(currentValuesAndLabels, "value");
     const labels = pluck(currentValuesAndLabels, "label");
@@ -68,7 +75,6 @@ function getChanges(storageKey, currentValuesAndLabels) {
             }
         }
     }
-    localStorage.setItem(storageKey, JSON.stringify(currentState));
     return changes;
 }
 
