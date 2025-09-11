@@ -1,13 +1,15 @@
 
-function initFormHistory(
+function initFormHistory({
     formId,
     backBtnId,
     forwardBtnId,
     indexDisplayId,
     saveHistoryBtnId,
-    resultsHtmlId)
+    resultsHtmlId
+  })
   {
 
+  console.log(`${formId} ${backBtnId} ${forwardBtnId} ${indexDisplayId} ${saveHistoryBtnId} ${resultsHtmlId}`);
   const form = document.getElementById(formId);
   const backBtn = document.getElementById(backBtnId);
   const forwardBtn = document.getElementById(forwardBtnId);

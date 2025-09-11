@@ -3,12 +3,12 @@
 {% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, display_changes_checkbox, display_history_buttons %}
 
 {% set ID = {
-    "form": "summarySearchForm",
-    "back": "backBtn", 
-    "forward": "forwardBtn",
-    "index": "indexDisplay",
-    "save": "saveHistoryBtn",
-    "results": "results",
+    'form'   : 'summarySearchForm',
+    'back'   : 'backBtn', 
+    'forward': 'forwardBtn',
+    'index'  : 'indexDisplay',
+    'save'   : 'saveHistoryBtn',
+    'results': 'results',
 } %}
 
 {% block scripts %}
@@ -19,14 +19,34 @@
 
 <script>
     
-    const formHistory = initFormHistory(
-        "{{ID.form}}",
-        "{{ID.back}}",
-        "{{ID.forward}}",
-        "{{ID.index}}",
-        "{{ID.save}}",
-        "{{ID.results}}"
-    );
+    const formHistory = initFormHistory({
+        formId           : '{{ ID.form }}',
+        backBtnId        : '{{ ID.back }}',
+        forwardBtnId     : '{{ ID.forward }}',
+        indexDisplayId   : '{{ ID.index }}',
+        saveHistoryBtnId : '{{ ID.save }}',
+        resultsHtmlId    : '{{ ID.results }}'
+    });
+
+    initFormHandler({
+        formId          : '{{ ID.form }}',
+        url             : "{{ url_for('show_summaries_results') }}",
+        gatherValues    : () => ({
+            required    : inputValue('{{ REQUIRED_LETTER }}'),
+            allowed     : inputValue('{{ ALLOWED_LETTERS }}'),
+            summary_sort: radioValue('{{  SUMMARY_SORT  }}'),
+            show_words  : checkboxValue('{{ SHOW_WORDS }}'),
+            dictionary  : inputValue('{{ DICTIONARY }}'),
+            word_sort   : radioValue('{{  WORD_SORT  }}', 'Word sort:')
+        }),
+        displayChangesId : '{{ DISPLAY_CHANGES }}',
+        submitButtonId   : 'submitButton',
+        resultsId        : '{{ ID.results }}',
+        formHistory      : formHistory,
+        storageKey       : 'showSummariesStorageKey',
+        postSubmitCallbacks: [toggleWordRows],
+        buttonLabels     : { first: 'Show Summaries', after: 'Update Summaries' }
+    });
 
     // gray out word sort radios when showWords is not checked
     const showWordsCheckbox = document.getElementById("{{ SHOW_WORDS }}");
@@ -74,26 +94,6 @@
     );
 
     toggleSortRadios(); // run on load
-
-    initFormHandler({
-        formId: "{{ID.form}}",
-        url: "{{ url_for('show_summaries_results') }}",
-        gatherValues: () => ({
-            required    : inputValue('{{REQUIRED_LETTER}}'),
-            allowed     : inputValue('{{ALLOWED_LETTERS}}'),
-            summary_sort: radioValue('{{ SUMMARY_SORT }}'),
-            show_words  : checkboxValue('{{SHOW_WORDS}}'),
-            dictionary  : inputValue('{{DICTIONARY}}'),
-            word_sort   : radioValue('{{ WORD_SORT }}', "Word sort:")
-        }),
-        displayChangesId : '{{ DISPLAY_CHANGES }}',
-        submitButtonId: "submitButton",
-        resultsId: "{{ID.results}}",
-        formHistory: formHistory,
-        storageKey: "showSummariesStorageKey",
-        postSubmitCallbacks: [toggleWordRows],
-        buttonLabels: { first: "Show Summaries", after: "Update Summaries" }
-    });
 
 </script>
 
