@@ -3,72 +3,49 @@
 {% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, display_changes_checkbox, display_history_buttons%}
 
 {% set ID = {
-    "form": "findWordsSearchForm",
-    "back": "backBtn", 
-    "forward": "forwardBtn",
-    "index": "indexDisplay",
-    "save": "saveHistoryBtn",
-    "results": "results",
+    'form'   : 'findWordsSearchForm',
+    'back'   : 'backBtn', 
+    'forward': 'forwardBtn',
+    'index'  : 'indexDisplay',
+    'save'   : 'saveHistoryBtn',
+    'results': 'results',
 } %}
 
 {% block scripts %}
 
 <script src="{{ url_for('static', filename='utils.js') }}"></script>
 <script src="{{ url_for('static', filename='formHistory.js') }}"></script>
+<script src="{{ url_for('static', filename='formHandler.js') }}"></script>
 
 <script>
-    initFormHistory(
-        "{{ID.form}}",
-        "{{ID.back}}",
-        "{{ID.forward}}",
-        "{{ID.index}}",
-        "{{ID.save}}",
-        "{{ID.results}}"
-    );
-
-    // Attach submit listener
-    document.getElementById("{{ID.form}}").addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const submitButton = document.getElementById('submitButton');
-        const isFirstSubmit = submitButton.value === 'Find Words';
-        submitButton.value = "Update Results";
-
-        const required = document.getElementById('{{ REQUIRED_LETTER }}');
-        const allowed  = document.getElementById('{{ ALLOWED_LETTERS }}');
-        const word_list = document.getElementById('{{ WORD_LIST }}');
-        const grouping = document.querySelector('input[name="{{ GROUPING }}"]:checked');
-        const dictionary = document.getElementById('{{ DICTIONARY }}');
-
-        const currentValuesAndLabels = {
-            required : { value : required.value, label : getInputLabelOrLegend(required) },
-            allowed  : { value : allowed.value, label : getInputLabelOrLegend(allowed) },
-            word_list : { value : word_list.value, label : getInputLabelOrLegend(word_list) },
-            grouping : { value : grouping.value, label : getInputLabelOrLegend(grouping) },
-            dictionary : { value : dictionary.value, label : getInputLabelOrLegend(dictionary) },
-        };
-
-        const displayChanges = document.getElementById('{{ DISPLAY_CHANGES }}').checked;
-        const changes = getChanges("findWordsStorageKey", currentValuesAndLabels);
-
-        if (!isFirstSubmit && displayChanges) {
-            showChanges(changes);
-        }
-
-        if (isFirstSubmit || changes.length) {
-            const findWordsUrl = "{{ url_for('find_words_results') }}";
-            const params = new URLSearchParams(pluck(currentValuesAndLabels, "value"));
-
-            fetch(`${findWordsUrl}?${params.toString()}`)
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById("{{ID.results}}").innerHTML = `
-                        <div class="mt-3 bg-light results">
-                            ${html}
-                        </div>`;
-                });
-        }
+    const formHistory = initFormHistory({
+        formId    : '{{ ID.form }}',
+        backId    : '{{ ID.back }}',
+        forwardId : '{{ ID.forward }}',
+        indexId   : '{{ ID.index }}',
+        saveId    : '{{ ID.save }}',
+        resultsId : '{{ ID.results }}'
     });
+
+    initFormHandler({
+        formId          : '{{ ID.form }}',
+        url             : "{{ url_for('find_words_results') }}",
+        gatherValues    : () => ({
+            required    : inputValue('{{ REQUIRED_LETTER }}'),
+            allowed     : inputValue('{{ ALLOWED_LETTERS }}'),
+            grouping    : radioValue('{{ GROUPING }}'),
+            word_list   : inputValue('{{ WORD_LIST }}'),
+            dictionary  : inputValue('{{ DICTIONARY }}'),
+        }),
+        displayChangesId    : '{{ DISPLAY_CHANGES }}',
+        submitButtonId      : 'submitButton',
+        resultsId           : '{{ ID.results }}',
+        formHistory         : formHistory,
+        storageKey          : 'findWordsStorageKey',
+        postSubmitCallbacks : [],
+        buttonLabels        : { first: 'Find Words', after: 'Update Words' }
+    });
+
 </script>
 
 {% endblock %}
