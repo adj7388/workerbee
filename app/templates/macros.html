@@ -95,7 +95,7 @@
         id="{{DISPLAY_CHANGES}}" name="{{DISPLAY_CHANGES}}"
         {{ "checked" if session[ARGS][DISPLAY_CHANGES] == True else "" }}
     >
-    <label class="me-2" for="{{DISPLAY_CHANGES}}">Display Changes</label>
+    <label for="{{DISPLAY_CHANGES}}">Display Changes</label>
 
     <script src="{{ url_for('static', filename='displayChanges.js') }}"></script>
 
@@ -103,8 +103,9 @@
 
 {% macro display_history_buttons(backId, forwardId, saveId, indexId) %}
 
+    |<span>History</span>
     <button id="{{backId}}" class="history-button">&lt;</button>
-    <span id="{{indexId}}" style="font-size: smaller"></span>
+    <span id="{{indexId}}"></span>
     <button id="{{forwardId}}" class="history-button">&gt;</button>
     <button id="{{saveId}}" class="history-button">+</button>
 

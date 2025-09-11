@@ -142,7 +142,8 @@ legend {
   gap: 0.5rem;
 }
 
-.banner-container label {
+.banner-container label,
+.banner-container span {
   font-size: 0.75rem;
   font-weight: bold;
   color: #555;
