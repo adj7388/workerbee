@@ -9,13 +9,11 @@ function initFormHandler({
     resultsId, 
     formHistory,
     displayChangesId,
-    storageKey,
     postSubmitCallbacks = [],
     buttonLabels = { first: "Submit", after: "Update" }
 }) {
     document.getElementById(formId).addEventListener('submit', function (e) {
         e.preventDefault();
-        console.log(submitButtonId);
 
         const submitButton = document.getElementById(submitButtonId);
         const isFirstSubmit = submitButton.value === buttonLabels.first;
@@ -23,14 +21,14 @@ function initFormHandler({
 
         const valuesAndLabels = gatherValues();
 
-        const displayChanges = document.getElementById(displayChangesId).checked;
-        const changes = getChanges(storageKey, valuesAndLabels);
+        const displayChangesChecked = document.getElementById(displayChangesId).checked;
+        const changes = getChanges(`state:${formId}`, valuesAndLabels);
 
         console.log(
-            `${formId} - displayChanges: ${displayChanges}, changes.length: ${changes.length}, isFirstSubmit: ${isFirstSubmit}, dirtyFlag: ${formHistory.getDirtyFlag()}`
+            `${formId} - displayChangesChecked: ${displayChangesChecked}, changes.length: ${changes.length}, isFirstSubmit: ${isFirstSubmit}, dirtyFlag: ${formHistory.getDirtyFlag()}`
         );
 
-        if (!isFirstSubmit && displayChanges) {
+        if (!isFirstSubmit && displayChangesChecked) {
             showChanges(changes);
         }
 
@@ -49,3 +47,28 @@ function initFormHandler({
         }
     });
 }
+
+function getChanges(storageKey, currentValuesAndLabels) {
+    const currentState = pluck(currentValuesAndLabels, "value");
+    const labels = pluck(currentValuesAndLabels, "label");
+
+    const previousStateJSON = localStorage.getItem(storageKey);
+    const previousState = previousStateJSON ? JSON.parse(previousStateJSON) : null;
+
+    const changes = [];
+    if (previousState) {
+        for (const [key, currentValue] of Object.entries(currentState)) {
+            if (previousState[key] !== currentValue) {
+                changes.push(
+                    `<span style="font-weight: bold">${labels[key]}</span> ` +
+                    `<span style="font-style: italic">${currentValue}</span> ` +
+                    `(was <span style="font-style: italic">${previousState[key]}</span>)`
+                );
+
+            }
+        }
+    }
+    localStorage.setItem(storageKey, JSON.stringify(currentState));
+    return changes;
+}
+

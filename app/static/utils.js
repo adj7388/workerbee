@@ -28,30 +28,6 @@ function showUpdatePopup(message = "Updated") {
     window.addEventListener('click', removePopup);
 }
 
-function getChanges(storageKey, currentValuesAndLabels) {
-    const currentState = pluck(currentValuesAndLabels, "value");
-    const labels = pluck(currentValuesAndLabels, "label");
-
-    const previousStateJSON = localStorage.getItem(storageKey);
-    const previousState = previousStateJSON ? JSON.parse(previousStateJSON) : null;
-
-    const changes = [];
-    if (previousState) {
-        for (const [key, currentValue] of Object.entries(currentState)) {
-            if (previousState[key] !== currentValue) {
-                changes.push(
-                    `<span style="font-weight: bold">${labels[key]}</span> ` +
-                    `<span style="font-style: italic">${currentValue}</span> ` +
-                    `(was <span style="font-style: italic">${previousState[key]}</span>)`
-                );
-
-            }
-        }
-    }
-    localStorage.setItem(storageKey, JSON.stringify(currentState));
-    return changes;
-}
-
 function showChanges(changes) {
     const message = changes.length > 0
         ? changes.join('<br>')

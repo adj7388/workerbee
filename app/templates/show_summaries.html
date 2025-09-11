@@ -18,7 +18,7 @@
 <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
 
 <script>
-    
+
     const formHistory = initFormHistory({
         formId    : '{{ ID.form }}',
         backId    : '{{ ID.back }}',
@@ -43,7 +43,6 @@
         submitButtonId   : 'submitButton',
         resultsId        : '{{ ID.results }}',
         formHistory      : formHistory,
-        storageKey       : 'showSummariesStorageKey',
         postSubmitCallbacks: [toggleWordRows],
         buttonLabels     : { first: 'Show Summaries', after: 'Update Summaries' }
     });
