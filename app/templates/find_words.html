@@ -34,12 +34,12 @@
             word_list   : inputValue('{{ WORD_LIST }}'),
             dictionary  : inputValue('{{ DICTIONARY }}'),
         }),
-        displayChanges  : document.getElementById("{{DISPLAY_CHANGES}}").checked,
-        submitButtonId  : 'submitButton',
-        resultsId       : ids.resultsId,
-        formHistory     : formHistory,
+        displayChangesId    : '{{ DISPLAY_CHANGES }}',
+        submitButtonId      : 'submitButton',
+        resultsId           : ids.resultsId,
+        formHistory         : formHistory,
         postSubmitCallbacks : [],
-        buttonLabels    : { first: 'Find Words', after: 'Update Words' }
+        buttonLabels        : { first: 'Find Words', after: 'Update Words' }
     });
 
 </script>
