@@ -2,21 +2,20 @@
 // Manages form submission for both Find Words and Show Summaries
 
 function initFormHandler({ 
-    formId, 
+    form, 
     url, 
     gatherValues,
-    resultsId, 
+    resultsElement, 
     formHistory,
     displayChanges,
     postSubmitCallbacks = [],
     buttonLabels = { first: "Submit", after: "Update" }
 }) {
-    document.getElementById(formId).addEventListener('submit', function (e) {
+    form.addEventListener('submit', function (e) {
         e.preventDefault();
 
-        const storageKey = `state:${formId}`;
+        const storageKey = `state:${form.id}`;
 
-        const form = document.getElementById(formId);
         const submitButton = form.querySelector("input[type='submit']");
         const isFirstSubmit = submitButton.value === buttonLabels.first;
         submitButton.value = buttonLabels.after;
@@ -28,7 +27,7 @@ function initFormHandler({
         saveCurrentState(storageKey, valuesAndLabels);
 
         console.log(
-            `${formId} - displayChangesChecked: ${displayChangesChecked}, changes.length: ${changes.length}, isFirstSubmit: ${isFirstSubmit}, dirtyFlag: ${formHistory.getDirtyFlag()}`
+            `${form.id} - displayChangesChecked: ${displayChangesChecked}, changes.length: ${changes.length}, isFirstSubmit: ${isFirstSubmit}, dirtyFlag: ${formHistory.getDirtyFlag()}`
         );
 
         if (!isFirstSubmit && displayChangesChecked) {
@@ -40,7 +39,7 @@ function initFormHandler({
             fetch(`${url}?${params.toString()}`)
                 .then(res => res.text())
                 .then(html => {
-                    document.getElementById(resultsId).innerHTML = `
+                    resultsElement.innerHTML = `
                         <div class="mt-3 bg-light results">
                             ${html}
                         </div>`;

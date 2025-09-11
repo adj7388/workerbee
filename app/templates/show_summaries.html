@@ -30,7 +30,7 @@
     const formHistory = initFormHistory(ids);
 
     initFormHandler({
-        formId          : ids.formId,
+        form            : document.getElementById(ids.formId),
         url             : "{{ url_for('show_summaries_results') }}",
         gatherValues    : () => ({
             required    : inputValue('{{ REQUIRED_LETTER }}'),
@@ -41,7 +41,7 @@
             word_sort   : radioValue('{{  WORD_SORT  }}', 'Word sort:')
         }),
         displayChanges  : displayChanges,
-        resultsId       : ids.resultsId,
+        resultsElement  : document.getElementById(ids.resultsId),
         formHistory     : formHistory,
         postSubmitCallbacks: [toggleWordRows],
         buttonLabels    : { first: 'Show Summaries', after: 'Update Summaries' }

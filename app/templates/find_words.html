@@ -30,7 +30,7 @@
     const formHistory = initFormHistory(ids);
 
     initFormHandler({
-        formId          : ids.formId,
+        form            : document.getElementById(ids.formId),
         url             : "{{ url_for('find_words_results') }}",
         gatherValues    : () => ({
             required    : inputValue('{{ REQUIRED_LETTER }}'),
@@ -40,7 +40,7 @@
             dictionary  : inputValue('{{ DICTIONARY }}'),
         }),
         displayChanges      : displayChanges,
-        resultsId           : ids.resultsId,
+        resultsElement      : document.getElementById(ids.resultsId),
         formHistory         : formHistory,
         postSubmitCallbacks : [],
         buttonLabels        : { first: 'Find Words', after: 'Update Words' }
