@@ -5,7 +5,6 @@ function initFormHandler({
     formId, 
     url, 
     gatherValues,
-    submitButtonId,
     resultsId, 
     formHistory,
     displayChanges,
@@ -16,7 +15,9 @@ function initFormHandler({
         e.preventDefault();
 
         const storageKey = `state:${formId}`;
-        const submitButton = document.getElementById(submitButtonId);
+
+        const form = document.getElementById(formId);
+        const submitButton = form.querySelector("input[type='submit']");
         const isFirstSubmit = submitButton.value === buttonLabels.first;
         submitButton.value = buttonLabels.after;
 
