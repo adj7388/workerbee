@@ -2,13 +2,14 @@
 
 {% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, display_changes_checkbox, display_history_buttons%}
 
+{# keys match what initFormHistory and initiFormHandler expect #}
 {% set ID = {
-    'form'   : 'findWordsSearchForm',
-    'back'   : 'backBtn', 
-    'forward': 'forwardBtn',
-    'index'  : 'indexDisplay',
-    'save'   : 'saveHistoryBtn',
-    'results': 'results',
+    'formId'   : 'findWordsSearchForm',
+    'backId'   : 'backBtn', 
+    'forwardId': 'forwardBtn',
+    'indexId'  : 'indexDisplay',
+    'saveId'   : 'saveHistoryBtn',
+    'resultsId': 'results',
 } %}
 
 {% block scripts %}
@@ -18,17 +19,13 @@
 <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
 
 <script>
-    const formHistory = initFormHistory({
-        formId    : '{{ ID.form }}',
-        backId    : '{{ ID.back }}',
-        forwardId : '{{ ID.forward }}',
-        indexId   : '{{ ID.index }}',
-        saveId    : '{{ ID.save }}',
-        resultsId : '{{ ID.results }}'
-    });
+    // convert Jinja ID to ids for js
+    const ids = {{ ID | tojson }};
+
+    const formHistory = initFormHistory(ids);
 
     initFormHandler({
-        formId          : '{{ ID.form }}',
+        formId          : ids.formId,
         url             : "{{ url_for('find_words_results') }}",
         gatherValues    : () => ({
             required    : inputValue('{{ REQUIRED_LETTER }}'),
@@ -39,7 +36,7 @@
         }),
         displayChangesId    : '{{ DISPLAY_CHANGES }}',
         submitButtonId      : 'submitButton',
-        resultsId           : '{{ ID.results }}',
+        resultsId           : ids.resultsId,
         formHistory         : formHistory,
         postSubmitCallbacks : [],
         buttonLabels        : { first: 'Find Words', after: 'Update Words' }
@@ -55,11 +52,11 @@
 
         {{ page_banner(text='Find Words') }}
         {{ display_changes_checkbox() }}&nbsp;&nbsp;&nbsp;
-        {{ display_history_buttons(ID.back, ID.forward, ID.save, ID.index) }}
+        {{ display_history_buttons(ID.backId, ID.forwardId, ID.saveId, ID.indexId) }}
 
     </div>
 
-    <form id="{{ID.form}}" method="GET">
+    <form id="{{ID.formId}}" method="GET">
 
         {{ letter_inputs() }}
 

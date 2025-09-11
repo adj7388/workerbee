@@ -2,13 +2,14 @@
 
 {% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, display_changes_checkbox, display_history_buttons %}
 
+{# keys match what initFormHistory and initiFormHandler expect #}
 {% set ID = {
-    'form'   : 'summarySearchForm',
-    'back'   : 'backBtn', 
-    'forward': 'forwardBtn',
-    'index'  : 'indexDisplay',
-    'save'   : 'saveHistoryBtn',
-    'results': 'results',
+    'formId'   : 'summarySearchForm',
+    'backId'   : 'backBtn', 
+    'forwardId': 'forwardBtn',
+    'indexId'  : 'indexDisplay',
+    'saveId'   : 'saveHistoryBtn',
+    'resultsId': 'results',
 } %}
 
 {% block scripts %}
@@ -18,18 +19,13 @@
 <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
 
 <script>
+    // convert Jinja ID to ids for js
+    const ids = {{ ID | tojson }}
 
-    const formHistory = initFormHistory({
-        formId    : '{{ ID.form }}',
-        backId    : '{{ ID.back }}',
-        forwardId : '{{ ID.forward }}',
-        indexId   : '{{ ID.index }}',
-        saveId    : '{{ ID.save }}',
-        resultsId : '{{ ID.results }}'
-    });
+    const formHistory = initFormHistory(ids);
 
     initFormHandler({
-        formId          : '{{ ID.form }}',
+        formId          : ids.formId,
         url             : "{{ url_for('show_summaries_results') }}",
         gatherValues    : () => ({
             required    : inputValue('{{ REQUIRED_LETTER }}'),
@@ -41,7 +37,7 @@
         }),
         displayChangesId : '{{ DISPLAY_CHANGES }}',
         submitButtonId   : 'submitButton',
-        resultsId        : '{{ ID.results }}',
+        resultsId        : ids.resultsId,
         formHistory      : formHistory,
         postSubmitCallbacks: [toggleWordRows],
         buttonLabels     : { first: 'Show Summaries', after: 'Update Summaries' }
@@ -104,7 +100,7 @@
 
         {{ page_banner(text='Summarize All Word Lists') }}
         {{ display_changes_checkbox() }}
-        {{ display_history_buttons(ID.back, ID.forward, ID.save, ID.index) }}
+        {{ display_history_buttons(ID.backId, ID.forwardId, ID.saveId, ID.indexId) }}
 
     </div>
 
@@ -124,7 +120,7 @@
         |
     </div>
     
-    <form id="{{ID.form}}" method="GET">
+    <form id="{{ID.formId}}" method="GET">
 
         {{ letter_inputs() }}
 

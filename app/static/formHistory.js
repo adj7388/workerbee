@@ -16,6 +16,7 @@ function initFormHistory({
   const indexDisplay = document.getElementById(indexId);
   const saveHistoryBtn = document.getElementById(saveId);
   const resultsDiv = document.getElementById(resultsId);
+  console.log(`${form} ${backBtn} ${forwardBtn} ${indexDisplay} ${saveHistoryBtn} ${resultsDiv}`);
 
   let history = [];
   let index = -1;
