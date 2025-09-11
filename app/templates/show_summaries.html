@@ -35,7 +35,7 @@
             dictionary  : inputValue('{{ DICTIONARY }}'),
             word_sort   : radioValue('{{  WORD_SORT  }}', 'Word sort:')
         }),
-        displayChangesId : '{{ DISPLAY_CHANGES }}',
+        displayChanges   : document.getElementById("{{DISPLAY_CHANGES}}").checked,
         submitButtonId   : 'submitButton',
         resultsId        : ids.resultsId,
         formHistory      : formHistory,

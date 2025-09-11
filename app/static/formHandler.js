@@ -8,7 +8,7 @@ function initFormHandler({
     submitButtonId,
     resultsId, 
     formHistory,
-    displayChangesId,
+    displayChanges,
     postSubmitCallbacks = [],
     buttonLabels = { first: "Submit", after: "Update" }
 }) {
@@ -22,15 +22,14 @@ function initFormHandler({
 
         const valuesAndLabels = gatherValues();
 
-        const displayChangesChecked = document.getElementById(displayChangesId).checked;
         const changes = getChanges(storageKey, valuesAndLabels);
         saveCurrentState(storageKey, valuesAndLabels);
 
         console.log(
-            `${formId} - displayChangesChecked: ${displayChangesChecked}, changes.length: ${changes.length}, isFirstSubmit: ${isFirstSubmit}, dirtyFlag: ${formHistory.getDirtyFlag()}`
+            `${formId} - displayChanges: ${displayChanges}, changes.length: ${changes.length}, isFirstSubmit: ${isFirstSubmit}, dirtyFlag: ${formHistory.getDirtyFlag()}`
         );
 
-        if (!isFirstSubmit && displayChangesChecked) {
+        if (!isFirstSubmit && displayChanges) {
             showChanges(changes);
         }
 
