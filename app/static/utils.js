@@ -85,3 +85,29 @@ const arrayIncludesObject = (arr, obj) =>
 
 const arrayIncludesNestedObject = (arr, key, obj) =>
   arr.some(item => objsAreEqual(item[key], obj));
+
+// initFormHistory helpers
+function inputValue(id, labelOverride = null) {
+    const el = document.getElementById(id);
+    return { 
+        value: el.value, 
+        label: labelOverride || getInputLabelOrLegend(el) 
+    };
+}
+
+function checkboxValue(id, labelOverride = null) {
+    const el = document.getElementById(id);
+    return { 
+        value: el.checked, 
+        label: labelOverride || getInputLabelOrLegend(el) 
+    };
+}
+
+function radioValue(name, labelOverride = null) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return { 
+        value: el.value, 
+        label: labelOverride || getInputLabelOrLegend(el) 
+    };
+}
+

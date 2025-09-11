@@ -17,7 +17,18 @@ function initFormHistory(
 
   let history = [];
   let index = -1;
+  let dirtyFlag = false;
+
   displayIndex(index);
+
+  function setDirtyFlag(state) {
+    dirtyFlag = state;
+  }
+
+  function getDirtyFlag() {
+    return dirtyFlag;
+  }
+
 
   function saveState() {
     const searchParams = {};
@@ -63,7 +74,8 @@ function initFormHistory(
       }
     }
     resultsDiv.innerHTML = "";
-    // shotgun approach to keeping form UI updated 
+
+    // Keep form UI updated - shotgun approach 
     for (const el of form.elements) {
       el.dispatchEvent(new Event("change", { bubbles: true }));
     }
@@ -89,6 +101,7 @@ function initFormHistory(
       index--;
       displayIndex(index);
       restoreState(history[index]);
+      setDirtyFlag(true);
     }
   });
 
@@ -97,6 +110,7 @@ function initFormHistory(
       index++;
       displayIndex(index);
       restoreState(history[index]);
+      setDirtyFlag(true);
     }
   });
 
@@ -104,5 +118,7 @@ function initFormHistory(
     e.stopPropagation();
     saveState();
   });
+
+  return { setDirtyFlag, getDirtyFlag };
 
 }

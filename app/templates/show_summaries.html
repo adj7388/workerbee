@@ -15,10 +15,11 @@
 
 <script src="{{ url_for('static', filename='utils.js') }}"></script>
 <script src="{{ url_for('static', filename='formHistory.js') }}"></script>
+<script src="{{ url_for('static', filename='formHandler.js') }}"></script>
 
 <script>
     
-    initFormHistory(
+    const formHistory = initFormHistory(
         "{{ID.form}}",
         "{{ID.back}}",
         "{{ID.forward}}",
@@ -74,50 +75,24 @@
 
     toggleSortRadios(); // run on load
 
-
-    document.getElementById("{{ID.form}}").addEventListener('submit', function (e) {
-        // do our own form submit so we can insert results in this page and show changes
-        e.preventDefault();
-        const submitButton = document.getElementById('submitButton');
-        const isFirstSubmit = submitButton.value === 'Show Summaries'
-        submitButton.value = "Update Summaries";
-        
-        const required = document.getElementById('{{REQUIRED_LETTER}}');
-        const allowed = document.getElementById('{{ALLOWED_LETTERS}}');
-        const summary_sort = document.querySelector('input[name="{{ SUMMARY_SORT }}"]:checked');
-        const show_words = document.getElementById('{{SHOW_WORDS}}');
-        const dictionary = document.getElementById('{{DICTIONARY}}');
-        const word_sort = document.querySelector('input[name="{{ WORD_SORT }}"]:checked');
-
-        const currentValuesAndLabels = {
-            required : {value : required.value, label : getInputLabelOrLegend(required) }, 
-            allowed : {value : allowed.value, label : getInputLabelOrLegend(allowed) }, 
-            summary_sort : {value : summary_sort.value, label : getInputLabelOrLegend(summary_sort) }, 
-            show_words : {value : show_words.checked, label : getInputLabelOrLegend(show_words) }, 
-            dictionary : {value : dictionary.value, label : getInputLabelOrLegend(dictionary) }, 
-            word_sort : {value : word_sort.value, label : "Word sort:" }
-        };
-        const displayChanges = document.getElementById('{{ DISPLAY_CHANGES }}').checked;
-        const changes = getChanges("showSummariesStorageKey", currentValuesAndLabels);
-        console.log(
-            `displayChanges: ${displayChanges}, changes.length: ${changes.length}, isFirstSubmit: ${isFirstSubmit}`
-        );
-        if ( !isFirstSubmit && displayChanges ) {
-            showChanges(changes);
-        }
-        if ( isFirstSubmit || changes.length ) {
-            const showSummariesUrl = "{{ url_for('show_summaries_results') }}";
-            const params = new URLSearchParams(pluck(currentValuesAndLabels, "value"));
-            fetch(`${showSummariesUrl}?${params.toString()}`)
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById("{{ID.results}}").innerHTML = `
-                        <div class="mt-3 bg-light results">
-                            ${html}
-                        </div>`;
-                    toggleWordRows();
-                });
-        }
+    initFormHandler({
+        formId: "{{ID.form}}",
+        url: "{{ url_for('show_summaries_results') }}",
+        gatherValues: () => ({
+            required    : inputValue('{{REQUIRED_LETTER}}'),
+            allowed     : inputValue('{{ALLOWED_LETTERS}}'),
+            summary_sort: radioValue('{{ SUMMARY_SORT }}'),
+            show_words  : checkboxValue('{{SHOW_WORDS}}'),
+            dictionary  : inputValue('{{DICTIONARY}}'),
+            word_sort   : radioValue('{{ WORD_SORT }}', "Word sort:")
+        }),
+        displayChangesId : '{{ DISPLAY_CHANGES }}',
+        submitButtonId: "submitButton",
+        resultsId: "{{ID.results}}",
+        formHistory: formHistory,
+        storageKey: "showSummariesStorageKey",
+        postSubmitCallbacks: [toggleWordRows],
+        buttonLabels: { first: "Show Summaries", after: "Update Summaries" }
     });
 
 </script>
