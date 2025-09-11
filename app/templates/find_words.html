@@ -3,7 +3,7 @@
 {% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, display_changes_checkbox, display_history_buttons%}
 
 {# keys match what initFormHistory and initiFormHandler expect #}
-{% set ID = {
+{% set IDs = {
     'formId'   : 'findWordsSearchForm',
     'backId'   : 'backBtn', 
     'forwardId': 'forwardBtn',
@@ -19,8 +19,8 @@
 <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
 
 <script>
-    // convert Jinja ID to ids for js
-    const ids = {{ ID | tojson }};
+    // convert Jinja IDs to ids for js
+    const ids = {{ IDs | tojson }};
 
     const formHistory = initFormHistory(ids);
 
@@ -52,11 +52,11 @@
 
         {{ page_banner(text='Find Words') }}
         {{ display_changes_checkbox() }}&nbsp;&nbsp;&nbsp;
-        {{ display_history_buttons(ID.backId, ID.forwardId, ID.saveId, ID.indexId) }}
+        {{ display_history_buttons(IDs.backId, IDs.forwardId, IDs.saveId, IDs.indexId) }}
 
     </div>
 
-    <form id="{{ID.formId}}" method="GET">
+    <form id="{{IDs.formId}}" method="GET">
 
         {{ letter_inputs() }}
 
