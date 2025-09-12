@@ -21,13 +21,14 @@ function initFormHandler({
         submitButton.value = buttonLabels.after;
 
         const valuesAndLabels = gatherValues();
+        saveCurrentState(storageKey, valuesAndLabels);
 
         const displayChangesChecked = displayChanges.getDisplayChangesState();
         const changes = getChanges(storageKey, valuesAndLabels);
-        saveCurrentState(storageKey, valuesAndLabels);
+        const historyIndex = formHistory.getHistoryIndex(pluck(valuesAndLabels, "value"));
 
-        console.log(
-            `${form.id} - displayChangesChecked: ${displayChangesChecked}, changes.length: ${changes.length}, isFirstSubmit: ${isFirstSubmit}, dirtyFlag: ${formHistory.getDirtyFlag()}`
+        console.log( // sanity check
+            `${form.id} - displayChangesChecked: ${displayChangesChecked}, changes.length: ${changes.length}, isFirstSubmit: ${isFirstSubmit}, dirtyFlag: ${formHistory.getDirtyFlag()}, historyIndex: ${historyIndex}`
         );
 
         if (!isFirstSubmit && displayChangesChecked) {
@@ -35,20 +36,35 @@ function initFormHandler({
         }
 
         if (isFirstSubmit || changes.length || formHistory.getDirtyFlag()) {
-            const params = new URLSearchParams(pluck(valuesAndLabels, "value"));
-            fetch(`${url}?${params.toString()}`)
-                .then(res => res.text())
-                .then(html => {
-                    resultsElement.innerHTML = `
-                        <div class="mt-3 bg-light results">
-                            ${html}
-                        </div>`;
-                    postSubmitCallbacks.forEach( fn => fn() );
-                });
-            formHistory.setDirtyFlag(false);
+            if (historyIndex >= 0) {
+                doFetchFromHistory(historyIndex);
+            } else {
+                const params = new URLSearchParams(pluck(valuesAndLabels, "value"));
+                doFetch(url, params, resultsElement, postSubmitCallbacks);
+            }
         }
     });
 }
+
+function doFetchFromHistory(historyIndex) {
+    resultsElement.innerHTML = formHistory.getHistoryResults(historyIndex);
+    postSubmitCallbacks.forEach( fn => fn() );
+    formHistory.setDirtyFlag(false);
+}
+
+function doFetch (url, params, resultsElement, postSubmitCallbacks) {
+    fetch(`${url}?${params.toString()}`)
+        .then(res => res.text())
+        .then(html => {
+            resultsElement.innerHTML = `
+                <div class="mt-3 bg-light results">
+                    ${html}
+                </div>`;
+            postSubmitCallbacks.forEach( fn => fn() );
+        });
+    formHistory.setDirtyFlag(false);
+}
+
 
 function saveCurrentState (storageKey, currentValuesAndLabels) {
     const currentState = pluck(currentValuesAndLabels, "value");

@@ -9,18 +9,25 @@ function initFormHistory({
   })
   {
 
-  console.log(`${formId} ${backId} ${forwardId} ${indexId} ${saveId} ${resultsId}`);
   const form = document.getElementById(formId);
   const backBtn = document.getElementById(backId);
   const forwardBtn = document.getElementById(forwardId);
   const indexDisplay = document.getElementById(indexId);
   const saveHistoryBtn = document.getElementById(saveId);
   const resultsDiv = document.getElementById(resultsId);
-  console.log(`${form} ${backBtn} ${forwardBtn} ${indexDisplay} ${saveHistoryBtn} ${resultsDiv}`);
 
   let history = [];
   let index = -1;
   let dirtyFlag = false;
+  let storageKey = `history:${formId}`;
+
+  // Load saved history (if any)
+  const saved = localStorage.getItem(storageKey);
+  if (saved) {
+    history = JSON.parse(saved);
+    index = history.length - 1;
+    if (index >= 0) restoreState(history[index]);
+  }
 
   displayIndex(index);
 
@@ -32,35 +39,41 @@ function initFormHistory({
     return dirtyFlag;
   }
 
-
-  function saveState() {
+  function getSearchParams() {
     const searchParams = {};
-    // Collect searchParams of all form elements
     for ( const el of form.elements ) {
       if ( !el.name ) continue;
-
       if ( el.type === "checkbox" ) {
-        if ( !searchParams[el.name] ) searchParams[el.name] = [];
-        if ( el.checked ) searchParams[el.name].push(el.value);
+        searchParams[el.name] = el.checked;
       } else if ( el.type === "radio" ) {
         if ( el.checked ) searchParams[el.name] = el.value;
       } else {
         searchParams[el.name] = el.value;
       }
     }
+    return searchParams;
+  }
 
-    const historyEntry = {
-      search : searchParams,
-      results : resultsDiv.innerHTML
-    } 
+  function getHistoryIndex(searchParams) {
+    return arrayIndexOfNestedObject(history, "search", searchParams);
+  }
 
+  function getHistoryResults(historyIndex) {
+    return historyIndex >= 0 ? `<p>Greetings from history</p>${history[historyIndex].results}` : null;
+  }
+
+  function saveState() {
+    const searchParams = getSearchParams();
     if ( arrayIncludesNestedObject(history, "search", searchParams) ) {
       showUpdatePopup("Query already saved");
-    } else {
-      history.push(historyEntry);
+    } else { 
+      history.push({
+        search : searchParams,
+        results : resultsDiv.innerHTML
+      });
       index = history.length - 1;
       displayIndex(index);
-      localStorage.setItem(`history:${formId}`, JSON.stringify(history));
+      localStorage.setItem(storageKey, JSON.stringify(history));
     }
   }
 
@@ -69,7 +82,7 @@ function initFormHistory({
       if (!el.name || !(el.name in historyEntry.search)) continue;
 
       if (el.type === "checkbox") {
-        el.checked = historyEntry.search[el.name].includes(el.value);
+        el.checked = historyEntry.search[el.name];
       } else if (el.type === "radio") {
         el.checked = historyEntry.search[el.name] === el.value;
       } else {
@@ -90,15 +103,8 @@ function initFormHistory({
     backBtn.disabled = (index <= 0);
   }
 
-  // Load saved history (if any)
-  const saved = localStorage.getItem(`history:${formId}`);
-  if (saved) {
-    history = JSON.parse(saved);
-    index = history.length - 1;
-    displayIndex(index);
-    if (index >= 0) restoreState(history[index]);
-  }
 
+  ////////// listeners //////////
   backBtn.addEventListener("click", () => {
     if (index > 0) {
       index--;
@@ -122,6 +128,6 @@ function initFormHistory({
     saveState();
   });
 
-  return { setDirtyFlag, getDirtyFlag };
+  return { setDirtyFlag, getDirtyFlag, getHistoryIndex, getHistoryResults };
 
 }

@@ -50,8 +50,9 @@ function pluck(obj, key) {
     );
 }
 
-const stableStringify = obj => 
-    JSON.stringify(obj, Object.keys(obj).sort());
+const stableStringify = obj => {
+    return JSON.stringify(obj, Object.keys(obj).sort());
+}
 
 const objsAreEqual = (obj1, obj2) => 
     stableStringify(obj1) === stableStringify(obj2);
@@ -61,6 +62,16 @@ const arrayIncludesObject = (arr, obj) =>
 
 const arrayIncludesNestedObject = (arr, key, obj) =>
   arr.some(item => objsAreEqual(item[key], obj));
+
+const arrayIndexOfObject = (arr, obj) => {
+  const objStr = stableStringify(obj);
+  return arr.findIndex(item => stableStringify(item) === objStr);
+}
+
+const arrayIndexOfNestedObject = (arr, key, obj) => {
+  const objStr = stableStringify(obj);
+  return arr.findIndex(item => stableStringify(item[key]) === objStr);
+}
 
 // initFormHistory helpers
 function inputValue(id, labelOverride = null) {
