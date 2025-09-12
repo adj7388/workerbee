@@ -21,10 +21,9 @@ function initFormHandler({
         submitButton.value = buttonLabels.after;
 
         const valuesAndLabels = gatherValues();
-        saveCurrentState(storageKey, valuesAndLabels);
-
         const displayChangesChecked = displayChanges.getDisplayChangesState();
         const changes = getChanges(storageKey, valuesAndLabels);
+        saveCurrentState(storageKey, valuesAndLabels);
         const historyIndex = formHistory.getHistoryIndex(pluck(valuesAndLabels, "value"));
 
         console.log( // sanity check
@@ -37,7 +36,7 @@ function initFormHandler({
 
         if (isFirstSubmit || changes.length || formHistory.getDirtyFlag()) {
             if (historyIndex >= 0) {
-                doFetchFromHistory(historyIndex);
+                doFetchFromHistory(historyIndex, resultsElement, postSubmitCallbacks);
             } else {
                 const params = new URLSearchParams(pluck(valuesAndLabels, "value"));
                 doFetch(url, params, resultsElement, postSubmitCallbacks);
@@ -46,7 +45,7 @@ function initFormHandler({
     });
 }
 
-function doFetchFromHistory(historyIndex) {
+function doFetchFromHistory(historyIndex, resultsElement, postSubmitCallbacks) {
     resultsElement.innerHTML = formHistory.getHistoryResults(historyIndex);
     postSubmitCallbacks.forEach( fn => fn() );
     formHistory.setDirtyFlag(false);
