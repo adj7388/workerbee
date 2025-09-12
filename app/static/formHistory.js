@@ -29,7 +29,7 @@ function initFormHistory({
     if (index >= 0) restoreState(history[index]);
   }
 
-  displayIndex(index);
+  displayIndex(index, history.length);
 
   function setDirtyFlag(state) {
     dirtyFlag = state;
@@ -72,7 +72,7 @@ function initFormHistory({
         results : resultsDiv.innerHTML
       });
       index = history.length - 1;
-      displayIndex(index);
+      displayIndex(index, history.length);
       localStorage.setItem(storageKey, JSON.stringify(history));
     }
   }
@@ -97,8 +97,8 @@ function initFormHistory({
     }
   }
 
-  function displayIndex(index) {
-    indexDisplay.textContent = index + 1;
+  function displayIndex(index, historyLength) {
+    indexDisplay.textContent = `${index + 1}/${historyLength}`;
     forwardBtn.disabled = (index >= history.length - 1);
     backBtn.disabled = (index <= 0);
   }
@@ -108,18 +108,20 @@ function initFormHistory({
   backBtn.addEventListener("click", () => {
     if (index > 0) {
       index--;
-      displayIndex(index);
+      displayIndex(index, history.length);
       restoreState(history[index]);
       setDirtyFlag(true);
+      form.requestSubmit();
     }
   });
 
   forwardBtn.addEventListener("click", () => {
     if (index < history.length - 1) {
       index++;
-      displayIndex(index);
+      displayIndex(index, history.length);
       restoreState(history[index]);
       setDirtyFlag(true);
+      form.requestSubmit();
     }
   });
 

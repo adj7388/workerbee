@@ -56,6 +56,7 @@ function doFetch (url, params, resultsElement, postSubmitCallbacks) {
         .then(res => res.text())
         .then(html => {
             resultsElement.innerHTML = `
+                <p>Greetings from the server</p>
                 <div class="mt-3 bg-light results">
                     ${html}
                 </div>`;
