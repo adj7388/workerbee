@@ -27,25 +27,28 @@
         url : "{{ url_for('display_changes') }}"
     });
 
-    const formHistory = initFormHistory(ids);
-
     initFormHandler({
-        form            : document.getElementById(ids.formId),
-        url             : "{{ url_for('show_summaries_results') }}",
-        gatherValues    : () => ({
+        form                : getForm(ids.formId),
+        resultsElement      : document.getElementById(ids.resultsId),
+        displayChanges      : displayChanges,
+    });
+
+    function getForm (formId) {
+        const form = document.getElementById(formId);
+        form.url = "{{ url_for('show_summaries_results') }}";
+        form.buttonLabels = { first: 'Show Summaries', after: 'Update Summaries' }
+        form.gatherValues = () => ({
             required    : inputValue('{{ REQUIRED_LETTER }}'),
             allowed     : inputValue('{{ ALLOWED_LETTERS }}'),
-            summary_sort: radioValue('{{  SUMMARY_SORT  }}'),
+            summary_sort: radioValue('{{ SUMMARY_SORT }}'),
             show_words  : checkboxValue('{{ SHOW_WORDS }}'),
             dictionary  : inputValue('{{ DICTIONARY }}'),
-            word_sort   : radioValue('{{  WORD_SORT  }}', 'Word sort:')
-        }),
-        displayChanges  : displayChanges,
-        resultsElement  : document.getElementById(ids.resultsId),
-        formHistory     : formHistory,
-        postSubmitCallbacks: [toggleWordRows],
-        buttonLabels    : { first: 'Show Summaries', after: 'Update Summaries' }
-    });
+            word_sort   : radioValue('{{ WORD_SORT }}', 'Word sort:')
+        })
+        form.formHistory = initFormHistory(ids);
+        form.postSubmitCallbacks = [toggleWordRows];
+        return form;
+    }
 
     // gray out word sort radios when showWords is not checked
     const showWordsCheckbox = document.getElementById("{{ SHOW_WORDS }}");

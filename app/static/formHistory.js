@@ -59,7 +59,7 @@ function initFormHistory({
   }
 
   function getHistoryResults(historyIndex) {
-    return historyIndex >= 0 ? `<p>Greetings from history</p>${history[historyIndex].results}` : null;
+    return historyIndex >= 0 ? `${history[historyIndex].results}` : null;
   }
 
   function saveState() {

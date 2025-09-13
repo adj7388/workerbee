@@ -27,24 +27,27 @@
         url : "{{ url_for('display_changes') }}"
     });
 
-    const formHistory = initFormHistory(ids);
-
     initFormHandler({
-        form            : document.getElementById(ids.formId),
-        url             : "{{ url_for('find_words_results') }}",
-        gatherValues    : () => ({
+        form                : getForm(),
+        resultsElement      : document.getElementById(ids.resultsId),
+        displayChanges      : displayChanges,
+    });
+
+    function getForm () {
+        const form = document.getElementById(ids.formId);
+        form.formHistory = initFormHistory(ids);
+        form.url = "{{ url_for('find_words_results') }}";
+        form.gatherValues = () => ({
             required    : inputValue('{{ REQUIRED_LETTER }}'),
             allowed     : inputValue('{{ ALLOWED_LETTERS }}'),
             grouping    : radioValue('{{ GROUPING }}'),
             word_list   : inputValue('{{ WORD_LIST }}'),
             dictionary  : inputValue('{{ DICTIONARY }}'),
         }),
-        displayChanges      : displayChanges,
-        resultsElement      : document.getElementById(ids.resultsId),
-        formHistory         : formHistory,
-        postSubmitCallbacks : [],
-        buttonLabels        : { first: 'Find Words', after: 'Update Words' }
-    });
+        form.buttonLabels = { first: 'Find Words', after: 'Update Words' }
+        form.postSubmitCallbacks = [];
+        return form;
+    }
 
 </script>
 
