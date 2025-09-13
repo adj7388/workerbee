@@ -2,8 +2,13 @@
 // Manages form submission for both Find Words and Show Summaries
 
 function initFormHandler({ 
-    form, 
-    resultsElement,
+    form,
+    url,
+    fieldKeys,
+    buttonLabels,
+    postSubmitCallbacks,
+    formHistory,
+    resultsContainer,
     displayChanges,
 }) {
     form.addEventListener('submit', function (e) {
@@ -12,49 +17,59 @@ function initFormHandler({
         const storageKey = `state:${form.id}`;
 
         const submitButton = form.querySelector("input[type='submit']");
-        const isFirstSubmit = submitButton.value === form.buttonLabels.first;
-        submitButton.value = form.buttonLabels.after;
+        const isFirstSubmit = submitButton.value === buttonLabels.first;
+        submitButton.value = buttonLabels.after;
 
-        const valuesAndLabels = form.gatherValues();
+        const valuesAndLabels = {};
+        fieldKeys.forEach(key => {
+            const el = document.getElementById(key) || 
+                       document.querySelector(`input[name="${key}"]:checked`);
+            if (!el) return;
+            valuesAndLabels[key] = {
+                value: el.type === "checkbox" ? el.checked : el.value,
+                label: getInputLabelOrLegend(el)
+            };
+        });
+
         const changes = getChanges(storageKey, valuesAndLabels);
         saveCurrentState(storageKey, valuesAndLabels);
-        const historyIndex = form.formHistory.getHistoryIndex(pluck(valuesAndLabels, "value"));
+        const historyIndex = formHistory.getHistoryIndex(pluck(valuesAndLabels, "value"));
 
         console.log( // sanity check
-            `${form.id} - changes.length: ${changes.length}, isFirstSubmit: ${isFirstSubmit}, dirtyFlag: ${form.formHistory.getDirtyFlag()}, historyIndex: ${historyIndex}`
+            `${form.id} - changes.length: ${changes.length}, isFirstSubmit: ${isFirstSubmit}, dirtyFlag: ${formHistory.getDirtyFlag()}, historyIndex: ${historyIndex}`
         );
 
         if (!isFirstSubmit && displayChanges.getDisplayChangesState()) {
             showChanges(changes);
         }
 
-        if (isFirstSubmit || changes.length || form.formHistory.getDirtyFlag()) {
+        if (isFirstSubmit || changes.length || formHistory.getDirtyFlag()) {
             if (historyIndex >= 0) {
                 doFetchFromHistory(historyIndex);
             } else {
-                doFetch(valuesAndLabels);
+                doFetchFromServer(valuesAndLabels);
             }
         }
     });
 
     function doFetchFromHistory(historyIndex) {
-        resultsElement.innerHTML = form.formHistory.getHistoryResults(historyIndex);
-        form.postSubmitCallbacks.forEach( fn => fn() );
-        form.formHistory.setDirtyFlag(false);
+        resultsContainer.innerHTML = formHistory.getHistoryResults(historyIndex);
+        postSubmitCallbacks.forEach( fn => fn() );
+        formHistory.setDirtyFlag(false);
     }
 
-    function doFetch (valuesAndLabels) {
+    function doFetchFromServer (valuesAndLabels) {
         const params = new URLSearchParams(pluck(valuesAndLabels, "value"));
-        fetch(`${form.url}?${params.toString()}`)
+        fetch(`${url}?${params.toString()}`)
             .then(res => res.text())
             .then(html => {
-                resultsElement.innerHTML = `
+                resultsContainer.innerHTML = `
                     <div class="mt-3 bg-light results">
                         ${html}
                     </div>`;
-                form.postSubmitCallbacks.forEach( fn => fn() );
+                postSubmitCallbacks.forEach( fn => fn() );
             });
-        form.formHistory.setDirtyFlag(false);
+        formHistory.setDirtyFlag(false);
     }
 
     function saveCurrentState (storageKey, valuesAndLabels) {
@@ -85,4 +100,3 @@ function initFormHandler({
         return changes;
     }
 }
-

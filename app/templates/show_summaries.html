@@ -22,33 +22,28 @@
     // convert Jinja IDs to ids for js. Use backticks to shut up js linter
     const ids = JSON.parse(`{{ IDs | tojson | safe }}`);
 
-    const displayChanges = initDisplayChanges({
-        displayChangesCheckbox : document.getElementById("{{ DISPLAY_CHANGES }}"),
-        url : "{{ url_for('display_changes') }}"
-    });
+    formConfig = {
+        form: document.getElementById(ids.formId),
+        url: "{{ url_for('show_summaries_results') }}",
+        fieldKeys: [
+            '{{ REQUIRED_LETTER }}',
+            '{{ ALLOWED_LETTERS }}',
+            '{{ SUMMARY_SORT }}',
+            '{{ SHOW_WORDS }}',
+            '{{ DICTIONARY }}',
+            '{{ WORD_SORT }}', 'Word sort:'
+        ],
+        buttonLabels: { first: 'Show Summaries', after: 'Update Summaries' },
+        postSubmitCallbacks: [],
+        formHistory: initFormHistory(ids),
+        resultsContainer: document.getElementById(ids.resultsId),
+        displayChanges: initDisplayChanges({
+            displayChangesCheckbox : document.getElementById("{{ DISPLAY_CHANGES }}"),
+            url : "{{ url_for('display_changes') }}"
+        }),
+}
 
-    initFormHandler({
-        form                : getForm(ids.formId),
-        resultsElement      : document.getElementById(ids.resultsId),
-        displayChanges      : displayChanges,
-    });
-
-    function getForm (formId) {
-        const form = document.getElementById(formId);
-        form.url = "{{ url_for('show_summaries_results') }}";
-        form.buttonLabels = { first: 'Show Summaries', after: 'Update Summaries' }
-        form.gatherValues = () => ({
-            required    : inputValue('{{ REQUIRED_LETTER }}'),
-            allowed     : inputValue('{{ ALLOWED_LETTERS }}'),
-            summary_sort: radioValue('{{ SUMMARY_SORT }}'),
-            show_words  : checkboxValue('{{ SHOW_WORDS }}'),
-            dictionary  : inputValue('{{ DICTIONARY }}'),
-            word_sort   : radioValue('{{ WORD_SORT }}', 'Word sort:')
-        })
-        form.formHistory = initFormHistory(ids);
-        form.postSubmitCallbacks = [toggleWordRows];
-        return form;
-    }
+    initFormHandler(formConfig);
 
     // gray out word sort radios when showWords is not checked
     const showWordsCheckbox = document.getElementById("{{ SHOW_WORDS }}");

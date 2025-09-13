@@ -22,32 +22,27 @@
     // convert Jinja IDs to ids for js. Use backticks to shut up js linter
     const ids = JSON.parse(`{{ IDs | tojson | safe }}`);
 
-    const displayChanges = initDisplayChanges({
-        displayChangesCheckbox : document.getElementById("{{ DISPLAY_CHANGES }}"),
-        url : "{{ url_for('display_changes') }}"
-    });
-
-    initFormHandler({
-        form                : getForm(),
-        resultsElement      : document.getElementById(ids.resultsId),
-        displayChanges      : displayChanges,
-    });
-
-    function getForm () {
-        const form = document.getElementById(ids.formId);
-        form.formHistory = initFormHistory(ids);
-        form.url = "{{ url_for('find_words_results') }}";
-        form.gatherValues = () => ({
-            required    : inputValue('{{ REQUIRED_LETTER }}'),
-            allowed     : inputValue('{{ ALLOWED_LETTERS }}'),
-            grouping    : radioValue('{{ GROUPING }}'),
-            word_list   : inputValue('{{ WORD_LIST }}'),
-            dictionary  : inputValue('{{ DICTIONARY }}'),
+    formConfig = {
+        form: document.getElementById(ids.formId),
+        url: "{{ url_for('find_words_results') }}",
+        fieldKeys: [
+            '{{ REQUIRED_LETTER }}',
+            '{{ ALLOWED_LETTERS }}',
+            '{{ GROUPING }}',
+            '{{ WORD_LIST }}',
+            '{{ DICTIONARY }}',
+        ],
+        buttonLabels: { first: 'Find Words', after: 'Update Words' },
+        postSubmitCallbacks: [],
+        formHistory: initFormHistory(ids),
+        resultsContainer: document.getElementById(ids.resultsId),
+        displayChanges: initDisplayChanges({
+            displayChangesCheckbox : document.getElementById("{{ DISPLAY_CHANGES }}"),
+            url : "{{ url_for('display_changes') }}"
         }),
-        form.buttonLabels = { first: 'Find Words', after: 'Update Words' }
-        form.postSubmitCallbacks = [];
-        return form;
     }
+
+    initFormHandler(formConfig);
 
 </script>
 
