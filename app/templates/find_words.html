@@ -19,8 +19,8 @@
 <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
 
 <script>
-    // convert Jinja IDs to ids for js
-    const ids = {{ IDs | tojson }};
+    // convert Jinja IDs to ids for js. Use backticks to shut up js linter
+    const ids = JSON.parse(`{{ IDs | tojson | safe }}`);
 
     const displayChanges = initDisplayChanges({
         displayChangesCheckbox : document.getElementById("{{ DISPLAY_CHANGES }}"),
