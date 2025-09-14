@@ -5,27 +5,29 @@ function showUpdatePopup(message = "Updated") {
     popup.style.display = "block";
     document.body.appendChild(popup);
 
-    // fade in
     requestAnimationFrame(() => popup.classList.add('show'));
 
-    // remove popup when transition ends
-    popup.addEventListener('transitionend', () => popup.remove(), { once: true });
-
     let removed = false;
+    const finishRemove = () => popup.remove();
+    // start fade-out, remove after transition ends
+    popup.addEventListener('transitionend', finishRemove, { once: true });
+
     const removePopup = () => {
-        if (removed) return;   // guard so it only runs once
+        if (removed) return;
         removed = true;
-        popup.classList.remove('show');  // triggers fade-out
+
+        popup.classList.remove('show');
 
         window.removeEventListener('scroll', removePopup);
         window.removeEventListener('keydown', removePopup);
         window.removeEventListener('click', removePopup);
     };
 
-    // remove on scroll, key press, or click
-    window.addEventListener('scroll', removePopup);
-    window.addEventListener('keydown', removePopup);
-    window.addEventListener('click', removePopup);
+   setTimeout(() => {
+        window.addEventListener('scroll', removePopup, { once: true });
+        window.addEventListener('keydown', removePopup, { once: true });
+        window.addEventListener('click', removePopup, { once: true });
+   }, 0);
 }
 
 function showChanges(changes) {
@@ -72,29 +74,3 @@ const arrayIndexOfNestedObject = (arr, key, obj) => {
   const objStr = stableStringify(obj);
   return arr.findIndex(item => stableStringify(item[key]) === objStr);
 }
-
-// initFormHistory helpers
-function inputValue(id, labelOverride = null) {
-    const el = document.getElementById(id);
-    return { 
-        value: el.value, 
-        label: labelOverride || getInputLabelOrLegend(el) 
-    };
-}
-
-function checkboxValue(id, labelOverride = null) {
-    const el = document.getElementById(id);
-    return { 
-        value: el.checked, 
-        label: labelOverride || getInputLabelOrLegend(el) 
-    };
-}
-
-function radioValue(name, labelOverride = null) {
-    const el = document.querySelector(`input[name="${name}"]:checked`);
-    return { 
-        value: el.value, 
-        label: labelOverride || getInputLabelOrLegend(el) 
-    };
-}
-

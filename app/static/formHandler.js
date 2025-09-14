@@ -39,7 +39,7 @@ function initFormHandler({
             `${form.id} - changes.length: ${changes.length}, isFirstSubmit: ${isFirstSubmit}, dirtyFlag: ${formHistory.getDirtyFlag()}, historyIndex: ${historyIndex}`
         );
 
-        if (!isFirstSubmit && displayChanges.getDisplayChangesState()) {
+        if ( displayChanges.getDisplayChangesState() && (!isFirstSubmit || formHistory.getDirtyFlag()) ) {
             showChanges(changes);
         }
 
