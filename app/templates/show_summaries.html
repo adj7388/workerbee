@@ -17,12 +17,13 @@
 <script src="{{ url_for('static', filename='utils.js') }}"></script>
 <script src="{{ url_for('static', filename='formHistory.js') }}"></script>
 <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
+<script src="{{ url_for('static', filename='showWords.js') }}"></script>
 
 <script>
     // convert Jinja IDs to ids for js. Use backticks to shut up js linter
     const ids = JSON.parse(`{{ IDs | tojson | safe }}`);
 
-    formConfig = {
+    showSummariesFormConfig = {
         form: document.getElementById(ids.formId),
         url: "{{ url_for('show_summaries_results') }}",
         fieldKeys: [
@@ -41,56 +42,15 @@
             displayChangesCheckbox : document.getElementById("{{ DISPLAY_CHANGES }}"),
             url : "{{ url_for('display_changes') }}"
         }),
-}
-
-    initFormHandler(formConfig);
-
-    // gray out word sort radios when showWords is not checked
-    const showWordsCheckbox = document.getElementById("{{ SHOW_WORDS }}");
-    const radios = [
-        document.getElementById("{{ ALPHABETICALLY }}"),
-        document.getElementById("{{ BYWORDLENGTH }}")
-    ];
-
-    function toggleSortRadios() {
-        const enabled = showWordsCheckbox.checked;
-        radios.forEach(radio => {
-            radio.disabled = !enabled;
-
-            // find the label for this radio and make it really gray
-            const label = document.querySelector(`label[for="${radio.id}"]`);
-            if (label) {
-                label.classList.toggle("text-muted", !enabled);   // dim when disabled
-                label.classList.toggle("opacity-50", !enabled);   // extra fade
-            }
-        });
     }
 
-    // toggle between showing words and not
-    function toggleWordRows() {
-        const enabled = showWordsCheckbox.checked;
-        const rows = document.querySelectorAll('tr[data-words]');
-        rows.forEach(row => {
-            if ( !enabled ) {
-                row.classList.add('hide-words')
-            }
-            else {
-                row.classList.remove('hide-words');
-            }
-        });
-    }
+    initFormHandler(showSummariesFormConfig);
 
-    // enable/disable word sort radio buttons when showWordsCheckbox changes 
-    showWordsCheckbox.addEventListener(
-        "change", toggleSortRadios
-    );
-
-    // show/hide word rows when showWordsCheckbox changes
-    showWordsCheckbox.addEventListener(
-        "change", toggleWordRows
-    );
-
-    toggleSortRadios(); // run on load
+    initShowWords({
+        showWordsId: "{{ SHOW_WORDS }}",
+        alphabeticallyId: "{{ ALPHABETICALLY }}",
+        byWordLengthId: "{{ BYWORDLENGTH }}",
+    });
 
 </script>
 

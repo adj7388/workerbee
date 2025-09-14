@@ -22,7 +22,7 @@
     // convert Jinja IDs to ids for js. Use backticks to shut up js linter
     const ids = JSON.parse(`{{ IDs | tojson | safe }}`);
 
-    formConfig = {
+    findWordsFormConfig = {
         form: document.getElementById(ids.formId),
         url: "{{ url_for('find_words_results') }}",
         fieldKeys: [
@@ -42,7 +42,7 @@
         }),
     }
 
-    initFormHandler(formConfig);
+    initFormHandler(findWordsFormConfig);
 
 </script>
 
