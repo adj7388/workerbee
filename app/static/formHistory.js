@@ -89,7 +89,6 @@ function initFormHistory({
         el.value = historyEntry.search[el.name];
       }
     }
-    resultsDiv.innerHTML = "";
 
     // Keep form UI updated - shotgun approach 
     for (const el of form.elements) {
@@ -105,23 +104,24 @@ function initFormHistory({
 
 
   ////////// listeners //////////
-  backBtn.addEventListener("click", () => {
-    if (index > 0) {
-      index--;
+  function restoreAndSubmit() {
       displayIndex();
       restoreState(history[index]);
       setDirtyFlag(true);
       form.requestSubmit();
+  }
+
+  backBtn.addEventListener("click", () => {
+    if (index > 0) {
+      index--;
+      restoreAndSubmit();
     }
   });
 
   forwardBtn.addEventListener("click", () => {
     if (index < history.length - 1) {
       index++;
-      displayIndex();
-      restoreState(history[index]);
-      setDirtyFlag(true);
-      form.requestSubmit();
+      restoreAndSubmit();
     }
   });
 
