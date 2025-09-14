@@ -12,18 +12,17 @@
     'resultsId': 'results',
 } %}
 
-{% block scripts %}
+{% set form_id = 'findWordsSearchForm' %}
 
-<script src="{{ url_for('static', filename='utils.js') }}"></script>
-<script src="{{ url_for('static', filename='formHistory.js') }}"></script>
-<script src="{{ url_for('static', filename='formHandler.js') }}"></script>
+{% block scripts %}
 
 <script>
     // convert Jinja IDs to ids for js. Use backticks to shut up js linter
-    const ids = JSON.parse(`{{ IDs | tojson | safe }}`);
+    window.ids = JSON.parse(`{{ IDs | tojson | safe }}`);
 
-    const findWordsFormConfig = {
-        form: document.getElementById(ids.formId),
+    // inject form values for initFormHandler
+    window.formConfig = {
+        form: document.getElementById('{{ form_id}}'),
         url: "{{ url_for('find_words_results') }}",
         fieldKeys: [
             '{{ REQUIRED_LETTER }}',
@@ -32,19 +31,17 @@
             '{{ WORD_LIST }}',
             '{{ DICTIONARY }}',
         ],
-        buttonLabels: { first: 'Find Words', after: 'Update Words' },
         postSubmitCallbacks: [],
-        formHistory: initFormHistory(ids),
-        resultsContainer: document.getElementById(ids.resultsId),
-        displayChanges: initDisplayChanges({
-            displayChangesCheckbox : document.getElementById("{{ DISPLAY_CHANGES }}"),
-            url : "{{ url_for('display_changes') }}"
-        }),
-    }
-
-    initFormHandler(findWordsFormConfig);
+        displayChangesId: '{{ DISPLAY_CHANGES }}',
+        displayChangesUrl: "{{ url_for('display_changes') }}",
+        buttonLabels: { first: 'Find Words', after: 'Update Words' },
+     }
 
 </script>
+
+<script src="{{ url_for('static', filename='utils.js') }}"></script>
+<script src="{{ url_for('static', filename='formHistory.js') }}"></script>
+<script src="{{ url_for('static', filename='formHandler.js') }}"></script>
 
 {% endblock %}
 
@@ -58,7 +55,7 @@
 
     </div>
 
-    <form id="{{IDs.formId}}" method="GET">
+    <form id="{{ form_id }}" method="GET">
 
         {{ letter_inputs() }}
 

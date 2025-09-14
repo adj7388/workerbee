@@ -1,7 +1,20 @@
 
 // Manages form submission for both Find Words and Show Summaries
 
-function initFormHandler({ 
+const localConfig = {
+    formHistory: initFormHistory(window.ids),
+    resultsContainer: document.getElementById(window.ids.resultsId),
+    displayChanges: initDisplayChanges({
+        displayChangesCheckbox : document.getElementById(window.formConfig.displayChangesId),
+        url : window.formConfig.displayChangesUrl
+    }),
+}
+    
+const cfg = { ...localConfig, ...window.formConfig, ...window.ids };
+console.log("CFG");
+console.log(cfg);
+
+function initFormHandler({
     form,
     url,
     fieldKeys,
@@ -100,3 +113,5 @@ function initFormHandler({
         return changes;
     }
 }
+
+initFormHandler(cfg);
