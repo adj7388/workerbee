@@ -14,22 +14,21 @@ function initFormHistory({
   const forwardBtn = document.getElementById(forwardId);
   const indexDisplay = document.getElementById(indexId);
   const saveHistoryBtn = document.getElementById(saveId);
-  const resultsDiv = document.getElementById(resultsId);
+  const resultsContainer = document.getElementById(resultsId);
 
   let history = [];
   let index = -1;
   let dirtyFlag = false;
-  let storageKey = `history:${formId}`;
+  const storageKey = `history:${formId}`;
 
   // Load saved history (if any)
   const saved = localStorage.getItem(storageKey);
   if (saved) {
     history = JSON.parse(saved);
     index = history.length - 1;
-    if (index >= 0) restoreState(history[index]);
+    if (index >= 0) restoreFormState(history[index]);
   }
-
-  displayIndex();
+  updateHistoryUI();
 
   function setDirtyFlag(state) {
     dirtyFlag = state;
@@ -39,45 +38,45 @@ function initFormHistory({
     return dirtyFlag;
   }
 
-  function getSearchParams() {
-    const searchParams = {};
+  function getFormValues() {
+    const formValues = {};
     for ( const el of form.elements ) {
       if ( !el.name ) continue;
       if ( el.type === "checkbox" ) {
-        searchParams[el.name] = el.checked;
+        formValues[el.name] = el.checked;
       } else if ( el.type === "radio" ) {
-        if ( el.checked ) searchParams[el.name] = el.value;
+        if ( el.checked ) formValues[el.name] = el.value;
       } else {
-        searchParams[el.name] = el.value;
+        formValues[el.name] = el.value;
       }
     }
-    return searchParams;
+    return formValues;
   }
 
-  function getHistoryIndex(searchParams) {
-    return arrayIndexOfNestedObject(history, "search", searchParams);
+  function getHistoryIndex(formValues) {
+    return arrayIndexOfNestedObject(history, "search", formValues);
   }
 
   function getHistoryResults(historyIndex) {
     return historyIndex >= 0 ? `${history[historyIndex].results}` : null;
   }
 
-  function saveState() {
-    const searchParams = getSearchParams();
-    if ( arrayIncludesNestedObject(history, "search", searchParams) ) {
+  function saveFormState() {
+    const formValues = getFormValues();
+    if ( arrayIncludesNestedObject(history, "search", formValues) ) {
       showUpdatePopup("Query already saved");
     } else { 
       history.push({
-        search : searchParams,
-        results : resultsDiv.innerHTML
+        search : formValues,
+        results : resultsContainer.innerHTML
       });
       index = history.length - 1;
-      displayIndex();
+      updateHistoryUI();
       localStorage.setItem(storageKey, JSON.stringify(history));
     }
   }
 
-  function restoreState(historyEntry) {
+  function restoreFormState(historyEntry) {
     for (const el of form.elements) {
       if (!el.name || !(el.name in historyEntry.search)) continue;
 
@@ -96,7 +95,7 @@ function initFormHistory({
     }
   }
 
-  function displayIndex() {
+  function updateHistoryUI() {
     indexDisplay.textContent = `${index + 1}/${history.length}`;
     forwardBtn.disabled = (index >= history.length - 1);
     backBtn.disabled = (index <= 0);
@@ -105,9 +104,9 @@ function initFormHistory({
 
   ////////// listeners //////////
   function restoreAndSubmit() {
-      displayIndex();
-      restoreState(history[index]);
+      restoreFormState(history[index]);
       setDirtyFlag(true);
+      updateHistoryUI();
       form.requestSubmit();
   }
 
@@ -127,7 +126,7 @@ function initFormHistory({
 
   saveHistoryBtn.addEventListener("click", (e) => {
     e.stopPropagation();
-    saveState();
+    saveFormState();
   });
 
   return { setDirtyFlag, getDirtyFlag, getHistoryIndex, getHistoryResults };
