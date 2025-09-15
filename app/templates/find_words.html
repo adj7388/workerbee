@@ -3,8 +3,7 @@
 {% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs%}
 {% from "macros.html" import display_changes_checkbox, display_history_buttons%}
 
-{# keys match what initFormHistory and initiFormHandler expect #}
-{% set CONFIG = {
+{% set FORM_CONFIG = {
     'formId': 'findWordsSearchForm',
     'url': url_for('find_words_results'),
     'fieldKeys': [
@@ -14,15 +13,23 @@
         WORD_LIST,
         DICTIONARY,
     ],
+    'buttonLabels': { 'first': 'Find Words', 'after': 'Update Words' },
     'resultsContainerId': 'results',
+    'postSubmitCallbacks': [],
+} %}
+
+{% set CHANGES_CONFIG  = {
     'displayChangesId': DISPLAY_CHANGES,
     'displayChangesUrl': url_for(DISPLAY_CHANGES),
+} %}
+
+{% set HISTORY_CONFIG = {
+    'formId': FORM_CONFIG.formId,
     'backId': 'backBtn', 
     'forwardId': 'forwardBtn',
     'indexId': 'indexDisplay',
     'saveId': 'saveHistoryBtn',
-    'postSubmitCallbacks': [],
-    'buttonLabels': { 'first': 'Find Words', 'after': 'Update Words' },
+    'resultsContainerId': FORM_CONFIG.resultsContainerId,
 } %}
 
 {% block scripts %}
@@ -32,21 +39,23 @@
 <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
 
 <script>
-    // convert Jinja CONFIG to templateConfig for js. Use backticks to shut up js linter
-    const templateConfig = JSON.parse(`{{ CONFIG | tojson | safe }}`);
+    // convert Jinja configs for js. Use backticks to shut up js linter
+    const formConfig = JSON.parse(`{{ FORM_CONFIG | tojson | safe }}`);
+    const changesConfig = JSON.parse(`{{ CHANGES_CONFIG | tojson | safe }}`);
+    const historyConfig = JSON.parse(`{{ HISTORY_CONFIG | tojson | safe }}`);
 
     // inject form values for initFormHandler
-    const domConfig = {
-        form: document.getElementById('{{ CONFIG.formId }}'),
-        formHistory: initFormHistory(templateConfig),
-        resultsContainer: document.getElementById(templateConfig.resultsContainerId),
+    const formHandlerConfig = {
+        form: document.getElementById(formConfig.formId),
+        formHistory: initFormHistory(historyConfig),
+        resultsContainer: document.getElementById(formConfig.resultsContainerId),
         displayChanges: initDisplayChanges({
-            displayChangesCheckbox : document.getElementById(templateConfig.displayChangesId),
-            url : templateConfig.displayChangesUrl,
+            checkbox : document.getElementById(changesConfig.displayChangesId),
+            url : changesConfig.displayChangesUrl,
         }),
      }
 
-    initFormHandler({ ...templateConfig, ...domConfig });
+    initFormHandler({ ...formConfig, ...formHandlerConfig });
 
 </script>
 
@@ -57,12 +66,12 @@
     <div class="banner-container">
 
         {{ page_banner(text='Find Words') }}
-        {{ display_changes_checkbox(CONFIG) }}
-        {{ display_history_buttons(CONFIG) }}
+        {{ display_changes_checkbox(CHANGES_CONFIG) }}
+        {{ display_history_buttons(HISTORY_CONFIG) }}
 
     </div>
 
-    <form id="{{ CONFIG.formId }}" method="GET">
+    <form id="{{ FORM_CONFIG.formId }}" method="GET">
 
         {{ letter_inputs() }}
 
@@ -123,7 +132,7 @@
 
         {# Submit #}
         <div class="mt-3">
-            <input id="submitButton" type="submit" value="{{CONFIG.buttonLabels.first}}">
+            <input id="submitButton" type="submit" value="{{FORM_CONFIG.buttonLabels.first}}">
         </div>
     </form>
 

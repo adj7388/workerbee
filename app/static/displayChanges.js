@@ -1,13 +1,13 @@
 // Manage Display Changes checkbox
 
 function initDisplayChanges({
-    displayChangesCheckbox,
+    checkbox,
     url
 }) {
 
-    displayChangesCheckbox.addEventListener("change", function () {
+    checkbox.addEventListener("change", function () {
         const params = new URLSearchParams({
-            display_changes : displayChangesCheckbox.checked,
+            display_changes : checkbox.checked,
         });
         fetch(`${url}?${params.toString()}`)
             .then(res => res.text())
@@ -16,9 +16,9 @@ function initDisplayChanges({
             });
     });
 
-    function getDisplayChangesState() {
-        return displayChangesCheckbox.checked;
+    function getState() {
+        return checkbox.checked;
     }
 
-    return { getDisplayChangesState }
+    return { getState }
 }
