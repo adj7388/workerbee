@@ -34,8 +34,8 @@
 
 {% block scripts %}
 
-<script src="{{ url_for('static', filename='formHistory.js') }}"></script>
 <script src="{{ url_for('static', filename='utils.js') }}"></script>
+<script src="{{ url_for('static', filename='formHistory.js') }}"></script>
 <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
 
 <script>
@@ -44,10 +44,7 @@
     const changesConfig = JSON.parse(`{{ CHANGES_CONFIG | tojson | safe }}`);
     const historyConfig = JSON.parse(`{{ HISTORY_CONFIG | tojson | safe }}`);
 
-    // inject form values for initFormHandler
     const formHandlerConfig = {
-        form: formConfig.formId,
-        resultsContainer: formConfig.resultsContainerId,
         formHistory: initFormHistory(historyConfig),
         displayChanges: initDisplayChanges({
             checkboxId : changesConfig.displayChangesId,
@@ -137,6 +134,6 @@
     </form>
 
     {# Results inserted here #}
-    <div id="results"></div>
+    <div id="{{FORM_CONFIG.resultsContainerId}}"></div>
 
 {% endblock %}

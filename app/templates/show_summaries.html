@@ -4,7 +4,7 @@
 
 {# keys match what initFormHistory and initiFormHandler expect #}
 
-{% set CONFIG = {
+{% set FORM_CONFIG = {
     'formId'   : 'summarySearchForm',
     'url': url_for('show_summaries_results'),
     'fieldKeys': [
@@ -15,18 +15,25 @@
         DICTIONARY,
         WORD_SORT, 'Word sort:'
     ],
-    'resultsContainerId': 'results',
-    'displayChangesId': DISPLAY_CHANGES,
-    'displayChangesUrl': url_for(DISPLAY_CHANGES),
-    'backId'   : 'backBtn', 
-    'forwardId': 'forwardBtn',
-    'indexId'  : 'indexDisplay',
-    'saveId'   : 'saveHistoryBtn',
-    'resultsContainerId': 'results',
-    'displayChangesId': DISPLAY_CHANGES,
-    'displayChangesUrl': url_for(DISPLAY_CHANGES),
     'buttonLabels': { 'first': 'Show Summaries', 'after': 'Update Summaries' },
+    'resultsContainerId': 'results',
+    'postSubmitCallbacks': [],
 } %}
+
+{% set CHANGES_CONFIG  = {
+    'displayChangesId': DISPLAY_CHANGES,
+    'displayChangesUrl': url_for(DISPLAY_CHANGES),
+} %}
+
+{% set HISTORY_CONFIG = {
+    'formId': FORM_CONFIG.formId,
+    'backId': 'backBtn', 
+    'forwardId': 'forwardBtn',
+    'indexId': 'indexDisplay',
+    'saveId': 'saveHistoryBtn',
+    'resultsContainerId': FORM_CONFIG.resultsContainerId,
+} %}
+
 
 {% block scripts %}
 
@@ -36,21 +43,21 @@
 <script src="{{ url_for('static', filename='showWords.js') }}"></script>
 
 <script>
-    // convert Jinja CONFIG to templateConfig for js. Use backticks to shut up js linter
-    const templateConfig = JSON.parse(`{{ CONFIG | tojson | safe }}`);
+    // convert Jinja CONFIG to formConfig for js. Use backticks to shut up js linter
+     // convert Jinja configs for js. Use backticks to shut up js linter
+    const formConfig = JSON.parse(`{{ FORM_CONFIG | tojson | safe }}`);
+    const changesConfig = JSON.parse(`{{ CHANGES_CONFIG | tojson | safe }}`);
+    const historyConfig = JSON.parse(`{{ HISTORY_CONFIG | tojson | safe }}`);
 
-    const domConfig = {
-        form: document.getElementById(templateConfig.formId),
-        formHistory: initFormHistory(templateConfig),
-        resultsContainer: document.getElementById(templateConfig.resultsContainerId),
+    const formHandlerConfig = {
+        formHistory: initFormHistory(historyConfig),
         displayChanges: initDisplayChanges({
-            checkbox : document.getElementById(templateConfig.displayChangesId),
-            url : templateConfig.displayChangesUrl,
+            checkboxId : changesConfig.displayChangesId,
+            url : changesConfig.displayChangesUrl,
         }),
-        postSubmitCallbacks: [],
-    }
+     }
 
-    initFormHandler({ ...templateConfig, ...domConfig });
+    initFormHandler({ ...formConfig, ...formHandlerConfig });
 
     initShowWords({
         showWordsId: "{{ SHOW_WORDS }}",
@@ -67,8 +74,8 @@
     <div class="banner-container">
 
         {{ page_banner(text='Summarize All Word Lists') }}
-        {{ display_changes_checkbox(CONFIG) }}
-        {{ display_history_buttons(CONFIG) }}
+        {{ display_changes_checkbox(CHANGES_CONFIG) }}
+        {{ display_history_buttons(HISTORY_CONFIG) }}
 
     </div>
 
@@ -88,7 +95,7 @@
         |
     </div>
     
-    <form id="{{CONFIG.formId}}" method="GET">
+    <form id="{{FORM_CONFIG.formId}}" method="GET">
 
         {{ letter_inputs() }}
 
@@ -165,6 +172,6 @@
     </form>
 
     {# Results inserted here #}
-    <div id="results"></div>
+    <div id="{{FORM_CONFIG.resultsContainerId}}"></div>
 
 {% endblock %}
