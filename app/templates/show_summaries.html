@@ -3,13 +3,29 @@
 {% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, display_changes_checkbox, display_history_buttons %}
 
 {# keys match what initFormHistory and initiFormHandler expect #}
-{% set IDs = {
+
+{% set CONFIG = {
     'formId'   : 'summarySearchForm',
+    'url': url_for('show_summaries_results'),
+    'fieldKeys': [
+        REQUIRED_LETTER,
+        ALLOWED_LETTERS,
+        SUMMARY_SORT,
+        SHOW_WORDS,
+        DICTIONARY,
+        WORD_SORT, 'Word sort:'
+    ],
+    'resultsContainerId': 'results',
+    'displayChangesId': DISPLAY_CHANGES,
+    'displayChangesUrl': url_for(DISPLAY_CHANGES),
     'backId'   : 'backBtn', 
     'forwardId': 'forwardBtn',
     'indexId'  : 'indexDisplay',
     'saveId'   : 'saveHistoryBtn',
     'resultsContainerId': 'results',
+    'displayChangesId': DISPLAY_CHANGES,
+    'displayChangesUrl': url_for(DISPLAY_CHANGES),
+    'buttonLabels': { 'first': 'Show Summaries', 'after': 'Update Summaries' },
 } %}
 
 {% block scripts %}
@@ -20,31 +36,21 @@
 <script src="{{ url_for('static', filename='showWords.js') }}"></script>
 
 <script>
-    // convert Jinja IDs to ids for js. Use backticks to shut up js linter
-    const ids = JSON.parse(`{{ IDs | tojson | safe }}`);
+    // convert Jinja CONFIG to templateConfig for js. Use backticks to shut up js linter
+    const templateConfig = JSON.parse(`{{ CONFIG | tojson | safe }}`);
 
-    const showSummariesFormConfig = {
-        form: document.getElementById(ids.formId),
-        url: "{{ url_for('show_summaries_results') }}",
-        fieldKeys: [
-            '{{ REQUIRED_LETTER }}',
-            '{{ ALLOWED_LETTERS }}',
-            '{{ SUMMARY_SORT }}',
-            '{{ SHOW_WORDS }}',
-            '{{ DICTIONARY }}',
-            '{{ WORD_SORT }}', 'Word sort:'
-        ],
-        buttonLabels: { first: 'Show Summaries', after: 'Update Summaries' },
-        postSubmitCallbacks: [],
-        formHistory: initFormHistory(ids),
-        resultsContainer: document.getElementById(ids.resultsContainerId),
+    const domConfig = {
+        form: document.getElementById(templateConfig.formId),
+        formHistory: initFormHistory(templateConfig),
+        resultsContainer: document.getElementById(templateConfig.resultsContainerId),
         displayChanges: initDisplayChanges({
-            displayChangesCheckbox : document.getElementById("{{ DISPLAY_CHANGES }}"),
-            url : "{{ url_for('display_changes') }}"
+            displayChangesCheckbox : document.getElementById(templateConfig.displayChangesId),
+            url : templateConfig.displayChangesUrl,
         }),
+        postSubmitCallbacks: [],
     }
 
-    initFormHandler(showSummariesFormConfig);
+    initFormHandler({ ...templateConfig, ...domConfig });
 
     initShowWords({
         showWordsId: "{{ SHOW_WORDS }}",
@@ -61,8 +67,8 @@
     <div class="banner-container">
 
         {{ page_banner(text='Summarize All Word Lists') }}
-        {{ display_changes_checkbox() }}
-        {{ display_history_buttons(IDs.backId, IDs.forwardId, IDs.saveId, IDs.indexId) }}
+        {{ display_changes_checkbox(CONFIG) }}
+        {{ display_history_buttons(CONFIG) }}
 
     </div>
 
@@ -82,7 +88,7 @@
         |
     </div>
     
-    <form id="{{IDs.formId}}" method="GET">
+    <form id="{{CONFIG.formId}}" method="GET">
 
         {{ letter_inputs() }}
 

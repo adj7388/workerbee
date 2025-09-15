@@ -16,7 +16,7 @@
     ],
     'resultsContainerId': 'results',
     'displayChangesId': DISPLAY_CHANGES,
-    'displayChangesUrl': url_for('display_changes'),
+    'displayChangesUrl': url_for(DISPLAY_CHANGES),
     'backId': 'backBtn', 
     'forwardId': 'forwardBtn',
     'indexId': 'indexDisplay',
@@ -33,13 +33,13 @@
 
 <script>
     // convert Jinja CONFIG to templateConfig for js. Use backticks to shut up js linter
-    templateConfig = JSON.parse(`{{ CONFIG | tojson | safe }}`);
+    const templateConfig = JSON.parse(`{{ CONFIG | tojson | safe }}`);
 
     // inject form values for initFormHandler
-    domConfig = {
+    const domConfig = {
         form: document.getElementById('{{ CONFIG.formId }}'),
-        resultsContainer: document.getElementById(templateConfig.resultsContainerId),
         formHistory: initFormHistory(templateConfig),
+        resultsContainer: document.getElementById(templateConfig.resultsContainerId),
         displayChanges: initDisplayChanges({
             displayChangesCheckbox : document.getElementById(templateConfig.displayChangesId),
             url : templateConfig.displayChangesUrl,
@@ -57,8 +57,8 @@
     <div class="banner-container">
 
         {{ page_banner(text='Find Words') }}
-        {{ display_changes_checkbox() }}
-        {{ display_history_buttons(CONFIG.backId, CONFIG.forwardId, CONFIG.saveId, CONFIG.indexId) }}
+        {{ display_changes_checkbox(CONFIG) }}
+        {{ display_history_buttons(CONFIG) }}
 
     </div>
 

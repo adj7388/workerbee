@@ -89,24 +89,24 @@
 {% endmacro %}
 
 
-{% macro display_changes_checkbox() %}
+{% macro display_changes_checkbox(cfg) %}
 
     <input class="form-check-input me-0" type="checkbox"
-        id="{{DISPLAY_CHANGES}}" name="{{DISPLAY_CHANGES}}"
+        id="{{cfg.displayChangesId}}" name="{{cfg.displayChangesId}}"
         {{ "checked" if session[ARGS][DISPLAY_CHANGES] == True else "" }}
     >
-    <label for="{{DISPLAY_CHANGES}}">Display Changes</label>
+    <label for="{{cfg.displayChangesId}}">Display Changes</label>
 
     <script src="{{ url_for('static', filename='displayChanges.js') }}"></script>
 
 {% endmacro %}
 
-{% macro display_history_buttons(backId, forwardId, saveId, indexId) %}
+{% macro display_history_buttons(ids) %}
 
     |<span>History</span>
-    <button id="{{backId}}" class="history-button">&lt;</button>
-    <span id="{{indexId}}"></span>
-    <button id="{{forwardId}}" class="history-button">&gt;</button>
-    <button id="{{saveId}}" class="history-button">+</button>
+    <button id="{{ids.backId}}" class="history-button">&lt;</button>
+    <span id="{{ids.indexId}}"></span>
+    <button id="{{ids.forwardId}}" class="history-button">&gt;</button>
+    <button id="{{ids.saveId}}" class="history-button">+</button>
 
 {% endmacro %}
