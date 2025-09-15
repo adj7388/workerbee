@@ -34,6 +34,12 @@
     'resultsContainerId': FORM_CONFIG.resultsContainerId,
 } %}
 
+{% set SHOW_WORDS_CONFIG = {
+    'showWordsId': SHOW_WORDS,
+    'alphabeticallyId': ALPHABETICALLY,
+    'byWordLengthId': BYWORDLENGTH,
+} %}
+
 
 {% block scripts %}
 
@@ -43,12 +49,13 @@
 <script src="{{ url_for('static', filename='showWords.js') }}"></script>
 
 <script>
-    // convert Jinja CONFIG to formConfig for js. Use backticks to shut up js linter
-     // convert Jinja configs for js. Use backticks to shut up js linter
+    // convert Jinja x_CONFIG to js xConfig. Backticks silence the js linter
     const formConfig = JSON.parse(`{{ FORM_CONFIG | tojson | safe }}`);
     const changesConfig = JSON.parse(`{{ CHANGES_CONFIG | tojson | safe }}`);
     const historyConfig = JSON.parse(`{{ HISTORY_CONFIG | tojson | safe }}`);
+    const showWordsConfig = JSON.parse(`{{ SHOW_WORDS_CONFIG | tojson | safe }}`);
 
+    // Params needed by formHandler, not in formConfig
     const formHandlerConfig = {
         formHistory: initFormHistory(historyConfig),
         displayChanges: initDisplayChanges({
@@ -59,11 +66,7 @@
 
     initFormHandler({ ...formConfig, ...formHandlerConfig });
 
-    initShowWords({
-        showWordsId: "{{ SHOW_WORDS }}",
-        alphabeticallyId: "{{ ALPHABETICALLY }}",
-        byWordLengthId: "{{ BYWORDLENGTH }}",
-    });
+    initShowWords(showWordsConfig);
 
 </script>
 

@@ -39,11 +39,12 @@
 <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
 
 <script>
-    // convert Jinja configs for js. Use backticks to shut up js linter
+    // convert Jinja x_CONFIG to js xConfig. Backticks silence the js linter
     const formConfig = JSON.parse(`{{ FORM_CONFIG | tojson | safe }}`);
     const changesConfig = JSON.parse(`{{ CHANGES_CONFIG | tojson | safe }}`);
     const historyConfig = JSON.parse(`{{ HISTORY_CONFIG | tojson | safe }}`);
 
+    // Params needed by formHandler, not in formConfig
     const formHandlerConfig = {
         formHistory: initFormHistory(historyConfig),
         displayChanges: initDisplayChanges({
