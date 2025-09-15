@@ -9,7 +9,7 @@
     'forwardId': 'forwardBtn',
     'indexId'  : 'indexDisplay',
     'saveId'   : 'saveHistoryBtn',
-    'resultsId': 'results',
+    'resultsContainerId': 'results',
 } %}
 
 {% block scripts %}
@@ -37,7 +37,7 @@
         buttonLabels: { first: 'Show Summaries', after: 'Update Summaries' },
         postSubmitCallbacks: [],
         formHistory: initFormHistory(ids),
-        resultsContainer: document.getElementById(ids.resultsId),
+        resultsContainer: document.getElementById(ids.resultsContainerId),
         displayChanges: initDisplayChanges({
             displayChangesCheckbox : document.getElementById("{{ DISPLAY_CHANGES }}"),
             url : "{{ url_for('display_changes') }}"

@@ -5,7 +5,7 @@ function initFormHistory({
     forwardId,
     indexId,
     saveId,
-    resultsId
+    resultsContainerId
   })
   {
 
@@ -14,7 +14,7 @@ function initFormHistory({
   const forwardBtn = document.getElementById(forwardId);
   const indexDisplay = document.getElementById(indexId);
   const saveHistoryBtn = document.getElementById(saveId);
-  const resultsContainer = document.getElementById(resultsId);
+  const resultsContainer = document.getElementById(resultsContainerId);
 
   let history = [];
   let index = -1;

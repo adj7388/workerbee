@@ -1,47 +1,54 @@
 {% extends "base.html" %}
 
-{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, display_changes_checkbox, display_history_buttons%}
+{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs%}
+{% from "macros.html" import display_changes_checkbox, display_history_buttons%}
 
 {# keys match what initFormHistory and initiFormHandler expect #}
-{% set IDs = {
-    'formId'   : 'findWordsSearchForm',
-    'backId'   : 'backBtn', 
+{% set CONFIG = {
+    'formId': 'findWordsSearchForm',
+    'url': url_for('find_words_results'),
+    'fieldKeys': [
+        REQUIRED_LETTER,
+        ALLOWED_LETTERS,
+        GROUPING,
+        WORD_LIST,
+        DICTIONARY,
+    ],
+    'resultsContainerId': 'results',
+    'displayChangesId': DISPLAY_CHANGES,
+    'displayChangesUrl': url_for('display_changes'),
+    'backId': 'backBtn', 
     'forwardId': 'forwardBtn',
-    'indexId'  : 'indexDisplay',
-    'saveId'   : 'saveHistoryBtn',
-    'resultsId': 'results',
+    'indexId': 'indexDisplay',
+    'saveId': 'saveHistoryBtn',
+    'postSubmitCallbacks': [],
+    'buttonLabels': { 'first': 'Find Words', 'after': 'Update Words' },
 } %}
-
-{% set form_id = 'findWordsSearchForm' %}
 
 {% block scripts %}
 
+<script src="{{ url_for('static', filename='formHistory.js') }}"></script>
+<script src="{{ url_for('static', filename='utils.js') }}"></script>
+<script src="{{ url_for('static', filename='formHandler.js') }}"></script>
+
 <script>
-    // convert Jinja IDs to ids for js. Use backticks to shut up js linter
-    window.ids = JSON.parse(`{{ IDs | tojson | safe }}`);
+    // convert Jinja CONFIG to templateConfig for js. Use backticks to shut up js linter
+    templateConfig = JSON.parse(`{{ CONFIG | tojson | safe }}`);
 
     // inject form values for initFormHandler
-    window.formConfig = {
-        form: document.getElementById('{{ form_id}}'),
-        url: "{{ url_for('find_words_results') }}",
-        fieldKeys: [
-            '{{ REQUIRED_LETTER }}',
-            '{{ ALLOWED_LETTERS }}',
-            '{{ GROUPING }}',
-            '{{ WORD_LIST }}',
-            '{{ DICTIONARY }}',
-        ],
-        postSubmitCallbacks: [],
-        displayChangesId: '{{ DISPLAY_CHANGES }}',
-        displayChangesUrl: "{{ url_for('display_changes') }}",
-        buttonLabels: { first: 'Find Words', after: 'Update Words' },
+    domConfig = {
+        form: document.getElementById('{{ CONFIG.formId }}'),
+        resultsContainer: document.getElementById(templateConfig.resultsContainerId),
+        formHistory: initFormHistory(templateConfig),
+        displayChanges: initDisplayChanges({
+            displayChangesCheckbox : document.getElementById(templateConfig.displayChangesId),
+            url : templateConfig.displayChangesUrl,
+        }),
      }
 
-</script>
+    initFormHandler({ ...templateConfig, ...domConfig });
 
-<script src="{{ url_for('static', filename='utils.js') }}"></script>
-<script src="{{ url_for('static', filename='formHistory.js') }}"></script>
-<script src="{{ url_for('static', filename='formHandler.js') }}"></script>
+</script>
 
 {% endblock %}
 
@@ -51,11 +58,11 @@
 
         {{ page_banner(text='Find Words') }}
         {{ display_changes_checkbox() }}
-        {{ display_history_buttons(IDs.backId, IDs.forwardId, IDs.saveId, IDs.indexId) }}
+        {{ display_history_buttons(CONFIG.backId, CONFIG.forwardId, CONFIG.saveId, CONFIG.indexId) }}
 
     </div>
 
-    <form id="{{ form_id }}" method="GET">
+    <form id="{{ CONFIG.formId }}" method="GET">
 
         {{ letter_inputs() }}
 
@@ -116,7 +123,7 @@
 
         {# Submit #}
         <div class="mt-3">
-            <input id="submitButton" type="submit" value="Find Words">
+            <input id="submitButton" type="submit" value="{{CONFIG.buttonLabels.first}}">
         </div>
     </form>
 
