@@ -1,9 +1,10 @@
 // Manage Display Changes checkbox
 
 function initDisplayChanges({
-    checkbox,
+    checkboxId,
     url
 }) {
+    const checkbox = document.getElementById(checkboxId);
 
     checkbox.addEventListener("change", function () {
         const params = new URLSearchParams({

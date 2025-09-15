@@ -46,11 +46,11 @@
 
     // inject form values for initFormHandler
     const formHandlerConfig = {
-        form: document.getElementById(formConfig.formId),
+        form: formConfig.formId,
+        resultsContainer: formConfig.resultsContainerId,
         formHistory: initFormHistory(historyConfig),
-        resultsContainer: document.getElementById(formConfig.resultsContainerId),
         displayChanges: initDisplayChanges({
-            checkbox : document.getElementById(changesConfig.displayChangesId),
+            checkboxId : changesConfig.displayChangesId,
             url : changesConfig.displayChangesUrl,
         }),
      }

@@ -2,18 +2,20 @@
 // Manages form submission for both Find Words and Show Summaries
     
 function initFormHandler({
-    form,
+    formId,
     url,
     fieldKeys,
     buttonLabels,
     postSubmitCallbacks,
     formHistory,
-    resultsContainer,
+    resultsContainerId,
     displayChanges,
 }) {
+    const form = document.getElementById(formId);
+    const resultsContainer = document.getElementById(resultsContainerId);
+    
     form.addEventListener('submit', function (e) {
         e.preventDefault();
-
         const storageKey = `state:${form.id}`;
 
         const submitButton = form.querySelector("input[type='submit']");
