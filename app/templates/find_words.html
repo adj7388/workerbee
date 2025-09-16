@@ -3,35 +3,6 @@
 {% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs%}
 {% from "macros.html" import display_changes_checkbox, display_history_buttons%}
 
-{% set FORM_CONFIG = {
-    'formId': 'findWordsSearchForm',
-    'url': url_for('find_words_results'),
-    'fieldKeys': [
-        REQUIRED_LETTER,
-        ALLOWED_LETTERS,
-        GROUPING,
-        WORD_LIST,
-        DICTIONARY,
-    ],
-    'buttonLabels': { 'first': 'Find Words', 'after': 'Update Words' },
-    'resultsContainerId': 'results',
-    'postSubmitCallbacks': [],
-} %}
-
-{% set CHANGES_CONFIG  = {
-    'displayChangesId': DISPLAY_CHANGES,
-    'displayChangesUrl': url_for(DISPLAY_CHANGES),
-} %}
-
-{% set HISTORY_CONFIG = {
-    'formId': FORM_CONFIG.formId,
-    'backId': 'backBtn', 
-    'forwardId': 'forwardBtn',
-    'indexId': 'indexDisplay',
-    'saveId': 'saveHistoryBtn',
-    'resultsContainerId': FORM_CONFIG.resultsContainerId,
-} %}
-
 {% block scripts %}
 
 <script src="{{ url_for('static', filename='utils.js') }}"></script>
@@ -39,17 +10,17 @@
 <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
 
 <script>
-    // convert Jinja x_CONFIG to js xConfig. Backticks silence the js linter
+    // *_CONFIG passed in context from view function. Backticks silence the js linter
     const formConfig = JSON.parse(`{{ FORM_CONFIG | tojson | safe }}`);
-    const changesConfig = JSON.parse(`{{ CHANGES_CONFIG | tojson | safe }}`);
-    const historyConfig = JSON.parse(`{{ HISTORY_CONFIG | tojson | safe }}`);
+    const displayChangesConfig = JSON.parse(`{{ DISPLAY_CHANGES_CONFIG | tojson | safe }}`);
+    const formHistoryConfig = JSON.parse(`{{ HISTORY_CONFIG | tojson | safe }}`);
 
     // Params needed by formHandler, not in formConfig
     const formHandlerConfig = {
-        formHistory: initFormHistory(historyConfig),
+        formHistory: initFormHistory(formHistoryConfig),
         displayChanges: initDisplayChanges({
-            checkboxId : changesConfig.displayChangesId,
-            url : changesConfig.displayChangesUrl,
+            checkboxId : displayChangesConfig.displayChangesId,
+            url : displayChangesConfig.displayChangesUrl,
         }),
      }
 
@@ -64,7 +35,7 @@
     <div class="banner-container">
 
         {{ page_banner(text='Find Words') }}
-        {{ display_changes_checkbox(CHANGES_CONFIG) }}
+        {{ display_changes_checkbox(DISPLAY_CHANGES_CONFIG) }}
         {{ display_history_buttons(HISTORY_CONFIG) }}
 
     </div>

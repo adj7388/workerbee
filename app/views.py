@@ -20,6 +20,13 @@ from .bee import (
     get_summaries_cached,
 )
 from .constants import Consts
+from .form_configs import (
+    get_show_summaries_config,
+    get_display_changes_config,
+    get_form_history_config,
+    get_show_words_config,
+    get_find_words_config,
+)
 from .dictionaries import Dictionaries, WIKT
 from .types import (
     SpellingBeeWord,
@@ -90,11 +97,29 @@ def init_routes(app: Flask) -> None:
     ### Forms ###
     @app.route(f"/find-words")
     def find_words() -> ResponseReturnValue:  # type: ignore reportUnusedFunction
-        return render_template("find_words.html")
+        find_words_config = get_find_words_config()
+        history_config = get_form_history_config(find_words_config)
+        display_changes_config = get_display_changes_config()
+        return render_template(
+            "find_words.html",
+            FORM_CONFIG=find_words_config,
+            DISPLAY_CHANGES_CONFIG=display_changes_config,
+            HISTORY_CONFIG=history_config,
+        )
 
     @app.route(f"/show-summaries")
     def show_summaries() -> ResponseReturnValue:  # type: ignore reportUnusedFunction
-        return render_template("show_summaries.html")
+        show_summaries_config = get_show_summaries_config()
+        history_config = get_form_history_config(show_summaries_config)
+        display_changes_config = get_display_changes_config()
+        show_words_config = get_show_words_config()
+        return render_template(
+            "show_summaries.html",
+            FORM_CONFIG=show_summaries_config,
+            DISPLAY_CHANGES_CONFIG=display_changes_config,
+            HISTORY_CONFIG=history_config,
+            SHOW_WORDS_CONFIG=show_words_config,
+        )
 
     @app.route("/display-changes")
     def display_changes() -> ResponseReturnValue:  # type: ignore reportUnusedFunction
