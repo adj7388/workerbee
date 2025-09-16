@@ -51,4 +51,6 @@ function initShowWords ({showWordsId, alphabeticallyId, byWordLengthId}) {
     );
 
     toggleSortRadios(); // run on load
+
+    return { toggleWordRows }
 }

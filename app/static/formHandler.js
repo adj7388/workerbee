@@ -1,6 +1,6 @@
 
 // Manages form submission for both Find Words and Show Summaries
-    
+
 function initFormHandler({
     formId,
     url,
@@ -10,7 +10,25 @@ function initFormHandler({
     formHistory,
     resultsContainerId,
     displayChanges,
+    showWords,
 }) {
+
+    const callbackRegistry = {
+        toggleWordRows: showWords.toggleWordRows,
+    }
+
+    function runCallbacks() {
+        postSubmitCallbacks.forEach( (fnKey) => {
+            const fn = callbackRegistry[fnKey];
+            if ( typeof fn !== 'function' ) {
+                console.warn(`${fnKey} is not a function, or is not in the callbackRegistry`, fn);
+                return;
+            }
+            fn();
+        });
+    }
+            
+
     const form = document.getElementById(formId);
     const resultsContainer = document.getElementById(resultsContainerId);
     
@@ -56,7 +74,9 @@ function initFormHandler({
 
     function doFetchFromHistory(historyIndex) {
         resultsContainer.innerHTML = formHistory.getHistoryResults(historyIndex);
-        postSubmitCallbacks.forEach( fn => fn() );
+        runCallbacks();
+        //showWords.toggleWordRows();
+        // postSubmitCallbacks.forEach( fn => fn() );
         formHistory.setDirtyFlag(false);
     }
 
@@ -69,7 +89,9 @@ function initFormHandler({
                     <div class="mt-3 bg-light results">
                         ${html}
                     </div>`;
-                postSubmitCallbacks.forEach( fn => fn() );
+                runCallbacks();
+                //showWords.toggleWordRows();
+                //postSubmitCallbacks.forEach( fn => fn() );
             });
         formHistory.setDirtyFlag(false);
     }

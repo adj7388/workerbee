@@ -38,7 +38,7 @@ def get_show_summaries_config() -> dict[str, Any]:
         ],
         "buttonLabels": {"first": "Show Summaries", "after": "Update Summaries"},
         "resultsContainerId": "results",
-        "postSubmitCallbacks": [],
+        "postSubmitCallbacks": ["toggleWordRows"],
     }
 
 

@@ -19,6 +19,7 @@
     // Params needed by formHandler, not in formConfig
     const formHandlerConfig = {
         formHistory: initFormHistory(historyConfig),
+        showWords: initShowWords(showWordsConfig),
         displayChanges: initDisplayChanges({
             checkboxId : displayChangesConfig.displayChangesId,
             url : displayChangesConfig.displayChangesUrl,
@@ -26,8 +27,6 @@
      }
 
     initFormHandler({ ...formConfig, ...formHandlerConfig });
-
-    initShowWords(showWordsConfig);
 
 </script>
 
