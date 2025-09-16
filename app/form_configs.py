@@ -3,6 +3,8 @@ from typing import Any
 
 from .constants import Consts
 
+#### lowerCamelCase used for keys because configs used mainly in javascript
+
 
 def get_find_words_config() -> dict[str, Any]:
     return {
@@ -47,10 +49,10 @@ def get_display_changes_config() -> dict[str, Any]:
     }
 
 
-def get_form_history_config(form_id: str, resultsContainerId: str) -> dict[str, Any]:
+def get_form_history_config(form_id: str, results_container_id: str) -> dict[str, Any]:
     return {
         "formId": form_id,
-        "resultsContainerId": resultsContainerId,
+        "resultsContainerId": results_container_id,
         "backId": "backBtn",
         "forwardId": "forwardBtn",
         "indexId": "indexDisplay",
