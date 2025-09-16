@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs%}
-{% from "macros.html" import display_changes_checkbox, display_history_buttons%}
+{% from "macros.html" import display_changes, display_history%}
 
 {% block scripts %}
 
@@ -35,8 +35,8 @@
     <div class="banner-container">
 
         {{ page_banner(text='Find Words') }}
-        {{ display_changes_checkbox(DISPLAY_CHANGES_CONFIG) }}
-        {{ display_history_buttons(HISTORY_CONFIG) }}
+        {{ display_changes(DISPLAY_CHANGES_CONFIG) }}
+        {{ display_history(HISTORY_CONFIG) }}
 
     </div>
 
