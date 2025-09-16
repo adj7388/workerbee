@@ -47,10 +47,10 @@ def get_display_changes_config() -> dict[str, Any]:
     }
 
 
-def get_form_history_config(form_config: dict) -> dict[str, Any]:
+def get_form_history_config(form_id: str, resultsContainerId: str) -> dict[str, Any]:
     return {
-        "formId": form_config["formId"],
-        "resultsContainerId": form_config["resultsContainerId"],
+        "formId": form_id,
+        "resultsContainerId": resultsContainerId,
         "backId": "backBtn",
         "forwardId": "forwardBtn",
         "indexId": "indexDisplay",
