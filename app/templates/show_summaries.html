@@ -17,13 +17,16 @@
     const showWordsConfig = JSON.parse(`{{ SHOW_WORDS_CONFIG | tojson | safe }}`);
 
     // Params needed by formHandler, not in formConfig
-    const formHandlerConfig = {
-        formHistory: initFormHistory(historyConfig),
-        showWords: initShowWords(showWordsConfig),
-        displayChanges: initDisplayChanges({
+    const formHistory = initFormHistory(historyConfig);
+    const showWords = initShowWords(showWordsConfig);
+    const displayChanges = initDisplayChanges({
             checkboxId : displayChangesConfig.displayChangesId,
             url : displayChangesConfig.displayChangesUrl,
-        }),
+        })
+    const formHandlerConfig = {
+        formHistory: formHistory,
+        displayChanges: displayChanges,
+        postSubmitCallbacks: [showWords.toggleWordRows]
      }
 
     initFormHandler({ ...formConfig, ...formHandlerConfig });

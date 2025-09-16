@@ -19,7 +19,6 @@ def get_find_words_config() -> dict[str, Any]:
         ],
         "buttonLabels": {"first": "Find Words", "after": "Update Words"},
         "resultsContainerId": "results",
-        "postSubmitCallbacks": [],
     }
 
 
@@ -38,7 +37,6 @@ def get_show_summaries_config() -> dict[str, Any]:
         ],
         "buttonLabels": {"first": "Show Summaries", "after": "Update Summaries"},
         "resultsContainerId": "results",
-        "postSubmitCallbacks": ["toggleWordRows"],
     }
 
 

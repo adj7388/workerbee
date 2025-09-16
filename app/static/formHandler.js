@@ -10,28 +10,21 @@ function initFormHandler({
     formHistory,
     resultsContainerId,
     displayChanges,
-    showWords,
 }) {
 
-    const callbackRegistry = {
-        toggleWordRows: showWords.toggleWordRows,
-    }
-
+    const form = document.getElementById(formId);
+    const resultsContainer = document.getElementById(resultsContainerId);
+    
     function runCallbacks() {
-        postSubmitCallbacks.forEach( (fnKey) => {
-            const fn = callbackRegistry[fnKey];
+        postSubmitCallbacks.forEach( (fn) => {
             if ( typeof fn !== 'function' ) {
-                console.warn(`${fnKey} is not a function, or is not in the callbackRegistry`, fn);
+                console.warn(`${fnKey} is not a function`, fn);
                 return;
             }
             fn();
         });
     }
-            
-
-    const form = document.getElementById(formId);
-    const resultsContainer = document.getElementById(resultsContainerId);
-    
+ 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
         const storageKey = `state:${form.id}`;
@@ -75,8 +68,6 @@ function initFormHandler({
     function doFetchFromHistory(historyIndex) {
         resultsContainer.innerHTML = formHistory.getHistoryResults(historyIndex);
         runCallbacks();
-        //showWords.toggleWordRows();
-        // postSubmitCallbacks.forEach( fn => fn() );
         formHistory.setDirtyFlag(false);
     }
 
@@ -90,8 +81,6 @@ function initFormHandler({
                         ${html}
                     </div>`;
                 runCallbacks();
-                //showWords.toggleWordRows();
-                //postSubmitCallbacks.forEach( fn => fn() );
             });
         formHistory.setDirtyFlag(false);
     }

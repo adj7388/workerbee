@@ -13,15 +13,18 @@
     // *_CONFIG passed in context from view function. Backticks silence the js linter
     const formConfig = JSON.parse(`{{ FORM_CONFIG | tojson | safe }}`);
     const displayChangesConfig = JSON.parse(`{{ DISPLAY_CHANGES_CONFIG | tojson | safe }}`);
-    const formHistoryConfig = JSON.parse(`{{ HISTORY_CONFIG | tojson | safe }}`);
+    const historyConfig = JSON.parse(`{{ HISTORY_CONFIG | tojson | safe }}`);
 
     // Params needed by formHandler, not in formConfig
-    const formHandlerConfig = {
-        formHistory: initFormHistory(formHistoryConfig),
-        displayChanges: initDisplayChanges({
+    const formHistory = initFormHistory(historyConfig);
+    const displayChanges = initDisplayChanges({
             checkboxId : displayChangesConfig.displayChangesId,
             url : displayChangesConfig.displayChangesUrl,
-        }),
+        })
+    const formHandlerConfig = {
+        formHistory: formHistory,
+        displayChanges: displayChanges,
+        postSubmitCallbacks: []
      }
 
     initFormHandler({ ...formConfig, ...formHandlerConfig });
