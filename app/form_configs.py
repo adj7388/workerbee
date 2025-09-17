@@ -55,6 +55,7 @@ def get_form_history_config(form_id: str, results_container_id: str) -> dict[str
         "forwardId": "forwardBtn",
         "indexId": "indexDisplay",
         "saveId": "saveHistoryBtn",
+        "deleteId": "deleteHistoryBtn",
     }
 
 

@@ -1,10 +1,13 @@
 
+// Manage the history tool
+
 function initFormHistory({
     formId,
     backId,
     forwardId,
     indexId,
     saveId,
+    deleteId,
     resultsContainerId
   })
   {
@@ -14,6 +17,7 @@ function initFormHistory({
   const forwardBtn = document.getElementById(forwardId);
   const indexDisplay = document.getElementById(indexId);
   const saveHistoryBtn = document.getElementById(saveId);
+  const deleteHistoryBtn = document.getElementById(deleteId);
   const resultsContainer = document.getElementById(resultsContainerId);
 
   let history = [];
@@ -64,7 +68,7 @@ function initFormHistory({
   function saveFormState() {
     const formValues = getFormValues();
     if ( arrayIncludesNestedObject(history, "search", formValues) ) {
-      showUpdatePopup("Query already saved");
+      showUpdatePopup("Already in history");
     } else { 
       history.push({
         search : formValues,
@@ -99,10 +103,18 @@ function initFormHistory({
     indexDisplay.textContent = `${index + 1}/${history.length}`;
     forwardBtn.disabled = (index >= history.length - 1);
     backBtn.disabled = (index <= 0);
+    deleteHistoryBtn.disabled = (index < 0);
   }
 
+  function deleteHistory() {
+    if (confirm("Do you want to delete the history?") ) {
+      localStorage.removeItem(storageKey);
+      index = -1;
+      history = [];
+      updateHistoryUI();
+    }
+  }
 
-  ////////// listeners //////////
   function restoreAndSubmit() {
       restoreFormState(history[index]);
       setDirtyFlag(true);
@@ -110,6 +122,7 @@ function initFormHistory({
       form.requestSubmit();
   }
 
+  ////////// listeners //////////
   backBtn.addEventListener("click", () => {
     if (index > 0) {
       index--;
@@ -127,6 +140,10 @@ function initFormHistory({
   saveHistoryBtn.addEventListener("click", (e) => {
     e.stopPropagation();
     saveFormState();
+  });
+
+  deleteHistoryBtn.addEventListener("click", () => {
+    deleteHistory();
   });
 
   return { setDirtyFlag, getDirtyFlag, getHistoryIndex, getHistoryResults };
