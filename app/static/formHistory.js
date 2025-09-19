@@ -106,14 +106,15 @@ function initFormHistory({
     deleteHistoryBtn.disabled = (index < 0);
   }
 
-  function deleteHistory() {
-    if (confirm("Do you want to delete the history?") ) {
-      localStorage.removeItem(storageKey);
-      index = -1;
-      history = [];
-      updateHistoryUI();
+  async function deleteHistory() {
+      console.log("deleteHistory called");
+      if (await myConfirm("Delete this historical record?")) {
+        localStorage.removeItem(storageKey);
+        index = -1;
+        history = [];
+        updateHistoryUI();
+      }
     }
-  }
 
   function restoreAndSubmit() {
       restoreFormState(history[index]);

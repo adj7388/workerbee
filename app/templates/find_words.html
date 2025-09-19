@@ -8,6 +8,7 @@
 <script src="{{ url_for('static', filename='utils.js') }}"></script>
 <script src="{{ url_for('static', filename='formHistory.js') }}"></script>
 <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
+<script src="{{ url_for('static', filename='customConfirm.js') }}"></script>
 
 <script>
     // *_CONFIG passed in context from view function. Backticks silence the js linter
@@ -110,5 +111,7 @@
 
     {# Results inserted here #}
     <div id="{{FORM_CONFIG.resultsContainerId}}"></div>
+
+    {% include "_custom_confirm.html" %}
 
 {% endblock %}
