@@ -108,7 +108,7 @@ function initFormHistory({
 
   async function deleteHistory() {
       console.log("deleteHistory called");
-      if (await myConfirm("Delete this historical record?")) {
+      if (await myConfirm("Delete the entire history? This cannot be undone.")) {
         localStorage.removeItem(storageKey);
         index = -1;
         history = [];
