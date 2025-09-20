@@ -6,10 +6,10 @@ function customConfirm(message) {
     const noBtn = document.getElementById("confirm-no");
 
     messageEl.textContent = message;
-    modal.classList.add("show"); // show modal
+    modal.classList.add("show");
 
     function cleanup() {
-      modal.classList.remove("show"); // hide modal
+      modal.classList.remove("show");
       yesBtn.removeEventListener("click", onYes);
       noBtn.removeEventListener("click", onNo);
     }

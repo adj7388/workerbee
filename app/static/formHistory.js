@@ -107,7 +107,6 @@ function initFormHistory({
   }
 
   async function deleteHistory() {
-      console.log("deleteHistory called");
       if (await myConfirm("Delete the entire history? This cannot be undone.")) {
         localStorage.removeItem(storageKey);
         index = -1;
@@ -119,7 +118,6 @@ function initFormHistory({
   function restoreAndSubmit() {
       restoreFormState(history[index]);
       setDirtyFlag(true);
-      updateHistoryUI();
       form.requestSubmit();
   }
 
@@ -128,6 +126,7 @@ function initFormHistory({
     if (index > 0) {
       index--;
       restoreAndSubmit();
+      updateHistoryUI();
     }
   });
 
@@ -135,6 +134,7 @@ function initFormHistory({
     if (index < history.length - 1) {
       index++;
       restoreAndSubmit();
+      updateHistoryUI();
     }
   });
 

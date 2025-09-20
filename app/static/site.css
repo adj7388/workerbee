@@ -173,7 +173,7 @@ legend {
   border-radius: 5px;
 }
 
-/* Base state: hidden by default */
+/* Base for confirm dialog */
 #custom-confirm {
   display: none; /* <-- start hidden */
   position: fixed;
@@ -181,16 +181,15 @@ legend {
   width: 100%; height: 100%;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.25);
   z-index: 1000;
 }
 
-/* Shown when the "show" class is added */
 #custom-confirm.show {
   display: flex;
 }
 
-/* The actual dialog box */
+/* The dialog box */
 #custom-confirm .box {
   background-color: #fff9e6;
   border: 3px solid #f0e1b8;
@@ -205,15 +204,15 @@ legend {
 
 #custom-confirm button {
   margin: 0.5rem;
-  padding: 0.3rem 0.8rem;   /* smaller than before */
-  font-size: 0.9rem;        /* slightly smaller text */
-  border-radius: 6px;       /* rounded corners */
+  padding: 0.3rem 0.8rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
   cursor: pointer;
-  border: 1px solid #ccc;   /* optional subtle border */
+  border: 1px solid #ccc;
   background-color: #f8f8f8;
   transition: background-color 0.2s ease;
 }
 
 #custom-confirm button:hover {
-  background-color: #eee;   /* hover effect */
+  background-color: #eee;
 }
