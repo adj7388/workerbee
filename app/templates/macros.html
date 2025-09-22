@@ -103,11 +103,21 @@
 
 {% macro display_history(config) %}
 
-    |<span>History</span>
-    <button id="{{config.backId}}" class="history-button">&lt;</button>
+    <span>History</span>
+    <button id="{{config.backId}}" class="history-button left">&lt;</button>
     <span id="{{config.indexId}}"></span>
-    <button id="{{config.forwardId}}" class="history-button">&gt;</button>
+    <button id="{{config.forwardId}}" class="history-button right">&gt;</button>
     <button id="{{config.saveId}}" class="history-button">+</button>
-    <button id="{{config.deleteId}}" class="history-button">x</button>
+    <button id="{{config.deleteId}}" class="history-button">&times;</button>
+
+    <script src="{{ url_for('static', filename='formHistory.js') }}"></script>
+
+{% endmacro %}
+
+{% macro toolbar(divider="|", display_changes_config=None, history_config=None) %}
+
+    {{ display_changes(display_changes_config) }}
+    {{ divider }}
+    {{ display_history(history_config) }}
 
 {% endmacro %}

@@ -167,10 +167,19 @@ legend {
 
 .history-button {
   padding-top: 0;
-  padding-right: 0.5rem;
+  padding-bottom: 0;
+  padding-right: 0.25rem;
   padding-left: 0.25rem;
   border-width: 1px;
   border-radius: 5px;
+}
+
+.history-button.right {
+  margin-right: 0.25rem;
+}
+
+.history-button.left {
+  margin-left: 0.25rem;
 }
 
 /* Base for confirm dialog */

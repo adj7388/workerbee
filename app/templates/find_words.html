@@ -1,12 +1,10 @@
 {% extends "base.html" %}
 
-{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs%}
-{% from "macros.html" import display_changes, display_history%}
+{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, toolbar %}
 
 {% block scripts %}
 
 <script src="{{ url_for('static', filename='utils.js') }}"></script>
-<script src="{{ url_for('static', filename='formHistory.js') }}"></script>
 <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
 <script src="{{ url_for('static', filename='customConfirm.js') }}"></script>
 
@@ -39,8 +37,7 @@
     <div class="banner-container">
 
         {{ page_banner(text='Find Words') }}
-        {{ display_changes(DISPLAY_CHANGES_CONFIG) }}
-        {{ display_history(HISTORY_CONFIG) }}
+        {{ toolbar("|", DISPLAY_CHANGES_CONFIG, HISTORY_CONFIG) }}
 
     </div>
 
