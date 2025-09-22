@@ -1,13 +1,11 @@
 {% extends "base.html" %}
 
-{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, toolbar %}
-{#{% from "macros.html" import toolbar with context %}#}
+{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, show_words_option, toolbar %}
 
 {% block scripts %}
 
 <script src="{{ url_for('static', filename='utils.js') }}"></script>
 <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
-<script src="{{ url_for('static', filename='showWords.js') }}"></script>
 <script src="{{ url_for('static', filename='customConfirm.js') }}"></script>
 
 <script>
@@ -89,46 +87,12 @@
                 </div>
             </div>
         </fieldset> 
-        {# Show Words and Word Sort #}
-        <div class="d-flex flex-wrap align-items-center gap-3 mt-2">
-            <input class="form-check-input" type="checkbox"
-                id="{{ SHOW_WORDS}}" name="{{ SHOW_WORDS}}"
-                {{ "checked" if session[ARGS][SHOW_WORDS] == True else "" }}
-            >
-            <label for="{{ SHOW_WORDS }}" class="input-labels mb-0 me-3">Include words sorted:</label>
 
-            <!-- Fieldset only wraps the radio group -->
-            <fieldset id="wordSortFieldset" class="d-inline-flex flex-nowrap gap-2">
-                <div class="form-check form-check-inline">
-                    <label class="form-check-label" for="{{ ALPHABETICALLY }}">
-                        Alphabetically
-                    </label>
-                    <input class="form-check-input" type="radio" 
-                        id="{{ ALPHABETICALLY }}" name="{{ WORD_SORT }}" value="{{ ALPHABETICALLY }}"
-                        {{ "checked" if session[ARGS][WORD_SORT] == ALPHABETICALLY else "" }}
-                    >
-                </div>
-                <div class="form-check form-check-inline">
-                    <label class="form-check-label" for="{{ BYWORDLENGTH }}">
-                        By word length
-                    </label>
-                    <input class="form-check-input" type="radio" 
-                        id="{{ BYWORDLENGTH }}" name="{{ WORD_SORT }}" value="{{ BYWORDLENGTH }}"
-                        {{ "checked" if session[ARGS][WORD_SORT] == BYWORDLENGTH else "" }}
-                    >
-                </div>
-            </fieldset>
-        </div>
+        {# Show Words checkbox and and Word Sort radios S#}
+        {{ show_words_option() }}
 
         {# Dictionary choice #}
-        <div class="mt-3 input-labels">
-            <label id="{{ DICTIONARY }}Label" for="{{ DICTIONARY }}" class="form-label me-2">
-                Link words to:
-            </label>
-            
-            {{ dictionary_dropdown() }}
-
-        </div>
+        {{ dictionary_dropdown() }}
 
         {# Submit #}
         <div class="mt-3">
