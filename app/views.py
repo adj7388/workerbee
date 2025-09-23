@@ -76,6 +76,11 @@ def update_session_args(request_args: dict) -> dict:
 
 def init_routes(app: Flask) -> None:
 
+    ##### SANDBOX ####
+    @app.route(f"/testing1234")
+    def testin1234() -> ResponseReturnValue:  # type: ignore reportUnusedFunctio
+        return render_template("testing1234.html")
+
     ### Middleware ###
     @app.before_request
     def before_request() -> ResponseReturnValue:  # type: ignore reportUnusedFunction

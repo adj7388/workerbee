@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Two-Column Form</title>
+
+<style>
+  /* --- Global reset for predictable sizing --- */
+  *, *::before, *::after {
+    box-sizing: border-box; /* include padding/border in width */
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* --- Grid layout for the form --- */
+  .my-form {
+    display: grid;
+    grid-template-columns: 3rem auto; /* compact left column for labels */
+    gap: 0.5rem 1rem; /* row-gap / column-gap */
+    align-items: center; /* vertical alignment */
+    justify-content: start; /* hug left */
+    max-width: 600px;
+    margin: 2rem 0;      /* top/bottom spacing */
+    padding-left: 0.25in; /* ~1/4 inch left padding */
+  }
+
+  /* Labels */
+  .my-form label {
+    text-align: right; /* right-align labels in left column */
+  }
+
+  /* Standard inputs */
+  .my-form input[type="text"],
+  .my-form input[type="email"],
+  .my-form input[type="password"] {
+    width: 100%;
+    max-width: 400px; /* limit input width on wide screens */
+    padding: 0.4rem;
+  }
+
+  /* Checkbox alignment for desktop */
+  .my-form .checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: left;
+  }
+
+  /* Radio buttons alignment */
+  .my-form .radios {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  /* --- Mobile layout --- */
+  @media (max-width: 600px) {
+    .my-form {
+      grid-template-columns: 1fr; /* single-column layout */
+      padding-left: 0.25in;       /* maintain small left margin */
+      padding-right: 0.25in;      /* small right margin */
+    }
+
+    .my-form label {
+      text-align: left; /* labels stack above inputs */
+    }
+
+    .my-form span {
+      display: none; /* hide empty grid cells */
+    }
+
+    /* Inputs take full width but capped by max-width */
+    .my-form input[type="text"],
+    .my-form input[type="email"],
+    .my-form input[type="password"] {
+      width: 100%;
+      max-width: 400px; /* allow input to shrink with container */
+    }
+
+    /* Checkbox stacked naturally on mobile */
+    .my-form .checkbox {
+      display: block;
+      gap: 0;
+    }
+
+    /* Radio buttons stacked vertically on mobile */
+    .my-form .radios {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+  }
+</style>
+
+</head>
+<body>
+
+<form class="my-form">
+  <label for="name">Name:</label>
+  <input id="name" type="text">
+
+  <label for="email">Email:</label>
+  <input id="email" type="email">
+
+  <label for="password">Password:</label>
+  <input id="password" type="password">
+
+  <!-- Checkbox row -->
+  <span></span> <!-- empty cell in label column -->
+  <label class="checkbox">
+    <input type="checkbox" name="subscribe">
+    Subscribe to newsletter
+  </label>
+
+  <!-- Radio buttons row -->
+  <span></span>
+  <div class="radios">
+    <label><input type="radio" name="plan" value="basic"> Basic</label>
+    <label><input type="radio" name="plan" value="pro"> Pro</label>
+    <label><input type="radio" name="plan" value="enterprise"> Enterprise</label>
+  </div>
+</form>
+
+</body>
+</html>
