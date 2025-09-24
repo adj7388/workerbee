@@ -22,24 +22,18 @@
 
 {% macro letter_inputs() %}
     {# text inputs to enter required letter and other allowed letters #}
-    <div class="d-flex align-items-center mt-3">
-        <label for="{{ REQUIRED_LETTER }}" class="me-2 input-labels">
-            Required letter:
-        </label>
-        <input type="text" class="form-control" id="{{ REQUIRED_LETTER }}" 
-            name="{{ REQUIRED_LETTER }}" value="{{ session[ARGS][REQUIRED_LETTER] }}"
-            style="width: 5ch">
-        <span class="subtext">&nbsp;&nbsp;Yellow letter in the middle of the Spelling Bee page</span>
-    </div>
-    <div class="d-flex align-items-center">
-        <label for="{{ ALLOWED_LETTERS }}" class="me-2 input-labels">
-            Other letters:
-        </label>
-        <input type="text" class="form-control" id="{{ ALLOWED_LETTERS }}" 
-            name="{{ ALLOWED_LETTERS }}" value="{{ session[ARGS][ALLOWED_LETTERS] }}"
-            style="width: 10ch">
-        <span class="subtext">&nbsp;&nbsp;Letters surrounding the required letter</span>
-    </div>
+    <label for="{{ REQUIRED_LETTER }}">Required letter:</label>
+    <input type="text" id="{{ REQUIRED_LETTER }}" 
+        name="{{ REQUIRED_LETTER }}" value="{{ session[ARGS][REQUIRED_LETTER] }}"
+        style="width: 5ch"
+    >
+    <!-- <span class="subtext">&nbsp;&nbsp;Yellow letter in the middle of the Spelling Bee page</span> -->
+    <label for="{{ ALLOWED_LETTERS }}">Other letters:</label>
+    <input type="text" id="{{ ALLOWED_LETTERS }}" 
+        name="{{ ALLOWED_LETTERS }}" value="{{ session[ARGS][ALLOWED_LETTERS] }}"
+        style="width: 10ch"
+    >
+    <!-- <span class="subtext">&nbsp;&nbsp;Letters surrounding the required letter</span> -->
 
     <script>
         function clean_letter_inputs() {
@@ -92,24 +86,20 @@
 
 
 {% macro dictionary_dropdown() %}
-    
-    <div class="mt-3 input-labels">
-        <label id="{{ DICTIONARY }}Label" for="{{ DICTIONARY }}" class="form-label me-2">
-            Link words to:
-        </label>    
-        <select id="{{ DICTIONARY }}" name="{{ DICTIONARY }}">
 
-            {% for k, v in dictionaries.items() %}
-                <option value="{{ k }}"
-                        {% if session[ARGS][DICTIONARY] == k %}
-                            selected
-                        {% endif %}>
-                    {{ v.name }}
-                </option>
-            {% endfor %}
+    <label id="{{ DICTIONARY }}Label" for="{{ DICTIONARY }}">Link words to:</label>    
+    <select id="{{ DICTIONARY }}" name="{{ DICTIONARY }}">
 
-        </select>
-    </div>
+        {% for k, v in dictionaries.items() %}
+            <option value="{{ k }}"
+                    {% if session[ARGS][DICTIONARY] == k %}
+                        selected
+                    {% endif %}>
+                {{ v.name }}
+            </option>
+        {% endfor %}
+
+    </select>
 
 {% endmacro %}
 

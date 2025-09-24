@@ -41,52 +41,44 @@
 
     </div>
 
-    <form id="{{ FORM_CONFIG.formId }}" method="GET">
+    <form id="{{ FORM_CONFIG.formId }}" class="my-form" method="GET">
 
         {{ letter_inputs() }}
 
         {# Word List dropdown #}
-        <div class="d-flex flex-wrap align-items-center gap-3 mt-2">
-                <label class="input-labels" for="{{ WORD_LIST }}">
-                    Use word list:
-                </label>
-                <select id="{{ WORD_LIST }}" name="{{ WORD_LIST }}">
+        <label for="{{ WORD_LIST }}">Use word list:</label>
+        <select id="{{ WORD_LIST }}" name="{{ WORD_LIST }}">
 
-                    {% for k, v in word_lists.items() %}
-                        <option value="{{ k }}"
-                            {% if session[ARGS][WORD_LIST] == k %}
-                                selected
-                            {% endif %}
-                        >
-                            {{ v.name }}&nbsp;&mdash;&nbsp;
-                            {# show number of words in this word list#}
-                            {{ "{:,}".format(v.num_words) }} words
-                        </option>
-                    {% endfor %}
-                </select>
-        </div>
+            {% for k, v in word_lists.items() %}
+                <option value="{{ k }}"
+                    {% if session[ARGS][WORD_LIST] == k %}
+                        selected
+                    {% endif %}
+                >
+                    {{ v.name }}&nbsp;&mdash;&nbsp;
+                    {# show number of words in this word list#}
+                    {{ "{:,}".format(v.num_words) }} words
+                </option>
+            {% endfor %}
+        </select>
 
         {# Group results radio buttons #}
 
-        <fieldset class="d-flex flex-wrap align-items-center gap-3 mt-2">
-            <legend class="input-labels mb-0 me-3">Group the results by:</legend>
-
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" id="{{ INITIALS }}" name="{{ GROUPING }}" value="{{ INITIALS }}"
-                    {{ "checked" if session[ARGS][GROUPING] == INITIALS else "" }}>
-                <label class="form-check-label" for="{{ INITIALS }}">Initial letters</label>
-            </div>
-
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" id="{{ LENGTH }}" name="{{ GROUPING }}" value="{{ LENGTH }}"
-                    {{ "checked" if session[ARGS][GROUPING] == LENGTH else "" }}>
-                <label class="form-check-label" for="{{ LENGTH }}">Word length</label>
-            </div>
-
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" id="{{ NO_GROUPING }}" name="{{ GROUPING }}" value="{{ NO_GROUPING }}"
-                    {{ "checked" if session[ARGS][GROUPING] == NO_GROUPING else "" }}>
-                <label class="form-check-label" for="{{ NO_GROUPING }}">No grouping</label>
+        <fieldset>
+            <legend>Group the results by:</legend>
+            <div class="radio-group">
+                <div>
+                    <input type="radio" id="initials" name="grouping" value="initials">
+                    <label for="initials">Initial letters</label>
+                </div>
+                <div>
+                    <input type="radio" id="length" name="grouping" value="length">
+                    <label for="length">Word length</label>
+                </div>
+                <div>
+                    <input type="radio" id="none" name="grouping" value="none">
+                    <label for="none">No grouping</label>
+                </div>
             </div>
         </fieldset>
 
