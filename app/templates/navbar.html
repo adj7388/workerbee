@@ -1,56 +1,16 @@
-<!-- Fixed navbar -->
-<nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top">
-    <div class="container-fluid">
+<nav class="navbar">
+  <div class="navbar-container">
+    <span class="navbar-brand">Bee Word Play</span>
 
-        <span style="font-weight:bold; font-size:larger">
-            Bee Word Play&nbsp;&nbsp;
-        </span>
+    <ul class="navbar-links">
+      <li><a class="{% if request.endpoint == 'find_words' %}active{% endif %}" href="{{ url_for('find_words') }}">Find Words</a></li>
+      <li><a class="{% if request.endpoint == 'show_summaries' %}active{% endif %}" href="{{ url_for('show_summaries') }}">Show Summaries</a></li>
+      <li><a class="{% if request.endpoint == 'help' %}active{% endif %}" href="{{ url_for('help') }}">Help</a></li>
+      <li><a class="{% if request.endpoint == 'about' %}active{% endif %}" href="{{ url_for('about') }}">About</a></li>
+    </ul>
 
-        <button
-            class="navbar-toggler" type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarMenu"
-            aria-controls="navbarMenu"
-            aria-expanded="false"
-            aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <div class="collapse navbar-collapse" id="navbarMenu">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-                <li class="nav-item">
-                    <a class="nav-link {% if request.endpoint == 'find_words' %}active{% endif %}" 
-                       href="{{ url_for('find_words') }}"
-                    >
-                        Find Words
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link {% if request.endpoint == 'show_summaries' %}active{% endif %}" 
-                       href="{{ url_for('show_summaries') }}"
-                    >
-                        Show Summaries
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link {% if request.endpoint == 'help' %}active{% endif %}" 
-                       href="{{ url_for('help') }}"
-                    >
-                       Help
-                    </a>
-                </li> 
-
-                <li class="nav-item">
-                    <a class="nav-link {% if request.endpoint == 'about' %}active{% endif %}" 
-                       href="{{ url_for('about') }}"
-                    >
-                        About
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
+    <button class="navbar-toggle" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      ☰
+    </button>
+  </div>
 </nav>

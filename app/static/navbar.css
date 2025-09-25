@@ -1,0 +1,92 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+  z-index: 1000;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem; /* space between brand and links */
+}
+
+/* Brand */
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.25rem;
+  white-space: nowrap;
+}
+
+/* Links */
+.navbar-links {
+  list-style: none;
+  margin: 0;
+  display: flex; /* horizontal on desktop */
+  gap: 1rem;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  padding: 0.25rem 0.75rem;        /* horizontal padding only */
+  color: #333;
+  display: flex;             /* makes link fill flex container height */
+  align-items: center;       /* vertically center text */
+  height: 100%;              /* fill parent height */
+  transition: background 0.2s;
+  border-radius: 4px;        /* optional rounded corners */
+}
+
+/* Hover: match body background */
+.navbar-links a:hover {
+  background-color: #faf3d4; /* matches body */
+}
+
+.navbar-links li {
+  display: inline-block; /* keeps items horizontally aligned in flex row */
+}
+
+.navbar-links a.active {
+  font-weight: bold;
+  background-color: #faf3d4; /* matches body */
+}
+
+
+/* Hamburger toggle (desktop hidden) */
+.navbar-toggle {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-wrap: wrap; /* allow links to drop below brand */
+  }
+
+  .navbar-toggle {
+    display: block;
+    margin-left: auto; /* push to right */
+  }
+
+  .navbar-links {
+    width: 100%;
+    flex-direction: column;
+    display: none; /* hidden by default */
+    margin-top: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .navbar-links.open {
+    display: flex; /* show when toggled */
+  }
+}

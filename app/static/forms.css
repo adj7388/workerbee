@@ -1,0 +1,87 @@
+/* --- Two-column form grid (desktop/tablet) --- */
+.my-form {
+  display: grid;
+  grid-template-columns: 12rem auto;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  justify-content: start;
+  max-width: 600px;
+  margin: 1rem 0;
+}
+
+/* Make labels immediately under <form> bold */
+.my-form > label {
+  font-weight: bold;
+}
+
+/* Right-align first column (labels, legends) */
+.my-form label,
+.my-form legend {
+  text-align: right;
+}
+
+/* Inputs, selects, buttons sizing */
+.my-form input,
+.my-form select,
+.my-form button {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Radio & checkbox groups */
+.my-form fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: contents; /* keep them aligned with grid */
+}
+
+.my-form fieldset legend {
+  grid-column: 1;
+  font-weight: bold;
+  align-self: center;
+}
+
+.my-form fieldset > div {
+  grid-column: 2;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap; /* wrap nicely on narrow screens */
+}
+
+/* Make the label + checkbox sit inline in the left column */
+/* Left column: label + checkbox inline, right-aligned, bold */
+.label-checkbox {
+  display: inline-flex;        /* label + checkbox inline */
+  align-items: center;         /* vertical center */
+  gap: 0.25rem;                /* space between label and checkbox */
+  justify-content: flex-end;   /* push content to the right edge of the column */
+}
+
+.label-checkbox label {
+  font-weight: bold;            /* bold text */
+  text-align: right;           /* right-align the label text */
+  white-space: nowrap;         /* prevent wrapping */
+}
+
+
+/* Responsive layout for narrow viewports */
+@media (max-width: 600px) {
+  .my-form {
+    grid-template-columns: 1fr;
+  }
+
+  .my-form label,
+  .my-form legend {
+    text-align: left;
+  }
+
+  .my-form fieldset legend {
+    margin-bottom: 0.5rem;
+  }
+
+  .my-form fieldset > div {
+    grid-column: 1;
+    justify-content: flex-start;
+  }
+}

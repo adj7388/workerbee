@@ -4,6 +4,8 @@
 
 {% block scripts %}
 
+{{ super() }}
+
 <script src="{{ url_for('static', filename='utils.js') }}"></script>
 <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
 <script src="{{ url_for('static', filename='customConfirm.js') }}"></script>
@@ -32,8 +34,12 @@
 
 {% endblock %}
 
-{% block content %}
+{% block head_styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}">
+{% endblock %}
 
+{% block content %}
+ 
     <div class="banner-container">
 
         {{ page_banner(text='Find Words') }}
