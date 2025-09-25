@@ -277,6 +277,22 @@ legend {
   flex-wrap: wrap; /* wrap nicely on narrow screens */
 }
 
+/* Make the label + checkbox sit inline in the left column */
+/* Left column: label + checkbox inline, right-aligned, bold */
+.label-checkbox {
+  display: inline-flex;        /* label + checkbox inline */
+  align-items: center;         /* vertical center */
+  gap: 0.25rem;                /* space between label and checkbox */
+  justify-content: flex-end;   /* push content to the right edge of the column */
+}
+
+.label-checkbox label {
+  font-weight: bold;            /* bold text */
+  text-align: right;           /* right-align the label text */
+  white-space: nowrap;         /* prevent wrapping */
+}
+
+
 /* Responsive layout for narrow viewports */
 @media (max-width: 600px) {
   .my-form {
@@ -296,19 +312,4 @@ legend {
     grid-column: 1;
     justify-content: flex-start;
   }
-}
-
-/* Make the label + checkbox sit inline in the left column */
-/* Left column: label + checkbox inline, right-aligned, bold */
-.label-checkbox {
-  display: inline-flex;        /* label + checkbox inline */
-  align-items: center;         /* vertical center */
-  gap: 0.25rem;                /* space between label and checkbox */
-  justify-content: flex-end;   /* push content to the right edge of the column */
-}
-
-.label-checkbox label {
-  font-weight: bold;            /* bold text */
-  text-align: right;           /* right-align the label text */
-  white-space: nowrap;         /* prevent wrapping */
 }

@@ -68,27 +68,27 @@
             <legend>Sort by number of words:</legend>
             <div class="radio-group">
                 <div>
-                    <label for="{{ ASCENDING }}">Ascending</label>
                     <input type="radio"
                         id="{{ ASCENDING }}" name="{{ SUMMARY_SORT }}"  value="{{ ASCENDING }}"
                         {{ "checked" if session[ARGS][SUMMARY_SORT] == ASCENDING else "" }}
                     >
+                    <label for="{{ ASCENDING }}">Ascending</label>
                 </div>
                 <div>
-                    <label for="{{ DESCENDING }}">Descending</label>
                     <input type="radio" 
                         id="{{ DESCENDING }}" name="{{ SUMMARY_SORT }}" value="{{ DESCENDING }}"
                         {{ "checked" if session[ARGS][SUMMARY_SORT] == DESCENDING else "" }}
                     >
+                    <label for="{{ DESCENDING }}">Descending</label>
                 </div>
             </div>
         </fieldset> 
 
-        {# Dictionary choice #}
-        {{ dictionary_dropdown() }}
-
         {# Show Words checkbox and and Word Sort radios S#}
         {{ show_words_option() }}
+
+        {# Dictionary choice #}
+        {{ dictionary_dropdown() }}
 
         {# Submit #}
         <div class="mt-3">
