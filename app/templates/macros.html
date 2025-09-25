@@ -50,35 +50,31 @@
 
 {% macro show_words_option() %}
 
-    <div class="d-flex flex-wrap align-items-center gap-3 mt-2">
-        <input class="form-check-input" type="checkbox"
-            id="{{ SHOW_WORDS}}" name="{{ SHOW_WORDS}}"
-            {{ "checked" if session[ARGS][SHOW_WORDS] == True else "" }}
-        >
-        <label for="{{ SHOW_WORDS }}" class="input-labels mb-0 me-3">Include words sorted:</label>
+<!-- Grid row for checkbox + radios -->
+  <!-- Left column: label + checkbox inline -->
+  <div class="label-checkbox">
+    <input type="checkbox"
+           id="{{ SHOW_WORDS }}" name="{{ SHOW_WORDS }}"
+           {{ "checked" if session[ARGS][SHOW_WORDS] == True else "" }}>
+    <label for="{{ SHOW_WORDS }}">Include words sorted:</label>
+  </div>
 
-        <!-- Fieldset only wraps the radio group -->
-        <fieldset id="wordSortFieldset" class="d-inline-flex flex-nowrap gap-2">
-            <div class="form-check form-check-inline">
-                <label class="form-check-label" for="{{ ALPHABETICALLY }}">
-                    Alphabetically
-                </label>
-                <input class="form-check-input" type="radio" 
-                    id="{{ ALPHABETICALLY }}" name="{{ WORD_SORT }}" value="{{ ALPHABETICALLY }}"
-                    {{ "checked" if session[ARGS][WORD_SORT] == ALPHABETICALLY else "" }}
-                >
-            </div>
-            <div class="form-check form-check-inline">
-                <label class="form-check-label" for="{{ BYWORDLENGTH }}">
-                    By word length
-                </label>
-                <input class="form-check-input" type="radio" 
-                    id="{{ BYWORDLENGTH }}" name="{{ WORD_SORT }}" value="{{ BYWORDLENGTH }}"
-                    {{ "checked" if session[ARGS][WORD_SORT] == BYWORDLENGTH else "" }}
-                >
-            </div>
-        </fieldset>
+  <!-- Right column: radio buttons inline -->
+  <div class="radio-group">
+    <div>
+      <input type="radio"
+             id="{{ ALPHABETICALLY }}" name="{{ WORD_SORT }}" value="{{ ALPHABETICALLY }}"
+             {{ "checked" if session[ARGS][WORD_SORT] == ALPHABETICALLY else "" }}>
+      <label for="{{ ALPHABETICALLY }}">Alphabetically</label>
     </div>
+    <div>
+      <input type="radio"
+             id="{{ BYWORDLENGTH }}" name="{{ WORD_SORT }}" value="{{ BYWORDLENGTH }}"
+             {{ "checked" if session[ARGS][WORD_SORT] == BYWORDLENGTH else "" }}>
+      <label for="{{ BYWORDLENGTH }}">By word length</label>
+    </div>
+  </div>
+
     
     <script src="{{ url_for('static', filename='showWords.js') }}"></script>
 

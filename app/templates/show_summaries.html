@@ -59,28 +59,24 @@
         |
     </div>
     
-    <form id="{{FORM_CONFIG.formId}}" method="GET">
+    <form id="{{FORM_CONFIG.formId}}" class="my-form" method="GET">
 
         {{ letter_inputs() }}
 
         {# Sort Summaries #}
-        <fieldset class="d-flex flex-wrap align-items-center gap-3 mt-2">
-            <legend class="input-labels mb-0 me-3">Sort by number of words:</legend>
-            <div class="d-inline-flex flex-nowrap gap-2">
-                <div class="form-check form-check-inline">
-                    <label class="form-check-label" for="{{ ASCENDING }}">
-                        Ascending
-                    </label>
-                    <input class="form-check-input" type="radio"
+        <fieldset>
+            <legend>Sort by number of words:</legend>
+            <div class="radio-group">
+                <div>
+                    <label for="{{ ASCENDING }}">Ascending</label>
+                    <input type="radio"
                         id="{{ ASCENDING }}" name="{{ SUMMARY_SORT }}"  value="{{ ASCENDING }}"
                         {{ "checked" if session[ARGS][SUMMARY_SORT] == ASCENDING else "" }}
                     >
                 </div>
-                <div class="form-check form-check-inline">
-                    <label class="form-check-label" for="{{ DESCENDING }}">
-                        Descending
-                    </label>
-                    <input class="form-check-input" type="radio" 
+                <div>
+                    <label for="{{ DESCENDING }}">Descending</label>
+                    <input type="radio" 
                         id="{{ DESCENDING }}" name="{{ SUMMARY_SORT }}" value="{{ DESCENDING }}"
                         {{ "checked" if session[ARGS][SUMMARY_SORT] == DESCENDING else "" }}
                     >
@@ -88,11 +84,11 @@
             </div>
         </fieldset> 
 
-        {# Show Words checkbox and and Word Sort radios S#}
-        {{ show_words_option() }}
-
         {# Dictionary choice #}
         {{ dictionary_dropdown() }}
+
+        {# Show Words checkbox and and Word Sort radios S#}
+        {{ show_words_option() }}
 
         {# Submit #}
         <div class="mt-3">
