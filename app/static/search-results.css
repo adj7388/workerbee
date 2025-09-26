@@ -7,11 +7,15 @@
 .flex-item { margin-right: 1rem; }
 
 .row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;   /* spacing between columns */
 }
-.col { flex: 1 1 100%; }
+
+.col {
+  flex: 1 1 auto;    /* grow/shrink equally */
+  min-width: 250px;  /* stack when narrower than this */
+}
 
 /* Responsive column sizes (Bootstrap-like breakpoints) */
 @media (min-width: 576px) {
