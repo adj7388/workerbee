@@ -1,0 +1,109 @@
+/* === Layout helpers === */
+.flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.flex-item { margin-right: 1rem; }
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.col { flex: 1 1 100%; }
+
+/* Responsive column sizes (Bootstrap-like breakpoints) */
+@media (min-width: 576px) {
+    .col-sm-6 { flex: 0 0 50%; }
+}
+@media (min-width: 768px) {
+    .col-md-4 { flex: 0 0 33.333%; }
+    .col-md-auto { flex: 0 0 auto; }
+}
+@media (min-width: 992px) {
+    .col-lg-3 { flex: 0 0 25%; }
+}
+
+/* === Typography === */
+.text-center { text-align: center; }
+.text-start  { text-align: left; }
+.text-right  { text-align: right; }
+.text-muted  { color: #6c757d; }
+
+.fst-italic  { font-style: italic; }
+.bold        { font-weight: bold; }
+.small       { font-size: 0.85rem; }
+.subtext     { font-size: 0.8rem; }
+
+/* === Spacing utilities === */
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 1rem; }
+.mt-4 { margin-top: 1.5rem; }
+
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: 0.25rem; }
+
+.ms-1 { margin-left: 0.25rem; }
+
+/* === Tables === */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: #f8f9fa; /* "bg-light" replacement */
+}
+
+.table th,
+.table td {
+    border: 1px solid #dee2e6;
+    padding: 0.5rem;
+}
+
+.table th {
+    background-color: #e9ecef;
+    text-align: left;
+}
+
+.align-middle { vertical-align: middle; }
+.bg-alice     { background-color: aliceblue; }
+
+/* === Horizontal rule === */
+.hr-strong {
+    border: none;
+    border-top: 2px solid black;
+}
+
+/* === Form elements === */
+.form-label { display: inline-block; margin-bottom: 0.25rem; }
+
+select, .form-select {
+    padding: 0.25em 0.5em;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+}
+
+.form-select-sm {
+    font-size: 0.8rem;
+    padding: 0.2em 0.4em;
+}
+
+.max-27ch { max-width: 27ch; }
+
+/* === Buttons === */
+.btn {
+    padding: 0.3em 0.6em;
+    border: none;
+    border-radius: 4px;
+    background-color: #0d6efd; /* Bootstrap’s primary blue */
+    color: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-sm {
+    font-size: 0.8rem;
+    padding: 0.2em 0.4em;
+}

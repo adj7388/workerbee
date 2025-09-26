@@ -1,68 +1,55 @@
 {% from "macros.html" import show_messages, decorate_word %}
 
-
 {% macro display_pangrams(pangrams) %}
     {% if pangrams %}
-
         {% for pangram in pangrams | sort(attribute='word') %}
             {{ decorate_word(beeword=pangram, pangram_class="", show_marker=False) }}
         {% endfor %}
-
     {% endif %}
 {% endmacro %}
-
 
 {% macro find_words_metadata(metadata) %}
     {% set all_pangrams = metadata.nonperfect_pangrams + metadata.perfect_pangrams %}
     {% set num_perfect_pangrams = metadata.perfect_pangrams | length %}
     {% set num_nonperfect_pangrams = metadata.nonperfect_pangrams | length %}
 
-    <div class="d-flex flex-wrap">
-        <div class="me-3">
+    <div class="flex-wrap">
+        <div class="flex-item">
             <strong>Total Words: </strong>{{metadata.num_words}}
         </div>
-        <div class="me-3">
+        <div class="flex-item">
             <strong>Found in: </strong>{{metadata.word_list}}
         </div>
-        <div class="me-3">
+        <div class="flex-item">
             <strong>
                 {{ num_perfect_pangrams }} 
                 perfect pangram{{ "s" if num_perfect_pangrams != 1 else ''}}{{PERFECT_MARKER}}
             </strong>            
-
             {% if num_perfect_pangrams != 0 %}
-
                 {{ display_pangrams(metadata.perfect_pangrams) }}
-
             {% else %}
-                {# no pangrams #}
                 &nbsp;&hyphen;&hyphen;&nbsp;
             {% endif %}
         </div>
-        <div class="me-3">
+        <div class="flex-item">
             <strong>
                 {{ num_nonperfect_pangrams }}
                     other pangram{{ "s" if num_nonperfect_pangrams != 1 else ''}}{{PANGRAM_MARKER}}
             </strong>
-
             {% if num_nonperfect_pangrams != 0 %}
-
                 {{ display_pangrams(metadata.nonperfect_pangrams) }}
-
             {% else %}
-                {# no pangrams #}
                 &nbsp;&hyphen;&hyphen;&nbsp;
             {% endif %}
         </div>
-        <div class="me-3">
-            <strong>Bingo: </strong>{{ "Yes" if metadata.bingo == True else "No" }}
+        <div class="flex-item">
+            <strong>Bingo: </strong>{{ "Yes" if metadata.bingo else "No" }}
         </div>
-        <div class="me-3">
+        <div class="flex-item">
             <strong>Words linked to:</strong> {{ metadata.dictionary }}
         </div>
     </div>
 {% endmacro %}
-
 
 {% macro heading_row(level, heading) %}
     {% if level == 0 %}
@@ -90,7 +77,6 @@
     </tr>
 {% endmacro %}
 
-
 {% macro decorate_heading(heading, grouping) %}
     {% if grouping == INITIALS %}
         {{ heading | upper }}
@@ -98,7 +84,6 @@
         {{ heading }}<span class="wordlength">-letter words</span>
     {% endif %}
 {% endmacro %}
-
 
 {% macro word_row(beeword) %}
     <tr>
@@ -109,35 +94,18 @@
     </tr>
 {% endmacro %}
 
-
 {% macro show_words_grouped(found_words, grouping) %}
-    {# top_level* and second_level* will be INITIALS or LENGTH, or vice versa #}
     {% set top_level_group, second_level_group = grouping[0], grouping[1] %}
-
-    <div class="row g-0">
-
+    <div class="row">
         {% for toplevel_heading, toplevel_values in found_words.nested.items() %}
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="col">
                 <table>
-                    {{ heading_row(
-                            level=0,
-                            heading=decorate_heading(toplevel_heading, top_level_group)
-                        )
-                    }}
-
-                    {%for second_level_heading, beewords in toplevel_values.items() %}
-                        {{ heading_row(
-                                level=1,
-                                heading=decorate_heading(second_level_heading, second_level_group)
-                            )
-                        }}
-
-                        {%for beeword in beewords %}
-
+                    {{ heading_row(level=0, heading=decorate_heading(toplevel_heading, top_level_group)) }}
+                    {% for second_level_heading, beewords in toplevel_values.items() %}
+                        {{ heading_row(level=1, heading=decorate_heading(second_level_heading, second_level_group)) }}
+                        {% for beeword in beewords %}
                             {{ word_row(beeword=beeword) }}
-
                         {% endfor %}
-
                     {% endfor %}
                 </table>
             </div>
@@ -145,43 +113,36 @@
     </div>
 {% endmacro %}
 
-
 {% macro getfile_dropdown() %}
 <div class="mt-2">
     <form action="{{ url_for('get_file') }}" method="GET">
         <div class="row g-2 align-items-center">
-            <div class="col-12 col-md-auto text-center text-md-start">
+            <div class="col text-center text-start">
                 <label for="{{FILE_TYPE}}" class="form-label mb-0 fst-italic">
                     Export words as:
                 </label>
             </div>
-            <div class="col-12 col-md">
-                <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
-                    <select class="form-select form-select-sm" 
-                            name="{{FILE_TYPE}}"
-                            style="max-width: 27ch;">
-                        <option value="{{ TXT }}" 
-                            {{ "selected" if session[ARGS][FILE_TYPE] == TXT else "" }}>
+            <div class="col">
+                <div class="flex-wrap justify-start">
+                    <select name="{{FILE_TYPE}}">
+                        <option value="{{ TXT }}" {{ "selected" if session[ARGS][FILE_TYPE] == TXT else "" }}>
                             text (words only)
                         </option>
-                        <option value="{{ WORD_URL_CSV }}" 
-                            {{ "selected" if session[ARGS][FILE_TYPE] == WORD_URL_CSV else "" }}>
+                        <option value="{{ WORD_URL_CSV }}" {{ "selected" if session[ARGS][FILE_TYPE] == WORD_URL_CSV else "" }}>
                             csv (words, urls only)
                         </option>
-                        <option value="{{ CSV }}" 
-                            {{ "selected" if session[ARGS][FILE_TYPE] == CSV }}>
+                        <option value="{{ CSV }}" {{ "selected" if session[ARGS][FILE_TYPE] == CSV }}>
                             csv (all word data)
                         </option>
-                        <option value="{{ JSON }}" 
-                            {{ "selected" if session[ARGS][FILE_TYPE] == JSON }}>
+                        <option value="{{ JSON }}" {{ "selected" if session[ARGS][FILE_TYPE] == JSON }}>
                             json (data and metadata)
                         </option>
                     </select>
-                    <input class="btn btn-primary btn-sm" type="submit" value="Download">
+                    <input class="btn btn-sm" type="submit" value="Download">
                 </div>
             </div>
         </div>
-        <div class="mt-1 ms-1 text-center text-md-start">
+        <div class="mt-1 ms-1 text-center text-start">
             <span class="subtext small text-muted">
                 Check Downloads folder. Page does not refresh.
             </span>

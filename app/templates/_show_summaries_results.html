@@ -15,40 +15,32 @@
             ({{ summary.metadata.perfect_pangrams | length }})
 
             {% for pangram in summary.metadata.perfect_pangrams %}
-
                 {{ decorate_word(pangram, show_marker=False, pangram_class="") }}
-            
             {% endfor %}
         </td>
         <td class="align-middle">
-
             ({{ summary.metadata.nonperfect_pangrams | length }})
 
             {% for pangram in summary.metadata.nonperfect_pangrams %}
-
                 {{ decorate_word(pangram, show_marker=False, pangram_class="") }}
-
             {% endfor %}
         </td>
     </tr>
     
     <tr data-words>
-        <td style="font-size: smaller; text-align: right; background-color: aliceblue;">
+        <td class="small-text text-right bg-alice">
             Words
         </td>
-        <td style="background-color: aliceblue; font-size: smaller;" colspan="4">
-
+        <td class="bg-alice small-text" colspan="4">
             {% for key in summary.beewords.keys() | sort %}
                 {% set key_suffix = "&nbsp;letters" if session[ARGS][WORD_SORT] == BYWORDLENGTH else "" %}
 
-                <span style="font-weight: bold;">
+                <span class="bold">
                     [{{ key | upper }}{{ key_suffix | safe }}]
                 </span>
 
                 {% for beeword in summary.beewords[key] %}
-
                     {{ decorate_word(beeword) }}
-    
                 {% endfor %}
             {% endfor %}
         </td>
@@ -57,14 +49,11 @@
 
 {######## Main template ########}
 {% with messages = get_flashed_messages() %}
-
     {% if messages %}
-
         {{ show_messages(messages) }}
-
     {% else %}
         <div class="mt-3">
-            <table class="table table-bordered bg-light">
+            <table class="table">
                 <tr>
                     <th>Word List</th>
                     <th>Total Words</th>
@@ -74,9 +63,7 @@
                 </tr>
 
                 {% for summary in summaries %}
-
                     {{ summary_row(summary=summary) }}
-
                 {% endfor %}
 
             </table>
