@@ -69,51 +69,23 @@ h1 {
 }
 
 h2 {
-    font-size: larger;
-    font-weight: bold;
-}
-
-h3 {
     font-size: large;
     font-weight: bold;
 }
 
+h3 {
+    font-size: medium;
+    font-weight: bold;
+}
+
 .bulleted::before {
-  content: "– ";
+  content: "–";
   margin-right: 0.5em;
 }
 
 h4 {
     font-size: medium;
     font-weight: bold;
-}
-
-p {
-  font-family: 'Lato', sans-serif;
-}
-
-.group0 {
-    font-weight: bold;
-}
-
-.group1 {
-    font-size: medium;
-    font-style: italic;
-}
-
-.subtext {
-    font-size: 0.8rem;
-    color: #6c757d;
-    white-space: nowrap;
-    margin-left: 0.25rem;
-}
-
-.pangram {
-    background-color: #faf3d4;
-}
-
-.bg-light {
-  background-color: #f8f9fa;
 }
 
 .unstyled-link {
@@ -127,10 +99,6 @@ p {
 
 .indent {
     margin-left: 20px;
-}
-
-.hide-words {
-    display: none;
 }
 
 .updatePopup {
@@ -153,21 +121,6 @@ p {
 .updatePopup.show {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
-}
-
-fieldset {
-  border: none;
-  margin: 0;
-  padding: 0;
-  min-width: 0;
-}
-
-legend {
-  font: inherit;
-  margin: 0;
-  padding: 0;
-  display: inline-block;
-  width: auto;
 }
 
 .banner {
@@ -197,70 +150,3 @@ legend {
   transform: scale(0.75) translateY(4px);
   margin: 0;
 }
-
-.results {
-    padding: 1em;
-    border-top: 1px solid #333;    
-}
-
-.history-button {
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-right: 0.25rem;
-  padding-left: 0.25rem;
-  border-width: 1px;
-  border-radius: 5px;
-}
-
-.history-button.right {
-  margin-right: 0.25rem;
-}
-
-.history-button.left {
-  margin-left: 0.25rem;
-}
-
-/* Base for confirm dialog */
-#custom-confirm {
-  display: none; /* <-- start hidden */
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.25);
-  z-index: 1000;
-}
-
-#custom-confirm.show {
-  display: flex;
-}
-
-/* The dialog box */
-#custom-confirm .box {
-  background-color: #fff9e6;
-  border: 3px solid #f0e1b8;
-  padding: 1rem 1.5rem;
-  border-radius: 10px;
-  font-size: 1rem;
-  box-shadow: 0 12px 25px rgba(0,0,0,0.3);
-  text-align: center;
-  min-width: 250px;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-#custom-confirm button {
-  margin: 0.5rem;
-  padding: 0.3rem 0.8rem;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  background-color: #f8f8f8;
-  transition: background-color 0.2s ease;
-}
-
-#custom-confirm button:hover {
-  background-color: #eee;
-}
-

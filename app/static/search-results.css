@@ -1,3 +1,36 @@
+.results {
+    padding: 1em;
+    border-top: 1px solid #333;    
+}
+
+.hide-words {
+    display: none;
+}
+
+.group0 {
+    font-weight: bold;
+}
+
+.group1 {
+    font-size: medium;
+    font-style: italic;
+}
+
+.subtext {
+    font-size: 0.8rem;
+    color: #6c757d;
+    white-space: nowrap;
+    margin-left: 0.25rem;
+}
+
+.pangram {
+    background-color: #faf3d4;
+}
+
+.bg-light {
+  background-color: #f8f9fa;
+}
+
 .flex-wrap {
     display: flex;
     flex-wrap: wrap;
@@ -81,6 +114,7 @@
 
 .text-right  { text-align: right; }
 .text-muted  { color: #6c757d; }
+.text-top    { vertical-align: top; }
 
 .fst-italic  { font-style: italic; }
 .bold        { font-weight: bold; }

@@ -9,18 +9,15 @@
   margin: 1rem 0;
 }
 
-/* Make labels immediately under <form> bold */
 .my-form > label {
   font-weight: bold;
 }
 
-/* Right-align first column (labels, legends) */
 .my-form label,
 .my-form legend {
   text-align: right;
 }
 
-/* Inputs, selects, buttons sizing */
 .my-form input,
 .my-form select,
 .my-form button {
@@ -28,12 +25,11 @@
   box-sizing: border-box;
 }
 
-/* Radio & checkbox groups */
 .my-form fieldset {
   border: none;
   padding: 0;
   margin: 0;
-  display: contents; /* keep them aligned with grid */
+  display: contents;
 }
 
 .my-form fieldset legend {
@@ -46,24 +42,82 @@
   grid-column: 2;
   display: flex;
   gap: 1rem;
-  flex-wrap: wrap; /* wrap nicely on narrow screens */
+  flex-wrap: wrap;
 }
 
-/* Make the label + checkbox sit inline in the left column */
-/* Left column: label + checkbox inline, right-aligned, bold */
 .label-checkbox {
-  display: inline-flex;        /* label + checkbox inline */
-  align-items: center;         /* vertical center */
-  gap: 0.25rem;                /* space between label and checkbox */
-  justify-content: flex-end;   /* push content to the right edge of the column */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  justify-content: flex-end;
 }
 
 .label-checkbox label {
-  font-weight: bold;            /* bold text */
-  text-align: right;           /* right-align the label text */
-  white-space: nowrap;         /* prevent wrapping */
+  font-weight: bold;
+  text-align: right;
+  white-space: nowrap;
 }
 
+.history-button {
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-right: 0.25rem;
+  padding-left: 0.25rem;
+  border-width: 1px;
+  border-radius: 5px;
+}
+
+.history-button.right {
+  margin-right: 0.25rem;
+}
+
+.history-button.left {
+  margin-left: 0.25rem;
+}
+
+/* Base for confirm dialog */
+#custom-confirm {
+  display: none; /* <-- start hidden */
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+}
+
+#custom-confirm.show {
+  display: flex;
+}
+
+/* The dialog box */
+#custom-confirm .box {
+  background-color: #fff9e6;
+  border: 3px solid #f0e1b8;
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+  text-align: center;
+  min-width: 250px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#custom-confirm button {
+  margin: 0.5rem;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+  transition: background-color 0.2s ease;
+}
+
+#custom-confirm button:hover {
+  background-color: #eee;
+}
 
 /* Responsive layout for narrow viewports */
 @media (max-width: 600px) {
