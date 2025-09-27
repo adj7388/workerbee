@@ -75,16 +75,19 @@
             <legend>Group the results by:</legend>
             <div class="radio-group">
                 <div>
-                    <input type="radio" id="initials" name="grouping" value="initials">
-                    <label for="initials">Initial letters</label>
+                    <input type="radio" id="{{ INITIALS }}" name="{{ GROUPING }}" value="{{ INITIALS }}"
+                        {{ "checked" if session[ARGS][GROUPING] == INITIALS else "" }}>
+                    <label for="{{ INITIALS }}">Initial letters</label>
                 </div>
                 <div>
-                    <input type="radio" id="length" name="grouping" value="length">
-                    <label for="length">Word length</label>
+                    <input type="radio" id="{{ LENGTH }}" name="{{ GROUPING }}" value="{{ LENGTH }}"
+                        {{ "checked" if session[ARGS][GROUPING] == LENGTH else "" }}>
+                    <label for="{{ LENGTH }}">Word length</label>
                 </div>
                 <div>
-                    <input type="radio" id="none" name="grouping" value="none">
-                    <label for="none">No grouping</label>
+                    <input type="radio" id="{{ NO_GROUPING }}" name="{{ GROUPING }}" value="{{ NO_GROUPING }}"
+                        {{ "checked" if session[ARGS][GROUPING] == NO_GROUPING else "" }}>
+                    <label for="{{ NO_GROUPING }}">No {{ GROUPING }}</label>
                 </div>
             </div>
         </fieldset>
