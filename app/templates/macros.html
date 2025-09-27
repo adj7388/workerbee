@@ -23,17 +23,21 @@
 {% macro letter_inputs() %}
     {# text inputs to enter required letter and other allowed letters #}
     <label for="{{ REQUIRED_LETTER }}">Required letter:</label>
-    <input type="text" id="{{ REQUIRED_LETTER }}" 
-        name="{{ REQUIRED_LETTER }}" value="{{ session[ARGS][REQUIRED_LETTER] }}"
-        style="width: 5ch"
-    >
-    <!-- <span class="subtext">&nbsp;&nbsp;Yellow letter in the middle of the Spelling Bee page</span> -->
+    <div>
+        <input type="text" id="{{ REQUIRED_LETTER }}" 
+            name="{{ REQUIRED_LETTER }}" value="{{ session[ARGS][REQUIRED_LETTER] }}"
+            style="width: 5ch"
+        >
+        <span class="subtext">Spelling Bee's yellow letter in the middle</span>
+    </div>
     <label for="{{ ALLOWED_LETTERS }}">Other letters:</label>
-    <input type="text" id="{{ ALLOWED_LETTERS }}" 
-        name="{{ ALLOWED_LETTERS }}" value="{{ session[ARGS][ALLOWED_LETTERS] }}"
-        style="width: 10ch"
-    >
-    <!-- <span class="subtext">&nbsp;&nbsp;Letters surrounding the required letter</span> -->
+    <div>
+        <input type="text" id="{{ ALLOWED_LETTERS }}" 
+            name="{{ ALLOWED_LETTERS }}" value="{{ session[ARGS][ALLOWED_LETTERS] }}"
+            style="width: 10ch"
+        >
+        <span class="subtext">Letters surrounding the yellow letter</span>
+    </div>
 
     <script>
         function clean_letter_inputs() {
