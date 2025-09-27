@@ -1,18 +1,43 @@
-/* Box-sizing reset */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 html {
     scroll-behavior: smooth;
 }
 
-.bg-light {
-  background-color: #f8f9fa;
+/* 1. More predictable box-sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 2. Reduce margins on text-y elements */
+body, h1, h2, h3, h4, h5, h6,
+p, figure, blockquote, dl, dd {
+  margin: 0.5rem;
+}
+
+/* 3. Remove list padding/margin */
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none; /* optional */
+}
+
+/* 4. Set a clean baseline for body text */
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* 5. Images and media scale nicely */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 6. Inputs/buttons inherit font settings but keep usable padding */
+input, button, textarea, select {
+  font: inherit;
 }
 
 body {
@@ -20,14 +45,27 @@ body {
     background-color: #faf3d4;
     padding-left: 3em;
     padding-right: 3em;
+    font-family:
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      "Helvetica Neue",
+      Arial,
+      sans-serif;
 }
 
+/* Serif system font stack for headings */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', serif;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    Times,
+    serif;
 }
 
 h1 {
-    font-size: x-large;
+    font-size: larger;
 }
 
 h2 {
@@ -72,6 +110,10 @@ p {
 
 .pangram {
     background-color: #faf3d4;
+}
+
+.bg-light {
+  background-color: #f8f9fa;
 }
 
 .unstyled-link {

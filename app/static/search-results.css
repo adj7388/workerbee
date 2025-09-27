@@ -1,7 +1,7 @@
 .flex-wrap {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 0.25rem;
 }
 
 .flex-item {
@@ -10,11 +10,10 @@
 
 .form-label { 
     display: inline-block;
-    margin-bottom: 0.25rem;
-    padding-top: 0.25rem;
 }
 
 .form-row {
+    margin-top: 1rem;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
