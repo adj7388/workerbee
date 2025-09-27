@@ -11,6 +11,10 @@ html {
     scroll-behavior: smooth;
 }
 
+.bg-light {
+  background-color: #f8f9fa;
+}
+
 body {
     padding-top: 70px; /* Prevent content from being hidden under the navbar */
     background-color: #faf3d4;
@@ -90,10 +94,6 @@ p {
 
 .hide-words {
     display: none;
-}
-
-.input-labels {
-    font-weight: bold;
 }
 
 .updatePopup {
