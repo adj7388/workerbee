@@ -55,17 +55,12 @@ p {
 }
 
 .group0 {
-    font-size: large;
     font-weight: bold;
 }
 
 .group1 {
     font-size: medium;
     font-style: italic;
-}
-
-.wordlength {
-    font-size: smaller;
 }
 
 .subtext {
