@@ -1,32 +1,102 @@
-/* === Layout helpers === */
+/* === Form elements === */
+.form-label { 
+    display: inline-block;
+    margin-bottom: 0.25rem;
+}
+
+.form-controls {
+    display: flex;
+    gap: 0.25rem;       /* spacing between select and button */
+    align-items: center;
+    flex-wrap: wrap;     /* wrap on narrow screens */
+}
+
+.form-controls select {
+    min-width: 150px;    /* small enough to fit content */
+    max-width: 250px;    /* prevent it from stretching too much */
+    width: auto;
+    padding: 0.25em 0.5em;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+}
+
+select, .form-select {
+    padding: 0.25em 0.5em;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+}
+
+.form-select-sm {
+    font-size: 0.8rem;
+    padding: 0.2em 0.4em;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;  /* 👈 pack items together */
+    gap: 0.5rem;                  /* controlled spacing */
+}
+
+.btn {
+    padding: 0.3em 0.6em;
+    border: none;
+    border-radius: 4px;
+    background-color: #0d6efd;
+    color: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-sm { font-size: 0.8rem; padding: 0.2em 0.4em; }
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.1rem;
+  align-items: flex-start;
+}
+
+.col {
+  flex: 0 0 auto;           /* hug content, don't stretch */
+  min-width: 250px;         /* wrap at this point */
+  width: auto;              /* no artificial growth */
+}
+
+.row > .col {
+  flex: 0 0 auto;        /* don't grow, don't shrink */
+  width: fit-content;    /* shrinkwrap to content */
+  min-width: 0;          /* allow shrink below default 'auto' */
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.row > .col > table {
+  width: auto;
+  table-layout: auto;
+  margin: 1rem;
+}
+
+
 .flex-wrap {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
 }
-.flex-item { margin-right: 1rem; }
 
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;   /* spacing between columns */
+.flex-item {
+    margin-right: 1rem;
 }
 
-.col {
-  flex: 1 1 auto;    /* grow/shrink equally */
-  min-width: 250px;  /* stack when narrower than this */
-}
-
-/* Responsive column sizes (Bootstrap-like breakpoints) */
-@media (min-width: 576px) {
-    .col-sm-6 { flex: 0 0 50%; }
-}
-@media (min-width: 768px) {
-    .col-md-4 { flex: 0 0 33.333%; }
-    .col-md-auto { flex: 0 0 auto; }
-}
-@media (min-width: 992px) {
-    .col-lg-3 { flex: 0 0 25%; }
+.flex-row {
+    display: flex;
+    flex-wrap: wrap;        /* allows wrapping on small screens */
+    gap: 1rem;              /* horizontal + vertical spacing */
+    align-items: center;    /* vertical alignment */
 }
 
 /* === Typography === */
@@ -73,41 +143,26 @@
 .align-middle { vertical-align: middle; }
 .bg-alice     { background-color: aliceblue; }
 
-/* === Horizontal rule === */
 .hr-strong {
     border: none;
     border-top: 2px solid black;
 }
 
-/* === Form elements === */
-.form-label { display: inline-block; margin-bottom: 0.25rem; }
-
-select, .form-select {
-    padding: 0.25em 0.5em;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 0.9rem;
+@media (max-width: 480px) {
+    .subtext {
+        white-space: normal;
+        margin-left: 0;
+        margin-top: 0.25rem;
+    }
+}
+@media (min-width: 576px) {
+    .col-sm-6 { flex: 0 0 50%; }
+}
+@media (min-width: 768px) {
+    .col-md-4 { flex: 0 0 33.333%; }
+    .col-md-auto { flex: 0 0 auto; }
+}
+@media (min-width: 992px) {
+    .col-lg-3 { flex: 0 0 25%; }
 }
 
-.form-select-sm {
-    font-size: 0.8rem;
-    padding: 0.2em 0.4em;
-}
-
-.max-27ch { max-width: 27ch; }
-
-/* === Buttons === */
-.btn {
-    padding: 0.3em 0.6em;
-    border: none;
-    border-radius: 4px;
-    background-color: #0d6efd; /* Bootstrap’s primary blue */
-    color: white;
-    cursor: pointer;
-    font-size: 0.9rem;
-}
-
-.btn-sm {
-    font-size: 0.8rem;
-    padding: 0.2em 0.4em;
-}

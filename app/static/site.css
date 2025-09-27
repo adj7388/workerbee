@@ -65,7 +65,10 @@ p {
 }
 
 .subtext {
-    font-size: smaller;
+    font-size: 0.8rem;
+    color: #6c757d;
+    white-space: nowrap;
+    margin-left: 0.25rem;
 }
 
 .pangram {
