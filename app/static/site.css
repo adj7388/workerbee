@@ -80,7 +80,7 @@ h3 {
 
 .bulleted::before {
   content: "–";
-  margin-right: 0.5em;
+  margin-right: 0.25em;
 }
 
 h4 {
@@ -123,14 +123,11 @@ h4 {
     transform: translate(-50%, -50%) scale(1);
 }
 
-.banner {
-  margin: 0;
-}
-
 .banner-container {
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .banner-container label,

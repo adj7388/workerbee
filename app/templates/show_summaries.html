@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, show_words_option, toolbar %}
+{% from "macros.html" import page_banner, dictionary_dropdown, letter_inputs, toolbar %}
 
 {% block scripts %}
 
@@ -8,7 +8,7 @@
 
 <script src="{{ url_for('static', filename='utils.js') }}"></script>
 <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
-<script src="{{ url_for('static', filename='customConfirm.js') }}"></script>
+<script src="{{ url_for('static', filename='confirmDialog.js') }}"></script>
 <script src="{{ url_for('static', filename='showWords.js') }}"></script>
 
 <script>
@@ -54,13 +54,13 @@
     </div>
 
     <div>
-        {# display all word lists in a continuous line #}
-        <span style="font-weight: bold; font-size: smaller">
+        <span class="word-list-label">
             Word Lists (number of words):
         </span>
+        {# display all word lists in a continuous line #}
         {% for word_list in word_lists.values() | sort(attribute="num_words", reverse=True) %}
             |&nbsp;
-            <span style="font-size: x-small">
+            <span class="word-list-item">
                 {{ word_list.name }}
                 {# show number of words in the word list #}
                 ({{ "{:,}".format(word_list.num_words) }})
@@ -69,13 +69,12 @@
         |
     </div>
     
-    {# my-form is grid with two columns #}
-    <form id="{{FORM_CONFIG.formId}}" class="my-form" method="GET">
+    <form id="{{FORM_CONFIG.formId}}" class="two-col-grid" method="GET">
 
         {{ letter_inputs() }}
 
         {# Sort Summaries #}
-        {# fieldset w/ display: contents, so <legend> in left col, <div> in right col #}
+        {# fieldset has 'display: contents', so child <legend> and <div> display #}
         <fieldset>
             <legend>Sort by number of words:</legend>
             <div class="radio-group">

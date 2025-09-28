@@ -1,6 +1,6 @@
-function customConfirm(message) {
+function confirmDialog(message) {
   return new Promise((resolve) => {
-    const modal = document.getElementById("custom-confirm");
+    const modal = document.getElementById("confirm-dialog");
     const messageEl = document.getElementById("confirm-message");
     const yesBtn = document.getElementById("confirm-yes");
     const noBtn = document.getElementById("confirm-no");
@@ -31,5 +31,5 @@ function customConfirm(message) {
 
 // Convenience wrapper
 async function myConfirm(message) {
-  return await customConfirm(message);
+  return await confirmDialog(message);
 }

@@ -8,7 +8,7 @@
 
 <script src="{{ url_for('static', filename='utils.js') }}"></script>
 <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
-<script src="{{ url_for('static', filename='customConfirm.js') }}"></script>
+<script src="{{ url_for('static', filename='confirmDialog.js') }}"></script>
 
 <script>
     // *_CONFIG passed in context from view function. Parse w/ backticks to silence js linter
@@ -48,12 +48,12 @@
 
     </div>
 
-    <form id="{{ FORM_CONFIG.formId }}" class="my-form" method="GET">
+    <form id="{{ FORM_CONFIG.formId }}" class="two-col-grid" method="GET">
 
         {{ letter_inputs() }}
 
         {# Word List dropdown #}
-        {# form w/ two-col grid, so <label> in left col, <select> in right col #}
+        {# <label> in left col, <select> in right col #}
         <label for="{{ WORD_LIST }}">Use word list:</label>
         <select id="{{ WORD_LIST }}" name="{{ WORD_LIST }}">
 
@@ -71,7 +71,7 @@
         </select>
 
         {# Group results radio buttons #}
-        {# fieldset w/ display: contents, so <legend> in left col, <div> in right col #}
+        {# fieldset has display: contents, so <legend> in left col, <div> in right col #}
         <fieldset>
             <legend>Group the results by:</legend>
             <div class="radio-group">
