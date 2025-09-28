@@ -6,9 +6,9 @@
 
 {{ super() }}
 
-<script src="{{ url_for('static', filename='utils.js') }}"></script>
-<script src="{{ url_for('static', filename='formHandler.js') }}"></script>
-<script src="{{ url_for('static', filename='confirmDialog.js') }}"></script>
+<script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+<script src="{{ url_for('static', filename='js/formHandler.js') }}"></script>
+<script src="{{ url_for('static', filename='js/confirmDialog.js') }}"></script>
 
 <script>
     // *_CONFIG passed in context from view function. Parse w/ backticks to silence js linter
@@ -35,9 +35,9 @@
 {% endblock %}
 
 {% block head_styles %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='search-results.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='confirm-dialog.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search-results.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/confirm-dialog.css') }}">
 {% endblock %}
 
 {% block content %}
