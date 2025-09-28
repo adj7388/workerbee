@@ -22,6 +22,7 @@
 
 {% macro letter_inputs() %}
     {# text inputs to enter required letter and other allowed letters #}
+    {# inserted into form w/ display: grid; so <label> left col and <div> right col #}
     <label for="{{ REQUIRED_LETTER }}">Required letter:</label>
     <div>
         <input type="text" id="{{ REQUIRED_LETTER }}" 
@@ -52,41 +53,9 @@
 {% endmacro %}
 
 
-{% macro show_words_option() %}
-
-<!-- Grid row for checkbox + radios -->
-  <!-- Left column: label + checkbox inline -->
-  <div class="label-checkbox">
-    <input type="checkbox"
-           id="{{ SHOW_WORDS }}" name="{{ SHOW_WORDS }}"
-           {{ "checked" if session[ARGS][SHOW_WORDS] == True else "" }}>
-    <label for="{{ SHOW_WORDS }}">Include words sorted:</label>
-  </div>
-
-  <!-- Right column: radio buttons inline -->
-  <div style="display: flex; gap: 0.5rem 1rem;">
-    <div>
-      <input type="radio"
-             id="{{ ALPHABETICALLY }}" name="{{ WORD_SORT }}" value="{{ ALPHABETICALLY }}"
-             {{ "checked" if session[ARGS][WORD_SORT] == ALPHABETICALLY else "" }}>
-      <label for="{{ ALPHABETICALLY }}">Alphabetically</label>
-    </div>
-    <div>
-      <input type="radio"
-             id="{{ BYWORDLENGTH }}" name="{{ WORD_SORT }}" value="{{ BYWORDLENGTH }}"
-             {{ "checked" if session[ARGS][WORD_SORT] == BYWORDLENGTH else "" }}>
-      <label for="{{ BYWORDLENGTH }}">By word length</label>
-    </div>
-  </div>
-
-    
-    <script src="{{ url_for('static', filename='showWords.js') }}"></script>
-
-{% endmacro %}
-
-
 {% macro dictionary_dropdown() %}
 
+    {# inserted into form w/ display: grid; so <label> left col, <select> right col #}
     <label id="{{ DICTIONARY }}Label" for="{{ DICTIONARY }}">Link words to:</label>    
     <select id="{{ DICTIONARY }}" name="{{ DICTIONARY }}">
 

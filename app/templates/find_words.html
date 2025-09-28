@@ -11,7 +11,7 @@
 <script src="{{ url_for('static', filename='customConfirm.js') }}"></script>
 
 <script>
-    // *_CONFIG passed in context from view function. Backticks silence the js linter
+    // *_CONFIG passed in context from view function. Parse w/ backticks to silence js linter
     const formConfig = JSON.parse(`{{ FORM_CONFIG | tojson | safe }}`);
     const displayChangesConfig = JSON.parse(`{{ DISPLAY_CHANGES_CONFIG | tojson | safe }}`);
     const historyConfig = JSON.parse(`{{ HISTORY_CONFIG | tojson | safe }}`);
@@ -53,6 +53,7 @@
         {{ letter_inputs() }}
 
         {# Word List dropdown #}
+        {# form w/ two-col grid, so <label> in left col, <select> in right col #}
         <label for="{{ WORD_LIST }}">Use word list:</label>
         <select id="{{ WORD_LIST }}" name="{{ WORD_LIST }}">
 
@@ -70,7 +71,7 @@
         </select>
 
         {# Group results radio buttons #}
-
+        {# fieldset w/ display: contents, so <legend> in left col, <div> in right col #}
         <fieldset>
             <legend>Group the results by:</legend>
             <div class="radio-group">
@@ -95,7 +96,6 @@
         {# Dictionary choice #}
         {{ dictionary_dropdown() }}
 
-        {# Submit #}
         <div class="mt-3">
             <input id="submitButton" type="submit" value="{{FORM_CONFIG.buttonLabels.first}}">
         </div>

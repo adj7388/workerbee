@@ -9,9 +9,10 @@
 <script src="{{ url_for('static', filename='utils.js') }}"></script>
 <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
 <script src="{{ url_for('static', filename='customConfirm.js') }}"></script>
+<script src="{{ url_for('static', filename='showWords.js') }}"></script>
 
 <script>
-    // *_CONFIG passed in context from view function. Backticks silence the js linter
+    // *_CONFIG passed in context from view function. Parse w/ backticks to silence js linter
     const formConfig = JSON.parse(`{{ FORM_CONFIG | tojson | safe }}`);
     const displayChangesConfig = JSON.parse(`{{ DISPLAY_CHANGES_CONFIG | tojson | safe }}`);
     const historyConfig = JSON.parse(`{{ HISTORY_CONFIG | tojson | safe }}`);
@@ -68,11 +69,13 @@
         |
     </div>
     
+    {# my-form is grid with two columns #}
     <form id="{{FORM_CONFIG.formId}}" class="my-form" method="GET">
 
         {{ letter_inputs() }}
 
         {# Sort Summaries #}
+        {# fieldset w/ display: contents, so <legend> in left col, <div> in right col #}
         <fieldset>
             <legend>Sort by number of words:</legend>
             <div class="radio-group">
@@ -93,13 +96,32 @@
             </div>
         </fieldset> 
 
-        {# Show Words checkbox and and Word Sort radios S#}
-        {{ show_words_option() }}
+        {# In form grid, left column checkbox with label #}
+        <div class="label-checkbox">
+            <input type="checkbox"
+                id="{{ SHOW_WORDS }}" name="{{ SHOW_WORDS }}"
+                {{ "checked" if session[ARGS][SHOW_WORDS] == True else "" }}>
+            <label for="{{ SHOW_WORDS }}">Include words sorted:</label>
+        </div>
 
-        {# Dictionary choice #}
+        {# In form grid, right column radio buttons inline #}
+        <div style="display: flex; gap: 0.5rem 1rem;">
+            <div>
+            <input type="radio"
+                    id="{{ ALPHABETICALLY }}" name="{{ WORD_SORT }}" value="{{ ALPHABETICALLY }}"
+                    {{ "checked" if session[ARGS][WORD_SORT] == ALPHABETICALLY else "" }}>
+            <label for="{{ ALPHABETICALLY }}">Alphabetically</label>
+            </div>
+            <div>
+            <input type="radio"
+                    id="{{ BYWORDLENGTH }}" name="{{ WORD_SORT }}" value="{{ BYWORDLENGTH }}"
+                    {{ "checked" if session[ARGS][WORD_SORT] == BYWORDLENGTH else "" }}>
+            <label for="{{ BYWORDLENGTH }}">By word length</label>
+            </div>
+        </div>
+
         {{ dictionary_dropdown() }}
 
-        {# Submit #}
         <div class="mt-3">
             <input id="submitButton" type="submit" value="Show Summaries">
         </div>
