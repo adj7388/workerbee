@@ -30,6 +30,6 @@ function confirmDialog(message) {
 }
 
 // Convenience wrapper
-async function myConfirm(message) {
+async function confirm(message) {
   return await confirmDialog(message);
 }
