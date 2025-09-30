@@ -26,11 +26,11 @@ function initFormHistory({
   const storageKey = `history:${formId}`;
 
   // Load saved history (if any)
-  const saved = localStorage.getItem(storageKey);
-  if (saved) {
-    history = JSON.parse(saved);
+  const savedHistory = localStorage.getItem(storageKey);
+  if (savedHistory) {
+    history = JSON.parse(savedHistory);
     index = history.length - 1;
-    if (index >= 0) restoreFormState(history[index]);
+    if (index >= 0) restoreFormValues(history[index]);
   }
   updateHistoryUI();
 
@@ -43,21 +43,24 @@ function initFormHistory({
   }
 
   function getHistoryIndex(formValues) {
-    return arrayIndexOfNestedObject(history, "search", formValues);
+    return arrayIndexOfNestedObject(history, "formValues", formValues);
   }
 
   function getHistoryResults(historyIndex) {
-    return historyIndex >= 0 ? `${history[historyIndex].results}` : null;
+    return historyIndex >= 0 ? `${history[historyIndex].searchResults}` : null;
   }
 
   function saveFormState() {
-    const formValues = getFormValues(form);
-    if ( arrayIncludesNestedObject(history, "search", formValues) ) {
-      showUpdatePopup("Already in history");
+    const currentformValues = getFormValues(form);
+    if ( arrayIncludesNestedObject(history, "formValues", currentformValues) ) {
+      showUpdatePopup("Search already in history");
+    }
+    else if ( !resultsContainer.innerHTML ) {
+      showUpdatePopup("No search results to save");
     } else { 
       history.push({
-        search : formValues,
-        results : resultsContainer.innerHTML
+        formValues : currentformValues,
+        searchResults : resultsContainer.innerHTML
       });
       index = history.length - 1;
       updateHistoryUI();
@@ -65,16 +68,16 @@ function initFormHistory({
     }
   }
 
-  function restoreFormState(historyEntry) {
+  function restoreFormValues(historyEntry) {
     for (const el of form.elements) {
-      if (!el.name || !(el.name in historyEntry.search)) continue;
+      if (!el.name || !(el.name in historyEntry.formValues)) continue;
 
       if (el.type === "checkbox") {
-        el.checked = historyEntry.search[el.name];
+        el.checked = historyEntry.formValues[el.name];
       } else if (el.type === "radio") {
-        el.checked = historyEntry.search[el.name] === el.value;
+        el.checked = historyEntry.formValues[el.name] === el.value;
       } else {
-        el.value = historyEntry.search[el.name];
+        el.value = historyEntry.formValues[el.name];
       }
     }
 
@@ -101,7 +104,7 @@ function initFormHistory({
     }
 
   function restoreAndSubmit() {
-      restoreFormState(history[index]);
+      restoreFormValues(history[index]);
       setDirtyFlag(true);
       form.requestSubmit();
   }
