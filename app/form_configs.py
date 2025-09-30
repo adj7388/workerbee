@@ -10,13 +10,6 @@ def get_find_words_config() -> dict[str, Any]:
     return {
         "formId": "findWordsSearchForm",
         "url": url_for("find_words_results"),
-        "fieldKeys": [
-            Consts.REQUIRED_LETTER,
-            Consts.ALLOWED_LETTERS,
-            Consts.GROUPING,
-            Consts.WORD_LIST,
-            Consts.DICTIONARY,
-        ],
         "buttonLabels": {"first": "Find Words", "after": "Update Words"},
         "resultsContainerId": "results",
     }
@@ -26,15 +19,6 @@ def get_show_summaries_config() -> dict[str, Any]:
     return {
         "formId": "summarySearchForm",
         "url": url_for("show_summaries_results"),
-        "fieldKeys": [
-            Consts.REQUIRED_LETTER,
-            Consts.ALLOWED_LETTERS,
-            Consts.SUMMARY_SORT,
-            Consts.SHOW_WORDS,
-            Consts.DICTIONARY,
-            Consts.WORD_SORT,
-            "Word sort:",
-        ],
         "buttonLabels": {"first": "Show Summaries", "after": "Update Summaries"},
         "resultsContainerId": "results",
     }

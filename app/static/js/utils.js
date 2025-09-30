@@ -38,25 +38,6 @@ function showChanges(changes) {
     showUpdatePopup(message);
 }
 
-function getFormValues(form) {
-    const formValues = {};
-
-    for (const el of form.elements) {
-        if (!el.name) continue; // skip unnamed
-        switch (el.type) {
-            case "checkbox":
-                formValues[el.name] = el.checked;
-                break;
-            case "radio":
-                if (el.checked) formValues[el.name] = el.value;
-                break;
-            default:
-                formValues[el.name] = el.value;
-            }
-    }
-    return formValues;
-}
-
 const getInputLabelOrLegend = (input, { combine = false } = {}) => {
     const legend = input.closest('fieldset')?.querySelector('legend')?.textContent.trim();
     const label  = input.labels?.[0]?.textContent.trim();
@@ -64,6 +45,35 @@ const getInputLabelOrLegend = (input, { combine = false } = {}) => {
     if (combine && legend && label) return `${legend}: ${label}`;
     return legend || label || null;
 };
+
+function getFormValues(form, getLabels=false) {
+    const returnObj = {};
+    let thisValue = undefined;
+
+    for (const el of form.elements) {
+        if (!el.name) continue; // skip unnamed
+        switch (el.type) {
+            case "checkbox":
+                thisValue = el.checked;
+                break;
+            case "radio":
+                if (el.checked) thisValue = el.value;
+                break;
+            default:
+                thisValue = el.value;
+        }
+        if (getLabels) {
+            returnObj[el.name] = {
+                value: thisValue,
+                label: getInputLabelOrLegend(el),
+            };
+        } else {
+            returnObj[el.name] = thisValue
+        }
+    }
+    return returnObj;
+}
+
 
 function pluck(obj, key) {
     return Object.fromEntries(

@@ -4,7 +4,6 @@
 function initFormHandler({
     formId,
     url,
-    fieldKeys,
     buttonLabels,
     postSubmitCallbacks,
     formHistory,
@@ -33,17 +32,7 @@ function initFormHandler({
         const isFirstSubmit = submitButton.value === buttonLabels.first;
         submitButton.value = buttonLabels.after;
 
-        const valuesAndLabels = {};
-        fieldKeys.forEach(key => {
-            const el = document.getElementById(key) || 
-                       document.querySelector(`input[name="${key}"]:checked`);
-            if (!el) return;
-            valuesAndLabels[key] = {
-                value: el.type === "checkbox" ? el.checked : el.value,
-                label: getInputLabelOrLegend(el),
-            };
-        });
-
+        const valuesAndLabels = getFormValues(form, getLabels=true);
         const changes = getChanges(storageKey, valuesAndLabels);
         saveCurrentState(storageKey, valuesAndLabels);
         const historyIndex = formHistory.getHistoryIndex(pluck(valuesAndLabels, "value"));
