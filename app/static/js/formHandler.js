@@ -40,7 +40,7 @@ function initFormHandler({
             if (!el) return;
             valuesAndLabels[key] = {
                 value: el.type === "checkbox" ? el.checked : el.value,
-                label: getInputLabelOrLegend(el)
+                label: getInputLabelOrLegend(el),
             };
         });
 

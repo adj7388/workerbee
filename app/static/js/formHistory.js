@@ -42,21 +42,6 @@ function initFormHistory({
     return dirtyFlag;
   }
 
-  function getFormValues() {
-    const formValues = {};
-    for ( const el of form.elements ) {
-      if ( !el.name ) continue;
-      if ( el.type === "checkbox" ) {
-        formValues[el.name] = el.checked;
-      } else if ( el.type === "radio" ) {
-        if ( el.checked ) formValues[el.name] = el.value;
-      } else {
-        formValues[el.name] = el.value;
-      }
-    }
-    return formValues;
-  }
-
   function getHistoryIndex(formValues) {
     return arrayIndexOfNestedObject(history, "search", formValues);
   }
@@ -66,7 +51,7 @@ function initFormHistory({
   }
 
   function saveFormState() {
-    const formValues = getFormValues();
+    const formValues = getFormValues(form);
     if ( arrayIncludesNestedObject(history, "search", formValues) ) {
       showUpdatePopup("Already in history");
     } else { 
