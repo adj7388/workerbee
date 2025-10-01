@@ -10,7 +10,6 @@ def get_find_words_config() -> dict[str, Any]:
     return {
         "formId": "findWordsSearchForm",
         "url": url_for("find_words_results"),
-        "buttonLabels": {"first": "Find Words", "after": "Update Words"},
         "resultsContainerId": "results",
     }
 
@@ -19,7 +18,6 @@ def get_show_summaries_config() -> dict[str, Any]:
     return {
         "formId": "summarySearchForm",
         "url": url_for("show_summaries_results"),
-        "buttonLabels": {"first": "Show Summaries", "after": "Update Summaries"},
         "resultsContainerId": "results",
     }
 

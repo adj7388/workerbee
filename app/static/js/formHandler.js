@@ -4,7 +4,6 @@
 function initFormHandler({
     formId,
     url,
-    buttonLabels,
     postSubmitCallbacks,
     resultsContainerId,
     displayChanges,
@@ -86,8 +85,8 @@ function initFormHandler({
         e.preventDefault();
 
         const submitButton = form.querySelector("input[type='submit']");
-        const isFirstSubmit = submitButton.value === buttonLabels.first;
-        submitButton.value = buttonLabels.after;
+        const isFirstSubmit = !submitButton.dataset.submitted;
+        if (isFirstSubmit) submitButton.dataset.submitted = "true";
 
         const valuesAndLabels = getFormValues(form, { getLabels: true });
         const changes = getChanges(valuesAndLabels);
