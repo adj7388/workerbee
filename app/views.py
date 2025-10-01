@@ -103,9 +103,7 @@ def init_routes(app: Flask) -> None:
     @app.route(f"/find-words")
     def find_words() -> ResponseReturnValue:  # type: ignore reportUnusedFunction
         form_config = get_find_words_config()
-        history_config = get_form_history_config(
-            form_config["formId"], form_config["resultsContainerId"]
-        )
+        history_config = get_form_history_config(form_config["formId"])
         display_changes_config = get_display_changes_config()
         return render_template(
             "find_words.html",
@@ -117,9 +115,7 @@ def init_routes(app: Flask) -> None:
     @app.route(f"/show-summaries")
     def show_summaries() -> ResponseReturnValue:  # type: ignore reportUnusedFunction
         form_config = get_show_summaries_config()
-        history_config = get_form_history_config(
-            form_config["formId"], form_config["resultsContainerId"]
-        )
+        history_config = get_form_history_config(form_config["formId"])
         display_changes_config = get_display_changes_config()
         show_words_config = get_show_words_config()
         return render_template(
