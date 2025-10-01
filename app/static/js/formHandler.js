@@ -6,7 +6,6 @@ function initFormHandler({
     url,
     buttonLabels,
     postSubmitCallbacks,
-    formHistory,
     resultsContainerId,
     displayChanges,
 }) {
@@ -14,7 +13,17 @@ function initFormHandler({
     const form = document.getElementById(formId);
     const resultsContainer = document.getElementById(resultsContainerId);
     const storageKey = `state:${form.id}`;
-    
+    let formHistory; // placeholder to be set later
+
+    let dirtyFlag = false;
+    function setDirtyFlag(state) {
+        dirtyFlag = state;
+    }
+
+    function getDirtyFlag() {
+        return dirtyFlag;
+    }
+
     function runCallbacks() {
         postSubmitCallbacks.forEach( (fn) => {
             if ( typeof fn !== 'function' ) {
@@ -25,39 +34,10 @@ function initFormHandler({
         });
     }
  
-    form.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const submitButton = form.querySelector("input[type='submit']");
-        const isFirstSubmit = submitButton.value === buttonLabels.first;
-        submitButton.value = buttonLabels.after;
-
-        const valuesAndLabels = getFormValues(form, getLabels=true);
-        const changes = getChanges(valuesAndLabels);
-        saveCurrentState(valuesAndLabels);
-        const historyIndex = formHistory.getHistoryIndex(pluck(valuesAndLabels, "value"));
-
-        console.log( // sanity check
-            `${form.id} - changes.length: ${changes.length}, isFirstSubmit: ${isFirstSubmit}, dirtyFlag: ${formHistory.getDirtyFlag()}, historyIndex: ${historyIndex}`
-        );
-
-        if ( displayChanges.getState() && (!isFirstSubmit || formHistory.getDirtyFlag()) ) {
-            showChanges(changes);
-        }
-
-        if (isFirstSubmit || changes.length || formHistory.getDirtyFlag()) {
-            if (historyIndex >= 0) {
-                doFetchFromHistory(historyIndex);
-            } else {
-                doFetchFromServer(valuesAndLabels);
-            }
-        }
-    });
-
     function doFetchFromHistory(historyIndex) {
         resultsContainer.innerHTML = formHistory.getHistoryResults(historyIndex);
         runCallbacks();
-        formHistory.setDirtyFlag(false);
+        setDirtyFlag(false);
     }
 
     function doFetchFromServer (valuesAndLabels) {
@@ -71,7 +51,7 @@ function initFormHandler({
                     </div>`;
                 runCallbacks();
             });
-        formHistory.setDirtyFlag(false);
+        setDirtyFlag(false);
     }
 
     function saveCurrentState (valuesAndLabels) {
@@ -101,4 +81,39 @@ function initFormHandler({
         }
         return changes;
     }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const submitButton = form.querySelector("input[type='submit']");
+        const isFirstSubmit = submitButton.value === buttonLabels.first;
+        submitButton.value = buttonLabels.after;
+
+        const valuesAndLabels = getFormValues(form, getLabels=true);
+        const changes = getChanges(valuesAndLabels);
+        saveCurrentState(valuesAndLabels);
+        const historyIndex = formHistory.getHistoryIndex(pluck(valuesAndLabels, "value"));
+
+        console.log( // sanity check
+            `${form.id} - changes.length: ${changes.length}, isFirstSubmit: ${isFirstSubmit}, dirtyFlag: ${getDirtyFlag()}, historyIndex: ${historyIndex}`
+        );
+
+        if ( displayChanges.getState() && (!isFirstSubmit || getDirtyFlag()) ) {
+            showChanges(changes);
+        }
+
+        if (isFirstSubmit || changes.length || getDirtyFlag()) {
+            if (historyIndex >= 0) {
+                doFetchFromHistory(historyIndex);
+            } else {
+                doFetchFromServer(valuesAndLabels);
+            }
+        }
+    });
+
+    return {
+        setFormHistory(fh) { formHistory = fh; },
+        setDirtyFlag,
+    };
 }
+

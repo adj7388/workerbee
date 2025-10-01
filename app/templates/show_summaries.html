@@ -18,20 +18,24 @@
     const historyConfig = JSON.parse(`{{ HISTORY_CONFIG | tojson | safe }}`);
     const showWordsConfig = JSON.parse(`{{ SHOW_WORDS_CONFIG | tojson | safe }}`);
 
-    // Params needed by formHandler, not in formConfig
-    const formHistory = initFormHistory(historyConfig);
     const showWords = initShowWords(showWordsConfig);
     const displayChanges = initDisplayChanges({
             checkboxId : displayChangesConfig.displayChangesId,
             url : displayChangesConfig.displayChangesUrl,
         })
+
+    const history = initFormHistory(historyConfig);
+
+    // additional form handler config that can't be set in Flask
     const formHandlerConfig = {
-        formHistory: formHistory,
         displayChanges: displayChanges,
         postSubmitCallbacks: [showWords.toggleWordRows]
      }
 
-    initFormHandler({ ...formConfig, ...formHandlerConfig });
+    const handler = initFormHandler({ ...formConfig, ...formHandlerConfig });
+
+    handler.setFormHistory(history);
+    history.setFormHandler(handler);
 
 </script>
 

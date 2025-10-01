@@ -20,10 +20,10 @@ function initFormHistory({
   const deleteHistoryBtn = document.getElementById(deleteId);
   const resultsContainer = document.getElementById(resultsContainerId);
 
+  const storageKey = `history:${formId}`;
+  let formHandler; // placeholder to be set later
   let history = [];
   let index = -1;
-  let dirtyFlag = false;
-  const storageKey = `history:${formId}`;
 
   // Load saved history (if any)
   const savedHistory = localStorage.getItem(storageKey);
@@ -36,14 +36,6 @@ function initFormHistory({
     }
   }
   updateHistoryUI();
-
-  function setDirtyFlag(state) {
-    dirtyFlag = state;
-  }
-
-  function getDirtyFlag() {
-    return dirtyFlag;
-  }
 
   function getHistoryIndex(formValues) {
     return arrayIndexOfNestedObject(history, "formValues", formValues);
@@ -97,7 +89,7 @@ function initFormHistory({
   function restoreAndSubmit() {
       setFormValues(form, history[index]);
       resetFormUI();
-      setDirtyFlag(true);
+      formHandler.setDirtyFlag(true);
       form.requestSubmit();
   }
 
@@ -127,6 +119,10 @@ function initFormHistory({
     deleteHistory();
   });
 
-  return { setDirtyFlag, getDirtyFlag, getHistoryIndex, getHistoryResults };
+  return {
+    setFormHandler(fh) { formHandler = fh; },
+    getHistoryIndex,
+    getHistoryResults
+  };
 
 }
