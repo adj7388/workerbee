@@ -90,7 +90,7 @@ function setFormValues(form, historyObject) {
     }
 }
 
-function pluck(obj, key) {
+function extract(key, obj) {
     return Object.fromEntries(
         Object.entries(obj).map(([k, v]) => [k, v[key]])
     );

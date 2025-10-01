@@ -41,7 +41,7 @@ function initFormHandler({
     }
 
     function doFetchFromServer (valuesAndLabels) {
-        const params = new URLSearchParams(pluck(valuesAndLabels, "value"));
+        const params = new URLSearchParams(extract("value", valuesAndLabels));
         fetch(`${url}?${params.toString()}`)
             .then(res => res.text())
             .then(html => {
@@ -55,13 +55,13 @@ function initFormHandler({
     }
 
     function saveCurrentState (valuesAndLabels) {
-        const currentState = pluck(valuesAndLabels, "value");
+        const currentState = extract("value", valuesAndLabels);
         localStorage.setItem(storageKey, JSON.stringify(currentState));
     }
 
     function getChanges(valuesAndLabels) {
-        const currentState = pluck(valuesAndLabels, "value");
-        const labels = pluck(valuesAndLabels, "label");
+        const currentState = extract("value", valuesAndLabels);
+        const labels = extract("label", valuesAndLabels);
 
         const previousStateJSON = localStorage.getItem(storageKey);
         const previousState = previousStateJSON ? JSON.parse(previousStateJSON) : null;
@@ -92,17 +92,13 @@ function initFormHandler({
         const valuesAndLabels = getFormValues(form, getLabels=true);
         const changes = getChanges(valuesAndLabels);
         saveCurrentState(valuesAndLabels);
-        const historyIndex = formHistory.getHistoryIndex(pluck(valuesAndLabels, "value"));
-
-        console.log( // sanity check
-            `${form.id} - changes.length: ${changes.length}, isFirstSubmit: ${isFirstSubmit}, dirtyFlag: ${getDirtyFlag()}, historyIndex: ${historyIndex}`
-        );
 
         if ( displayChanges.getState() && (!isFirstSubmit || getDirtyFlag()) ) {
             showChanges(changes);
         }
 
-        if (isFirstSubmit || changes.length || getDirtyFlag()) {
+        if ( isFirstSubmit || changes.length || getDirtyFlag() ) {
+            const historyIndex = formHistory.getHistoryIndex(extract("value", valuesAndLabels));
             if (historyIndex >= 0) {
                 doFetchFromHistory(historyIndex);
             } else {
