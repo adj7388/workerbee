@@ -89,7 +89,7 @@ function initFormHandler({
         const isFirstSubmit = submitButton.value === buttonLabels.first;
         submitButton.value = buttonLabels.after;
 
-        const valuesAndLabels = getFormValues(form, getLabels=true);
+        const valuesAndLabels = getFormValues(form, { getLabels: true });
         const changes = getChanges(valuesAndLabels);
         saveCurrentState(valuesAndLabels);
 

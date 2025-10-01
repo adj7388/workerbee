@@ -46,7 +46,7 @@ const getInputLabelOrLegend = (input, { combine = false } = {}) => {
     return legend || label || null;
 };
 
-function getFormValues(form, getLabels=false) {
+function getFormValues(form, { getLabels = false } = {} ) {
     const returnObj = {};
     let thisValue = undefined;
 
