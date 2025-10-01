@@ -74,6 +74,21 @@ function getFormValues(form, getLabels=false) {
     return returnObj;
 }
 
+function setFormValues(form, historyObject) {
+    for (const el of form.elements) {
+        if (!el.name || !(el.name in historyObject.formValues)) continue;
+        switch (el.type) {
+            case "checkbox":            
+                el.checked = historyObject.formValues[el.name];
+                break;
+            case "radio":
+                el.checked = historyObject.formValues[el.name] === el.value;
+                break;
+            default:
+                el.value = historyObject.formValues[el.name];
+        }
+    }
+}
 
 function pluck(obj, key) {
     return Object.fromEntries(

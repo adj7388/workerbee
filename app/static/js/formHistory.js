@@ -30,7 +30,10 @@ function initFormHistory({
   if (savedHistory) {
     history = JSON.parse(savedHistory);
     index = history.length - 1;
-    if (index >= 0) restoreFormValues(history[index]);
+    if (index >= 0) {
+      setFormValues(form, history[index]);
+      resetFormUI();
+    }
   }
   updateHistoryUI();
 
@@ -68,19 +71,7 @@ function initFormHistory({
     }
   }
 
-  function restoreFormValues(historyEntry) {
-    for (const el of form.elements) {
-      if (!el.name || !(el.name in historyEntry.formValues)) continue;
-
-      if (el.type === "checkbox") {
-        el.checked = historyEntry.formValues[el.name];
-      } else if (el.type === "radio") {
-        el.checked = historyEntry.formValues[el.name] === el.value;
-      } else {
-        el.value = historyEntry.formValues[el.name];
-      }
-    }
-
+  function resetFormUI() {
     // Keep form UI updated - shotgun approach 
     for (const el of form.elements) {
       el.dispatchEvent(new Event("change", { bubbles: true }));
@@ -104,7 +95,8 @@ function initFormHistory({
     }
 
   function restoreAndSubmit() {
-      restoreFormValues(history[index]);
+      setFormValues(form, history[index]);
+      resetFormUI();
       setDirtyFlag(true);
       form.requestSubmit();
   }

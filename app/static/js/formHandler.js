@@ -13,6 +13,7 @@ function initFormHandler({
 
     const form = document.getElementById(formId);
     const resultsContainer = document.getElementById(resultsContainerId);
+    const storageKey = `state:${form.id}`;
     
     function runCallbacks() {
         postSubmitCallbacks.forEach( (fn) => {
@@ -26,15 +27,14 @@ function initFormHandler({
  
     form.addEventListener('submit', function (e) {
         e.preventDefault();
-        const storageKey = `state:${form.id}`;
 
         const submitButton = form.querySelector("input[type='submit']");
         const isFirstSubmit = submitButton.value === buttonLabels.first;
         submitButton.value = buttonLabels.after;
 
         const valuesAndLabels = getFormValues(form, getLabels=true);
-        const changes = getChanges(storageKey, valuesAndLabels);
-        saveCurrentState(storageKey, valuesAndLabels);
+        const changes = getChanges(valuesAndLabels);
+        saveCurrentState(valuesAndLabels);
         const historyIndex = formHistory.getHistoryIndex(pluck(valuesAndLabels, "value"));
 
         console.log( // sanity check
@@ -74,12 +74,12 @@ function initFormHandler({
         formHistory.setDirtyFlag(false);
     }
 
-    function saveCurrentState (storageKey, valuesAndLabels) {
+    function saveCurrentState (valuesAndLabels) {
         const currentState = pluck(valuesAndLabels, "value");
         localStorage.setItem(storageKey, JSON.stringify(currentState));
     }
 
-    function getChanges(storageKey, valuesAndLabels) {
+    function getChanges(valuesAndLabels) {
         const currentState = pluck(valuesAndLabels, "value");
         const labels = pluck(valuesAndLabels, "label");
 
