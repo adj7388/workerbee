@@ -17,6 +17,7 @@ function initDisplayChanges({
             .then(responseText => {
                 showMessage(responseText);
             });
+        if (!checkbox.checked) changesContainer.innerHTML = "";
     });
 
     function getState() {

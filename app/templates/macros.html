@@ -106,11 +106,11 @@
 {% macro display_history(config) %}
 
     <span>History</span>
-    <button id="{{config.backId}}" class="history-button left">&lt;</button>
+    <button id="{{config.backId}}">&lt;</button>
     <span id="{{config.indexId}}"></span>
-    <button id="{{config.forwardId}}" class="history-button right">&gt;</button>
-    <button id="{{config.saveId}}" class="history-button">+</button>
-    <button id="{{config.deleteId}}" class="history-button">&times;</button>
+    <button id="{{config.forwardId}}">&gt;</button>
+    <button id="{{config.saveId}}">+</button>
+    <button id="{{config.deleteId}}">&times;</button>
 
 {% endmacro %}
 
