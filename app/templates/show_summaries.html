@@ -7,8 +7,10 @@
 {{ super() }}
 
 <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
-<script src="{{ url_for('static', filename='js/formHandler.js') }}"></script>
+<script src="{{ url_for('static', filename='js/displayChanges.js') }}"></script>
 <script src="{{ url_for('static', filename='js/showWords.js') }}"></script>
+<script src="{{ url_for('static', filename='js/formHistory.js') }}"></script>
+<script src="{{ url_for('static', filename='js/formHandler.js') }}"></script>
 
 <script>
     // *_CONFIG passed in context from view function. Parse w/ backticks to silence js linter

@@ -101,8 +101,6 @@
     >
     <label for="{{config.displayChangesId}}">Display Changes</label>
 
-    <script src="{{ url_for('static', filename='js/displayChanges.js') }}"></script>
-
 {% endmacro %}
 
 {% macro display_history(config) %}
@@ -113,8 +111,6 @@
     <button id="{{config.forwardId}}" class="history-button right">&gt;</button>
     <button id="{{config.saveId}}" class="history-button">+</button>
     <button id="{{config.deleteId}}" class="history-button">&times;</button>
-
-    <script src="{{ url_for('static', filename='js/formHistory.js') }}"></script>
 
 {% endmacro %}
 
