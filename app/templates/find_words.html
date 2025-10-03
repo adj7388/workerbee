@@ -16,9 +16,10 @@
     const historyConfig = JSON.parse(`{{ HISTORY_CONFIG | tojson | safe }}`);
 
     const displayChanges = initDisplayChanges({
-            checkboxId : displayChangesConfig.displayChangesId,
-            url : displayChangesConfig.displayChangesUrl,
-        });
+        checkboxId: displayChangesConfig.displayChangesId,
+        changesContainerId: displayChangesConfig.changesContainerId,
+        updateSessionUrl: displayChangesConfig.updateSessionUrl,
+    });
 
     const history = initFormHistory(historyConfig);
 
@@ -51,60 +52,62 @@
 
     </div>
 
-    <form id="{{ FORM_CONFIG.formId }}" class="two-col-grid" method="GET">
+    <div style="display: flex; gap: 0.5rem 3rem">
+        <form id="{{ FORM_CONFIG.formId }}" class="two-col-grid" method="GET">
 
-        {{ letter_inputs() }}
+            {{ letter_inputs() }}
 
-        {# Word List dropdown #}
-        {# <label> in left col, <select> in right col #}
-        <label for="{{ WORD_LIST }}">Use word list:</label>
-        <select id="{{ WORD_LIST }}" name="{{ WORD_LIST }}">
+            {# Word List dropdown #}
+            {# <label> in left col, <select> in right col #}
+            <label for="{{ WORD_LIST }}">Use word list:</label>
+            <select id="{{ WORD_LIST }}" name="{{ WORD_LIST }}">
 
-            {% for k, v in word_lists.items() %}
-                <option value="{{ k }}"
-                    {% if session[ARGS][WORD_LIST] == k %}
-                        selected
-                    {% endif %}
-                >
-                    {{ v.name }}&nbsp;&mdash;&nbsp;
-                    {# show number of words in this word list#}
-                    {{ "{:,}".format(v.num_words) }} words
-                </option>
-            {% endfor %}
-        </select>
+                {% for k, v in word_lists.items() %}
+                    <option value="{{ k }}"
+                        {% if session[ARGS][WORD_LIST] == k %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ v.name }}&nbsp;&mdash;&nbsp;
+                        {# show number of words in this word list#}
+                        {{ "{:,}".format(v.num_words) }} words
+                    </option>
+                {% endfor %}
+            </select>
 
-        {# Group results radio buttons #}
-        {# fieldset has display: contents, so <legend> in left col, <div> in right col #}
-        <fieldset>
-            <legend>Group the results by:</legend>
-            <div class="radio-group">
-                <div>
-                    <input type="radio" id="{{ INITIALS }}" name="{{ GROUPING }}" value="{{ INITIALS }}"
-                        {{ "checked" if session[ARGS][GROUPING] == INITIALS else "" }}>
-                    <label for="{{ INITIALS }}">Initial letters</label>
+            {# Group results radio buttons #}
+            {# fieldset has display: contents, so <legend> in left col, <div> in right col #}
+            <fieldset>
+                <legend>Group the results by:</legend>
+                <div class="radio-group">
+                    <div>
+                        <input type="radio" id="{{ INITIALS }}" name="{{ GROUPING }}" value="{{ INITIALS }}"
+                            {{ "checked" if session[ARGS][GROUPING] == INITIALS else "" }}>
+                        <label for="{{ INITIALS }}">Initial letters</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="{{ LENGTH }}" name="{{ GROUPING }}" value="{{ LENGTH }}"
+                            {{ "checked" if session[ARGS][GROUPING] == LENGTH else "" }}>
+                        <label for="{{ LENGTH }}">Word length</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="{{ NO_GROUPING }}" name="{{ GROUPING }}" value="{{ NO_GROUPING }}"
+                            {{ "checked" if session[ARGS][GROUPING] == NO_GROUPING else "" }}>
+                        <label for="{{ NO_GROUPING }}">No {{ GROUPING }}</label>
+                    </div>
                 </div>
-                <div>
-                    <input type="radio" id="{{ LENGTH }}" name="{{ GROUPING }}" value="{{ LENGTH }}"
-                        {{ "checked" if session[ARGS][GROUPING] == LENGTH else "" }}>
-                    <label for="{{ LENGTH }}">Word length</label>
-                </div>
-                <div>
-                    <input type="radio" id="{{ NO_GROUPING }}" name="{{ GROUPING }}" value="{{ NO_GROUPING }}"
-                        {{ "checked" if session[ARGS][GROUPING] == NO_GROUPING else "" }}>
-                    <label for="{{ NO_GROUPING }}">No {{ GROUPING }}</label>
-                </div>
+            </fieldset>
+
+            {# Dictionary choice #}
+            {{ dictionary_dropdown() }}
+
+            <div class="mt-3">
+                <input id="submitButton" type="submit" value="Find Words">
             </div>
-        </fieldset>
-
-        {# Dictionary choice #}
-        {{ dictionary_dropdown() }}
-
-        <div class="mt-3">
-            <input id="submitButton" type="submit" value="Find Words">
-        </div>
-        
-    </form>
-
+            
+        </form>
+        <div id="{{DISPLAY_CHANGES_CONFIG.changesContainerId}}"></div>
+    </div>
     {# Results inserted here #}
     <div id="{{FORM_CONFIG.resultsContainerId}}"></div>
 

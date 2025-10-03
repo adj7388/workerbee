@@ -93,7 +93,7 @@ function initFormHandler({
         saveCurrentState(valuesAndLabels);
 
         if ( displayChanges.getState() && (!isFirstSubmit || getDirtyFlag()) ) {
-            showChanges(changes);
+            displayChanges.showChanges(changes);
         }
 
         if ( isFirstSubmit || changes.length || getDirtyFlag() ) {

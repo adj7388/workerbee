@@ -19,8 +19,9 @@
 
     const showWords = initShowWords(showWordsConfig);
     const displayChanges = initDisplayChanges({
-            checkboxId : displayChangesConfig.displayChangesId,
-            url : displayChangesConfig.displayChangesUrl,
+            checkboxId: displayChangesConfig.displayChangesId,
+            changesContainerId: displayChangesConfig.changesContainerId,
+            updateSessionUrl: displayChangesConfig.updateSessionUrl,
         })
 
     const history = initFormHistory(historyConfig);
@@ -73,63 +74,66 @@
         |
     </div>
     
-    <form id="{{FORM_CONFIG.formId}}" class="two-col-grid" method="GET">
+    <div style="display: flex; gap: 0.5rem 3rem">
+        <form id="{{FORM_CONFIG.formId}}" class="two-col-grid" method="GET">
 
-        {{ letter_inputs() }}
+            {{ letter_inputs() }}
 
-        {# Sort Summaries #}
-        {# fieldset has 'display: contents', so child <legend> and <div> display #}
-        <fieldset>
-            <legend>Sort by number of words:</legend>
-            <div class="radio-group">
+            {# Sort Summaries #}
+            {# fieldset has 'display: contents', so child <legend> and <div> display #}
+            <fieldset>
+                <legend>Sort by number of words:</legend>
+                <div class="radio-group">
+                    <div>
+                        <input type="radio"
+                            id="{{ ASCENDING }}" name="{{ SUMMARY_SORT }}"  value="{{ ASCENDING }}"
+                            {{ "checked" if session[ARGS][SUMMARY_SORT] == ASCENDING else "" }}
+                        >
+                        <label for="{{ ASCENDING }}">Ascending</label>
+                    </div>
+                    <div>
+                        <input type="radio" 
+                            id="{{ DESCENDING }}" name="{{ SUMMARY_SORT }}" value="{{ DESCENDING }}"
+                            {{ "checked" if session[ARGS][SUMMARY_SORT] == DESCENDING else "" }}
+                        >
+                        <label for="{{ DESCENDING }}">Descending</label>
+                    </div>
+                </div>
+            </fieldset> 
+
+            {# In form grid, left column checkbox with label #}
+            <div class="label-checkbox">
+                <input type="checkbox"
+                    id="{{ SHOW_WORDS }}" name="{{ SHOW_WORDS }}"
+                    {{ "checked" if session[ARGS][SHOW_WORDS] == True else "" }}>
+                <label for="{{ SHOW_WORDS }}">Include words sorted:</label>
+            </div>
+
+            {# In form grid, right column radio buttons inline #}
+            <div style="display: flex; gap: 0.5rem 1rem;">
                 <div>
-                    <input type="radio"
-                        id="{{ ASCENDING }}" name="{{ SUMMARY_SORT }}"  value="{{ ASCENDING }}"
-                        {{ "checked" if session[ARGS][SUMMARY_SORT] == ASCENDING else "" }}
-                    >
-                    <label for="{{ ASCENDING }}">Ascending</label>
+                <input type="radio"
+                        id="{{ ALPHABETICALLY }}" name="{{ WORD_SORT }}" value="{{ ALPHABETICALLY }}"
+                        {{ "checked" if session[ARGS][WORD_SORT] == ALPHABETICALLY else "" }}>
+                <label for="{{ ALPHABETICALLY }}">Alphabetically</label>
                 </div>
                 <div>
-                    <input type="radio" 
-                        id="{{ DESCENDING }}" name="{{ SUMMARY_SORT }}" value="{{ DESCENDING }}"
-                        {{ "checked" if session[ARGS][SUMMARY_SORT] == DESCENDING else "" }}
-                    >
-                    <label for="{{ DESCENDING }}">Descending</label>
+                <input type="radio"
+                        id="{{ BYWORDLENGTH }}" name="{{ WORD_SORT }}" value="{{ BYWORDLENGTH }}"
+                        {{ "checked" if session[ARGS][WORD_SORT] == BYWORDLENGTH else "" }}>
+                <label for="{{ BYWORDLENGTH }}">By word length</label>
                 </div>
             </div>
-        </fieldset> 
 
-        {# In form grid, left column checkbox with label #}
-        <div class="label-checkbox">
-            <input type="checkbox"
-                id="{{ SHOW_WORDS }}" name="{{ SHOW_WORDS }}"
-                {{ "checked" if session[ARGS][SHOW_WORDS] == True else "" }}>
-            <label for="{{ SHOW_WORDS }}">Include words sorted:</label>
-        </div>
+            {{ dictionary_dropdown() }}
 
-        {# In form grid, right column radio buttons inline #}
-        <div style="display: flex; gap: 0.5rem 1rem;">
-            <div>
-            <input type="radio"
-                    id="{{ ALPHABETICALLY }}" name="{{ WORD_SORT }}" value="{{ ALPHABETICALLY }}"
-                    {{ "checked" if session[ARGS][WORD_SORT] == ALPHABETICALLY else "" }}>
-            <label for="{{ ALPHABETICALLY }}">Alphabetically</label>
+            <div class="mt-3">
+                <input id="submitButton" type="submit" value="Show Summaries">
             </div>
-            <div>
-            <input type="radio"
-                    id="{{ BYWORDLENGTH }}" name="{{ WORD_SORT }}" value="{{ BYWORDLENGTH }}"
-                    {{ "checked" if session[ARGS][WORD_SORT] == BYWORDLENGTH else "" }}>
-            <label for="{{ BYWORDLENGTH }}">By word length</label>
-            </div>
-        </div>
-
-        {{ dictionary_dropdown() }}
-
-        <div class="mt-3">
-            <input id="submitButton" type="submit" value="Show Summaries">
-        </div>
-        
-    </form>
+            
+        </form>
+        <div id="{{DISPLAY_CHANGES_CONFIG.changesContainerId}}"></div>
+    </div>
 
     {# Results inserted here #}
     <div id="{{FORM_CONFIG.resultsContainerId}}"></div>

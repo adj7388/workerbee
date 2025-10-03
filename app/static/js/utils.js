@@ -30,14 +30,6 @@ function showUpdatePopup(message = "Updated") {
    }, 0);
 }
 
-function showChanges(changes) {
-    const message = changes.length > 0
-        ? changes.join('<br>')
-        : "Nothing changed";
-
-    showUpdatePopup(message);
-}
-
 const getInputLabelOrLegend = (input, { combine = false } = {}) => {
     const legend = input.closest('fieldset')?.querySelector('legend')?.textContent.trim();
     const label  = input.labels?.[0]?.textContent.trim();
