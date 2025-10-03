@@ -48,10 +48,10 @@ function initFormHistory({
   function saveFormState() {
     const currentformValues = getFormValues(form);
     if ( arrayIncludesNestedObject(history, "formValues", currentformValues) ) {
-      showUpdatePopup("Search already in history");
+      showMessage("Search already in history");
     }
     else if ( !resultsContainer.innerHTML ) {
-      showUpdatePopup("No search results to save");
+      showMessage("No search results to save");
     } else { 
       history.push({
         formValues : currentformValues,

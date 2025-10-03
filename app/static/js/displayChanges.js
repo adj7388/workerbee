@@ -15,7 +15,7 @@ function initDisplayChanges({
         fetch(`${updateSessionUrl}?${params.toString()}`)
             .then(res => res.text())
             .then(responseText => {
-                showUpdatePopup(responseText);
+                showMessage(responseText);
             });
     });
 

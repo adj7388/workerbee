@@ -1,6 +1,6 @@
-function showUpdatePopup(message = "Updated") {
+function showMessage(message = "Updated") {
     let popup = document.createElement('div');
-    popup.className = 'updatePopup';
+    popup.className = 'showMessagePopup';
     popup.innerHTML = message;
     popup.style.display = "block";
     document.body.appendChild(popup);
