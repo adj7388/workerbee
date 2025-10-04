@@ -26,7 +26,7 @@ def get_show_summaries_config() -> dict[str, Any]:
 
 def get_display_changes_config() -> dict[str, Any]:
     return {
-        "displayChangesId": Consts.DISPLAY_CHANGES,
+        "changesCheckboxId": Consts.DISPLAY_CHANGES,
         "changesContainerId": "displayChangesContainer",
         "updateSessionUrl": url_for(Consts.DISPLAY_CHANGES),
     }

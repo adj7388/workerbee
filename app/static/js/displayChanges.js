@@ -1,11 +1,11 @@
 // Manage Display Changes checkbox
 
 function initDisplayChanges({
-    checkboxId,
+    changesCheckboxId,
     changesContainerId,
     updateSessionUrl
 }) {
-    const checkbox = document.getElementById(checkboxId);
+    const checkbox = document.getElementById(changesCheckboxId);
     const changesContainer = document.getElementById(changesContainerId);
 
     checkbox.addEventListener("change", function () {

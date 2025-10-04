@@ -96,10 +96,10 @@
 {% macro display_changes(config) %}
 
     <input class="form-check-input me-0" type="checkbox"
-        id="{{config.displayChangesId}}" name="{{config.displayChangesId}}"
+        id="{{config.changesCheckboxId}}" name="{{config.changesCheckboxId}}"
         {{ "checked" if session[ARGS][DISPLAY_CHANGES] == True else "" }}
     >
-    <label for="{{config.displayChangesId}}">Display Changes</label>
+    <label for="{{config.changesCheckboxId}}">Display Changes</label>
 
 {% endmacro %}
 
