@@ -10,27 +10,29 @@ class Consts:
 
     # Session consts
     ARGS: str = "args"
-    ## for Find Words and Show Summaries
+    ## for showing changes to Find Words and Show Summaries form/query
     DISPLAY_CHANGES: str = "display_changes"
-    ## for Find Words
+    ## basic query params for Find Words and Show Summaries
     REQUIRED_LETTER: str = "required"
     ALLOWED_LETTERS: str = "allowed"
     DICTIONARY: str = "dictionary"
     WORD_LIST: str = "word_list"
-    ## for grouping
+    ## for grouping results in Find Words and Show Summaries
     GROUPING: str = "grouping"
     INITIALS: str = "initials"
     LENGTH: str = "length"
     NO_GROUPING: str = "no_grouping"
-    ## for Show Summaries
+    ## how to sort Show Summaries
     SUMMARY_SORT: str = "summary_sort"
     ASCENDING: str = "ascending"
     DESCENDING: str = "descending"
-    ## Show Words checkbox/radios in Show Summaries
+    ## whether/how to show/sort words in Summaries
     SHOW_WORDS: str = "show_words"
     WORD_SORT: str = "word_sort"
     ALPHABETICALLY: str = "alphabetically"
     BYWORDLENGTH: str = "bywordlength"
+    ## id for the div where results of Find Words and Show Summaries queries are inserted
+    RESULTS_CONTAINER_ID: str = "results"
 
     ## for download form (CSV, TXT, JSON also used as file extensions)
     FILE_TYPE: str = "file_type"
