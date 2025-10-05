@@ -82,6 +82,11 @@
   font-size: x-small;  
 }
 
+.changes-container {
+  padding-top: 1.25rem;
+  font-size: smaller;
+}
+
 /* Responsive layout for narrow viewports */
 @media (max-width: 600px) {
   .two-col-grid {
@@ -93,12 +98,12 @@
     text-align: left;
   }
 
-  .two-col-grid fieldset legend {
-    margin-bottom: 0.5rem;
-  }
-
   .two-col-grid fieldset > div {
     grid-column: 1;
     justify-content: flex-start;
+  }
+
+  .changes-container {
+    display: none;
   }
 }

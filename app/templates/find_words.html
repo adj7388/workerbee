@@ -80,7 +80,7 @@
             {# Group results radio buttons #}
             {# fieldset has display: contents, so <legend> in left col, <div> in right col #}
             <fieldset>
-                <legend>Group the results by:</legend>
+                <legend>Group results by:</legend>
                 <div class="radio-group">
                     <div>
                         <input type="radio" id="{{ INITIALS }}" name="{{ GROUPING }}" value="{{ INITIALS }}"
@@ -108,7 +108,7 @@
             </div>
             
         </form>
-        <div id="{{DISPLAY_CHANGES_CONFIG.changesContainerId}}"></div>
+        <div id="{{DISPLAY_CHANGES_CONFIG.changesContainerId}}" class="changes-container"></div>
     </div>
     {# Results inserted here #}
     <div id="{{FORM_CONFIG.resultsContainerId}}"></div>
