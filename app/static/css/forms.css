@@ -87,6 +87,18 @@
   font-size: smaller;
 }
 
+.changes-label {
+  font-weight: bold;
+}
+
+.changes-value {
+  font-style: normal;
+}
+
+.changes-previous {
+  font-style: italic;
+}
+
 /* Responsive layout for narrow viewports */
 @media (max-width: 600px) {
   .two-col-grid {

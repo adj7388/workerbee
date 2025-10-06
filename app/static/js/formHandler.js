@@ -70,9 +70,9 @@ function initFormHandler({
             for (const [key, currentValue] of Object.entries(currentState)) {
                 if (previousState[key] !== currentValue) {
                     changes.push(
-                        `<span style="font-weight: bold">${labels[key]}</span> ` +
-                        `<span style="font-style: italic">${currentValue}</span> ` +
-                        `(was <span style="font-style: italic">${previousState[key]}</span>)`
+                        `<span class="changes-label">${labels[key]}</span> ` +
+                        `<span class="changes-value">${currentValue}</span> ` +
+                        `(was <span class="changes-previous">${previousState[key]}</span>)`
                     );
 
                 }
