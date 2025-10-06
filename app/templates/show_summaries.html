@@ -20,20 +20,13 @@
     const showWordsConfig = JSON.parse(`{{ SHOW_WORDS_CONFIG | tojson | safe }}`);
 
     const showWords = initShowWords(showWordsConfig);
-    const displayChanges = initDisplayChanges({
-            changesCheckboxId: displayChangesConfig.changesCheckboxId,
-            changesContainerId: displayChangesConfig.changesContainerId,
-            updateSessionUrl: displayChangesConfig.updateSessionUrl,
-        })
-
+    const displayChanges = initDisplayChanges(displayChangesConfig);
     const history = initFormHistory(historyConfig);
-
     // additional form handler config that can't be set in Flask
     const formHandlerConfig = {
         displayChanges: displayChanges,
         postSubmitCallbacks: [showWords.toggleWordRows]
      }
-
     const handler = initFormHandler({ ...formConfig, ...formHandlerConfig });
 
     handler.setFormHistory(history);

@@ -17,14 +17,8 @@
     const displayChangesConfig = JSON.parse(`{{ DISPLAY_CHANGES_CONFIG | tojson | safe }}`);
     const historyConfig = JSON.parse(`{{ HISTORY_CONFIG | tojson | safe }}`);
 
-    const displayChanges = initDisplayChanges({
-        changesCheckboxId: displayChangesConfig.changesCheckboxId,
-        changesContainerId: displayChangesConfig.changesContainerId,
-        updateSessionUrl: displayChangesConfig.updateSessionUrl,
-    });
-
+    const displayChanges = initDisplayChanges(displayChangesConfig);
     const history = initFormHistory(historyConfig);
-
     // additional form handler config that can't be set in Flask
     const formHandlerConfig = {
         displayChanges: displayChanges,

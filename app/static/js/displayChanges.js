@@ -1,18 +1,14 @@
 // Manage Display Changes checkbox
 
-function initDisplayChanges({
-    changesCheckboxId,
-    changesContainerId,
-    updateSessionUrl
-}) {
-    const checkbox = document.getElementById(changesCheckboxId);
-    const changesContainer = document.getElementById(changesContainerId);
+function initDisplayChanges(config) {
+    const checkbox = document.getElementById(config.changesCheckboxId);
+    const changesContainer = document.getElementById(config.changesContainerId);
 
     checkbox.addEventListener("change", function () {
         const params = new URLSearchParams({
             display_changes : checkbox.checked,
         });
-        fetch(`${updateSessionUrl}?${params.toString()}`)
+        fetch(`${config.updateSessionUrl}?${params.toString()}`)
             .then(res => res.text())
             .then(responseText => {
                 showMessage(responseText);
